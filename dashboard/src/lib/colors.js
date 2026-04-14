@@ -42,7 +42,6 @@ export const channelColors = {
   fuel: "#285E61",          // primary-700
   food: "#2C7A7B",          // primary-600
   benefit_erosion: "#9CA3AF", // gray-400
-  fiscal_drag: "#D1D5DB",   // gray-300
 };
 
 // Policy colors — alternating teal shades and grays for distinction

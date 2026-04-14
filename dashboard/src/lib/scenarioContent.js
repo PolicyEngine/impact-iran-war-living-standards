@@ -9,7 +9,7 @@ export const SCENARIO_CONTENT = {
     shortLabel: "Central",
     selectorLabel: "Central (+75% energy, +50% fuel, +3.5pp CPI)",
     description:
-      "A sustained military campaign lasting several months, with retaliatory attacks on regional oil infrastructure. We model a 75% increase in the energy price cap, a 50% rise in fuel costs, a 4.5% food price increase, and a 3.5 percentage point CPI increase. Benefit erosion from uprating lag and fiscal drag compound the direct price effects over 12 months.",
+      "A sustained military campaign lasting several months, with retaliatory attacks on regional oil infrastructure. We model a 75% increase in the energy price cap, a 50% rise in fuel costs, a 4.5% food price increase, and a 3.5 percentage point CPI increase. Benefit erosion from the uprating lag compounds the direct price effects over 12 months.",
   },
   strait_of_hormuz: {
     shortLabel: "High",

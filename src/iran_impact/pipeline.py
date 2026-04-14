@@ -14,9 +14,6 @@ from .config import (
     YEAR,
     CURRENT_ENERGY_CAP,
     SCENARIOS,
-    ENERGY_ELASTICITY,
-    FUEL_ELASTICITY,
-    FISCAL_DRAG_RATE,
     BASE_FUEL_SPEND,
     BASE_FOOD_SPEND,
     FUEL_DECILE_FACTORS,
@@ -185,18 +182,6 @@ def _build_benefit_income(sim, year=YEAR):
     return np.array([hh_ben.get(hid, 0.0) for hid in hh_id_hh])
 
 
-def _build_income_tax(sim, year=YEAR):
-    """Aggregate income tax per household from person-level data."""
-    hh_id_hh = _vals(sim, "household_id", year)
-    hh_id_person = _vals(sim, "household_id", year, map_to="person")
-    tax = _vals(sim, "income_tax", year)
-
-    hh_tax = defaultdict(float)
-    for i, hid in enumerate(hh_id_person):
-        hh_tax[hid] += float(tax[i])
-
-    return np.array([hh_tax.get(hid, 0.0) for hid in hh_id_hh])
-
 
 def run_baseline(year=YEAR):
     """Run baseline simulation and return dict of household-level arrays."""
@@ -216,7 +201,6 @@ def run_baseline(year=YEAR):
     is_uc, _ = _build_uc_recipients(sim, year)
     ct_band = _build_ct_band(sim, year)
     benefit_income = _build_benefit_income(sim, year)
-    income_tax = _build_income_tax(sim, year)
 
     country_arr = np.array(
         [REGION_TO_COUNTRY.get(str(r), "UNKNOWN") for r in region]
@@ -237,7 +221,6 @@ def run_baseline(year=YEAR):
         "is_uc": is_uc,
         "ct_band": ct_band,
         "benefit_income": benefit_income,
-        "income_tax": income_tax,
         "fuel_cost": fuel_cost,
         "food_cost": food_cost,
     }
@@ -259,14 +242,11 @@ def compute_scenario(data, scenario_key):
     food_increase_pct = params["food_increase_pct"] / 100
 
     energy = data["energy"]
-    income = data["income"]
     fuel_cost = data["fuel_cost"]
     food_cost = data["food_cost"]
     benefit_income = data["benefit_income"]
-    income_tax = data["income_tax"]
 
     # Channel 1: Energy price shock
-    # Each household's energy bill scales with the cap increase
     energy_shock = energy * cap_increase_pct
 
     # Channel 2: Fuel (petrol/diesel) shock
@@ -276,36 +256,16 @@ def compute_scenario(data, scenario_key):
     food_shock = food_cost * food_increase_pct
 
     # Channel 4: Benefit erosion (uprating lag)
-    # Benefits lose real value during the lag period
     benefit_erosion = benefit_income * cpi_increase_pp * (UPRATING_LAG_MONTHS / MONTHS_PER_YEAR)
 
-    # Channel 5: Fiscal drag (frozen thresholds)
-    # ~30% of CPI increase translates to extra tax via bracket creep
-    fiscal_drag = income_tax * cpi_increase_pp * FISCAL_DRAG_RATE
-
-    # Behavioural responses (negative = spending reduction, positive = saving)
-    energy_behavioral = energy_shock * ENERGY_ELASTICITY  # negative
-    fuel_behavioral = fuel_shock * FUEL_ELASTICITY  # negative
-
     # Net impact (all positive = cost to household)
-    net_impact = (
-        energy_shock
-        + fuel_shock
-        + food_shock
-        + benefit_erosion
-        + fiscal_drag
-        + energy_behavioral  # negative, reduces net cost
-        + fuel_behavioral  # negative, reduces net cost
-    )
+    net_impact = energy_shock + fuel_shock + food_shock + benefit_erosion
 
     return {
         "energy_shock": energy_shock,
         "fuel_shock": fuel_shock,
         "food_shock": food_shock,
         "benefit_erosion": benefit_erosion,
-        "fiscal_drag": fiscal_drag,
-        "energy_behavioral": energy_behavioral,
-        "fuel_behavioral": fuel_behavioral,
         "net_impact": net_impact,
     }
 
@@ -453,9 +413,9 @@ def _fuel_poverty_flags(energy, income):
 
 
 def _shocked_energy(data, impacts):
-    """Energy bill after shock and demand response, before policy."""
+    """Energy bill after shock, before policy."""
     return np.maximum(
-        data["energy"] + impacts["energy_shock"] + impacts["energy_behavioral"],
+        data["energy"] + impacts["energy_shock"],
         0,
     )
 
@@ -479,7 +439,6 @@ def _by_decile(data, impacts, shocked_fuel_poor):
             "benefit_erosion": round(
                 weighted_mean(impacts["benefit_erosion"], weights, mask)
             ),
-            "fiscal_drag": round(weighted_mean(impacts["fiscal_drag"], weights, mask)),
             "fp_rate_pct": round(
                 weighted_mean(shocked_fuel_poor.astype(float), weights, mask) * 100,
                 1,
@@ -511,7 +470,6 @@ def _grouped_impacts(data, impacts, group_key, label_key, shocked_fuel_poor):
             "benefit_erosion": round(
                 weighted_mean(impacts["benefit_erosion"], weights, mask)
             ),
-            "fiscal_drag": round(weighted_mean(impacts["fiscal_drag"], weights, mask)),
             "fp_rate_pct": round(
                 weighted_mean(shocked_fuel_poor.astype(float), weights, mask) * 100,
                 1,
@@ -546,14 +504,11 @@ def _fp_by_tenure(data, baseline_fuel_poor, shocked_fuel_poor):
 
 def _channel_decomposition(data, impacts):
     weights = data["weights"]
-    behavioral_offset = -(impacts["energy_behavioral"] + impacts["fuel_behavioral"])
     return {
         "energy_shock": round(weighted_mean(impacts["energy_shock"], weights)),
         "fuel_shock": round(weighted_mean(impacts["fuel_shock"], weights)),
         "food_shock": round(weighted_mean(impacts["food_shock"], weights)),
         "benefit_erosion": round(weighted_mean(impacts["benefit_erosion"], weights)),
-        "fiscal_drag": round(weighted_mean(impacts["fiscal_drag"], weights)),
-        "behavioral_offset": round(weighted_mean(behavioral_offset, weights)),
         "net_impact": round(weighted_mean(impacts["net_impact"], weights)),
     }
 
@@ -663,7 +618,6 @@ def _scenario_output(data, scenario_key):
         + impacts["fuel_shock"]
         + impacts["food_shock"]
         + impacts["benefit_erosion"]
-        + impacts["fiscal_drag"]
     )
     baseline_energy = data["energy"]
     shocked_energy = _shocked_energy(data, impacts)
@@ -796,15 +750,12 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
         "scenarios": {},
         "policy_responses": {},
         "parameters": {
-            "energy_elasticity": ENERGY_ELASTICITY,
-            "fuel_elasticity": FUEL_ELASTICITY,
             "food_price_increase_pct": {
                 key: SCENARIOS[key]["food_increase_pct"]
                 for key in SCENARIOS
             },
             "base_fuel_spend": BASE_FUEL_SPEND,
             "base_food_spend": BASE_FOOD_SPEND,
-            "fiscal_drag_rate": FISCAL_DRAG_RATE,
             "fuel_poverty_threshold": FUEL_POVERTY_THRESHOLD,
         },
     }

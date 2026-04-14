@@ -21,9 +21,9 @@ export default function MethodologyTab({ data }) {
           This dashboard estimates the impact of a hypothetical Iran conflict on UK household
           living standards. We model three escalation scenarios, each producing a different
           magnitude of oil and gas price shock. These shocks are transmitted to households
-          through five channels: higher energy bills, increased fuel costs, food price
-          inflation, erosion of means-tested benefit values, and fiscal drag from higher
-          nominal incomes. The model is built on{" "}
+          through four channels: higher energy bills, increased fuel costs, food price
+          inflation, and erosion of means-tested benefit values. The analysis covers the
+          2026-27 tax year. The model is built on{" "}
           <a href="https://policyengine.org" target="_blank" rel="noreferrer" className="underline">PolicyEngine UK</a>{" "}
           microsimulation using the Enhanced Family Resources Survey, covering approximately
           {householdCount ? ` ${householdCount.toFixed(1)} million ` : " "}
@@ -125,14 +125,6 @@ export default function MethodologyTab({ data }) {
             benefit real value by ~5% (&pound;12bn total), with April 2022 uprating at 3.1%
             against 9% actual inflation (IFS, 2022; House of Commons Library, 2023).
           </div>
-          <div>
-            <strong className="text-slate-800">Fiscal drag:</strong>{" "}
-            Income tax thresholds frozen to 2028 mean that inflation-driven nominal wage
-            growth pushes more income into higher tax brackets. The OBR (2024) estimates
-            this policy raises &pound;42.9bn by 2027-28 — about one-third of the 4.5
-            percentage point GDP increase in tax burden since 2019-20. We model 30% of the
-            CPI increase as additional effective tax burden.
-          </div>
         </div>
       </div>
 
@@ -154,23 +146,6 @@ export default function MethodologyTab({ data }) {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td className="font-medium">Energy demand price elasticity (short-run)</td>
-                <td>-0.15</td>
-                <td className="text-xs text-slate-500">
-                  Labandeira, Labeaga & Lopez-Otero (2017), <em>Energy Policy</em> 102.
-                  Meta-analysis of 428 estimates; residential short-run: -0.10 to -0.21.
-                  UK-specific: Dimitropoulos, Hunt & Judge (2005).
-                </td>
-              </tr>
-              <tr>
-                <td className="font-medium">Fuel demand price elasticity (short-run)</td>
-                <td>-0.25</td>
-                <td className="text-xs text-slate-500">
-                  Espey (1998), <em>Energy Economics</em> 20(3). Median: -0.23.
-                  Dahl & Sterner (1991), <em>Energy Economics</em> 13(3). Mean: -0.26.
-                </td>
-              </tr>
               <tr>
                 <td className="font-medium">Food price increase</td>
                 <td>2.0% / 4.5% / 6.4%</td>
@@ -194,14 +169,6 @@ export default function MethodologyTab({ data }) {
                 <td className="text-xs text-slate-500">
                   ONS (2025), Family Spending FYE 2024. 11.3% of expenditure.
                   DEFRA (2025), Family Food FYE 2024.
-                </td>
-              </tr>
-              <tr>
-                <td className="font-medium">Fiscal drag rate</td>
-                <td>30%</td>
-                <td className="text-xs text-slate-500">
-                  OBR (2024), Economic and Fiscal Outlook. Frozen thresholds
-                  account for ~1/3 of the increase in the overall tax burden.
                 </td>
               </tr>
               <tr>
@@ -246,7 +213,6 @@ export default function MethodologyTab({ data }) {
             <li>Fuel cost increases from higher oil prices</li>
             <li>Second-round food price inflation from energy input costs</li>
             <li>Real-value erosion of means-tested benefits between uprating dates</li>
-            <li>Fiscal drag from frozen income tax thresholds</li>
             <li>Distributional analysis by income decile, region, country, and tenure</li>
             <li>Fuel poverty impact using the 10% threshold metric</li>
             <li>Eight policy responses with fiscal cost and targeting analysis, including a social tariff</li>

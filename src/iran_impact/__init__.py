@@ -4,8 +4,6 @@ from .config import (
     YEAR,
     CURRENT_ENERGY_CAP,
     SCENARIOS,
-    ENERGY_ELASTICITY,
-    FUEL_ELASTICITY,
 )
 
 
@@ -18,7 +16,5 @@ __all__ = [
     "YEAR",
     "CURRENT_ENERGY_CAP",
     "SCENARIOS",
-    "ENERGY_ELASTICITY",
-    "FUEL_ELASTICITY",
     "run_full_pipeline",
 ]

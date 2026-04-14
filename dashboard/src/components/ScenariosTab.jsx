@@ -36,8 +36,6 @@ const CHANNEL_LABELS = {
   fuel: "Fuel",
   food: "Food",
   benefit_erosion: "Benefit erosion",
-  fiscal_drag: "Fiscal drag",
-  behavioral_offset: "Behavioural reduction",
 };
 
 function CustomTooltip({ active, payload, label, formatter }) {
@@ -108,7 +106,6 @@ const CHANNEL_STACK = [
   { key: "fuel", label: "Fuel", color: channelColors.fuel },
   { key: "food", label: "Food", color: channelColors.food },
   { key: "benefit_erosion", label: "Benefit erosion", color: channelColors.benefit_erosion },
-  { key: "fiscal_drag", label: "Fiscal drag", color: channelColors.fiscal_drag },
 ];
 
 const DIST_VIEWS = [
@@ -368,7 +365,7 @@ export default function ScenariosTab({ data }) {
       <div className="border-t border-slate-200 pt-10">
         <SectionHeading
           title="Cost breakdown by transmission channel"
-          description="How the net household cost decomposes across energy bills, fuel prices, food prices, benefit erosion, fiscal drag, and behavioural reductions in spending."
+          description="How the net household cost decomposes across energy bills, fuel prices, food prices, and benefit erosion."
         />
       </div>
 

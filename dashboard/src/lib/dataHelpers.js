@@ -62,8 +62,6 @@ export function getChannelDecomposition(data, scenarioKey) {
     fuel: raw.fuel_shock,
     food: raw.food_shock,
     benefit_erosion: raw.benefit_erosion,
-    fiscal_drag: raw.fiscal_drag,
-    behavioral_offset: -Math.abs(raw.behavioral_offset || 0),
   };
 }
 
