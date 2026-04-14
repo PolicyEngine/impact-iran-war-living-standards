@@ -18,9 +18,9 @@ export default function MethodologyTab({ data }) {
           How the model works
         </h2>
         <p className="mt-4 text-sm leading-7 text-slate-600">
-          This dashboard estimates the impact of a hypothetical Iran conflict on UK household
-          living standards. We model three escalation scenarios, each producing a different
-          magnitude of oil and gas price shock. These shocks are transmitted to households
+          This dashboard estimates how energy price increases associated with an Iran conflict
+          would affect UK household living standards. We model three scenarios, each
+          representing a different magnitude of price increase. These are transmitted to households
           through four channels: higher energy bills, increased fuel costs, food price
           inflation, and erosion of means-tested benefit values. The analysis covers the
           2026-27 tax year. The model is built on{" "}
@@ -41,10 +41,10 @@ export default function MethodologyTab({ data }) {
           Scenario assumptions
         </h3>
         <p className="mt-4 text-sm leading-7 text-slate-600">
-          Each scenario represents a different level of military escalation and its
-          effect on global energy markets. Scenario magnitudes are calibrated to
-          Hamilton (2003) and IMF (2024) oil shock literature, with CPI transmission
-          based on Bank of England (2022) supply-shock pass-through estimates.
+          Each scenario represents a different magnitude of energy price increase.
+          Scenario magnitudes are calibrated to Hamilton (2003) and IMF (2024) oil
+          price literature, with CPI transmission based on Bank of England (2022)
+          supply-side pass-through estimates.
         </p>
         <div className="mt-4 overflow-x-auto">
           <table className="data-table" style={{ tableLayout: "fixed" }}>
@@ -57,8 +57,8 @@ export default function MethodologyTab({ data }) {
             <thead>
               <tr>
                 <th>Scenario</th>
-                <th style={{ textAlign: "right" }}>Fuel price shock</th>
-                <th style={{ textAlign: "right" }}>Energy cap shock</th>
+                <th style={{ textAlign: "right" }}>Fuel price increase</th>
+                <th style={{ textAlign: "right" }}>Energy cap increase</th>
                 <th>Description</th>
               </tr>
             </thead>
@@ -100,7 +100,7 @@ export default function MethodologyTab({ data }) {
             Higher wholesale gas prices feed through to the Ofgem price cap (Ofgem, 2026;
             current model baseline: &pound;{currentEnergyCap?.toLocaleString("en-GB") || "1,641"}/yr). We model the pass-through from wholesale to
             retail energy prices using historical cap-setting methodology, applying the
-            shock to household gas and electricity bills proportionally.
+            increase to household gas and electricity bills proportionally.
           </div>
           <div>
             <strong className="text-slate-800">Fuel costs:</strong>{" "}
@@ -209,7 +209,7 @@ export default function MethodologyTab({ data }) {
             What the model captures
           </h3>
           <ul className="mt-4 list-disc pl-5 text-sm leading-7 text-slate-600 space-y-1">
-            <li>Direct energy bill increases from wholesale price shocks</li>
+            <li>Direct energy bill increases from wholesale price rises</li>
             <li>Fuel cost increases from higher oil prices</li>
             <li>Second-round food price inflation from energy input costs</li>
             <li>Real-value erosion of means-tested benefits between uprating dates</li>
@@ -232,7 +232,7 @@ export default function MethodologyTab({ data }) {
             <li>Housing and mortgage cost increases from higher interest rates</li>
             <li>Monetary policy response (interest rate changes)</li>
             <li>International trade effects and exchange rate movements</li>
-            <li>Military spending and its fiscal implications</li>
+            <li>Government spending responses and their fiscal implications</li>
           </ul>
         </div>
       </div>

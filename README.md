@@ -1,24 +1,24 @@
 # Impact of Iran Conflict on UK Living Standards
 
-Microsimulation-based analysis of how an Iran war would affect UK households in 2026-27 — modelling energy price shocks, fuel costs, food inflation, and benefit erosion across ~32 million households using [PolicyEngine UK](https://policyengine.org).
+Microsimulation-based analysis of how energy price increases associated with an Iran conflict would affect UK households in 2026-27 — modelling impacts through energy bills, fuel costs, food inflation, and benefit erosion across ~32 million households using [PolicyEngine UK](https://policyengine.org).
 
 **[Live Dashboard](https://dashboard-policy-engine.vercel.app)**
 
 ## Scenarios
 
-| Scenario | Energy cap | Avg cost/household | Fuel poverty |
-|---|---|---|---|
-| Limited strikes | +30% | ~£814/yr | ~9.5% |
-| Prolonged conflict | +75% | ~£1,981/yr | ~14.4% |
-| Strait of Hormuz closure | +150% | ~£3,722/yr | ~23.7% |
+| Scenario | Energy cap | Fuel price | Food price | CPI |
+|---|---|---|---|---|
+| Low | +30% | +20% | +2.0% | +1.5pp |
+| Central | +75% | +50% | +4.5% | +3.5pp |
+| High | +150% | +100% | +6.4% | +6.0pp |
 
 ## How it works
 
-The pipeline applies price shocks through four transmission channels and computes household-level impacts for the 2026-27 tax year:
+The pipeline applies price increases through four transmission channels and computes household-level impacts for the 2026-27 tax year:
 
-1. **Energy** — Oil/gas spike → higher domestic bills via energy price cap
+1. **Energy** — Higher domestic bills via energy price cap increase
 2. **Fuel** — Petrol/diesel price increase
-3. **Food** — Energy costs pass through to food production and transport
+3. **Food** — Food price inflation from energy input costs
 4. **Benefit erosion** — CPI-uprated benefits lag 12 months behind actual inflation
 
 Results are broken down by income decile, region, tenure type, and household composition.

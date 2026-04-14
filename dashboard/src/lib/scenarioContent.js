@@ -3,19 +3,19 @@ export const SCENARIO_CONTENT = {
     shortLabel: "Low",
     selectorLabel: "Low (+30% energy, +20% fuel, +1.5pp CPI)",
     description:
-      "Targeted strikes on Iranian nuclear or military facilities with no sustained conflict. Oil markets react with a short-term risk premium. We model a 30% increase in the energy price cap, a 20% rise in fuel costs, a 2% food price increase, and a 1.5 percentage point increase in CPI inflation. All price increases are assumed to be sustained for 12 months.",
+      "A moderate scenario: +30% energy price cap, +20% fuel costs, +2% food prices, and a 1.5 percentage point CPI increase, sustained for 12 months.",
   },
   prolonged_conflict: {
     shortLabel: "Central",
     selectorLabel: "Central (+75% energy, +50% fuel, +3.5pp CPI)",
     description:
-      "A sustained military campaign lasting several months, with retaliatory attacks on regional oil infrastructure. We model a 75% increase in the energy price cap, a 50% rise in fuel costs, a 4.5% food price increase, and a 3.5 percentage point CPI increase. Benefit erosion from the uprating lag compounds the direct price effects over 12 months.",
+      "A central scenario: +75% energy price cap, +50% fuel costs, +4.5% food prices, and a 3.5 percentage point CPI increase, sustained for 12 months. Benefit erosion from the uprating lag compounds the direct price effects.",
   },
   strait_of_hormuz: {
     shortLabel: "High",
     selectorLabel: "High (+150% energy, +100% fuel, +6pp CPI)",
     description:
-      "A blockade of the Strait of Hormuz cuts a large share of global oil supply and triggers a full-scale energy shock. We model a 150% increase in the energy price cap, a doubling of fuel costs, a 6.4% food price increase, and a 6 percentage point CPI increase over 12 months.",
+      "A severe scenario: +150% energy price cap, +100% fuel costs, +6.4% food prices, and a 6 percentage point CPI increase, sustained for 12 months.",
   },
 };
 

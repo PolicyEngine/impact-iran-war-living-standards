@@ -169,8 +169,8 @@ export default function PolicyTab({ data }) {
       <div className="grid items-stretch gap-6 lg:grid-cols-2">
         <div className="section-card flex h-full flex-col">
           <SectionHeading
-            title="Select conflict scenario"
-            description="Choose an escalation level to evaluate policy responses."
+            title="Select scenario"
+            description="Choose a scenario to evaluate policy responses."
           />
           <div className="mt-4 flex flex-wrap gap-2">
             {scenarioOptions.map((s) => (

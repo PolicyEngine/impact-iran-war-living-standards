@@ -79,9 +79,9 @@ function Dashboard() {
             <a href="https://policyengine.org" target="_blank" rel="noreferrer" className="underline">
               PolicyEngine UK
             </a>
-            &apos;s microsimulation model to estimate the impact of an Iran conflict on UK
-            household living standards through energy, fuel, and food price shocks. The{" "}
-            <strong>Impact Scenarios</strong> tab models three escalation levels and their
+            &apos;s microsimulation model to estimate how energy price increases associated with
+            an Iran conflict would affect UK household living standards. The{" "}
+            <strong>Impact Scenarios</strong> tab models three scenarios and their
             distributional effects across income deciles, regions, and countries. The{" "}
             <strong>Policy Responses</strong> tab evaluates eight potential government
             interventions and their fiscal costs. The{" "}

@@ -309,8 +309,8 @@ export default function ScenariosTab({ data }) {
 
       {/* Scenario selector */}
       <SectionHeading
-        title="Select conflict scenario"
-        description="Choose an escalation level to see its estimated impact on UK households."
+        title="Select scenario"
+        description="Choose a scenario to see its estimated impact on UK households."
       />
       <ScenarioSelector data={data} selected={scenario} onSelect={setScenario} />
 
@@ -457,7 +457,7 @@ export default function ScenariosTab({ data }) {
                 <td style={{ textAlign: "right" }}>--</td>
                 <td className="text-slate-500">
                   Ofgem cap forecast to rise 18% to {formatCurrency(1929)} from July 2026;
-                  wholesale gas prices have doubled since strikes began
+                  wholesale gas prices have doubled since conflict began
                 </td>
               </tr>
               <tr>
