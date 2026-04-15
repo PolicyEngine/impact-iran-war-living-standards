@@ -1,5 +1,5 @@
 /**
- * Data helper functions for the Iran war impact dashboard.
+ * Data helper functions for the energy price shock impact dashboard.
  *
  * These transform the raw JSON structure (from run_pipeline.py) into the
  * shapes that the React components expect.
@@ -61,7 +61,7 @@ export function getChannelDecomposition(data, scenarioKey) {
     energy: raw.energy_shock,
     fuel: raw.fuel_shock,
     food: raw.food_shock,
-    benefit_erosion: raw.benefit_erosion,
+    benefit_uprating_lag: raw.benefit_uprating_lag,
   };
 }
 

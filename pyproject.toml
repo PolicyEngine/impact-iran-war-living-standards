@@ -3,9 +3,9 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "iran-war-impact"
+name = "energy-price-shock-impact"
 version = "0.1.0"
-description = "Analysis of how an Iran war/conflict would impact UK living standards using PolicyEngine microsimulation"
+description = "Analysis of how energy price shocks would impact UK living standards using PolicyEngine microsimulation"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [

@@ -49,12 +49,12 @@ const POLICY_LABELS = {
 
 const POLICY_DESCRIPTIONS = {
   epg: {
-    mechanism: "Caps the domestic energy-bill increase at 10% of each household's pre-conflict energy bill.",
+    mechanism: "Caps the domestic energy-bill increase at 10% of each household's pre-shock energy bill.",
     model: "The model treats this as a direct reduction in the household energy bill, so it can reduce both residual household impact and fuel poverty.",
   },
   flat_rebate: {
     mechanism: "Pays every household a flat £400 energy rebate.",
-    model: "The model treats this as cash support against the conflict shock. It lowers residual household impact and improves energy affordability through higher disposable resources.",
+    model: "The model treats this as cash support against the selected energy price shock. It lowers residual household impact and improves energy affordability through higher disposable resources.",
   },
   ct_rebate: {
     mechanism: "Pays a £300 council tax rebate to households in bands A-D.",
@@ -62,7 +62,7 @@ const POLICY_DESCRIPTIONS = {
   },
   uc_uplift: {
     mechanism: "Increases Universal Credit by £25 per week for UC-recipient households.",
-    model: "The model annualises this to £1,300 for households receiving UC and treats it as income support during the conflict scenario.",
+    model: "The model annualises this to £1,300 for households receiving UC and treats it as income support during the selected shock scenario.",
   },
   fuel_duty_cut: {
     mechanism: "Cuts fuel duty by 5p per litre.",
@@ -70,10 +70,10 @@ const POLICY_DESCRIPTIONS = {
   },
   means_tested: {
     mechanism: "Pays £650 to households with annual net income below £25,000.",
-    model: "The model treats this as income support for low-income households in the selected conflict scenario.",
+    model: "The model treats this as income support for low-income households in the selected shock scenario.",
   },
   accelerated_uprating: {
-    mechanism: "Updates benefit levels immediately for the conflict-driven inflation shock instead of waiting for the usual uprating cycle.",
+    mechanism: "Updates benefit levels immediately for the shock-driven inflation increase instead of waiting for the usual uprating cycle.",
     model: "The model offsets the estimated real loss from benefit-uprating lag for households receiving uprated benefits.",
   },
   social_tariff: {
@@ -108,7 +108,7 @@ function CustomTooltip({ active, payload, label, formatter }) {
 }
 
 export default function PolicyTab({ data }) {
-  const [scenario, setScenario] = useState("limited_strikes");
+  const [scenario, setScenario] = useState("low_shock");
   const [selectedPolicy, setSelectedPolicy] = useState("epg");
 
   const policies = getPolicyComparison(data, scenario);
@@ -159,11 +159,11 @@ export default function PolicyTab({ data }) {
       {/* SCENARIO SELECTOR                                                 */}
       {/* ================================================================ */}
       <p className="text-sm leading-7 text-slate-600">
-        The baseline for this tab is the selected conflict scenario before any policy response.
-        The reform case is the same conflict scenario with the selected policy applied. Fiscal
+        The baseline for this tab is the selected shock scenario before any policy response.
+        The reform case is the same shock scenario with the selected policy applied. Fiscal
         cost is the government cost of that policy; average household benefit is the reduction
-        in annual household impact after the conflict shock; fuel poverty reduction compares
-        fuel poverty in the conflict scenario before and after the policy.
+        in annual household impact after the energy price shock; fuel poverty reduction compares
+        fuel poverty in the shock scenario before and after the policy.
       </p>
 
       <div className="grid items-stretch gap-6 lg:grid-cols-2">
@@ -206,7 +206,7 @@ export default function PolicyTab({ data }) {
         <div className="section-card flex h-full flex-col">
           <SectionHeading
             title="Select a policy"
-            description="Choose a policy to compare the selected conflict scenario before policy with the same scenario after policy."
+            description="Choose a policy to compare the selected shock scenario before policy with the same scenario after policy."
           />
 
           {policyRows.length > 0 ? (
@@ -261,7 +261,7 @@ export default function PolicyTab({ data }) {
                 {policy.fiscal_cost_bn != null ? formatBn(policy.fiscal_cost_bn) : "--"}
               </div>
               <div className="mt-2 text-sm leading-6 text-slate-500">
-                Estimated government cost of applying {policyLabel.toLowerCase()} in the selected conflict scenario.
+                Estimated government cost of applying {policyLabel.toLowerCase()} in the selected shock scenario.
               </div>
             </div>
             <div className="metric-card">
@@ -274,7 +274,7 @@ export default function PolicyTab({ data }) {
                   : "--"}
               </div>
               <div className="mt-2 text-sm leading-6 text-slate-500">
-                Average reduction in annual household impact from the conflict shock after this policy.
+                Average reduction in annual household impact from the energy price shock after this policy.
               </div>
             </div>
             <div className="metric-card">
@@ -287,7 +287,7 @@ export default function PolicyTab({ data }) {
                   : "--"}
               </div>
               <div className="mt-2 text-sm leading-6 text-slate-500">
-                Percentage point fall in fuel poverty compared with the same conflict scenario before policy.
+                Percentage point fall in fuel poverty compared with the same shock scenario before policy.
               </div>
             </div>
           </div>
@@ -299,7 +299,7 @@ export default function PolicyTab({ data }) {
                   <div className="min-h-[132px]">
                     <SectionHeading
                       title="Distributional impact by decile"
-                      description={`Average household reduction in the selected conflict scenario's residual impact after ${policyLabel.toLowerCase()}, by income decile.`}
+                      description={`Average household reduction in the selected shock scenario's residual impact after ${policyLabel.toLowerCase()}, by income decile.`}
                     />
                   </div>
                   <div className="min-h-0 flex-1 w-full">
@@ -340,7 +340,7 @@ export default function PolicyTab({ data }) {
                   <div className="min-h-[132px]">
                     <SectionHeading
                       title="Winners and losers"
-                      description={`Share of households better off, unchanged, or worse off when moving from the selected conflict scenario before policy to the same scenario with ${policyLabel.toLowerCase()}. A household counts as better or worse off if its annual residual impact changes by more than £1.`}
+                      description={`Share of households better off, unchanged, or worse off when moving from the selected shock scenario before policy to the same scenario with ${policyLabel.toLowerCase()}. A household counts as better or worse off if its annual residual impact changes by more than £1.`}
                     />
                   </div>
                   <div className="min-h-0 flex-1 w-full">

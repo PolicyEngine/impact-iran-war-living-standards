@@ -68,7 +68,7 @@ function Dashboard() {
     <div className="app-shell min-h-screen">
       <header className="title-row">
         <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-4 md:px-8">
-          <h1>Iran Conflict: Impact on UK Living Standards</h1>
+          <h1>Energy Price Shock: Impact on UK Living Standards</h1>
         </div>
       </header>
 
@@ -79,8 +79,9 @@ function Dashboard() {
             <a href="https://policyengine.org" target="_blank" rel="noreferrer" className="underline">
               PolicyEngine UK
             </a>
-            &apos;s microsimulation model to estimate how energy price increases associated with
-            an Iran conflict would affect UK household living standards. The{" "}
+            &apos;s microsimulation model to estimate how energy price increases from a
+            sustained disruption to Middle East oil and gas supply would affect UK household
+            living standards. The{" "}
             <strong>Impact Scenarios</strong> tab models three scenarios and their
             distributional effects across income deciles, regions, and countries. The{" "}
             <strong>Policy Responses</strong> tab evaluates eight potential government

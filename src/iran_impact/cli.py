@@ -9,7 +9,7 @@ from .config import YEAR, SCENARIOS
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Build Iran war impact on UK living standards analysis"
+        description="Build energy price shock impact on UK living standards analysis"
     )
     parser.add_argument("--year", type=int, default=YEAR)
     parser.add_argument(

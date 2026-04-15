@@ -35,7 +35,7 @@ const CHANNEL_LABELS = {
   energy: "Energy",
   fuel: "Fuel",
   food: "Food",
-  benefit_erosion: "Benefit erosion",
+  benefit_uprating_lag: "Benefit uprating lag",
 };
 
 function CustomTooltip({ active, payload, label, formatter }) {
@@ -105,7 +105,7 @@ const CHANNEL_STACK = [
   { key: "energy", label: "Energy", color: channelColors.energy },
   { key: "fuel", label: "Fuel", color: channelColors.fuel },
   { key: "food", label: "Food", color: channelColors.food },
-  { key: "benefit_erosion", label: "Benefit erosion", color: channelColors.benefit_erosion },
+  { key: "benefit_uprating_lag", label: "Benefit uprating lag", color: channelColors.benefit_uprating_lag },
 ];
 
 const DIST_VIEWS = [
@@ -273,7 +273,7 @@ function DistributionalBreakdown({ decileData, regionalData, countryData, hhType
 }
 
 export default function ScenariosTab({ data }) {
-  const [scenario, setScenario] = useState("limited_strikes");
+  const [scenario, setScenario] = useState("low_shock");
 
   const scenarioData = getScenario(data, scenario);
   const decileData = getDecileBreakdown(data, scenario);
@@ -365,7 +365,7 @@ export default function ScenariosTab({ data }) {
       <div className="border-t border-slate-200 pt-10">
         <SectionHeading
           title="Cost breakdown by transmission channel"
-          description="How the net household cost decomposes across energy bills, fuel prices, food prices, and benefit erosion."
+          description="How the net household cost decomposes across energy bills, fuel prices, food prices, and benefit uprating lag."
         />
       </div>
 
@@ -457,7 +457,7 @@ export default function ScenariosTab({ data }) {
                 <td style={{ textAlign: "right" }}>--</td>
                 <td className="text-slate-500">
                   Ofgem cap forecast to rise 18% to {formatCurrency(1929)} from July 2026;
-                  wholesale gas prices have doubled since conflict began
+                  wholesale gas prices have doubled since the supply disruption began
                 </td>
               </tr>
               <tr>
@@ -502,7 +502,7 @@ export default function ScenariosTab({ data }) {
                 <td style={{ textAlign: "right" }}>3-3.5%</td>
                 <td className="text-slate-500">
                   CPI likely 3-3.5% in Q2-Q3 2026 due to higher energy prices;
-                  oil up ~20%, gas up ~50% since conflict began; rate cuts now unlikely
+                  oil up ~20%, gas up ~50% since the supply disruption began; rate cuts now unlikely
                 </td>
               </tr>
               <tr>

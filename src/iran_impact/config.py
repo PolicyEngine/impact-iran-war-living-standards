@@ -1,22 +1,22 @@
-"""Configuration constants for Iran war impact on UK living standards analysis."""
+"""Configuration constants for energy price shock impact on UK living standards analysis."""
 
 YEAR = 2026
 CURRENT_ENERGY_CAP = 1_641  # Ofgem price cap £/year
 
 SCENARIOS = {
-    "limited_strikes": {
+    "low_shock": {
         "cap_increase_pct": 30,
         "cpi_increase_pp": 1.5,
         "fuel_pct": 20,
         "food_increase_pct": 2.0,
     },
-    "prolonged_conflict": {
+    "central_shock": {
         "cap_increase_pct": 75,
         "cpi_increase_pp": 3.5,
         "fuel_pct": 50,
         "food_increase_pct": 4.5,
     },
-    "strait_of_hormuz": {
+    "severe_shock": {
         "cap_increase_pct": 150,
         "cpi_increase_pp": 6.0,
         "fuel_pct": 100,

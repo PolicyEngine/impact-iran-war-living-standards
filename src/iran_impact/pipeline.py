@@ -1,9 +1,8 @@
 """
-Core simulation pipeline for Iran war impact on UK living standards.
+Core simulation pipeline for energy price shock impact on UK living standards.
 
 Loads the PolicyEngine UK microsimulation, computes multi-channel shocks
-(energy, fuel, food, benefit erosion, fiscal drag), and evaluates policy
-responses.
+(energy, fuel, food, benefit uprating lag), and evaluates policy responses.
 """
 
 import numpy as np
@@ -255,17 +254,19 @@ def compute_scenario(data, scenario_key):
     # Channel 3: Food pass-through
     food_shock = food_cost * food_increase_pct
 
-    # Channel 4: Benefit erosion (uprating lag)
-    benefit_erosion = benefit_income * cpi_increase_pp * (UPRATING_LAG_MONTHS / MONTHS_PER_YEAR)
+    # Channel 4: Benefit uprating lag — benefits are uprated each April using
+    # the previous September's CPI, so real benefit values fall during a price
+    # shock until the next uprating date (up to 18 months later).
+    benefit_uprating_lag = benefit_income * cpi_increase_pp * (UPRATING_LAG_MONTHS / MONTHS_PER_YEAR)
 
     # Net impact (all positive = cost to household)
-    net_impact = energy_shock + fuel_shock + food_shock + benefit_erosion
+    net_impact = energy_shock + fuel_shock + food_shock + benefit_uprating_lag
 
     return {
         "energy_shock": energy_shock,
         "fuel_shock": fuel_shock,
         "food_shock": food_shock,
-        "benefit_erosion": benefit_erosion,
+        "benefit_uprating_lag": benefit_uprating_lag,
         "net_impact": net_impact,
     }
 
@@ -319,8 +320,8 @@ def compute_policies(data, scenario_key, scenario_impacts):
         means_eligible, MEANS_TEST_AMOUNT, 0.0
     )
 
-    # Policy G: Accelerated uprating – eliminates benefit erosion
-    policies["accelerated_uprating"] = scenario_impacts["benefit_erosion"].copy()
+    # Policy G: Accelerated uprating – eliminates benefit uprating lag loss
+    policies["accelerated_uprating"] = scenario_impacts["benefit_uprating_lag"].copy()
 
     # Policy H: Social tariff – 50% discount on energy shock for low-income/UC households
     social_tariff_eligible = is_uc | (income < SOCIAL_TARIFF_INCOME_THRESHOLD)
@@ -436,8 +437,8 @@ def _by_decile(data, impacts, shocked_fuel_poor):
             "energy": round(weighted_mean(impacts["energy_shock"], weights, mask)),
             "fuel": round(weighted_mean(impacts["fuel_shock"], weights, mask)),
             "food": round(weighted_mean(impacts["food_shock"], weights, mask)),
-            "benefit_erosion": round(
-                weighted_mean(impacts["benefit_erosion"], weights, mask)
+            "benefit_uprating_lag": round(
+                weighted_mean(impacts["benefit_uprating_lag"], weights, mask)
             ),
             "fp_rate_pct": round(
                 weighted_mean(shocked_fuel_poor.astype(float), weights, mask) * 100,
@@ -467,8 +468,8 @@ def _grouped_impacts(data, impacts, group_key, label_key, shocked_fuel_poor):
             "energy": round(weighted_mean(impacts["energy_shock"], weights, mask)),
             "fuel": round(weighted_mean(impacts["fuel_shock"], weights, mask)),
             "food": round(weighted_mean(impacts["food_shock"], weights, mask)),
-            "benefit_erosion": round(
-                weighted_mean(impacts["benefit_erosion"], weights, mask)
+            "benefit_uprating_lag": round(
+                weighted_mean(impacts["benefit_uprating_lag"], weights, mask)
             ),
             "fp_rate_pct": round(
                 weighted_mean(shocked_fuel_poor.astype(float), weights, mask) * 100,
@@ -508,7 +509,7 @@ def _channel_decomposition(data, impacts):
         "energy_shock": round(weighted_mean(impacts["energy_shock"], weights)),
         "fuel_shock": round(weighted_mean(impacts["fuel_shock"], weights)),
         "food_shock": round(weighted_mean(impacts["food_shock"], weights)),
-        "benefit_erosion": round(weighted_mean(impacts["benefit_erosion"], weights)),
+        "benefit_uprating_lag": round(weighted_mean(impacts["benefit_uprating_lag"], weights)),
         "net_impact": round(weighted_mean(impacts["net_impact"], weights)),
     }
 
@@ -617,7 +618,7 @@ def _scenario_output(data, scenario_key):
         impacts["energy_shock"]
         + impacts["fuel_shock"]
         + impacts["food_shock"]
-        + impacts["benefit_erosion"]
+        + impacts["benefit_uprating_lag"]
     )
     baseline_energy = data["energy"]
     shocked_energy = _shocked_energy(data, impacts)

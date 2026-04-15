@@ -18,12 +18,12 @@ export default function MethodologyTab({ data }) {
           How the model works
         </h2>
         <p className="mt-4 text-sm leading-7 text-slate-600">
-          This dashboard estimates how energy price increases associated with an Iran conflict
-          would affect UK household living standards. We model three scenarios, each
-          representing a different magnitude of price increase. These are transmitted to households
-          through four channels: higher energy bills, increased fuel costs, food price
-          inflation, and erosion of means-tested benefit values. The analysis covers the
-          2026-27 tax year. The model is built on{" "}
+          This dashboard estimates how energy price increases from a sustained disruption to
+          Middle East oil and gas supply would affect UK household living standards. We model
+          three scenarios, each representing a different magnitude of price increase. These
+          are transmitted to households through four channels: higher energy bills, increased
+          fuel costs, food price inflation, and the real-value loss from delayed benefit
+          uprating. The analysis covers the 2026-27 tax year. The model is built on{" "}
           <a href="https://policyengine.org" target="_blank" rel="noreferrer" className="underline">PolicyEngine UK</a>{" "}
           microsimulation using the Enhanced Family Resources Survey, covering approximately
           {householdCount ? ` ${householdCount.toFixed(1)} million ` : " "}
@@ -41,10 +41,11 @@ export default function MethodologyTab({ data }) {
           Scenario assumptions
         </h3>
         <p className="mt-4 text-sm leading-7 text-slate-600">
-          Each scenario represents a different magnitude of energy price increase.
-          Scenario magnitudes are calibrated to Hamilton (2003) and IMF (2024) oil
-          price literature, with CPI transmission based on Bank of England (2022)
-          supply-side pass-through estimates.
+          Each scenario represents a different magnitude of energy price shock from
+          a sustained disruption to Middle East oil and gas supply. Scenario magnitudes
+          are calibrated to Hamilton (2003) and IMF (2024) oil price literature, with
+          CPI transmission based on Bank of England (2022) supply-side pass-through
+          estimates.
         </p>
         <div className="mt-4 overflow-x-auto">
           <table className="data-table" style={{ tableLayout: "fixed" }}>
@@ -105,25 +106,31 @@ export default function MethodologyTab({ data }) {
           <div>
             <strong className="text-slate-800">Fuel costs:</strong>{" "}
             Oil price increases translate to higher petrol and diesel prices at the pump.
-            Average household fuel spending is &pound;1,300/yr (ONS, 2025), varying from
-            70% of average for the lowest deciles to 125% for the highest (ONS ad-hoc
-            fuel expenditure tables). We apply the scenario fuel price increase to
-            decile-adjusted spending estimates.
+            Fuel spending is estimated at &pound;1,300/yr on average (ONS, 2025), scaled
+            by income decile using ONS ad-hoc fuel expenditure tables (70% of average for
+            the lowest deciles to 125% for the highest). These are decile-level averages,
+            not household-level microdata; within-decile variation in fuel spending is not
+            captured.
           </div>
           <div>
             <strong className="text-slate-800">Food prices:</strong>{" "}
             Energy is a major input cost in food production, processing, and distribution.
             We apply scenario-specific annual food price increases of 2.0%, 4.5%, and
             6.4% to average food spending of &pound;5,000/yr (ONS, 2025; DEFRA, 2025),
-            adjusted by decile following Engel&apos;s Law. The high scenario is anchored to
-            IGD&apos;s severe 2026 food-inflation warning reported in March 2026.
+            scaled by decile following Engel&apos;s Law. As with fuel, these are
+            decile-level spending estimates rather than household-level microdata. The
+            high scenario is anchored to IGD&apos;s severe 2026 food-inflation warning
+            reported in March 2026.
           </div>
           <div>
-            <strong className="text-slate-800">Benefit erosion:</strong>{" "}
+            <strong className="text-slate-800">Benefit uprating lag:</strong>{" "}
             Means-tested benefits are uprated each April using the previous September&apos;s
-            CPI — a lag of up to 18 months. During the 2022 energy crisis, this lag eroded
-            benefit real value by ~5% (&pound;12bn total), with April 2022 uprating at 3.1%
-            against 9% actual inflation (IFS, 2022; House of Commons Library, 2023).
+            CPI — a lag of up to 18 months. Between uprating dates, higher prices reduce
+            the real value of benefit payments. During the 2022 energy crisis, this
+            mechanism eroded benefit real value by approximately 5% (&pound;12bn total),
+            with April 2022 uprating at 3.1% against 9% actual inflation (IFS, 2022;
+            House of Commons Library, 2023). The model estimates the annual real loss as:
+            benefit income &times; CPI increase &times; (lag months / 12).
           </div>
         </div>
       </div>
@@ -152,7 +159,7 @@ export default function MethodologyTab({ data }) {
                 <td className="text-xs text-slate-500">
                   Scenario-specific annual food inflation. High scenario anchored to
                   IGD severe food-price warning reported in March 2026; lower scenarios
-                  scaled to conflict severity.
+                  scaled to shock severity.
                 </td>
               </tr>
               <tr>
@@ -209,10 +216,10 @@ export default function MethodologyTab({ data }) {
             What the model captures
           </h3>
           <ul className="mt-4 list-disc pl-5 text-sm leading-7 text-slate-600 space-y-1">
-            <li>Direct energy bill increases from wholesale price rises</li>
-            <li>Fuel cost increases from higher oil prices</li>
-            <li>Second-round food price inflation from energy input costs</li>
-            <li>Real-value erosion of means-tested benefits between uprating dates</li>
+            <li>Direct energy bill increases from wholesale price rises (household-level microdata from PolicyEngine)</li>
+            <li>Fuel cost increases from higher oil prices (decile-average spending estimates from ONS)</li>
+            <li>Second-round food price inflation from energy input costs (decile-average spending estimates from ONS/DEFRA)</li>
+            <li>Real-value loss of means-tested benefits between uprating dates (household-level benefit data from PolicyEngine)</li>
             <li>Distributional analysis by income decile, region, country, and tenure</li>
             <li>Fuel poverty impact using the 10% threshold metric</li>
             <li>Eight policy responses with fiscal cost and targeting analysis, including a social tariff</li>
@@ -225,6 +232,7 @@ export default function MethodologyTab({ data }) {
             What the model omits
           </h3>
           <ul className="mt-4 list-disc pl-5 text-sm leading-7 text-slate-600 space-y-1">
+            <li>Household-level fuel and food expenditure (these channels use decile-average estimates, not microdata)</li>
             <li>Labour market effects (unemployment, wage responses)</li>
             <li>General equilibrium and macroeconomic feedback</li>
             <li>Financial market disruption and wealth effects</li>
@@ -233,6 +241,7 @@ export default function MethodologyTab({ data }) {
             <li>Monetary policy response (interest rate changes)</li>
             <li>International trade effects and exchange rate movements</li>
             <li>Government spending responses and their fiscal implications</li>
+            <li>Behavioural responses (changes in driving, heating, or food purchasing patterns)</li>
           </ul>
         </div>
       </div>
@@ -262,7 +271,7 @@ export default function MethodologyTab({ data }) {
             <li>Espey, M. (1998) &lsquo;Gasoline demand revisited: an international meta-analysis of elasticities&rsquo;, <em>Energy Economics</em>, 20(3), pp. 273-295.</li>
             <li>Dahl, C. & Sterner, T. (1991) &lsquo;Analysing gasoline demand elasticities: a survey&rsquo;, <em>Energy Economics</em>, 13(3), pp. 203-210.</li>
             <li>Bonciani, D., Ploeckl, F. & Tong, M. (2023) &lsquo;How do firms pass energy and food costs through the supply chain&rsquo;, Bank of England (Bank Underground).</li>
-            <li>IGD food inflation warning reported by The Independent (2026), &lsquo;Households could face 8% jump in food prices due to Iran war, experts warn&rsquo;.</li>
+            <li>IGD food inflation warning reported by The Independent (2026), discussing sharp food-price rises under a Middle East supply disruption scenario.</li>
             <li>Boardman, B. (1991) <em>Fuel Poverty: From Cold Homes to Affordable Warmth</em>. London: Belhaven Press.</li>
             <li>OBR (2024) &lsquo;Fiscal implications of personal tax threshold freezes and reductions&rsquo;, Economic and Fiscal Outlook.</li>
             <li>IFS (2022) &lsquo;Many benefit recipients will be worse off until April 2025 because of failure of payments to keep up with inflation&rsquo;.</li>

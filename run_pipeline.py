@@ -1,4 +1,4 @@
-"""Run the Iran conflict living-standards pipeline and write dashboard JSON."""
+"""Run the energy price shock living-standards pipeline and write dashboard JSON."""
 
 from __future__ import annotations
 

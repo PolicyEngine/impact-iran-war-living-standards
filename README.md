@@ -1,6 +1,6 @@
-# Impact of Iran Conflict on UK Living Standards
+# Impact of Energy Price Shocks on UK Living Standards
 
-Microsimulation-based analysis of how energy price increases associated with an Iran conflict would affect UK households in 2026-27 — modelling impacts through energy bills, fuel costs, food inflation, and benefit erosion across ~32 million households using [PolicyEngine UK](https://policyengine.org).
+Microsimulation-based analysis of how energy price shocks from a sustained disruption to Middle East oil and gas supply would affect UK households in 2026-27 — modelling impacts through energy bills, fuel costs, food inflation, and benefit uprating lag across ~32 million households using [PolicyEngine UK](https://policyengine.org).
 
 **[Live Dashboard](https://dashboard-policy-engine.vercel.app)**
 
@@ -19,7 +19,7 @@ The pipeline applies price increases through four transmission channels and comp
 1. **Energy** — Higher domestic bills via energy price cap increase
 2. **Fuel** — Petrol/diesel price increase
 3. **Food** — Food price inflation from energy input costs
-4. **Benefit erosion** — CPI-uprated benefits lag 12 months behind actual inflation
+4. **Benefit uprating lag** — CPI-uprated benefits lag 12 months behind actual inflation
 
 Results are broken down by income decile, region, tenure type, and household composition.
 

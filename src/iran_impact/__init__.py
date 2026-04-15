@@ -1,4 +1,4 @@
-"""Iran war impact on UK living standards analysis using PolicyEngine."""
+"""Energy price shock impact on UK living standards analysis using PolicyEngine."""
 
 from .config import (
     YEAR,

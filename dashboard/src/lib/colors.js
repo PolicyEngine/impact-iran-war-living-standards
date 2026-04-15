@@ -41,7 +41,7 @@ export const channelColors = {
   energy: "#1D4044",        // primary-900
   fuel: "#285E61",          // primary-700
   food: "#2C7A7B",          // primary-600
-  benefit_erosion: "#9CA3AF", // gray-400
+  benefit_uprating_lag: "#9CA3AF", // gray-400
 };
 
 // Policy colors — alternating teal shades and grays for distinction

@@ -82,7 +82,7 @@
     ]
   },
   "scenarios": {
-    "limited_strikes": {
+    "low_shock": {
       "params": {
         "cap_increase_pct": 30,
         "cpi_increase_pp": 1.5,
@@ -107,7 +107,7 @@
           "energy": 322,
           "fuel": 182,
           "food": 65,
-          "benefit_erosion": 142,
+          "benefit_uprating_lag": 142,
           "fp_rate_pct": 24.2
         },
         {
@@ -117,7 +117,7 @@
           "energy": 398,
           "fuel": 182,
           "food": 65,
-          "benefit_erosion": 173,
+          "benefit_uprating_lag": 173,
           "fp_rate_pct": 13.7
         },
         {
@@ -127,7 +127,7 @@
           "energy": 389,
           "fuel": 234,
           "food": 80,
-          "benefit_erosion": 162,
+          "benefit_uprating_lag": 162,
           "fp_rate_pct": 10.8
         },
         {
@@ -137,7 +137,7 @@
           "energy": 416,
           "fuel": 234,
           "food": 80,
-          "benefit_erosion": 140,
+          "benefit_uprating_lag": 140,
           "fp_rate_pct": 12.3
         },
         {
@@ -147,7 +147,7 @@
           "energy": 361,
           "fuel": 260,
           "food": 100,
-          "benefit_erosion": 146,
+          "benefit_uprating_lag": 146,
           "fp_rate_pct": 6.0
         },
         {
@@ -157,7 +157,7 @@
           "energy": 481,
           "fuel": 260,
           "food": 100,
-          "benefit_erosion": 117,
+          "benefit_uprating_lag": 117,
           "fp_rate_pct": 8.8
         },
         {
@@ -167,7 +167,7 @@
           "energy": 392,
           "fuel": 299,
           "food": 120,
-          "benefit_erosion": 105,
+          "benefit_uprating_lag": 105,
           "fp_rate_pct": 3.1
         },
         {
@@ -177,7 +177,7 @@
           "energy": 435,
           "fuel": 299,
           "food": 120,
-          "benefit_erosion": 105,
+          "benefit_uprating_lag": 105,
           "fp_rate_pct": 5.4
         },
         {
@@ -187,7 +187,7 @@
           "energy": 532,
           "fuel": 325,
           "food": 145,
-          "benefit_erosion": 46,
+          "benefit_uprating_lag": 46,
           "fp_rate_pct": 6.7
         },
         {
@@ -197,7 +197,7 @@
           "energy": 476,
           "fuel": 325,
           "food": 145,
-          "benefit_erosion": 58,
+          "benefit_uprating_lag": 58,
           "fp_rate_pct": 2.4
         }
       ],
@@ -209,7 +209,7 @@
           "energy": 523,
           "fuel": 267,
           "food": 106,
-          "benefit_erosion": 119,
+          "benefit_uprating_lag": 119,
           "fp_rate_pct": 10.6
         },
         {
@@ -219,7 +219,7 @@
           "energy": 488,
           "fuel": 265,
           "food": 106,
-          "benefit_erosion": 122,
+          "benefit_uprating_lag": 122,
           "fp_rate_pct": 9.4
         },
         {
@@ -229,7 +229,7 @@
           "energy": 356,
           "fuel": 268,
           "food": 108,
-          "benefit_erosion": 118,
+          "benefit_uprating_lag": 118,
           "fp_rate_pct": 6.3
         },
         {
@@ -239,7 +239,7 @@
           "energy": 442,
           "fuel": 247,
           "food": 94,
-          "benefit_erosion": 122,
+          "benefit_uprating_lag": 122,
           "fp_rate_pct": 13.2
         },
         {
@@ -249,7 +249,7 @@
           "energy": 524,
           "fuel": 259,
           "food": 102,
-          "benefit_erosion": 150,
+          "benefit_uprating_lag": 150,
           "fp_rate_pct": 17.0
         },
         {
@@ -259,7 +259,7 @@
           "energy": 406,
           "fuel": 245,
           "food": 94,
-          "benefit_erosion": 129,
+          "benefit_uprating_lag": 129,
           "fp_rate_pct": 10.7
         },
         {
@@ -269,7 +269,7 @@
           "energy": 401,
           "fuel": 257,
           "food": 99,
-          "benefit_erosion": 118,
+          "benefit_uprating_lag": 118,
           "fp_rate_pct": 11.2
         },
         {
@@ -279,7 +279,7 @@
           "energy": 355,
           "fuel": 257,
           "food": 100,
-          "benefit_erosion": 120,
+          "benefit_uprating_lag": 120,
           "fp_rate_pct": 6.5
         },
         {
@@ -289,7 +289,7 @@
           "energy": 380,
           "fuel": 265,
           "food": 106,
-          "benefit_erosion": 116,
+          "benefit_uprating_lag": 116,
           "fp_rate_pct": 10.8
         },
         {
@@ -299,7 +299,7 @@
           "energy": 341,
           "fuel": 251,
           "food": 97,
-          "benefit_erosion": 137,
+          "benefit_uprating_lag": 137,
           "fp_rate_pct": 6.8
         },
         {
@@ -309,7 +309,7 @@
           "energy": 415,
           "fuel": 251,
           "food": 96,
-          "benefit_erosion": 115,
+          "benefit_uprating_lag": 115,
           "fp_rate_pct": 8.3
         },
         {
@@ -319,7 +319,7 @@
           "energy": 507,
           "fuel": 254,
           "food": 98,
-          "benefit_erosion": 96,
+          "benefit_uprating_lag": 96,
           "fp_rate_pct": 15.2
         }
       ],
@@ -331,7 +331,7 @@
           "energy": 486,
           "fuel": 255,
           "food": 100,
-          "benefit_erosion": 148,
+          "benefit_uprating_lag": 148,
           "fp_rate_pct": 12.7
         },
         {
@@ -341,7 +341,7 @@
           "energy": 444,
           "fuel": 278,
           "food": 112,
-          "benefit_erosion": 33,
+          "benefit_uprating_lag": 33,
           "fp_rate_pct": 7.0
         },
         {
@@ -351,7 +351,7 @@
           "energy": 306,
           "fuel": 225,
           "food": 83,
-          "benefit_erosion": 205,
+          "benefit_uprating_lag": 205,
           "fp_rate_pct": 9.4
         },
         {
@@ -361,7 +361,7 @@
           "energy": 370,
           "fuel": 238,
           "food": 89,
-          "benefit_erosion": 246,
+          "benefit_uprating_lag": 246,
           "fp_rate_pct": 9.2
         },
         {
@@ -371,7 +371,7 @@
           "energy": 341,
           "fuel": 257,
           "food": 100,
-          "benefit_erosion": 98,
+          "benefit_uprating_lag": 98,
           "fp_rate_pct": 9.1
         }
       ],
@@ -383,7 +383,7 @@
           "energy": 424,
           "fuel": 259,
           "food": 102,
-          "benefit_erosion": 119,
+          "benefit_uprating_lag": 119,
           "fp_rate_pct": 9.7
         },
         {
@@ -393,7 +393,7 @@
           "energy": 442,
           "fuel": 247,
           "food": 94,
-          "benefit_erosion": 122,
+          "benefit_uprating_lag": 122,
           "fp_rate_pct": 13.2
         },
         {
@@ -403,7 +403,7 @@
           "energy": 401,
           "fuel": 257,
           "food": 99,
-          "benefit_erosion": 118,
+          "benefit_uprating_lag": 118,
           "fp_rate_pct": 11.2
         },
         {
@@ -413,7 +413,7 @@
           "energy": 341,
           "fuel": 251,
           "food": 97,
-          "benefit_erosion": 137,
+          "benefit_uprating_lag": 137,
           "fp_rate_pct": 6.8
         }
       ],
@@ -425,7 +425,7 @@
           "energy": 465,
           "fuel": 288,
           "food": 118,
-          "benefit_erosion": 13,
+          "benefit_uprating_lag": 13,
           "fp_rate_pct": 8.4
         },
         {
@@ -435,7 +435,7 @@
           "energy": 504,
           "fuel": 260,
           "food": 101,
-          "benefit_erosion": 296,
+          "benefit_uprating_lag": 296,
           "fp_rate_pct": 9.8
         },
         {
@@ -445,7 +445,7 @@
           "energy": 430,
           "fuel": 261,
           "food": 102,
-          "benefit_erosion": 66,
+          "benefit_uprating_lag": 66,
           "fp_rate_pct": 6.6
         },
         {
@@ -455,7 +455,7 @@
           "energy": 370,
           "fuel": 223,
           "food": 81,
-          "benefit_erosion": 260,
+          "benefit_uprating_lag": 260,
           "fp_rate_pct": 9.8
         },
         {
@@ -465,7 +465,7 @@
           "energy": 353,
           "fuel": 225,
           "food": 83,
-          "benefit_erosion": 225,
+          "benefit_uprating_lag": 225,
           "fp_rate_pct": 13.5
         },
         {
@@ -475,7 +475,7 @@
           "energy": 336,
           "fuel": 243,
           "food": 93,
-          "benefit_erosion": 86,
+          "benefit_uprating_lag": 86,
           "fp_rate_pct": 14.9
         }
       ],
@@ -510,11 +510,11 @@
         "energy_shock": 418,
         "fuel_shock": 258,
         "food_shock": 101,
-        "benefit_erosion": 120,
+        "benefit_uprating_lag": 120,
         "net_impact": 897
       }
     },
-    "prolonged_conflict": {
+    "central_shock": {
       "params": {
         "cap_increase_pct": 75,
         "cpi_increase_pp": 3.5,
@@ -539,7 +539,7 @@
           "energy": 804,
           "fuel": 455,
           "food": 146,
-          "benefit_erosion": 332,
+          "benefit_uprating_lag": 332,
           "fp_rate_pct": 37.8
         },
         {
@@ -549,7 +549,7 @@
           "energy": 994,
           "fuel": 455,
           "food": 146,
-          "benefit_erosion": 403,
+          "benefit_uprating_lag": 403,
           "fp_rate_pct": 29.8
         },
         {
@@ -559,7 +559,7 @@
           "energy": 971,
           "fuel": 585,
           "food": 180,
-          "benefit_erosion": 379,
+          "benefit_uprating_lag": 379,
           "fp_rate_pct": 22.8
         },
         {
@@ -569,7 +569,7 @@
           "energy": 1041,
           "fuel": 585,
           "food": 180,
-          "benefit_erosion": 327,
+          "benefit_uprating_lag": 327,
           "fp_rate_pct": 16.7
         },
         {
@@ -579,7 +579,7 @@
           "energy": 904,
           "fuel": 650,
           "food": 225,
-          "benefit_erosion": 340,
+          "benefit_uprating_lag": 340,
           "fp_rate_pct": 8.2
         },
         {
@@ -589,7 +589,7 @@
           "energy": 1202,
           "fuel": 650,
           "food": 225,
-          "benefit_erosion": 273,
+          "benefit_uprating_lag": 273,
           "fp_rate_pct": 18.1
         },
         {
@@ -599,7 +599,7 @@
           "energy": 980,
           "fuel": 747,
           "food": 270,
-          "benefit_erosion": 245,
+          "benefit_uprating_lag": 245,
           "fp_rate_pct": 5.1
         },
         {
@@ -609,7 +609,7 @@
           "energy": 1088,
           "fuel": 747,
           "food": 270,
-          "benefit_erosion": 244,
+          "benefit_uprating_lag": 244,
           "fp_rate_pct": 11.1
         },
         {
@@ -619,7 +619,7 @@
           "energy": 1331,
           "fuel": 812,
           "food": 326,
-          "benefit_erosion": 108,
+          "benefit_uprating_lag": 108,
           "fp_rate_pct": 12.3
         },
         {
@@ -629,7 +629,7 @@
           "energy": 1189,
           "fuel": 812,
           "food": 326,
-          "benefit_erosion": 135,
+          "benefit_uprating_lag": 135,
           "fp_rate_pct": 3.1
         }
       ],
@@ -641,7 +641,7 @@
           "energy": 1308,
           "fuel": 667,
           "food": 238,
-          "benefit_erosion": 279,
+          "benefit_uprating_lag": 279,
           "fp_rate_pct": 22.2
         },
         {
@@ -651,7 +651,7 @@
           "energy": 1221,
           "fuel": 661,
           "food": 238,
-          "benefit_erosion": 284,
+          "benefit_uprating_lag": 284,
           "fp_rate_pct": 19.2
         },
         {
@@ -661,7 +661,7 @@
           "energy": 889,
           "fuel": 671,
           "food": 242,
-          "benefit_erosion": 276,
+          "benefit_uprating_lag": 276,
           "fp_rate_pct": 15.6
         },
         {
@@ -671,7 +671,7 @@
           "energy": 1105,
           "fuel": 617,
           "food": 211,
-          "benefit_erosion": 285,
+          "benefit_uprating_lag": 285,
           "fp_rate_pct": 19.3
         },
         {
@@ -681,7 +681,7 @@
           "energy": 1309,
           "fuel": 648,
           "food": 229,
-          "benefit_erosion": 349,
+          "benefit_uprating_lag": 349,
           "fp_rate_pct": 23.1
         },
         {
@@ -691,7 +691,7 @@
           "energy": 1014,
           "fuel": 612,
           "food": 211,
-          "benefit_erosion": 300,
+          "benefit_uprating_lag": 300,
           "fp_rate_pct": 20.5
         },
         {
@@ -701,7 +701,7 @@
           "energy": 1002,
           "fuel": 641,
           "food": 224,
-          "benefit_erosion": 275,
+          "benefit_uprating_lag": 275,
           "fp_rate_pct": 16.9
         },
         {
@@ -711,7 +711,7 @@
           "energy": 888,
           "fuel": 641,
           "food": 225,
-          "benefit_erosion": 279,
+          "benefit_uprating_lag": 279,
           "fp_rate_pct": 13.4
         },
         {
@@ -721,7 +721,7 @@
           "energy": 951,
           "fuel": 662,
           "food": 238,
-          "benefit_erosion": 272,
+          "benefit_uprating_lag": 272,
           "fp_rate_pct": 16.9
         },
         {
@@ -731,7 +731,7 @@
           "energy": 854,
           "fuel": 627,
           "food": 217,
-          "benefit_erosion": 320,
+          "benefit_uprating_lag": 320,
           "fp_rate_pct": 10.1
         },
         {
@@ -741,7 +741,7 @@
           "energy": 1039,
           "fuel": 627,
           "food": 217,
-          "benefit_erosion": 268,
+          "benefit_uprating_lag": 268,
           "fp_rate_pct": 15.6
         },
         {
@@ -751,7 +751,7 @@
           "energy": 1267,
           "fuel": 634,
           "food": 220,
-          "benefit_erosion": 224,
+          "benefit_uprating_lag": 224,
           "fp_rate_pct": 17.1
         }
       ],
@@ -763,7 +763,7 @@
           "energy": 1215,
           "fuel": 637,
           "food": 224,
-          "benefit_erosion": 345,
+          "benefit_uprating_lag": 345,
           "fp_rate_pct": 23.4
         },
         {
@@ -773,7 +773,7 @@
           "energy": 1109,
           "fuel": 695,
           "food": 253,
-          "benefit_erosion": 76,
+          "benefit_uprating_lag": 76,
           "fp_rate_pct": 10.1
         },
         {
@@ -783,7 +783,7 @@
           "energy": 765,
           "fuel": 563,
           "food": 187,
-          "benefit_erosion": 479,
+          "benefit_uprating_lag": 479,
           "fp_rate_pct": 18.0
         },
         {
@@ -793,7 +793,7 @@
           "energy": 926,
           "fuel": 595,
           "food": 201,
-          "benefit_erosion": 575,
+          "benefit_uprating_lag": 575,
           "fp_rate_pct": 24.4
         },
         {
@@ -803,7 +803,7 @@
           "energy": 853,
           "fuel": 643,
           "food": 225,
-          "benefit_erosion": 229,
+          "benefit_uprating_lag": 229,
           "fp_rate_pct": 12.4
         }
       ],
@@ -815,7 +815,7 @@
           "energy": 1059,
           "fuel": 647,
           "food": 228,
-          "benefit_erosion": 278,
+          "benefit_uprating_lag": 278,
           "fp_rate_pct": 17.5
         },
         {
@@ -825,7 +825,7 @@
           "energy": 1105,
           "fuel": 617,
           "food": 211,
-          "benefit_erosion": 285,
+          "benefit_uprating_lag": 285,
           "fp_rate_pct": 19.3
         },
         {
@@ -835,7 +835,7 @@
           "energy": 1002,
           "fuel": 641,
           "food": 224,
-          "benefit_erosion": 275,
+          "benefit_uprating_lag": 275,
           "fp_rate_pct": 16.9
         },
         {
@@ -845,7 +845,7 @@
           "energy": 854,
           "fuel": 627,
           "food": 217,
-          "benefit_erosion": 320,
+          "benefit_uprating_lag": 320,
           "fp_rate_pct": 10.1
         }
       ],
@@ -857,7 +857,7 @@
           "energy": 1163,
           "fuel": 719,
           "food": 265,
-          "benefit_erosion": 30,
+          "benefit_uprating_lag": 30,
           "fp_rate_pct": 10.5
         },
         {
@@ -867,7 +867,7 @@
           "energy": 1260,
           "fuel": 650,
           "food": 227,
-          "benefit_erosion": 691,
+          "benefit_uprating_lag": 691,
           "fp_rate_pct": 18.9
         },
         {
@@ -877,7 +877,7 @@
           "energy": 1075,
           "fuel": 653,
           "food": 230,
-          "benefit_erosion": 155,
+          "benefit_uprating_lag": 155,
           "fp_rate_pct": 8.2
         },
         {
@@ -887,7 +887,7 @@
           "energy": 926,
           "fuel": 558,
           "food": 182,
-          "benefit_erosion": 606,
+          "benefit_uprating_lag": 606,
           "fp_rate_pct": 14.6
         },
         {
@@ -897,7 +897,7 @@
           "energy": 882,
           "fuel": 563,
           "food": 188,
-          "benefit_erosion": 525,
+          "benefit_uprating_lag": 525,
           "fp_rate_pct": 35.5
         },
         {
@@ -907,7 +907,7 @@
           "energy": 840,
           "fuel": 606,
           "food": 210,
-          "benefit_erosion": 201,
+          "benefit_uprating_lag": 201,
           "fp_rate_pct": 26.5
         }
       ],
@@ -942,11 +942,11 @@
         "energy_shock": 1045,
         "fuel_shock": 645,
         "food_shock": 227,
-        "benefit_erosion": 280,
+        "benefit_uprating_lag": 280,
         "net_impact": 2197
       }
     },
-    "strait_of_hormuz": {
+    "severe_shock": {
       "params": {
         "cap_increase_pct": 150,
         "cpi_increase_pp": 6.0,
@@ -971,7 +971,7 @@
           "energy": 1608,
           "fuel": 910,
           "food": 208,
-          "benefit_erosion": 570,
+          "benefit_uprating_lag": 570,
           "fp_rate_pct": 53.0
         },
         {
@@ -981,7 +981,7 @@
           "energy": 1989,
           "fuel": 910,
           "food": 208,
-          "benefit_erosion": 691,
+          "benefit_uprating_lag": 691,
           "fp_rate_pct": 40.5
         },
         {
@@ -991,7 +991,7 @@
           "energy": 1943,
           "fuel": 1170,
           "food": 256,
-          "benefit_erosion": 649,
+          "benefit_uprating_lag": 649,
           "fp_rate_pct": 35.3
         },
         {
@@ -1001,7 +1001,7 @@
           "energy": 2082,
           "fuel": 1170,
           "food": 256,
-          "benefit_erosion": 561,
+          "benefit_uprating_lag": 561,
           "fp_rate_pct": 32.9
         },
         {
@@ -1011,7 +1011,7 @@
           "energy": 1807,
           "fuel": 1300,
           "food": 320,
-          "benefit_erosion": 584,
+          "benefit_uprating_lag": 584,
           "fp_rate_pct": 17.1
         },
         {
@@ -1021,7 +1021,7 @@
           "energy": 2405,
           "fuel": 1300,
           "food": 320,
-          "benefit_erosion": 468,
+          "benefit_uprating_lag": 468,
           "fp_rate_pct": 28.9
         },
         {
@@ -1031,7 +1031,7 @@
           "energy": 1961,
           "fuel": 1495,
           "food": 384,
-          "benefit_erosion": 419,
+          "benefit_uprating_lag": 419,
           "fp_rate_pct": 13.4
         },
         {
@@ -1041,7 +1041,7 @@
           "energy": 2177,
           "fuel": 1495,
           "food": 384,
-          "benefit_erosion": 419,
+          "benefit_uprating_lag": 419,
           "fp_rate_pct": 14.8
         },
         {
@@ -1051,7 +1051,7 @@
           "energy": 2662,
           "fuel": 1625,
           "food": 464,
-          "benefit_erosion": 186,
+          "benefit_uprating_lag": 186,
           "fp_rate_pct": 17.6
         },
         {
@@ -1061,7 +1061,7 @@
           "energy": 2379,
           "fuel": 1625,
           "food": 464,
-          "benefit_erosion": 232,
+          "benefit_uprating_lag": 232,
           "fp_rate_pct": 7.5
         }
       ],
@@ -1073,7 +1073,7 @@
           "energy": 2616,
           "fuel": 1334,
           "food": 339,
-          "benefit_erosion": 478,
+          "benefit_uprating_lag": 478,
           "fp_rate_pct": 30.6
         },
         {
@@ -1083,7 +1083,7 @@
           "energy": 2441,
           "fuel": 1323,
           "food": 338,
-          "benefit_erosion": 486,
+          "benefit_uprating_lag": 486,
           "fp_rate_pct": 30.8
         },
         {
@@ -1093,7 +1093,7 @@
           "energy": 1778,
           "fuel": 1342,
           "food": 344,
-          "benefit_erosion": 474,
+          "benefit_uprating_lag": 474,
           "fp_rate_pct": 24.5
         },
         {
@@ -1103,7 +1103,7 @@
           "energy": 2210,
           "fuel": 1233,
           "food": 301,
-          "benefit_erosion": 488,
+          "benefit_uprating_lag": 488,
           "fp_rate_pct": 32.1
         },
         {
@@ -1113,7 +1113,7 @@
           "energy": 2618,
           "fuel": 1296,
           "food": 325,
-          "benefit_erosion": 599,
+          "benefit_uprating_lag": 599,
           "fp_rate_pct": 30.1
         },
         {
@@ -1123,7 +1123,7 @@
           "energy": 2029,
           "fuel": 1223,
           "food": 300,
-          "benefit_erosion": 515,
+          "benefit_uprating_lag": 515,
           "fp_rate_pct": 32.8
         },
         {
@@ -1133,7 +1133,7 @@
           "energy": 2005,
           "fuel": 1283,
           "food": 318,
-          "benefit_erosion": 471,
+          "benefit_uprating_lag": 471,
           "fp_rate_pct": 27.9
         },
         {
@@ -1143,7 +1143,7 @@
           "energy": 1775,
           "fuel": 1283,
           "food": 319,
-          "benefit_erosion": 478,
+          "benefit_uprating_lag": 478,
           "fp_rate_pct": 20.9
         },
         {
@@ -1153,7 +1153,7 @@
           "energy": 1902,
           "fuel": 1325,
           "food": 338,
-          "benefit_erosion": 466,
+          "benefit_uprating_lag": 466,
           "fp_rate_pct": 23.1
         },
         {
@@ -1163,7 +1163,7 @@
           "energy": 1707,
           "fuel": 1255,
           "food": 309,
-          "benefit_erosion": 548,
+          "benefit_uprating_lag": 548,
           "fp_rate_pct": 18.0
         },
         {
@@ -1173,7 +1173,7 @@
           "energy": 2077,
           "fuel": 1254,
           "food": 309,
-          "benefit_erosion": 459,
+          "benefit_uprating_lag": 459,
           "fp_rate_pct": 27.3
         },
         {
@@ -1183,7 +1183,7 @@
           "energy": 2533,
           "fuel": 1269,
           "food": 313,
-          "benefit_erosion": 383,
+          "benefit_uprating_lag": 383,
           "fp_rate_pct": 29.9
         }
       ],
@@ -1195,7 +1195,7 @@
           "energy": 2430,
           "fuel": 1273,
           "food": 319,
-          "benefit_erosion": 592,
+          "benefit_uprating_lag": 592,
           "fp_rate_pct": 36.2
         },
         {
@@ -1205,7 +1205,7 @@
           "energy": 2218,
           "fuel": 1391,
           "food": 360,
-          "benefit_erosion": 130,
+          "benefit_uprating_lag": 130,
           "fp_rate_pct": 16.4
         },
         {
@@ -1215,7 +1215,7 @@
           "energy": 1531,
           "fuel": 1126,
           "food": 266,
-          "benefit_erosion": 821,
+          "benefit_uprating_lag": 821,
           "fp_rate_pct": 33.1
         },
         {
@@ -1225,7 +1225,7 @@
           "energy": 1852,
           "fuel": 1190,
           "food": 286,
-          "benefit_erosion": 986,
+          "benefit_uprating_lag": 986,
           "fp_rate_pct": 31.7
         },
         {
@@ -1235,7 +1235,7 @@
           "energy": 1707,
           "fuel": 1287,
           "food": 320,
-          "benefit_erosion": 392,
+          "benefit_uprating_lag": 392,
           "fp_rate_pct": 21.3
         }
       ],
@@ -1247,7 +1247,7 @@
           "energy": 2118,
           "fuel": 1293,
           "food": 325,
-          "benefit_erosion": 477,
+          "benefit_uprating_lag": 477,
           "fp_rate_pct": 27.2
         },
         {
@@ -1257,7 +1257,7 @@
           "energy": 2210,
           "fuel": 1233,
           "food": 301,
-          "benefit_erosion": 488,
+          "benefit_uprating_lag": 488,
           "fp_rate_pct": 32.1
         },
         {
@@ -1267,7 +1267,7 @@
           "energy": 2005,
           "fuel": 1283,
           "food": 318,
-          "benefit_erosion": 471,
+          "benefit_uprating_lag": 471,
           "fp_rate_pct": 27.9
         },
         {
@@ -1277,7 +1277,7 @@
           "energy": 1707,
           "fuel": 1255,
           "food": 309,
-          "benefit_erosion": 548,
+          "benefit_uprating_lag": 548,
           "fp_rate_pct": 18.0
         }
       ],
@@ -1289,7 +1289,7 @@
           "energy": 2326,
           "fuel": 1438,
           "food": 378,
-          "benefit_erosion": 51,
+          "benefit_uprating_lag": 51,
           "fp_rate_pct": 18.5
         },
         {
@@ -1299,7 +1299,7 @@
           "energy": 2520,
           "fuel": 1301,
           "food": 323,
-          "benefit_erosion": 1184,
+          "benefit_uprating_lag": 1184,
           "fp_rate_pct": 28.2
         },
         {
@@ -1309,7 +1309,7 @@
           "energy": 2150,
           "fuel": 1306,
           "food": 328,
-          "benefit_erosion": 266,
+          "benefit_uprating_lag": 266,
           "fp_rate_pct": 12.8
         },
         {
@@ -1319,7 +1319,7 @@
           "energy": 1852,
           "fuel": 1117,
           "food": 259,
-          "benefit_erosion": 1039,
+          "benefit_uprating_lag": 1039,
           "fp_rate_pct": 24.9
         },
         {
@@ -1329,7 +1329,7 @@
           "energy": 1763,
           "fuel": 1126,
           "food": 267,
-          "benefit_erosion": 899,
+          "benefit_uprating_lag": 899,
           "fp_rate_pct": 53.9
         },
         {
@@ -1339,7 +1339,7 @@
           "energy": 1680,
           "fuel": 1213,
           "food": 298,
-          "benefit_erosion": 345,
+          "benefit_uprating_lag": 345,
           "fp_rate_pct": 39.7
         }
       ],
@@ -1374,13 +1374,13 @@
         "energy_shock": 2090,
         "fuel_shock": 1289,
         "food_shock": 323,
-        "benefit_erosion": 480,
+        "benefit_uprating_lag": 480,
         "net_impact": 4182
       }
     }
   },
   "policy_responses": {
-    "limited_strikes": {
+    "low_shock": {
       "epg": {
         "name": "Energy Price Guarantee",
         "fiscal_cost_bn": 8.89,
@@ -2579,7 +2579,7 @@
         ]
       }
     },
-    "prolonged_conflict": {
+    "central_shock": {
       "epg": {
         "name": "Energy Price Guarantee",
         "fiscal_cost_bn": 28.9,
@@ -3778,7 +3778,7 @@
         ]
       }
     },
-    "strait_of_hormuz": {
+    "severe_shock": {
       "epg": {
         "name": "Energy Price Guarantee",
         "fiscal_cost_bn": 62.26,
@@ -4980,9 +4980,9 @@
   },
   "parameters": {
     "food_price_increase_pct": {
-      "limited_strikes": 2.0,
-      "prolonged_conflict": 4.5,
-      "strait_of_hormuz": 6.4
+      "low_shock": 2.0,
+      "central_shock": 4.5,
+      "severe_shock": 6.4
     },
     "base_fuel_spend": 1300,
     "base_food_spend": 5000,
