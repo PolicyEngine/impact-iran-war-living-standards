@@ -254,19 +254,7 @@ export default function MethodologyTab({ data }) {
         <h3 className="mt-2 text-lg font-semibold text-slate-900">
           Academic and institutional sources
         </h3>
-        {refs.length > 0 ? (
-          <ol className="mt-4 list-decimal pl-5 text-sm leading-7 text-slate-600 space-y-2">
-            {refs.map((ref) => (
-              <li key={ref.id}>
-                {ref.text}
-                <span className="ml-1 text-xs text-slate-400">
-                  [{ref.used_for}]
-                </span>
-              </li>
-            ))}
-          </ol>
-        ) : (
-          <ul className="mt-4 list-disc pl-5 text-sm leading-7 text-slate-600 space-y-1">
+        <ul className="mt-4 list-disc pl-5 text-sm leading-7 text-slate-600 space-y-1">
             <li>Labandeira, X., Labeaga, J.M. & Lopez-Otero, X. (2017) &lsquo;A meta-analysis on the price elasticity of energy demand&rsquo;, <em>Energy Policy</em>, 102, pp. 549-568.</li>
             <li>Espey, M. (1998) &lsquo;Gasoline demand revisited: an international meta-analysis of elasticities&rsquo;, <em>Energy Economics</em>, 20(3), pp. 273-295.</li>
             <li>Dahl, C. & Sterner, T. (1991) &lsquo;Analysing gasoline demand elasticities: a survey&rsquo;, <em>Energy Economics</em>, 13(3), pp. 203-210.</li>
@@ -285,7 +273,6 @@ export default function MethodologyTab({ data }) {
             <li>DWP (2024) &lsquo;Benefit expenditure and caseload tables&rsquo;.</li>
             <li>Dimitropoulos, A., Hunt, L.C. & Judge, G. (2005) &lsquo;Estimating underlying energy demand trends using UK annual data&rsquo;, <em>Applied Economics Letters</em>, 12, pp. 239-244.</li>
           </ul>
-        )}
       </div>
 
       {/* ================================================================ */}
