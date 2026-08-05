@@ -160,17 +160,26 @@ const TENURE_LABELS = {
   OWNED_WITH_MORTGAGE: "Owned with mortgage",
 };
 
-function NumberInput({ label, value, onChange }) {
+function NumberInput({ label, hint, value, onChange }) {
   return (
-    <label className="flex flex-col gap-1 text-sm text-slate-600">
-      {label}
-      <input
-        type="number"
-        min="0"
-        className="w-40 rounded-lg border border-slate-300 px-3 py-1.5 text-sm"
-        value={value}
-        onChange={(e) => onChange(Math.max(0, Number(e.target.value)))}
-      />
+    <label className="flex flex-col gap-1.5">
+      <span className="text-xs font-medium uppercase tracking-[0.06em] text-slate-500">
+        {label}
+      </span>
+      <span className="relative block">
+        <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-sm text-slate-400">
+          {"£"}
+        </span>
+        <input
+          type="number"
+          min="0"
+          step="100"
+          className="w-full rounded-xl border border-slate-300 bg-white py-2.5 pl-7 pr-3 text-sm font-medium text-slate-800 shadow-sm outline-none transition-colors focus:border-teal-700 focus:ring-2 focus:ring-teal-700/15"
+          value={value}
+          onChange={(e) => onChange(Math.max(0, Number(e.target.value)))}
+        />
+      </span>
+      {hint ? <span className="text-[11px] leading-4 text-slate-400">{hint}</span> : null}
     </label>
   );
 }
@@ -193,11 +202,12 @@ function ExampleHousehold({ data, scenario }) {
   const pctIncome = income > 0 ? (total / income) * 100 : null;
 
   const rows = [
-    { label: "Higher energy bills", value: energy },
-    { label: "Higher fuel costs", value: fuel },
-    { label: "Higher food prices", value: food },
-    { label: "Lost real benefit value (uprating lag)", value: uprating },
+    { label: "Higher energy bills", value: energy, color: channelColors.energy },
+    { label: "Higher fuel costs", value: fuel, color: channelColors.fuel },
+    { label: "Higher food prices", value: food, color: channelColors.food },
+    { label: "Benefit uprating lag", value: uprating, color: channelColors.benefit_uprating_lag },
   ];
+  const maxRow = Math.max(...rows.map((r) => r.value), 1);
 
   return (
     <>
@@ -208,51 +218,81 @@ function ExampleHousehold({ data, scenario }) {
         />
       </div>
       <div className="section-card">
-        <div className="flex flex-wrap items-end gap-6">
-          <NumberInput label="Annual net income (£)" value={income} onChange={setIncome} />
-          <NumberInput label="Annual energy bill (£)" value={energyBill} onChange={setEnergyBill} />
-          <NumberInput label="Annual petrol/diesel spend (£)" value={fuelSpend} onChange={setFuelSpend} />
-          <NumberInput label="Annual food spend (£)" value={foodSpend} onChange={setFoodSpend} />
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          <NumberInput label="Net income / yr" value={income} onChange={setIncome} />
           <NumberInput
-            label="Annual CPI-linked benefit income (£)"
+            label="Energy bill / yr"
+            hint={`UK typical ~${formatCurrency(1663)} (Ofgem cap)`}
+            value={energyBill}
+            onChange={setEnergyBill}
+          />
+          <NumberInput
+            label="Petrol & diesel / yr"
+            hint={`UK typical ~${formatCurrency(1300)}; 0 if no car`}
+            value={fuelSpend}
+            onChange={setFuelSpend}
+          />
+          <NumberInput
+            label="Food spend / yr"
+            hint={`UK typical ~${formatCurrency(5000)}`}
+            value={foodSpend}
+            onChange={setFoodSpend}
+          />
+          <NumberInput
+            label="CPI-linked benefits / yr"
+            hint="UC, child benefit, PIP…; 0 if none"
             value={benefitIncome}
             onChange={setBenefitIncome}
           />
         </div>
 
-        <div className="mt-6 grid gap-6 md:grid-cols-2">
-          <div>
-            <div className="text-xs font-medium uppercase tracking-[0.08em] text-slate-500">
+        <div className="mt-8 grid items-center gap-8 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
+          <div
+            className="rounded-2xl px-6 py-6"
+            style={{ backgroundColor: colors.primary[50] }}
+          >
+            <div className="text-xs font-medium uppercase tracking-[0.08em]" style={{ color: colors.primary[700] }}>
               Estimated extra cost for your household
             </div>
-            <div className="mt-2 text-4xl font-bold tracking-tight" style={{ color: colors.primary[800] }}>
-              {formatCurrency(total)}
+            <div className="mt-2 flex items-baseline gap-3">
+              <span className="text-5xl font-bold tracking-tight" style={{ color: colors.primary[900] }}>
+                {formatCurrency(total)}
+              </span>
+              <span className="text-lg font-semibold" style={{ color: colors.primary[700] }}>
+                /yr
+              </span>
             </div>
-            <div className="mt-1 text-sm text-slate-500">
-              {pctIncome != null ? `${pctIncome.toFixed(1)}% of your net income. ` : ""}
-              UK typical values for reference: energy bill ~{formatCurrency(1663)}/yr (Ofgem cap),
-              fuel ~{formatCurrency(1300)}/yr, food ~{formatCurrency(5000)}/yr.
-            </div>
+            {pctIncome != null ? (
+              <div className="mt-2 text-sm" style={{ color: colors.primary[800] }}>
+                {pctIncome.toFixed(1)}% of your net income
+              </div>
+            ) : null}
           </div>
-          <div>
-            <table className="data-table">
-              <tbody>
-                {rows.map((r) => (
-                  <tr key={r.label}>
-                    <td className="text-slate-600">{r.label}</td>
-                    <td className="text-right font-medium">
-                      {r.value > 0 ? `+${formatCurrency(r.value)}` : "—"}
-                    </td>
-                  </tr>
-                ))}
-                <tr>
-                  <td className="font-semibold text-slate-800">Total</td>
-                  <td className="text-right font-semibold" style={{ color: colors.primary[800] }}>
-                    +{formatCurrency(total)}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+
+          <div className="space-y-3">
+            {rows.map((r) => (
+              <div key={r.label} className="grid grid-cols-[170px_1fr_80px] items-center gap-3">
+                <span className="flex items-center gap-2 text-sm text-slate-600">
+                  <span
+                    className="h-2.5 w-2.5 shrink-0 rounded-full"
+                    style={{ backgroundColor: r.color }}
+                  />
+                  {r.label}
+                </span>
+                <span className="h-2.5 overflow-hidden rounded-full bg-slate-100">
+                  <span
+                    className="block h-full rounded-full transition-all"
+                    style={{
+                      width: `${(r.value / maxRow) * 100}%`,
+                      backgroundColor: r.color,
+                    }}
+                  />
+                </span>
+                <span className="text-right text-sm font-semibold text-slate-800">
+                  {r.value > 0 ? `+${formatCurrency(r.value)}` : "—"}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
