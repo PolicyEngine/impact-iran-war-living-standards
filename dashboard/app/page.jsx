@@ -44,7 +44,7 @@ function Dashboard() {
     <div className="app-shell min-h-screen">
       <header className="title-row">
         <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-4 md:px-8">
-          <h1>Energy Price Shock: Impact on UK Living Standards</h1>
+          <h1>Impact of the Middle East War on UK Living Standards</h1>
         </div>
       </header>
 
