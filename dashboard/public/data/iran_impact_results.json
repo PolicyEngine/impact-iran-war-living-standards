@@ -8,76 +8,41 @@
     "total_energy_spend_bn": 39.4,
     "fuel_poverty_rate_pct": 5.8,
     "fuel_poor_households": 1710790,
-    "by_decile": [
+    "by_quintile": [
       {
-        "decile": 1,
-        "mean_energy_spend": 1071,
-        "mean_net_income": 17892,
-        "energy_share_pct": 19.0,
-        "fp_rate_pct": 22.2
+        "quintile": 1,
+        "mean_energy_spend": 1059,
+        "mean_net_income": 23517,
+        "energy_share_pct": 11.4,
+        "fp_rate_pct": 14.7
       },
       {
-        "decile": 2,
-        "mean_energy_spend": 1047,
-        "mean_net_income": 28861,
-        "energy_share_pct": 4.2,
-        "fp_rate_pct": 7.7
+        "quintile": 2,
+        "mean_energy_spend": 1234,
+        "mean_net_income": 42055,
+        "energy_share_pct": 3.4,
+        "fp_rate_pct": 5.2
       },
       {
-        "decile": 3,
-        "mean_energy_spend": 1162,
-        "mean_net_income": 38006,
-        "energy_share_pct": 3.6,
-        "fp_rate_pct": 5.6
+        "quintile": 3,
+        "mean_energy_spend": 1276,
+        "mean_net_income": 51180,
+        "energy_share_pct": 2.9,
+        "fp_rate_pct": 3.7
       },
       {
-        "decile": 4,
-        "mean_energy_spend": 1313,
-        "mean_net_income": 46535,
-        "energy_share_pct": 3.3,
-        "fp_rate_pct": 4.8
+        "quintile": 4,
+        "mean_energy_spend": 1545,
+        "mean_net_income": 70218,
+        "energy_share_pct": 2.5,
+        "fp_rate_pct": 4.5
       },
       {
-        "decile": 5,
-        "mean_energy_spend": 1317,
-        "mean_net_income": 47880,
-        "energy_share_pct": 3.2,
-        "fp_rate_pct": 4.7
-      },
-      {
-        "decile": 6,
-        "mean_energy_spend": 1236,
-        "mean_net_income": 54424,
-        "energy_share_pct": 2.6,
-        "fp_rate_pct": 2.6
-      },
-      {
-        "decile": 7,
-        "mean_energy_spend": 1335,
-        "mean_net_income": 63925,
-        "energy_share_pct": 2.3,
-        "fp_rate_pct": 3.5
-      },
-      {
-        "decile": 8,
-        "mean_energy_spend": 1761,
-        "mean_net_income": 76691,
-        "energy_share_pct": 2.7,
-        "fp_rate_pct": 5.5
-      },
-      {
-        "decile": 9,
-        "mean_energy_spend": 1555,
-        "mean_net_income": 85889,
-        "energy_share_pct": 1.8,
-        "fp_rate_pct": 1.1
-      },
-      {
-        "decile": 10,
-        "mean_energy_spend": 1540,
-        "mean_net_income": 151650,
-        "energy_share_pct": 1.3,
-        "fp_rate_pct": 0.1
+        "quintile": 5,
+        "mean_energy_spend": 1547,
+        "mean_net_income": 119684,
+        "energy_share_pct": 1.5,
+        "fp_rate_pct": 0.6
       }
     ]
   },
@@ -99,106 +64,56 @@
         "fp_extra_households": 323714,
         "n_pushed_into_poverty": 423751
       },
-      "by_decile": [
+      "by_quintile": [
         {
-          "decile": 1,
+          "quintile": 1,
           "mean_impact": 426,
-          "mean_impact_pct": 6.4,
-          "energy": 161,
+          "mean_impact_pct": 4.0,
+          "energy": 159,
           "fuel": 182,
           "food": 65,
-          "benefit_uprating_lag": 18,
-          "fp_rate_pct": 24.6
+          "benefit_uprating_lag": 21,
+          "fp_rate_pct": 16.9
         },
         {
-          "decile": 2,
-          "mean_impact": 427,
-          "mean_impact_pct": 1.7,
-          "energy": 157,
-          "fuel": 182,
-          "food": 65,
-          "benefit_uprating_lag": 23,
-          "fp_rate_pct": 9.6
-        },
-        {
-          "decile": 3,
-          "mean_impact": 514,
-          "mean_impact_pct": 1.6,
-          "energy": 174,
-          "fuel": 234,
-          "food": 80,
-          "benefit_uprating_lag": 26,
-          "fp_rate_pct": 7.2
-        },
-        {
-          "decile": 4,
-          "mean_impact": 540,
-          "mean_impact_pct": 1.4,
-          "energy": 197,
-          "fuel": 234,
-          "food": 80,
-          "benefit_uprating_lag": 29,
-          "fp_rate_pct": 5.5
-        },
-        {
-          "decile": 5,
-          "mean_impact": 582,
-          "mean_impact_pct": 1.4,
-          "energy": 198,
-          "fuel": 260,
-          "food": 100,
-          "benefit_uprating_lag": 24,
-          "fp_rate_pct": 6.0
-        },
-        {
-          "decile": 6,
-          "mean_impact": 560,
-          "mean_impact_pct": 1.2,
+          "quintile": 2,
+          "mean_impact": 526,
+          "mean_impact_pct": 1.5,
           "energy": 185,
+          "fuel": 234,
+          "food": 80,
+          "benefit_uprating_lag": 27,
+          "fp_rate_pct": 6.4
+        },
+        {
+          "quintile": 3,
+          "mean_impact": 571,
+          "mean_impact_pct": 1.3,
+          "energy": 191,
           "fuel": 260,
           "food": 100,
-          "benefit_uprating_lag": 14,
-          "fp_rate_pct": 3.7
+          "benefit_uprating_lag": 19,
+          "fp_rate_pct": 4.8
         },
         {
-          "decile": 7,
-          "mean_impact": 631,
+          "quintile": 4,
+          "mean_impact": 661,
           "mean_impact_pct": 1.1,
-          "energy": 200,
+          "energy": 232,
           "fuel": 299,
           "food": 120,
-          "benefit_uprating_lag": 12,
-          "fp_rate_pct": 4.1
+          "benefit_uprating_lag": 11,
+          "fp_rate_pct": 5.1
         },
         {
-          "decile": 8,
-          "mean_impact": 692,
-          "mean_impact_pct": 1.0,
-          "energy": 264,
-          "fuel": 299,
-          "food": 120,
-          "benefit_uprating_lag": 9,
-          "fp_rate_pct": 6.1
-        },
-        {
-          "decile": 9,
-          "mean_impact": 708,
-          "mean_impact_pct": 0.9,
-          "energy": 233,
+          "quintile": 5,
+          "mean_impact": 706,
+          "mean_impact_pct": 0.7,
+          "energy": 232,
           "fuel": 325,
           "food": 145,
           "benefit_uprating_lag": 4,
-          "fp_rate_pct": 1.4
-        },
-        {
-          "decile": 10,
-          "mean_impact": 704,
-          "mean_impact_pct": 0.6,
-          "energy": 231,
-          "fuel": 325,
-          "food": 145,
-          "benefit_uprating_lag": 3,
-          "fp_rate_pct": 0.4
+          "fp_rate_pct": 0.9
         }
       ],
       "by_region": [
@@ -531,106 +446,56 @@
         "fp_extra_households": 1346860,
         "n_pushed_into_poverty": 986615
       },
-      "by_decile": [
+      "by_quintile": [
         {
-          "decile": 1,
-          "mean_impact": 1068,
-          "mean_impact_pct": 16.3,
-          "energy": 482,
-          "fuel": 409,
-          "food": 130,
-          "benefit_uprating_lag": 46,
-          "fp_rate_pct": 34.1
-        },
-        {
-          "decile": 2,
+          "quintile": 1,
           "mean_impact": 1067,
-          "mean_impact_pct": 4.3,
-          "energy": 471,
+          "mean_impact_pct": 10.1,
+          "energy": 476,
           "fuel": 409,
           "food": 130,
-          "benefit_uprating_lag": 57,
-          "fp_rate_pct": 14.7
+          "benefit_uprating_lag": 52,
+          "fp_rate_pct": 24.2
         },
         {
-          "decile": 3,
-          "mean_impact": 1274,
-          "mean_impact_pct": 3.9,
-          "energy": 523,
+          "quintile": 2,
+          "mean_impact": 1310,
+          "mean_impact_pct": 3.7,
+          "energy": 555,
           "fuel": 526,
           "food": 160,
-          "benefit_uprating_lag": 64,
-          "fp_rate_pct": 12.6
+          "benefit_uprating_lag": 68,
+          "fp_rate_pct": 10.4
         },
         {
-          "decile": 4,
-          "mean_impact": 1350,
-          "mean_impact_pct": 3.5,
-          "energy": 591,
-          "fuel": 526,
-          "food": 160,
-          "benefit_uprating_lag": 73,
-          "fp_rate_pct": 8.0
-        },
-        {
-          "decile": 5,
-          "mean_impact": 1438,
-          "mean_impact_pct": 3.5,
-          "energy": 593,
+          "quintile": 3,
+          "mean_impact": 1407,
+          "mean_impact_pct": 3.1,
+          "energy": 574,
           "fuel": 585,
           "food": 200,
-          "benefit_uprating_lag": 61,
-          "fp_rate_pct": 10.1
+          "benefit_uprating_lag": 48,
+          "fp_rate_pct": 7.4
         },
         {
-          "decile": 6,
-          "mean_impact": 1377,
-          "mean_impact_pct": 2.8,
-          "energy": 556,
-          "fuel": 585,
-          "food": 200,
-          "benefit_uprating_lag": 35,
-          "fp_rate_pct": 4.8
-        },
-        {
-          "decile": 7,
-          "mean_impact": 1543,
-          "mean_impact_pct": 2.7,
-          "energy": 601,
-          "fuel": 673,
-          "food": 240,
-          "benefit_uprating_lag": 30,
-          "fp_rate_pct": 5.3
-        },
-        {
-          "decile": 8,
-          "mean_impact": 1728,
+          "quintile": 4,
+          "mean_impact": 1634,
           "mean_impact_pct": 2.6,
-          "energy": 792,
+          "energy": 695,
           "fuel": 673,
           "food": 240,
-          "benefit_uprating_lag": 23,
-          "fp_rate_pct": 8.6
+          "benefit_uprating_lag": 26,
+          "fp_rate_pct": 6.9
         },
         {
-          "decile": 9,
-          "mean_impact": 1732,
-          "mean_impact_pct": 2.1,
-          "energy": 700,
+          "quintile": 5,
+          "mean_impact": 1727,
+          "mean_impact_pct": 1.8,
+          "energy": 696,
           "fuel": 731,
           "food": 290,
-          "benefit_uprating_lag": 11,
-          "fp_rate_pct": 3.5
-        },
-        {
-          "decile": 10,
-          "mean_impact": 1723,
-          "mean_impact_pct": 1.4,
-          "energy": 693,
-          "fuel": 731,
-          "food": 290,
-          "benefit_uprating_lag": 8,
-          "fp_rate_pct": 1.4
+          "benefit_uprating_lag": 10,
+          "fp_rate_pct": 2.4
         }
       ],
       "by_region": [
@@ -963,106 +828,56 @@
         "fp_extra_households": 2823879,
         "n_pushed_into_poverty": 2083810
       },
-      "by_decile": [
+      "by_quintile": [
         {
-          "decile": 1,
-          "mean_impact": 1986,
-          "mean_impact_pct": 30.6,
-          "energy": 964,
+          "quintile": 1,
+          "mean_impact": 1985,
+          "mean_impact_pct": 19.0,
+          "energy": 953,
           "fuel": 728,
           "food": 211,
-          "benefit_uprating_lag": 83,
-          "fp_rate_pct": 46.5
+          "benefit_uprating_lag": 93,
+          "fp_rate_pct": 34.3
         },
         {
-          "decile": 2,
-          "mean_impact": 1984,
-          "mean_impact_pct": 8.0,
-          "energy": 942,
-          "fuel": 728,
-          "food": 211,
-          "benefit_uprating_lag": 102,
-          "fp_rate_pct": 22.7
-        },
-        {
-          "decile": 3,
-          "mean_impact": 2357,
-          "mean_impact_pct": 7.2,
-          "energy": 1046,
+          "quintile": 2,
+          "mean_impact": 2429,
+          "mean_impact_pct": 6.9,
+          "energy": 1110,
           "fuel": 936,
           "food": 260,
-          "benefit_uprating_lag": 116,
-          "fp_rate_pct": 18.0
+          "benefit_uprating_lag": 123,
+          "fp_rate_pct": 15.5
         },
         {
-          "decile": 4,
-          "mean_impact": 2509,
-          "mean_impact_pct": 6.5,
-          "energy": 1182,
-          "fuel": 936,
-          "food": 260,
-          "benefit_uprating_lag": 131,
-          "fp_rate_pct": 12.9
-        },
-        {
-          "decile": 5,
-          "mean_impact": 2660,
-          "mean_impact_pct": 6.4,
-          "energy": 1185,
+          "quintile": 3,
+          "mean_impact": 2600,
+          "mean_impact_pct": 5.8,
+          "energy": 1149,
           "fuel": 1040,
           "food": 325,
-          "benefit_uprating_lag": 109,
-          "fp_rate_pct": 13.4
+          "benefit_uprating_lag": 86,
+          "fp_rate_pct": 11.0
         },
         {
-          "decile": 6,
-          "mean_impact": 2541,
-          "mean_impact_pct": 5.2,
-          "energy": 1112,
-          "fuel": 1040,
-          "food": 325,
-          "benefit_uprating_lag": 64,
-          "fp_rate_pct": 8.6
-        },
-        {
-          "decile": 7,
-          "mean_impact": 2841,
+          "quintile": 4,
+          "mean_impact": 3024,
           "mean_impact_pct": 4.9,
-          "energy": 1201,
+          "energy": 1390,
           "fuel": 1196,
           "food": 390,
-          "benefit_uprating_lag": 54,
-          "fp_rate_pct": 7.6
+          "benefit_uprating_lag": 48,
+          "fp_rate_pct": 10.7
         },
         {
-          "decile": 8,
-          "mean_impact": 3212,
-          "mean_impact_pct": 4.8,
-          "energy": 1585,
-          "fuel": 1196,
-          "food": 390,
-          "benefit_uprating_lag": 41,
-          "fp_rate_pct": 13.8
-        },
-        {
-          "decile": 9,
-          "mean_impact": 3190,
-          "mean_impact_pct": 3.9,
-          "energy": 1399,
+          "quintile": 5,
+          "mean_impact": 3181,
+          "mean_impact_pct": 3.2,
+          "energy": 1392,
           "fuel": 1300,
           "food": 471,
-          "benefit_uprating_lag": 20,
-          "fp_rate_pct": 6.4
-        },
-        {
-          "decile": 10,
-          "mean_impact": 3172,
-          "mean_impact_pct": 2.7,
-          "energy": 1386,
-          "fuel": 1300,
-          "food": 471,
-          "benefit_uprating_lag": 15,
-          "fp_rate_pct": 3.0
+          "benefit_uprating_lag": 17,
+          "fp_rate_pct": 4.7
         }
       ],
       "by_region": [
@@ -1385,141 +1200,76 @@
         "name": "Energy Price Guarantee",
         "fiscal_cost_bn": 1.97,
         "avg_benefit_per_hh": 67,
-        "targeting_bottom3": 25.2,
+        "targeting_bottom40": 33.9,
         "fp_rate_before_pct": 6.9,
         "fp_rate_after_pct": 6.5,
         "n_lifted_from_poverty": 53839,
-        "by_decile": [
+        "by_quintile": [
           {
-            "decile": 1,
-            "mean_benefit": 54,
+            "quintile": 1,
+            "mean_benefit": 53,
             "mean_residual_impact": 373,
-            "mean_benefit_pct_income": 0.9,
-            "benefit_share_pct": 8.3
+            "mean_benefit_pct_income": 0.6,
+            "benefit_share_pct": 16.7
           },
           {
-            "decile": 2,
-            "mean_benefit": 52,
-            "mean_residual_impact": 374,
-            "mean_benefit_pct_income": 0.2,
-            "benefit_share_pct": 8.5
-          },
-          {
-            "decile": 3,
-            "mean_benefit": 58,
-            "mean_residual_impact": 456,
-            "mean_benefit_pct_income": 0.2,
-            "benefit_share_pct": 8.5
-          },
-          {
-            "decile": 4,
-            "mean_benefit": 66,
-            "mean_residual_impact": 474,
-            "mean_benefit_pct_income": 0.2,
-            "benefit_share_pct": 8.7
-          },
-          {
-            "decile": 5,
-            "mean_benefit": 66,
-            "mean_residual_impact": 516,
-            "mean_benefit_pct_income": 0.2,
-            "benefit_share_pct": 9.9
-          },
-          {
-            "decile": 6,
+            "quintile": 2,
             "mean_benefit": 62,
-            "mean_residual_impact": 498,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 9.4
+            "mean_residual_impact": 465,
+            "mean_benefit_pct_income": 0.2,
+            "benefit_share_pct": 17.2
           },
           {
-            "decile": 7,
-            "mean_benefit": 67,
-            "mean_residual_impact": 564,
+            "quintile": 3,
+            "mean_benefit": 64,
+            "mean_residual_impact": 507,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 9.6
+            "benefit_share_pct": 19.3
           },
           {
-            "decile": 8,
-            "mean_benefit": 88,
-            "mean_residual_impact": 604,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 12.3
-          },
-          {
-            "decile": 9,
-            "mean_benefit": 78,
-            "mean_residual_impact": 630,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 12.2
-          },
-          {
-            "decile": 10,
+            "quintile": 4,
             "mean_benefit": 77,
-            "mean_residual_impact": 627,
+            "mean_residual_impact": 584,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 12.7
+            "benefit_share_pct": 21.9
+          },
+          {
+            "quintile": 5,
+            "mean_benefit": 77,
+            "mean_residual_impact": 629,
+            "mean_benefit_pct_income": 0.1,
+            "benefit_share_pct": 24.9
           }
         ],
         "winners_losers": [
           {
-            "decile": 1,
-            "pct_winners": 98.5,
-            "pct_unchanged": 1.5,
+            "quintile": 1,
+            "pct_winners": 98.4,
+            "pct_unchanged": 1.6,
             "pct_losers": 0.0
           },
           {
-            "decile": 2,
+            "quintile": 2,
             "pct_winners": 98.2,
             "pct_unchanged": 1.8,
             "pct_losers": 0.0
           },
           {
-            "decile": 3,
-            "pct_winners": 98.6,
-            "pct_unchanged": 1.4,
+            "quintile": 3,
+            "pct_winners": 96.6,
+            "pct_unchanged": 3.4,
             "pct_losers": 0.0
           },
           {
-            "decile": 4,
+            "quintile": 4,
             "pct_winners": 97.7,
             "pct_unchanged": 2.3,
             "pct_losers": 0.0
           },
           {
-            "decile": 5,
-            "pct_winners": 97.7,
-            "pct_unchanged": 2.3,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 6,
-            "pct_winners": 95.5,
-            "pct_unchanged": 4.5,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 7,
-            "pct_winners": 97.8,
-            "pct_unchanged": 2.2,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 8,
-            "pct_winners": 97.6,
-            "pct_unchanged": 2.4,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 9,
-            "pct_winners": 92.2,
-            "pct_unchanged": 7.8,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 10,
-            "pct_winners": 99.4,
-            "pct_unchanged": 0.6,
+            "quintile": 5,
+            "pct_winners": 95.9,
+            "pct_unchanged": 4.1,
             "pct_losers": 0.0
           }
         ]
@@ -1528,139 +1278,74 @@
         "name": "Flat energy rebate",
         "fiscal_cost_bn": 11.83,
         "avg_benefit_per_hh": 400,
-        "targeting_bottom3": 30.8,
+        "targeting_bottom40": 39.6,
         "fp_rate_before_pct": 6.9,
         "fp_rate_after_pct": 6.8,
         "n_lifted_from_poverty": 335352,
-        "by_decile": [
+        "by_quintile": [
           {
-            "decile": 1,
+            "quintile": 1,
             "mean_benefit": 400,
-            "mean_residual_impact": 64,
-            "mean_benefit_pct_income": 5.5,
-            "benefit_share_pct": 10.3
+            "mean_residual_impact": 63,
+            "mean_benefit_pct_income": 3.5,
+            "benefit_share_pct": 21.1
           },
           {
-            "decile": 2,
+            "quintile": 2,
             "mean_benefit": 400,
-            "mean_residual_impact": 62,
-            "mean_benefit_pct_income": 1.7,
-            "benefit_share_pct": 10.8
-          },
-          {
-            "decile": 3,
-            "mean_benefit": 400,
-            "mean_residual_impact": 120,
-            "mean_benefit_pct_income": 1.2,
-            "benefit_share_pct": 9.7
-          },
-          {
-            "decile": 4,
-            "mean_benefit": 400,
-            "mean_residual_impact": 148,
+            "mean_residual_impact": 133,
             "mean_benefit_pct_income": 1.1,
-            "benefit_share_pct": 8.8
+            "benefit_share_pct": 18.5
           },
           {
-            "decile": 5,
+            "quintile": 3,
             "mean_benefit": 400,
-            "mean_residual_impact": 183,
-            "mean_benefit_pct_income": 1.0,
-            "benefit_share_pct": 10.0
+            "mean_residual_impact": 172,
+            "mean_benefit_pct_income": 0.9,
+            "benefit_share_pct": 20.1
           },
           {
-            "decile": 6,
+            "quintile": 4,
             "mean_benefit": 400,
-            "mean_residual_impact": 161,
-            "mean_benefit_pct_income": 0.8,
-            "benefit_share_pct": 10.1
-          },
-          {
-            "decile": 7,
-            "mean_benefit": 400,
-            "mean_residual_impact": 231,
-            "mean_benefit_pct_income": 0.7,
-            "benefit_share_pct": 9.6
-          },
-          {
-            "decile": 8,
-            "mean_benefit": 400,
-            "mean_residual_impact": 292,
+            "mean_residual_impact": 261,
             "mean_benefit_pct_income": 0.6,
-            "benefit_share_pct": 9.3
+            "benefit_share_pct": 18.9
           },
           {
-            "decile": 9,
+            "quintile": 5,
             "mean_benefit": 400,
-            "mean_residual_impact": 308,
-            "mean_benefit_pct_income": 0.5,
-            "benefit_share_pct": 10.4
-          },
-          {
-            "decile": 10,
-            "mean_benefit": 400,
-            "mean_residual_impact": 304,
-            "mean_benefit_pct_income": 0.3,
-            "benefit_share_pct": 11.0
+            "mean_residual_impact": 306,
+            "mean_benefit_pct_income": 0.4,
+            "benefit_share_pct": 21.4
           }
         ],
         "winners_losers": [
           {
-            "decile": 1,
+            "quintile": 1,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 2,
+            "quintile": 2,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 3,
+            "quintile": 3,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 4,
+            "quintile": 4,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 5,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 6,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 7,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 8,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 9,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 10,
+            "quintile": 5,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
@@ -1671,141 +1356,76 @@
         "name": "Council tax rebate",
         "fiscal_cost_bn": 6.63,
         "avg_benefit_per_hh": 224,
-        "targeting_bottom3": 34.6,
+        "targeting_bottom40": 44.1,
         "fp_rate_before_pct": 6.9,
         "fp_rate_after_pct": 6.8,
         "n_lifted_from_poverty": 255362,
-        "by_decile": [
+        "by_quintile": [
           {
-            "decile": 1,
-            "mean_benefit": 232,
-            "mean_residual_impact": 196,
-            "mean_benefit_pct_income": 3.4,
-            "benefit_share_pct": 10.6
-          },
-          {
-            "decile": 2,
-            "mean_benefit": 268,
-            "mean_residual_impact": 161,
-            "mean_benefit_pct_income": 1.1,
-            "benefit_share_pct": 12.9
-          },
-          {
-            "decile": 3,
-            "mean_benefit": 256,
-            "mean_residual_impact": 258,
-            "mean_benefit_pct_income": 0.8,
-            "benefit_share_pct": 11.1
-          },
-          {
-            "decile": 4,
-            "mean_benefit": 241,
-            "mean_residual_impact": 299,
-            "mean_benefit_pct_income": 0.7,
-            "benefit_share_pct": 9.5
-          },
-          {
-            "decile": 5,
+            "quintile": 1,
             "mean_benefit": 250,
+            "mean_residual_impact": 178,
+            "mean_benefit_pct_income": 2.3,
+            "benefit_share_pct": 23.5
+          },
+          {
+            "quintile": 2,
+            "mean_benefit": 249,
+            "mean_residual_impact": 277,
+            "mean_benefit_pct_income": 0.7,
+            "benefit_share_pct": 20.6
+          },
+          {
+            "quintile": 3,
+            "mean_benefit": 240,
             "mean_residual_impact": 331,
-            "mean_benefit_pct_income": 0.6,
-            "benefit_share_pct": 11.1
-          },
-          {
-            "decile": 6,
-            "mean_benefit": 230,
-            "mean_residual_impact": 330,
             "mean_benefit_pct_income": 0.5,
-            "benefit_share_pct": 10.4
+            "benefit_share_pct": 21.5
           },
           {
-            "decile": 7,
-            "mean_benefit": 217,
-            "mean_residual_impact": 414,
-            "mean_benefit_pct_income": 0.4,
-            "benefit_share_pct": 9.3
-          },
-          {
-            "decile": 8,
-            "mean_benefit": 203,
-            "mean_residual_impact": 489,
+            "quintile": 4,
+            "mean_benefit": 210,
+            "mean_residual_impact": 451,
             "mean_benefit_pct_income": 0.3,
-            "benefit_share_pct": 8.4
+            "benefit_share_pct": 17.7
           },
           {
-            "decile": 9,
-            "mean_benefit": 198,
-            "mean_residual_impact": 510,
-            "mean_benefit_pct_income": 0.3,
-            "benefit_share_pct": 9.2
-          },
-          {
-            "decile": 10,
-            "mean_benefit": 153,
-            "mean_residual_impact": 551,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 7.5
+            "quintile": 5,
+            "mean_benefit": 175,
+            "mean_residual_impact": 531,
+            "mean_benefit_pct_income": 0.2,
+            "benefit_share_pct": 16.7
           }
         ],
         "winners_losers": [
           {
-            "decile": 1,
-            "pct_winners": 77.4,
-            "pct_unchanged": 22.6,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 2,
-            "pct_winners": 89.3,
-            "pct_unchanged": 10.7,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 3,
-            "pct_winners": 85.3,
-            "pct_unchanged": 14.7,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 4,
-            "pct_winners": 80.4,
-            "pct_unchanged": 19.6,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 5,
+            "quintile": 1,
             "pct_winners": 83.5,
             "pct_unchanged": 16.5,
             "pct_losers": 0.0
           },
           {
-            "decile": 6,
-            "pct_winners": 76.5,
-            "pct_unchanged": 23.5,
+            "quintile": 2,
+            "pct_winners": 83.0,
+            "pct_unchanged": 17.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 7,
-            "pct_winners": 72.3,
-            "pct_unchanged": 27.7,
+            "quintile": 3,
+            "pct_winners": 80.0,
+            "pct_unchanged": 20.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 8,
-            "pct_winners": 67.8,
-            "pct_unchanged": 32.2,
+            "quintile": 4,
+            "pct_winners": 70.1,
+            "pct_unchanged": 29.9,
             "pct_losers": 0.0
           },
           {
-            "decile": 9,
-            "pct_winners": 66.0,
-            "pct_unchanged": 34.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 10,
-            "pct_winners": 51.0,
-            "pct_unchanged": 49.0,
+            "quintile": 5,
+            "pct_winners": 58.3,
+            "pct_unchanged": 41.7,
             "pct_losers": 0.0
           }
         ]
@@ -1814,141 +1434,76 @@
         "name": "UC uplift",
         "fiscal_cost_bn": 2.34,
         "avg_benefit_per_hh": 79,
-        "targeting_bottom3": 64.1,
+        "targeting_bottom40": 75.2,
         "fp_rate_before_pct": 6.9,
         "fp_rate_after_pct": 6.9,
         "n_lifted_from_poverty": 89061,
-        "by_decile": [
+        "by_quintile": [
           {
-            "decile": 1,
+            "quintile": 1,
             "mean_benefit": 168,
-            "mean_residual_impact": 365,
-            "mean_benefit_pct_income": 1.3,
-            "benefit_share_pct": 21.7
+            "mean_residual_impact": 361,
+            "mean_benefit_pct_income": 1.0,
+            "benefit_share_pct": 44.6
           },
           {
-            "decile": 2,
-            "mean_benefit": 168,
-            "mean_residual_impact": 357,
-            "mean_benefit_pct_income": 0.7,
-            "benefit_share_pct": 22.9
-          },
-          {
-            "decile": 3,
-            "mean_benefit": 159,
-            "mean_residual_impact": 435,
+            "quintile": 2,
+            "mean_benefit": 131,
+            "mean_residual_impact": 460,
             "mean_benefit_pct_income": 0.4,
-            "benefit_share_pct": 19.5
+            "benefit_share_pct": 30.6
           },
           {
-            "decile": 4,
-            "mean_benefit": 100,
-            "mean_residual_impact": 488,
-            "mean_benefit_pct_income": 0.3,
-            "benefit_share_pct": 11.1
+            "quintile": 3,
+            "mean_benefit": 71,
+            "mean_residual_impact": 531,
+            "mean_benefit_pct_income": 0.2,
+            "benefit_share_pct": 17.9
           },
           {
-            "decile": 5,
-            "mean_benefit": 105,
-            "mean_residual_impact": 523,
-            "mean_benefit_pct_income": 0.3,
-            "benefit_share_pct": 13.2
-          },
-          {
-            "decile": 6,
-            "mean_benefit": 37,
-            "mean_residual_impact": 539,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 4.7
-          },
-          {
-            "decile": 7,
-            "mean_benefit": 27,
-            "mean_residual_impact": 614,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 3.3
-          },
-          {
-            "decile": 8,
-            "mean_benefit": 14,
-            "mean_residual_impact": 683,
+            "quintile": 4,
+            "mean_benefit": 21,
+            "mean_residual_impact": 648,
             "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 1.6
+            "benefit_share_pct": 4.9
           },
           {
-            "decile": 9,
-            "mean_benefit": 8,
-            "mean_residual_impact": 702,
+            "quintile": 5,
+            "mean_benefit": 7,
+            "mean_residual_impact": 701,
             "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 1.1
-          },
-          {
-            "decile": 10,
-            "mean_benefit": 6,
-            "mean_residual_impact": 700,
-            "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 0.9
+            "benefit_share_pct": 2.0
           }
         ],
         "winners_losers": [
           {
-            "decile": 1,
+            "quintile": 1,
             "pct_winners": 16.1,
             "pct_unchanged": 83.9,
             "pct_losers": 0.0
           },
           {
-            "decile": 2,
-            "pct_winners": 16.2,
-            "pct_unchanged": 83.8,
+            "quintile": 2,
+            "pct_winners": 12.6,
+            "pct_unchanged": 87.4,
             "pct_losers": 0.0
           },
           {
-            "decile": 3,
-            "pct_winners": 15.3,
-            "pct_unchanged": 84.7,
+            "quintile": 3,
+            "pct_winners": 6.8,
+            "pct_unchanged": 93.2,
             "pct_losers": 0.0
           },
           {
-            "decile": 4,
-            "pct_winners": 9.6,
-            "pct_unchanged": 90.4,
+            "quintile": 4,
+            "pct_winners": 2.0,
+            "pct_unchanged": 98.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 5,
-            "pct_winners": 10.1,
-            "pct_unchanged": 89.9,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 6,
-            "pct_winners": 3.5,
-            "pct_unchanged": 96.5,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 7,
-            "pct_winners": 2.6,
-            "pct_unchanged": 97.4,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 8,
-            "pct_winners": 1.3,
-            "pct_unchanged": 98.7,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 9,
-            "pct_winners": 0.8,
-            "pct_unchanged": 99.2,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 10,
-            "pct_winners": 0.6,
-            "pct_unchanged": 99.4,
+            "quintile": 5,
+            "pct_winners": 0.7,
+            "pct_unchanged": 99.3,
             "pct_losers": 0.0
           }
         ]
@@ -1957,139 +1512,74 @@
         "name": "Fuel duty cut extension",
         "fiscal_cost_bn": 1.78,
         "avg_benefit_per_hh": 60,
-        "targeting_bottom3": 23.5,
+        "targeting_bottom40": 31.4,
         "fp_rate_before_pct": 6.9,
         "fp_rate_after_pct": 6.9,
         "n_lifted_from_poverty": 39478,
-        "by_decile": [
+        "by_quintile": [
           {
-            "decile": 1,
+            "quintile": 1,
             "mean_benefit": 42,
             "mean_residual_impact": 384,
-            "mean_benefit_pct_income": 0.6,
-            "benefit_share_pct": 7.2
+            "mean_benefit_pct_income": 0.4,
+            "benefit_share_pct": 14.7
           },
           {
-            "decile": 2,
-            "mean_benefit": 42,
-            "mean_residual_impact": 385,
-            "mean_benefit_pct_income": 0.2,
-            "benefit_share_pct": 7.6
-          },
-          {
-            "decile": 3,
+            "quintile": 2,
             "mean_benefit": 54,
-            "mean_residual_impact": 460,
+            "mean_residual_impact": 472,
             "mean_benefit_pct_income": 0.2,
-            "benefit_share_pct": 8.8
+            "benefit_share_pct": 16.7
           },
           {
-            "decile": 4,
-            "mean_benefit": 54,
-            "mean_residual_impact": 486,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 7.9
-          },
-          {
-            "decile": 5,
+            "quintile": 3,
             "mean_benefit": 60,
-            "mean_residual_impact": 522,
+            "mean_residual_impact": 511,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 10.0
+            "benefit_share_pct": 20.1
           },
           {
-            "decile": 6,
-            "mean_benefit": 60,
-            "mean_residual_impact": 500,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 10.1
-          },
-          {
-            "decile": 7,
+            "quintile": 4,
             "mean_benefit": 69,
-            "mean_residual_impact": 562,
+            "mean_residual_impact": 592,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 11.0
+            "benefit_share_pct": 21.7
           },
           {
-            "decile": 8,
-            "mean_benefit": 69,
-            "mean_residual_impact": 623,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 10.7
-          },
-          {
-            "decile": 9,
+            "quintile": 5,
             "mean_benefit": 75,
-            "mean_residual_impact": 633,
+            "mean_residual_impact": 631,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 13.0
-          },
-          {
-            "decile": 10,
-            "mean_benefit": 75,
-            "mean_residual_impact": 629,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 13.8
+            "benefit_share_pct": 26.8
           }
         ],
         "winners_losers": [
           {
-            "decile": 1,
+            "quintile": 1,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 2,
+            "quintile": 2,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 3,
+            "quintile": 3,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 4,
+            "quintile": 4,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 5,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 6,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 7,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 8,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 9,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 10,
+            "quintile": 5,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
@@ -2100,139 +1590,74 @@
         "name": "Means-tested cost-of-living payment",
         "fiscal_cost_bn": 2.38,
         "avg_benefit_per_hh": 80,
-        "targeting_bottom3": 60.5,
+        "targeting_bottom40": 74.0,
         "fp_rate_before_pct": 6.9,
         "fp_rate_after_pct": 6.9,
         "n_lifted_from_poverty": 152766,
-        "by_decile": [
+        "by_quintile": [
           {
-            "decile": 1,
-            "mean_benefit": 148,
-            "mean_residual_impact": 339,
-            "mean_benefit_pct_income": 1.1,
-            "benefit_share_pct": 18.9
+            "quintile": 1,
+            "mean_benefit": 165,
+            "mean_residual_impact": 326,
+            "mean_benefit_pct_income": 1.0,
+            "benefit_share_pct": 43.1
           },
           {
-            "decile": 2,
-            "mean_benefit": 181,
-            "mean_residual_impact": 313,
-            "mean_benefit_pct_income": 0.8,
-            "benefit_share_pct": 24.3
-          },
-          {
-            "decile": 3,
-            "mean_benefit": 144,
-            "mean_residual_impact": 403,
+            "quintile": 2,
+            "mean_benefit": 134,
+            "mean_residual_impact": 421,
             "mean_benefit_pct_income": 0.4,
-            "benefit_share_pct": 17.4
+            "benefit_share_pct": 30.8
           },
           {
-            "decile": 4,
-            "mean_benefit": 123,
-            "mean_residual_impact": 440,
-            "mean_benefit_pct_income": 0.4,
-            "benefit_share_pct": 13.4
+            "quintile": 3,
+            "mean_benefit": 78,
+            "mean_residual_impact": 503,
+            "mean_benefit_pct_income": 0.2,
+            "benefit_share_pct": 19.5
           },
           {
-            "decile": 5,
-            "mean_benefit": 107,
-            "mean_residual_impact": 490,
-            "mean_benefit_pct_income": 0.3,
-            "benefit_share_pct": 13.2
-          },
-          {
-            "decile": 6,
-            "mean_benefit": 50,
-            "mean_residual_impact": 516,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 6.3
-          },
-          {
-            "decile": 7,
-            "mean_benefit": 26,
-            "mean_residual_impact": 607,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 3.1
-          },
-          {
-            "decile": 8,
-            "mean_benefit": 11,
-            "mean_residual_impact": 681,
+            "quintile": 4,
+            "mean_benefit": 19,
+            "mean_residual_impact": 644,
             "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 1.3
+            "benefit_share_pct": 4.4
           },
           {
-            "decile": 9,
+            "quintile": 5,
             "mean_benefit": 8,
-            "mean_residual_impact": 700,
+            "mean_residual_impact": 698,
             "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 1.1
-          },
-          {
-            "decile": 10,
-            "mean_benefit": 8,
-            "mean_residual_impact": 697,
-            "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 1.0
+            "benefit_share_pct": 2.1
           }
         ],
         "winners_losers": [
           {
-            "decile": 1,
-            "pct_winners": 22.8,
-            "pct_unchanged": 77.2,
+            "quintile": 1,
+            "pct_winners": 25.4,
+            "pct_unchanged": 74.6,
             "pct_losers": 0.0
           },
           {
-            "decile": 2,
-            "pct_winners": 27.8,
-            "pct_unchanged": 72.2,
+            "quintile": 2,
+            "pct_winners": 20.6,
+            "pct_unchanged": 79.4,
             "pct_losers": 0.0
           },
           {
-            "decile": 3,
-            "pct_winners": 22.1,
-            "pct_unchanged": 77.9,
+            "quintile": 3,
+            "pct_winners": 12.0,
+            "pct_unchanged": 88.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 4,
-            "pct_winners": 18.9,
-            "pct_unchanged": 81.1,
+            "quintile": 4,
+            "pct_winners": 2.9,
+            "pct_unchanged": 97.1,
             "pct_losers": 0.0
           },
           {
-            "decile": 5,
-            "pct_winners": 16.4,
-            "pct_unchanged": 83.6,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 6,
-            "pct_winners": 7.7,
-            "pct_unchanged": 92.3,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 7,
-            "pct_winners": 4.0,
-            "pct_unchanged": 96.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 8,
-            "pct_winners": 1.8,
-            "pct_unchanged": 98.2,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 9,
-            "pct_winners": 1.3,
-            "pct_unchanged": 98.7,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 10,
+            "quintile": 5,
             "pct_winners": 1.2,
             "pct_unchanged": 98.8,
             "pct_losers": 0.0
@@ -2243,141 +1668,76 @@
         "name": "Electricity VAT cut (extended)",
         "fiscal_cost_bn": 1.2,
         "avg_benefit_per_hh": 41,
-        "targeting_bottom3": 25.2,
+        "targeting_bottom40": 33.9,
         "fp_rate_before_pct": 6.9,
         "fp_rate_after_pct": 6.7,
         "n_lifted_from_poverty": 16204,
-        "by_decile": [
+        "by_quintile": [
           {
-            "decile": 1,
-            "mean_benefit": 33,
-            "mean_residual_impact": 393,
-            "mean_benefit_pct_income": 0.5,
-            "benefit_share_pct": 8.3
-          },
-          {
-            "decile": 2,
+            "quintile": 1,
             "mean_benefit": 32,
-            "mean_residual_impact": 395,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 8.4
+            "mean_residual_impact": 394,
+            "mean_benefit_pct_income": 0.3,
+            "benefit_share_pct": 16.7
           },
           {
-            "decile": 3,
-            "mean_benefit": 35,
-            "mean_residual_impact": 479,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 8.5
-          },
-          {
-            "decile": 4,
-            "mean_benefit": 40,
-            "mean_residual_impact": 500,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 8.7
-          },
-          {
-            "decile": 5,
-            "mean_benefit": 40,
-            "mean_residual_impact": 542,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 9.9
-          },
-          {
-            "decile": 6,
+            "quintile": 2,
             "mean_benefit": 38,
-            "mean_residual_impact": 522,
+            "mean_residual_impact": 489,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 9.4
+            "benefit_share_pct": 17.2
           },
           {
-            "decile": 7,
-            "mean_benefit": 41,
-            "mean_residual_impact": 591,
+            "quintile": 3,
+            "mean_benefit": 39,
+            "mean_residual_impact": 532,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 9.6
+            "benefit_share_pct": 19.3
           },
           {
-            "decile": 8,
-            "mean_benefit": 54,
-            "mean_residual_impact": 638,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 12.4
-          },
-          {
-            "decile": 9,
+            "quintile": 4,
             "mean_benefit": 47,
-            "mean_residual_impact": 661,
+            "mean_residual_impact": 614,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 12.0
+            "benefit_share_pct": 22.0
           },
           {
-            "decile": 10,
+            "quintile": 5,
             "mean_benefit": 47,
-            "mean_residual_impact": 657,
+            "mean_residual_impact": 659,
             "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 12.8
+            "benefit_share_pct": 24.8
           }
         ],
         "winners_losers": [
           {
-            "decile": 1,
-            "pct_winners": 83.6,
-            "pct_unchanged": 16.4,
+            "quintile": 1,
+            "pct_winners": 81.7,
+            "pct_unchanged": 18.3,
             "pct_losers": 0.0
           },
           {
-            "decile": 2,
+            "quintile": 2,
+            "pct_winners": 83.7,
+            "pct_unchanged": 16.3,
+            "pct_losers": 0.0
+          },
+          {
+            "quintile": 3,
             "pct_winners": 79.8,
             "pct_unchanged": 20.2,
             "pct_losers": 0.0
           },
           {
-            "decile": 3,
-            "pct_winners": 84.7,
-            "pct_unchanged": 15.3,
+            "quintile": 4,
+            "pct_winners": 82.7,
+            "pct_unchanged": 17.3,
             "pct_losers": 0.0
           },
           {
-            "decile": 4,
-            "pct_winners": 82.5,
-            "pct_unchanged": 17.5,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 5,
-            "pct_winners": 80.7,
-            "pct_unchanged": 19.3,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 6,
-            "pct_winners": 79.0,
-            "pct_unchanged": 21.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 7,
-            "pct_winners": 83.0,
-            "pct_unchanged": 17.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 8,
-            "pct_winners": 82.5,
-            "pct_unchanged": 17.5,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 9,
-            "pct_winners": 74.4,
-            "pct_unchanged": 25.6,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 10,
-            "pct_winners": 78.1,
-            "pct_unchanged": 21.9,
+            "quintile": 5,
+            "pct_winners": 76.3,
+            "pct_unchanged": 23.7,
             "pct_losers": 0.0
           }
         ]
@@ -2386,141 +1746,76 @@
         "name": "Accelerated benefit uprating",
         "fiscal_cost_bn": 0.48,
         "avg_benefit_per_hh": 16,
-        "targeting_bottom3": 42.6,
+        "targeting_bottom40": 58.5,
         "fp_rate_before_pct": 6.9,
         "fp_rate_after_pct": 6.9,
         "n_lifted_from_poverty": 44828,
-        "by_decile": [
+        "by_quintile": [
           {
-            "decile": 1,
-            "mean_benefit": 18,
-            "mean_residual_impact": 408,
+            "quintile": 1,
+            "mean_benefit": 21,
+            "mean_residual_impact": 406,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 11.8
+            "benefit_share_pct": 27.0
           },
           {
-            "decile": 2,
-            "mean_benefit": 23,
-            "mean_residual_impact": 404,
+            "quintile": 2,
+            "mean_benefit": 27,
+            "mean_residual_impact": 499,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 15.2
+            "benefit_share_pct": 31.5
           },
           {
-            "decile": 3,
-            "mean_benefit": 26,
-            "mean_residual_impact": 488,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 15.6
-          },
-          {
-            "decile": 4,
-            "mean_benefit": 29,
-            "mean_residual_impact": 511,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 15.9
-          },
-          {
-            "decile": 5,
-            "mean_benefit": 24,
-            "mean_residual_impact": 558,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 15.1
-          },
-          {
-            "decile": 6,
-            "mean_benefit": 14,
-            "mean_residual_impact": 545,
+            "quintile": 3,
+            "mean_benefit": 19,
+            "mean_residual_impact": 551,
             "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 8.9
+            "benefit_share_pct": 24.0
           },
           {
-            "decile": 7,
-            "mean_benefit": 12,
-            "mean_residual_impact": 619,
+            "quintile": 4,
+            "mean_benefit": 11,
+            "mean_residual_impact": 651,
             "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 7.2
+            "benefit_share_pct": 12.4
           },
           {
-            "decile": 8,
-            "mean_benefit": 9,
-            "mean_residual_impact": 683,
-            "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 5.2
-          },
-          {
-            "decile": 9,
+            "quintile": 5,
             "mean_benefit": 4,
-            "mean_residual_impact": 703,
+            "mean_residual_impact": 702,
             "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 2.8
-          },
-          {
-            "decile": 10,
-            "mean_benefit": 3,
-            "mean_residual_impact": 701,
-            "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 2.3
+            "benefit_share_pct": 5.1
           }
         ],
         "winners_losers": [
           {
-            "decile": 1,
-            "pct_winners": 51.1,
-            "pct_unchanged": 48.9,
+            "quintile": 1,
+            "pct_winners": 51.2,
+            "pct_unchanged": 48.8,
             "pct_losers": 0.0
           },
           {
-            "decile": 2,
-            "pct_winners": 51.3,
-            "pct_unchanged": 48.7,
+            "quintile": 2,
+            "pct_winners": 52.3,
+            "pct_unchanged": 47.7,
             "pct_losers": 0.0
           },
           {
-            "decile": 3,
-            "pct_winners": 49.8,
-            "pct_unchanged": 50.2,
+            "quintile": 3,
+            "pct_winners": 45.2,
+            "pct_unchanged": 54.8,
             "pct_losers": 0.0
           },
           {
-            "decile": 4,
-            "pct_winners": 55.1,
-            "pct_unchanged": 44.9,
+            "quintile": 4,
+            "pct_winners": 39.0,
+            "pct_unchanged": 61.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 5,
-            "pct_winners": 51.4,
-            "pct_unchanged": 48.6,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 6,
-            "pct_winners": 39.1,
-            "pct_unchanged": 60.9,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 7,
-            "pct_winners": 41.2,
-            "pct_unchanged": 58.8,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 8,
-            "pct_winners": 36.6,
-            "pct_unchanged": 63.4,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 9,
-            "pct_winners": 20.1,
-            "pct_unchanged": 79.9,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 10,
-            "pct_winners": 21.8,
-            "pct_unchanged": 78.2,
+            "quintile": 5,
+            "pct_winners": 21.0,
+            "pct_unchanged": 79.0,
             "pct_losers": 0.0
           }
         ]
@@ -2529,141 +1824,76 @@
         "name": "Social tariff",
         "fiscal_cost_bn": 0.4,
         "avg_benefit_per_hh": 14,
-        "targeting_bottom3": 72.2,
+        "targeting_bottom40": 76.4,
         "fp_rate_before_pct": 6.9,
         "fp_rate_after_pct": 6.7,
         "n_lifted_from_poverty": 16589,
-        "by_decile": [
+        "by_quintile": [
           {
-            "decile": 1,
-            "mean_benefit": 53,
-            "mean_residual_impact": 373,
-            "mean_benefit_pct_income": 1.3,
-            "benefit_share_pct": 40.6
+            "quintile": 1,
+            "mean_benefit": 41,
+            "mean_residual_impact": 385,
+            "mean_benefit_pct_income": 0.7,
+            "benefit_share_pct": 63.9
           },
           {
-            "decile": 2,
-            "mean_benefit": 29,
-            "mean_residual_impact": 398,
-            "mean_benefit_pct_income": 0.2,
-            "benefit_share_pct": 23.3
-          },
-          {
-            "decile": 3,
-            "mean_benefit": 12,
-            "mean_residual_impact": 502,
+            "quintile": 2,
+            "mean_benefit": 9,
+            "mean_residual_impact": 517,
             "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 8.4
+            "benefit_share_pct": 12.5
           },
           {
-            "decile": 4,
-            "mean_benefit": 6,
-            "mean_residual_impact": 534,
+            "quintile": 3,
+            "mean_benefit": 5,
+            "mean_residual_impact": 566,
             "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 4.2
+            "benefit_share_pct": 6.7
           },
           {
-            "decile": 5,
-            "mean_benefit": 7,
-            "mean_residual_impact": 575,
-            "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 4.8
-          },
-          {
-            "decile": 6,
-            "mean_benefit": 2,
-            "mean_residual_impact": 557,
-            "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 1.9
-          },
-          {
-            "decile": 7,
-            "mean_benefit": 2,
-            "mean_residual_impact": 629,
-            "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 1.4
-          },
-          {
-            "decile": 8,
+            "quintile": 4,
             "mean_benefit": 3,
-            "mean_residual_impact": 689,
+            "mean_residual_impact": 659,
             "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 2.1
+            "benefit_share_pct": 3.5
           },
           {
-            "decile": 9,
-            "mean_benefit": 17,
-            "mean_residual_impact": 691,
+            "quintile": 5,
+            "mean_benefit": 8,
+            "mean_residual_impact": 697,
             "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 12.8
-          },
-          {
-            "decile": 10,
-            "mean_benefit": 1,
-            "mean_residual_impact": 704,
-            "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 0.5
+            "benefit_share_pct": 13.3
           }
         ],
         "winners_losers": [
           {
-            "decile": 1,
-            "pct_winners": 70.1,
-            "pct_unchanged": 29.9,
+            "quintile": 1,
+            "pct_winners": 57.0,
+            "pct_unchanged": 43.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 2,
-            "pct_winners": 44.5,
-            "pct_unchanged": 55.5,
+            "quintile": 2,
+            "pct_winners": 13.8,
+            "pct_unchanged": 86.2,
             "pct_losers": 0.0
           },
           {
-            "decile": 3,
-            "pct_winners": 17.5,
-            "pct_unchanged": 82.5,
+            "quintile": 3,
+            "pct_winners": 6.9,
+            "pct_unchanged": 93.1,
             "pct_losers": 0.0
           },
           {
-            "decile": 4,
-            "pct_winners": 9.8,
-            "pct_unchanged": 90.2,
+            "quintile": 4,
+            "pct_winners": 2.3,
+            "pct_unchanged": 97.7,
             "pct_losers": 0.0
           },
           {
-            "decile": 5,
-            "pct_winners": 10.0,
-            "pct_unchanged": 90.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 6,
-            "pct_winners": 3.8,
-            "pct_unchanged": 96.2,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 7,
-            "pct_winners": 2.6,
-            "pct_unchanged": 97.4,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 8,
-            "pct_winners": 1.9,
-            "pct_unchanged": 98.1,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 9,
-            "pct_winners": 3.6,
-            "pct_unchanged": 96.4,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 10,
-            "pct_winners": 0.6,
-            "pct_unchanged": 99.4,
+            "quintile": 5,
+            "pct_winners": 2.1,
+            "pct_unchanged": 97.9,
             "pct_losers": 0.0
           }
         ]
@@ -2672,139 +1902,74 @@
         "name": "Combined package",
         "fiscal_cost_bn": 28.61,
         "avg_benefit_per_hh": 558,
-        "targeting_bottom3": 25.0,
+        "targeting_bottom40": 33.4,
         "fp_rate_before_pct": 6.9,
         "fp_rate_after_pct": 6.1,
         "n_lifted_from_poverty": 423119,
-        "by_decile": [
+        "by_quintile": [
           {
-            "decile": 1,
+            "quintile": 1,
             "mean_benefit": 425,
             "mean_residual_impact": 1,
-            "mean_benefit_pct_income": 6.3,
-            "benefit_share_pct": 7.8
+            "mean_benefit_pct_income": 4.0,
+            "benefit_share_pct": 16.0
           },
           {
-            "decile": 2,
-            "mean_benefit": 425,
-            "mean_residual_impact": 1,
-            "mean_benefit_pct_income": 1.7,
-            "benefit_share_pct": 8.2
+            "quintile": 2,
+            "mean_benefit": 521,
+            "mean_residual_impact": 5,
+            "mean_benefit_pct_income": 1.5,
+            "benefit_share_pct": 17.3
           },
           {
-            "decile": 3,
-            "mean_benefit": 510,
-            "mean_residual_impact": 4,
-            "mean_benefit_pct_income": 1.6,
-            "benefit_share_pct": 8.9
+            "quintile": 3,
+            "mean_benefit": 561,
+            "mean_residual_impact": 10,
+            "mean_benefit_pct_income": 1.3,
+            "benefit_share_pct": 20.2
           },
           {
-            "decile": 4,
-            "mean_benefit": 534,
-            "mean_residual_impact": 6,
-            "mean_benefit_pct_income": 1.4,
-            "benefit_share_pct": 8.4
-          },
-          {
-            "decile": 5,
-            "mean_benefit": 571,
-            "mean_residual_impact": 11,
-            "mean_benefit_pct_income": 1.4,
-            "benefit_share_pct": 10.2
-          },
-          {
-            "decile": 6,
-            "mean_benefit": 551,
-            "mean_residual_impact": 8,
-            "mean_benefit_pct_income": 1.1,
-            "benefit_share_pct": 10.0
-          },
-          {
-            "decile": 7,
-            "mean_benefit": 610,
-            "mean_residual_impact": 22,
+            "quintile": 4,
+            "mean_benefit": 631,
+            "mean_residual_impact": 30,
             "mean_benefit_pct_income": 1.0,
-            "benefit_share_pct": 10.5
+            "benefit_share_pct": 21.4
           },
           {
-            "decile": 8,
+            "quintile": 5,
             "mean_benefit": 653,
-            "mean_residual_impact": 39,
-            "mean_benefit_pct_income": 1.0,
-            "benefit_share_pct": 10.9
-          },
-          {
-            "decile": 9,
-            "mean_benefit": 658,
-            "mean_residual_impact": 49,
-            "mean_benefit_pct_income": 0.8,
-            "benefit_share_pct": 12.3
-          },
-          {
-            "decile": 10,
-            "mean_benefit": 647,
-            "mean_residual_impact": 57,
-            "mean_benefit_pct_income": 0.5,
-            "benefit_share_pct": 12.8
+            "mean_residual_impact": 53,
+            "mean_benefit_pct_income": 0.7,
+            "benefit_share_pct": 25.0
           }
         ],
         "winners_losers": [
           {
-            "decile": 1,
+            "quintile": 1,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 2,
+            "quintile": 2,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 3,
+            "quintile": 3,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 4,
+            "quintile": 4,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 5,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 6,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 7,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 8,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 9,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 10,
+            "quintile": 5,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
@@ -2817,141 +1982,76 @@
         "name": "Energy Price Guarantee",
         "fiscal_cost_bn": 13.78,
         "avg_benefit_per_hh": 466,
-        "targeting_bottom3": 25.2,
+        "targeting_bottom40": 33.9,
         "fp_rate_before_pct": 10.3,
         "fp_rate_after_pct": 6.5,
         "n_lifted_from_poverty": 322459,
-        "by_decile": [
+        "by_quintile": [
           {
-            "decile": 1,
-            "mean_benefit": 375,
-            "mean_residual_impact": 693,
-            "mean_benefit_pct_income": 6.6,
-            "benefit_share_pct": 8.3
+            "quintile": 1,
+            "mean_benefit": 371,
+            "mean_residual_impact": 697,
+            "mean_benefit_pct_income": 4.0,
+            "benefit_share_pct": 16.7
           },
           {
-            "decile": 2,
-            "mean_benefit": 366,
-            "mean_residual_impact": 701,
-            "mean_benefit_pct_income": 1.5,
-            "benefit_share_pct": 8.5
-          },
-          {
-            "decile": 3,
-            "mean_benefit": 407,
-            "mean_residual_impact": 867,
+            "quintile": 2,
+            "mean_benefit": 432,
+            "mean_residual_impact": 878,
             "mean_benefit_pct_income": 1.2,
-            "benefit_share_pct": 8.5
+            "benefit_share_pct": 17.2
           },
           {
-            "decile": 4,
-            "mean_benefit": 460,
-            "mean_residual_impact": 890,
-            "mean_benefit_pct_income": 1.2,
-            "benefit_share_pct": 8.7
+            "quintile": 3,
+            "mean_benefit": 447,
+            "mean_residual_impact": 961,
+            "mean_benefit_pct_income": 1.0,
+            "benefit_share_pct": 19.3
           },
           {
-            "decile": 5,
-            "mean_benefit": 461,
-            "mean_residual_impact": 977,
-            "mean_benefit_pct_income": 1.1,
-            "benefit_share_pct": 9.9
-          },
-          {
-            "decile": 6,
-            "mean_benefit": 433,
-            "mean_residual_impact": 944,
+            "quintile": 4,
+            "mean_benefit": 541,
+            "mean_residual_impact": 1094,
             "mean_benefit_pct_income": 0.9,
-            "benefit_share_pct": 9.4
+            "benefit_share_pct": 21.9
           },
           {
-            "decile": 7,
-            "mean_benefit": 467,
-            "mean_residual_impact": 1076,
-            "mean_benefit_pct_income": 0.8,
-            "benefit_share_pct": 9.6
-          },
-          {
-            "decile": 8,
-            "mean_benefit": 616,
-            "mean_residual_impact": 1111,
-            "mean_benefit_pct_income": 0.9,
-            "benefit_share_pct": 12.3
-          },
-          {
-            "decile": 9,
-            "mean_benefit": 544,
-            "mean_residual_impact": 1188,
-            "mean_benefit_pct_income": 0.6,
-            "benefit_share_pct": 12.2
-          },
-          {
-            "decile": 10,
-            "mean_benefit": 539,
-            "mean_residual_impact": 1184,
-            "mean_benefit_pct_income": 0.4,
-            "benefit_share_pct": 12.7
+            "quintile": 5,
+            "mean_benefit": 542,
+            "mean_residual_impact": 1186,
+            "mean_benefit_pct_income": 0.5,
+            "benefit_share_pct": 24.9
           }
         ],
         "winners_losers": [
           {
-            "decile": 1,
-            "pct_winners": 98.8,
-            "pct_unchanged": 1.2,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 2,
+            "quintile": 1,
             "pct_winners": 98.7,
             "pct_unchanged": 1.3,
             "pct_losers": 0.0
           },
           {
-            "decile": 3,
-            "pct_winners": 99.1,
-            "pct_unchanged": 0.9,
+            "quintile": 2,
+            "pct_winners": 98.8,
+            "pct_unchanged": 1.2,
             "pct_losers": 0.0
           },
           {
-            "decile": 4,
-            "pct_winners": 98.6,
-            "pct_unchanged": 1.4,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 5,
-            "pct_winners": 97.9,
-            "pct_unchanged": 2.1,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 6,
+            "quintile": 3,
             "pct_winners": 98.0,
             "pct_unchanged": 2.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 7,
+            "quintile": 4,
             "pct_winners": 98.1,
             "pct_unchanged": 1.9,
             "pct_losers": 0.0
           },
           {
-            "decile": 8,
-            "pct_winners": 98.1,
-            "pct_unchanged": 1.9,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 9,
-            "pct_winners": 92.2,
-            "pct_unchanged": 7.8,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 10,
-            "pct_winners": 99.5,
-            "pct_unchanged": 0.5,
+            "quintile": 5,
+            "pct_winners": 95.9,
+            "pct_unchanged": 4.1,
             "pct_losers": 0.0
           }
         ]
@@ -2960,139 +2060,74 @@
         "name": "Flat energy rebate",
         "fiscal_cost_bn": 11.83,
         "avg_benefit_per_hh": 400,
-        "targeting_bottom3": 30.8,
+        "targeting_bottom40": 39.6,
         "fp_rate_before_pct": 10.3,
         "fp_rate_after_pct": 10.2,
         "n_lifted_from_poverty": 286751,
-        "by_decile": [
+        "by_quintile": [
           {
-            "decile": 1,
-            "mean_benefit": 400,
-            "mean_residual_impact": 668,
-            "mean_benefit_pct_income": 5.5,
-            "benefit_share_pct": 10.3
-          },
-          {
-            "decile": 2,
+            "quintile": 1,
             "mean_benefit": 400,
             "mean_residual_impact": 667,
-            "mean_benefit_pct_income": 1.7,
-            "benefit_share_pct": 10.8
+            "mean_benefit_pct_income": 3.5,
+            "benefit_share_pct": 21.1
           },
           {
-            "decile": 3,
+            "quintile": 2,
             "mean_benefit": 400,
-            "mean_residual_impact": 874,
-            "mean_benefit_pct_income": 1.2,
-            "benefit_share_pct": 9.7
-          },
-          {
-            "decile": 4,
-            "mean_benefit": 400,
-            "mean_residual_impact": 950,
+            "mean_residual_impact": 910,
             "mean_benefit_pct_income": 1.1,
-            "benefit_share_pct": 8.8
+            "benefit_share_pct": 18.5
           },
           {
-            "decile": 5,
+            "quintile": 3,
             "mean_benefit": 400,
-            "mean_residual_impact": 1038,
-            "mean_benefit_pct_income": 1.0,
-            "benefit_share_pct": 10.0
+            "mean_residual_impact": 1007,
+            "mean_benefit_pct_income": 0.9,
+            "benefit_share_pct": 20.1
           },
           {
-            "decile": 6,
+            "quintile": 4,
             "mean_benefit": 400,
-            "mean_residual_impact": 977,
-            "mean_benefit_pct_income": 0.8,
-            "benefit_share_pct": 10.1
-          },
-          {
-            "decile": 7,
-            "mean_benefit": 400,
-            "mean_residual_impact": 1143,
-            "mean_benefit_pct_income": 0.7,
-            "benefit_share_pct": 9.6
-          },
-          {
-            "decile": 8,
-            "mean_benefit": 400,
-            "mean_residual_impact": 1328,
+            "mean_residual_impact": 1234,
             "mean_benefit_pct_income": 0.6,
-            "benefit_share_pct": 9.3
+            "benefit_share_pct": 18.9
           },
           {
-            "decile": 9,
+            "quintile": 5,
             "mean_benefit": 400,
-            "mean_residual_impact": 1332,
-            "mean_benefit_pct_income": 0.5,
-            "benefit_share_pct": 10.4
-          },
-          {
-            "decile": 10,
-            "mean_benefit": 400,
-            "mean_residual_impact": 1323,
-            "mean_benefit_pct_income": 0.3,
-            "benefit_share_pct": 11.0
+            "mean_residual_impact": 1327,
+            "mean_benefit_pct_income": 0.4,
+            "benefit_share_pct": 21.4
           }
         ],
         "winners_losers": [
           {
-            "decile": 1,
+            "quintile": 1,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 2,
+            "quintile": 2,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 3,
+            "quintile": 3,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 4,
+            "quintile": 4,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 5,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 6,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 7,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 8,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 9,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 10,
+            "quintile": 5,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
@@ -3103,141 +2138,76 @@
         "name": "Council tax rebate",
         "fiscal_cost_bn": 6.63,
         "avg_benefit_per_hh": 224,
-        "targeting_bottom3": 34.6,
+        "targeting_bottom40": 44.1,
         "fp_rate_before_pct": 10.3,
         "fp_rate_after_pct": 10.2,
         "n_lifted_from_poverty": 197611,
-        "by_decile": [
+        "by_quintile": [
           {
-            "decile": 1,
-            "mean_benefit": 232,
-            "mean_residual_impact": 835,
-            "mean_benefit_pct_income": 3.4,
-            "benefit_share_pct": 10.6
-          },
-          {
-            "decile": 2,
-            "mean_benefit": 268,
-            "mean_residual_impact": 800,
-            "mean_benefit_pct_income": 1.1,
-            "benefit_share_pct": 12.9
-          },
-          {
-            "decile": 3,
-            "mean_benefit": 256,
-            "mean_residual_impact": 1018,
-            "mean_benefit_pct_income": 0.8,
-            "benefit_share_pct": 11.1
-          },
-          {
-            "decile": 4,
-            "mean_benefit": 241,
-            "mean_residual_impact": 1109,
-            "mean_benefit_pct_income": 0.7,
-            "benefit_share_pct": 9.5
-          },
-          {
-            "decile": 5,
+            "quintile": 1,
             "mean_benefit": 250,
-            "mean_residual_impact": 1188,
-            "mean_benefit_pct_income": 0.6,
-            "benefit_share_pct": 11.1
+            "mean_residual_impact": 817,
+            "mean_benefit_pct_income": 2.3,
+            "benefit_share_pct": 23.5
           },
           {
-            "decile": 6,
-            "mean_benefit": 230,
-            "mean_residual_impact": 1147,
+            "quintile": 2,
+            "mean_benefit": 249,
+            "mean_residual_impact": 1061,
+            "mean_benefit_pct_income": 0.7,
+            "benefit_share_pct": 20.6
+          },
+          {
+            "quintile": 3,
+            "mean_benefit": 240,
+            "mean_residual_impact": 1167,
             "mean_benefit_pct_income": 0.5,
-            "benefit_share_pct": 10.4
+            "benefit_share_pct": 21.5
           },
           {
-            "decile": 7,
-            "mean_benefit": 217,
-            "mean_residual_impact": 1326,
-            "mean_benefit_pct_income": 0.4,
-            "benefit_share_pct": 9.3
-          },
-          {
-            "decile": 8,
-            "mean_benefit": 203,
-            "mean_residual_impact": 1525,
+            "quintile": 4,
+            "mean_benefit": 210,
+            "mean_residual_impact": 1424,
             "mean_benefit_pct_income": 0.3,
-            "benefit_share_pct": 8.4
+            "benefit_share_pct": 17.7
           },
           {
-            "decile": 9,
-            "mean_benefit": 198,
-            "mean_residual_impact": 1534,
-            "mean_benefit_pct_income": 0.3,
-            "benefit_share_pct": 9.2
-          },
-          {
-            "decile": 10,
-            "mean_benefit": 153,
-            "mean_residual_impact": 1570,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 7.5
+            "quintile": 5,
+            "mean_benefit": 175,
+            "mean_residual_impact": 1552,
+            "mean_benefit_pct_income": 0.2,
+            "benefit_share_pct": 16.7
           }
         ],
         "winners_losers": [
           {
-            "decile": 1,
-            "pct_winners": 77.4,
-            "pct_unchanged": 22.6,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 2,
-            "pct_winners": 89.3,
-            "pct_unchanged": 10.7,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 3,
-            "pct_winners": 85.3,
-            "pct_unchanged": 14.7,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 4,
-            "pct_winners": 80.4,
-            "pct_unchanged": 19.6,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 5,
+            "quintile": 1,
             "pct_winners": 83.5,
             "pct_unchanged": 16.5,
             "pct_losers": 0.0
           },
           {
-            "decile": 6,
-            "pct_winners": 76.5,
-            "pct_unchanged": 23.5,
+            "quintile": 2,
+            "pct_winners": 83.0,
+            "pct_unchanged": 17.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 7,
-            "pct_winners": 72.3,
-            "pct_unchanged": 27.7,
+            "quintile": 3,
+            "pct_winners": 80.0,
+            "pct_unchanged": 20.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 8,
-            "pct_winners": 67.8,
-            "pct_unchanged": 32.2,
+            "quintile": 4,
+            "pct_winners": 70.1,
+            "pct_unchanged": 29.9,
             "pct_losers": 0.0
           },
           {
-            "decile": 9,
-            "pct_winners": 66.0,
-            "pct_unchanged": 34.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 10,
-            "pct_winners": 51.0,
-            "pct_unchanged": 49.0,
+            "quintile": 5,
+            "pct_winners": 58.3,
+            "pct_unchanged": 41.7,
             "pct_losers": 0.0
           }
         ]
@@ -3246,141 +2216,76 @@
         "name": "UC uplift",
         "fiscal_cost_bn": 2.34,
         "avg_benefit_per_hh": 79,
-        "targeting_bottom3": 64.1,
+        "targeting_bottom40": 75.2,
         "fp_rate_before_pct": 10.3,
         "fp_rate_after_pct": 10.3,
         "n_lifted_from_poverty": 115522,
-        "by_decile": [
+        "by_quintile": [
           {
-            "decile": 1,
+            "quintile": 1,
             "mean_benefit": 168,
-            "mean_residual_impact": 927,
-            "mean_benefit_pct_income": 1.3,
-            "benefit_share_pct": 21.7
+            "mean_residual_impact": 920,
+            "mean_benefit_pct_income": 1.0,
+            "benefit_share_pct": 44.6
           },
           {
-            "decile": 2,
-            "mean_benefit": 168,
-            "mean_residual_impact": 914,
-            "mean_benefit_pct_income": 0.7,
-            "benefit_share_pct": 22.9
-          },
-          {
-            "decile": 3,
-            "mean_benefit": 159,
-            "mean_residual_impact": 1118,
+            "quintile": 2,
+            "mean_benefit": 131,
+            "mean_residual_impact": 1182,
             "mean_benefit_pct_income": 0.4,
-            "benefit_share_pct": 19.5
+            "benefit_share_pct": 30.6
           },
           {
-            "decile": 4,
-            "mean_benefit": 100,
-            "mean_residual_impact": 1252,
-            "mean_benefit_pct_income": 0.3,
-            "benefit_share_pct": 11.1
+            "quintile": 3,
+            "mean_benefit": 71,
+            "mean_residual_impact": 1337,
+            "mean_benefit_pct_income": 0.2,
+            "benefit_share_pct": 17.9
           },
           {
-            "decile": 5,
-            "mean_benefit": 105,
-            "mean_residual_impact": 1334,
-            "mean_benefit_pct_income": 0.3,
-            "benefit_share_pct": 13.2
-          },
-          {
-            "decile": 6,
-            "mean_benefit": 37,
-            "mean_residual_impact": 1340,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 4.7
-          },
-          {
-            "decile": 7,
-            "mean_benefit": 27,
-            "mean_residual_impact": 1516,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 3.3
-          },
-          {
-            "decile": 8,
-            "mean_benefit": 14,
-            "mean_residual_impact": 1714,
+            "quintile": 4,
+            "mean_benefit": 21,
+            "mean_residual_impact": 1614,
             "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 1.6
+            "benefit_share_pct": 4.9
           },
           {
-            "decile": 9,
-            "mean_benefit": 8,
-            "mean_residual_impact": 1723,
+            "quintile": 5,
+            "mean_benefit": 7,
+            "mean_residual_impact": 1720,
             "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 1.1
-          },
-          {
-            "decile": 10,
-            "mean_benefit": 6,
-            "mean_residual_impact": 1716,
-            "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 0.9
+            "benefit_share_pct": 2.0
           }
         ],
         "winners_losers": [
           {
-            "decile": 1,
+            "quintile": 1,
             "pct_winners": 16.1,
             "pct_unchanged": 83.9,
             "pct_losers": 0.0
           },
           {
-            "decile": 2,
-            "pct_winners": 16.2,
-            "pct_unchanged": 83.8,
+            "quintile": 2,
+            "pct_winners": 12.6,
+            "pct_unchanged": 87.4,
             "pct_losers": 0.0
           },
           {
-            "decile": 3,
-            "pct_winners": 15.3,
-            "pct_unchanged": 84.7,
+            "quintile": 3,
+            "pct_winners": 6.8,
+            "pct_unchanged": 93.2,
             "pct_losers": 0.0
           },
           {
-            "decile": 4,
-            "pct_winners": 9.6,
-            "pct_unchanged": 90.4,
+            "quintile": 4,
+            "pct_winners": 2.0,
+            "pct_unchanged": 98.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 5,
-            "pct_winners": 10.1,
-            "pct_unchanged": 89.9,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 6,
-            "pct_winners": 3.5,
-            "pct_unchanged": 96.5,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 7,
-            "pct_winners": 2.6,
-            "pct_unchanged": 97.4,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 8,
-            "pct_winners": 1.3,
-            "pct_unchanged": 98.7,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 9,
-            "pct_winners": 0.8,
-            "pct_unchanged": 99.2,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 10,
-            "pct_winners": 0.6,
-            "pct_unchanged": 99.4,
+            "quintile": 5,
+            "pct_winners": 0.7,
+            "pct_unchanged": 99.3,
             "pct_losers": 0.0
           }
         ]
@@ -3389,139 +2294,74 @@
         "name": "Fuel duty cut extension",
         "fiscal_cost_bn": 1.78,
         "avg_benefit_per_hh": 60,
-        "targeting_bottom3": 23.5,
+        "targeting_bottom40": 31.4,
         "fp_rate_before_pct": 10.3,
         "fp_rate_after_pct": 10.3,
         "n_lifted_from_poverty": 18996,
-        "by_decile": [
+        "by_quintile": [
           {
-            "decile": 1,
-            "mean_benefit": 42,
-            "mean_residual_impact": 1026,
-            "mean_benefit_pct_income": 0.6,
-            "benefit_share_pct": 7.2
-          },
-          {
-            "decile": 2,
+            "quintile": 1,
             "mean_benefit": 42,
             "mean_residual_impact": 1025,
-            "mean_benefit_pct_income": 0.2,
-            "benefit_share_pct": 7.6
+            "mean_benefit_pct_income": 0.4,
+            "benefit_share_pct": 14.7
           },
           {
-            "decile": 3,
+            "quintile": 2,
             "mean_benefit": 54,
-            "mean_residual_impact": 1220,
+            "mean_residual_impact": 1256,
             "mean_benefit_pct_income": 0.2,
-            "benefit_share_pct": 8.8
+            "benefit_share_pct": 16.7
           },
           {
-            "decile": 4,
-            "mean_benefit": 54,
-            "mean_residual_impact": 1296,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 7.9
-          },
-          {
-            "decile": 5,
+            "quintile": 3,
             "mean_benefit": 60,
-            "mean_residual_impact": 1378,
+            "mean_residual_impact": 1347,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 10.0
+            "benefit_share_pct": 20.1
           },
           {
-            "decile": 6,
-            "mean_benefit": 60,
-            "mean_residual_impact": 1317,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 10.1
-          },
-          {
-            "decile": 7,
+            "quintile": 4,
             "mean_benefit": 69,
-            "mean_residual_impact": 1474,
+            "mean_residual_impact": 1565,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 11.0
+            "benefit_share_pct": 21.7
           },
           {
-            "decile": 8,
-            "mean_benefit": 69,
-            "mean_residual_impact": 1659,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 10.7
-          },
-          {
-            "decile": 9,
+            "quintile": 5,
             "mean_benefit": 75,
-            "mean_residual_impact": 1657,
+            "mean_residual_impact": 1652,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 13.0
-          },
-          {
-            "decile": 10,
-            "mean_benefit": 75,
-            "mean_residual_impact": 1648,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 13.8
+            "benefit_share_pct": 26.8
           }
         ],
         "winners_losers": [
           {
-            "decile": 1,
+            "quintile": 1,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 2,
+            "quintile": 2,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 3,
+            "quintile": 3,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 4,
+            "quintile": 4,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 5,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 6,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 7,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 8,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 9,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 10,
+            "quintile": 5,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
@@ -3532,139 +2372,74 @@
         "name": "Means-tested cost-of-living payment",
         "fiscal_cost_bn": 2.38,
         "avg_benefit_per_hh": 80,
-        "targeting_bottom3": 60.5,
+        "targeting_bottom40": 74.0,
         "fp_rate_before_pct": 10.3,
         "fp_rate_after_pct": 10.3,
         "n_lifted_from_poverty": 173052,
-        "by_decile": [
+        "by_quintile": [
           {
-            "decile": 1,
-            "mean_benefit": 148,
-            "mean_residual_impact": 920,
-            "mean_benefit_pct_income": 1.1,
-            "benefit_share_pct": 18.9
+            "quintile": 1,
+            "mean_benefit": 165,
+            "mean_residual_impact": 903,
+            "mean_benefit_pct_income": 1.0,
+            "benefit_share_pct": 43.1
           },
           {
-            "decile": 2,
-            "mean_benefit": 181,
-            "mean_residual_impact": 887,
-            "mean_benefit_pct_income": 0.8,
-            "benefit_share_pct": 24.3
-          },
-          {
-            "decile": 3,
-            "mean_benefit": 144,
-            "mean_residual_impact": 1130,
+            "quintile": 2,
+            "mean_benefit": 134,
+            "mean_residual_impact": 1176,
             "mean_benefit_pct_income": 0.4,
-            "benefit_share_pct": 17.4
+            "benefit_share_pct": 30.8
           },
           {
-            "decile": 4,
-            "mean_benefit": 123,
-            "mean_residual_impact": 1227,
-            "mean_benefit_pct_income": 0.4,
-            "benefit_share_pct": 13.4
+            "quintile": 3,
+            "mean_benefit": 78,
+            "mean_residual_impact": 1329,
+            "mean_benefit_pct_income": 0.2,
+            "benefit_share_pct": 19.5
           },
           {
-            "decile": 5,
-            "mean_benefit": 107,
-            "mean_residual_impact": 1332,
-            "mean_benefit_pct_income": 0.3,
-            "benefit_share_pct": 13.2
-          },
-          {
-            "decile": 6,
-            "mean_benefit": 50,
-            "mean_residual_impact": 1326,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 6.3
-          },
-          {
-            "decile": 7,
-            "mean_benefit": 26,
-            "mean_residual_impact": 1518,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 3.1
-          },
-          {
-            "decile": 8,
-            "mean_benefit": 11,
-            "mean_residual_impact": 1716,
+            "quintile": 4,
+            "mean_benefit": 19,
+            "mean_residual_impact": 1616,
             "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 1.3
+            "benefit_share_pct": 4.4
           },
           {
-            "decile": 9,
+            "quintile": 5,
             "mean_benefit": 8,
-            "mean_residual_impact": 1723,
+            "mean_residual_impact": 1719,
             "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 1.1
-          },
-          {
-            "decile": 10,
-            "mean_benefit": 8,
-            "mean_residual_impact": 1715,
-            "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 1.0
+            "benefit_share_pct": 2.1
           }
         ],
         "winners_losers": [
           {
-            "decile": 1,
-            "pct_winners": 22.8,
-            "pct_unchanged": 77.2,
+            "quintile": 1,
+            "pct_winners": 25.4,
+            "pct_unchanged": 74.6,
             "pct_losers": 0.0
           },
           {
-            "decile": 2,
-            "pct_winners": 27.8,
-            "pct_unchanged": 72.2,
+            "quintile": 2,
+            "pct_winners": 20.6,
+            "pct_unchanged": 79.4,
             "pct_losers": 0.0
           },
           {
-            "decile": 3,
-            "pct_winners": 22.1,
-            "pct_unchanged": 77.9,
+            "quintile": 3,
+            "pct_winners": 12.0,
+            "pct_unchanged": 88.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 4,
-            "pct_winners": 18.9,
-            "pct_unchanged": 81.1,
+            "quintile": 4,
+            "pct_winners": 2.9,
+            "pct_unchanged": 97.1,
             "pct_losers": 0.0
           },
           {
-            "decile": 5,
-            "pct_winners": 16.4,
-            "pct_unchanged": 83.6,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 6,
-            "pct_winners": 7.7,
-            "pct_unchanged": 92.3,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 7,
-            "pct_winners": 4.0,
-            "pct_unchanged": 96.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 8,
-            "pct_winners": 1.8,
-            "pct_unchanged": 98.2,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 9,
-            "pct_winners": 1.3,
-            "pct_unchanged": 98.7,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 10,
+            "quintile": 5,
             "pct_winners": 1.2,
             "pct_unchanged": 98.8,
             "pct_losers": 0.0
@@ -3675,141 +2450,76 @@
         "name": "Electricity VAT cut (extended)",
         "fiscal_cost_bn": 1.51,
         "avg_benefit_per_hh": 51,
-        "targeting_bottom3": 25.2,
+        "targeting_bottom40": 33.9,
         "fp_rate_before_pct": 10.3,
         "fp_rate_after_pct": 9.9,
         "n_lifted_from_poverty": 22810,
-        "by_decile": [
+        "by_quintile": [
           {
-            "decile": 1,
-            "mean_benefit": 42,
-            "mean_residual_impact": 1026,
-            "mean_benefit_pct_income": 0.7,
-            "benefit_share_pct": 8.3
-          },
-          {
-            "decile": 2,
-            "mean_benefit": 40,
+            "quintile": 1,
+            "mean_benefit": 41,
             "mean_residual_impact": 1027,
-            "mean_benefit_pct_income": 0.2,
-            "benefit_share_pct": 8.4
+            "mean_benefit_pct_income": 0.4,
+            "benefit_share_pct": 16.7
           },
           {
-            "decile": 3,
-            "mean_benefit": 45,
-            "mean_residual_impact": 1229,
+            "quintile": 2,
+            "mean_benefit": 47,
+            "mean_residual_impact": 1263,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 8.5
+            "benefit_share_pct": 17.2
           },
           {
-            "decile": 4,
-            "mean_benefit": 51,
-            "mean_residual_impact": 1300,
+            "quintile": 3,
+            "mean_benefit": 49,
+            "mean_residual_impact": 1358,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 8.7
+            "benefit_share_pct": 19.3
           },
           {
-            "decile": 5,
-            "mean_benefit": 51,
-            "mean_residual_impact": 1388,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 9.9
-          },
-          {
-            "decile": 6,
-            "mean_benefit": 48,
-            "mean_residual_impact": 1329,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 9.4
-          },
-          {
-            "decile": 7,
-            "mean_benefit": 51,
-            "mean_residual_impact": 1492,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 9.6
-          },
-          {
-            "decile": 8,
-            "mean_benefit": 68,
-            "mean_residual_impact": 1660,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 12.4
-          },
-          {
-            "decile": 9,
-            "mean_benefit": 59,
-            "mean_residual_impact": 1672,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 12.0
-          },
-          {
-            "decile": 10,
+            "quintile": 4,
             "mean_benefit": 60,
-            "mean_residual_impact": 1663,
-            "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 12.8
+            "mean_residual_impact": 1575,
+            "mean_benefit_pct_income": 0.1,
+            "benefit_share_pct": 22.0
+          },
+          {
+            "quintile": 5,
+            "mean_benefit": 59,
+            "mean_residual_impact": 1668,
+            "mean_benefit_pct_income": 0.1,
+            "benefit_share_pct": 24.8
           }
         ],
         "winners_losers": [
           {
-            "decile": 1,
-            "pct_winners": 83.6,
-            "pct_unchanged": 16.4,
+            "quintile": 1,
+            "pct_winners": 81.7,
+            "pct_unchanged": 18.3,
             "pct_losers": 0.0
           },
           {
-            "decile": 2,
-            "pct_winners": 79.9,
-            "pct_unchanged": 20.1,
+            "quintile": 2,
+            "pct_winners": 84.0,
+            "pct_unchanged": 16.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 3,
-            "pct_winners": 84.9,
-            "pct_unchanged": 15.1,
+            "quintile": 3,
+            "pct_winners": 80.0,
+            "pct_unchanged": 20.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 4,
-            "pct_winners": 83.0,
-            "pct_unchanged": 17.0,
+            "quintile": 4,
+            "pct_winners": 82.8,
+            "pct_unchanged": 17.2,
             "pct_losers": 0.0
           },
           {
-            "decile": 5,
-            "pct_winners": 81.0,
-            "pct_unchanged": 19.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 6,
-            "pct_winners": 79.1,
-            "pct_unchanged": 20.9,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 7,
-            "pct_winners": 83.1,
-            "pct_unchanged": 16.9,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 8,
-            "pct_winners": 82.5,
-            "pct_unchanged": 17.5,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 9,
-            "pct_winners": 74.4,
-            "pct_unchanged": 25.6,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 10,
-            "pct_winners": 78.1,
-            "pct_unchanged": 21.9,
+            "quintile": 5,
+            "pct_winners": 76.3,
+            "pct_unchanged": 23.7,
             "pct_losers": 0.0
           }
         ]
@@ -3818,141 +2528,76 @@
         "name": "Accelerated benefit uprating",
         "fiscal_cost_bn": 1.19,
         "avg_benefit_per_hh": 40,
-        "targeting_bottom3": 42.6,
+        "targeting_bottom40": 58.5,
         "fp_rate_before_pct": 10.3,
         "fp_rate_after_pct": 10.3,
         "n_lifted_from_poverty": 32282,
-        "by_decile": [
+        "by_quintile": [
           {
-            "decile": 1,
-            "mean_benefit": 46,
-            "mean_residual_impact": 1021,
-            "mean_benefit_pct_income": 0.3,
-            "benefit_share_pct": 11.8
-          },
-          {
-            "decile": 2,
-            "mean_benefit": 57,
-            "mean_residual_impact": 1011,
+            "quintile": 1,
+            "mean_benefit": 52,
+            "mean_residual_impact": 1016,
             "mean_benefit_pct_income": 0.2,
-            "benefit_share_pct": 15.2
+            "benefit_share_pct": 27.0
           },
           {
-            "decile": 3,
-            "mean_benefit": 64,
-            "mean_residual_impact": 1209,
+            "quintile": 2,
+            "mean_benefit": 68,
+            "mean_residual_impact": 1242,
             "mean_benefit_pct_income": 0.2,
-            "benefit_share_pct": 15.6
+            "benefit_share_pct": 31.5
           },
           {
-            "decile": 4,
-            "mean_benefit": 73,
-            "mean_residual_impact": 1277,
-            "mean_benefit_pct_income": 0.2,
-            "benefit_share_pct": 15.9
-          },
-          {
-            "decile": 5,
-            "mean_benefit": 61,
-            "mean_residual_impact": 1378,
-            "mean_benefit_pct_income": 0.2,
-            "benefit_share_pct": 15.1
-          },
-          {
-            "decile": 6,
-            "mean_benefit": 35,
-            "mean_residual_impact": 1341,
+            "quintile": 3,
+            "mean_benefit": 48,
+            "mean_residual_impact": 1359,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 8.9
+            "benefit_share_pct": 24.0
           },
           {
-            "decile": 7,
-            "mean_benefit": 30,
-            "mean_residual_impact": 1513,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 7.2
-          },
-          {
-            "decile": 8,
-            "mean_benefit": 23,
-            "mean_residual_impact": 1705,
+            "quintile": 4,
+            "mean_benefit": 26,
+            "mean_residual_impact": 1608,
             "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 5.2
+            "benefit_share_pct": 12.4
           },
           {
-            "decile": 9,
-            "mean_benefit": 11,
-            "mean_residual_impact": 1721,
+            "quintile": 5,
+            "mean_benefit": 10,
+            "mean_residual_impact": 1717,
             "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 2.8
-          },
-          {
-            "decile": 10,
-            "mean_benefit": 8,
-            "mean_residual_impact": 1714,
-            "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 2.3
+            "benefit_share_pct": 5.1
           }
         ],
         "winners_losers": [
           {
-            "decile": 1,
-            "pct_winners": 51.1,
-            "pct_unchanged": 48.9,
+            "quintile": 1,
+            "pct_winners": 51.5,
+            "pct_unchanged": 48.5,
             "pct_losers": 0.0
           },
           {
-            "decile": 2,
-            "pct_winners": 51.8,
-            "pct_unchanged": 48.2,
+            "quintile": 2,
+            "pct_winners": 52.4,
+            "pct_unchanged": 47.6,
             "pct_losers": 0.0
           },
           {
-            "decile": 3,
-            "pct_winners": 49.9,
-            "pct_unchanged": 50.1,
+            "quintile": 3,
+            "pct_winners": 45.2,
+            "pct_unchanged": 54.8,
             "pct_losers": 0.0
           },
           {
-            "decile": 4,
-            "pct_winners": 55.1,
-            "pct_unchanged": 44.9,
+            "quintile": 4,
+            "pct_winners": 39.0,
+            "pct_unchanged": 61.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 5,
-            "pct_winners": 51.4,
-            "pct_unchanged": 48.6,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 6,
-            "pct_winners": 39.1,
-            "pct_unchanged": 60.9,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 7,
-            "pct_winners": 41.2,
-            "pct_unchanged": 58.8,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 8,
-            "pct_winners": 36.6,
-            "pct_unchanged": 63.4,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 9,
-            "pct_winners": 20.1,
-            "pct_unchanged": 79.9,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 10,
-            "pct_winners": 21.8,
-            "pct_unchanged": 78.2,
+            "quintile": 5,
+            "pct_winners": 21.0,
+            "pct_unchanged": 79.0,
             "pct_losers": 0.0
           }
         ]
@@ -3961,141 +2606,76 @@
         "name": "Social tariff",
         "fiscal_cost_bn": 1.2,
         "avg_benefit_per_hh": 41,
-        "targeting_bottom3": 72.2,
+        "targeting_bottom40": 76.4,
         "fp_rate_before_pct": 10.3,
         "fp_rate_after_pct": 9.6,
         "n_lifted_from_poverty": 49434,
-        "by_decile": [
+        "by_quintile": [
           {
-            "decile": 1,
-            "mean_benefit": 160,
-            "mean_residual_impact": 907,
-            "mean_benefit_pct_income": 4.0,
-            "benefit_share_pct": 40.6
+            "quintile": 1,
+            "mean_benefit": 123,
+            "mean_residual_impact": 944,
+            "mean_benefit_pct_income": 2.2,
+            "benefit_share_pct": 63.9
           },
           {
-            "decile": 2,
-            "mean_benefit": 87,
-            "mean_residual_impact": 980,
-            "mean_benefit_pct_income": 0.5,
-            "benefit_share_pct": 23.3
-          },
-          {
-            "decile": 3,
-            "mean_benefit": 35,
-            "mean_residual_impact": 1239,
+            "quintile": 2,
+            "mean_benefit": 27,
+            "mean_residual_impact": 1283,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 8.4
+            "benefit_share_pct": 12.5
           },
           {
-            "decile": 4,
-            "mean_benefit": 19,
-            "mean_residual_impact": 1331,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 4.2
-          },
-          {
-            "decile": 5,
-            "mean_benefit": 20,
-            "mean_residual_impact": 1419,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 4.8
-          },
-          {
-            "decile": 6,
-            "mean_benefit": 7,
-            "mean_residual_impact": 1369,
+            "quintile": 3,
+            "mean_benefit": 14,
+            "mean_residual_impact": 1394,
             "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 1.9
+            "benefit_share_pct": 6.7
           },
           {
-            "decile": 7,
-            "mean_benefit": 6,
-            "mean_residual_impact": 1537,
+            "quintile": 4,
+            "mean_benefit": 8,
+            "mean_residual_impact": 1627,
             "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 1.4
+            "benefit_share_pct": 3.5
           },
           {
-            "decile": 8,
-            "mean_benefit": 9,
-            "mean_residual_impact": 1719,
+            "quintile": 5,
+            "mean_benefit": 25,
+            "mean_residual_impact": 1702,
             "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 2.1
-          },
-          {
-            "decile": 9,
-            "mean_benefit": 50,
-            "mean_residual_impact": 1682,
-            "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 12.8
-          },
-          {
-            "decile": 10,
-            "mean_benefit": 2,
-            "mean_residual_impact": 1721,
-            "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 0.5
+            "benefit_share_pct": 13.3
           }
         ],
         "winners_losers": [
           {
-            "decile": 1,
-            "pct_winners": 70.2,
-            "pct_unchanged": 29.8,
+            "quintile": 1,
+            "pct_winners": 57.2,
+            "pct_unchanged": 42.8,
             "pct_losers": 0.0
           },
           {
-            "decile": 2,
-            "pct_winners": 44.9,
-            "pct_unchanged": 55.1,
+            "quintile": 2,
+            "pct_winners": 14.0,
+            "pct_unchanged": 86.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 3,
-            "pct_winners": 17.6,
-            "pct_unchanged": 82.4,
+            "quintile": 3,
+            "pct_winners": 6.9,
+            "pct_unchanged": 93.1,
             "pct_losers": 0.0
           },
           {
-            "decile": 4,
-            "pct_winners": 9.9,
-            "pct_unchanged": 90.1,
+            "quintile": 4,
+            "pct_winners": 2.3,
+            "pct_unchanged": 97.7,
             "pct_losers": 0.0
           },
           {
-            "decile": 5,
-            "pct_winners": 10.1,
-            "pct_unchanged": 89.9,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 6,
-            "pct_winners": 3.8,
-            "pct_unchanged": 96.2,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 7,
-            "pct_winners": 2.6,
-            "pct_unchanged": 97.4,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 8,
-            "pct_winners": 1.9,
-            "pct_unchanged": 98.1,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 9,
-            "pct_winners": 3.6,
-            "pct_unchanged": 96.4,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 10,
-            "pct_winners": 0.6,
-            "pct_unchanged": 99.4,
+            "quintile": 5,
+            "pct_winners": 2.1,
+            "pct_unchanged": 97.9,
             "pct_losers": 0.0
           }
         ]
@@ -4104,139 +2684,74 @@
         "name": "Combined package",
         "fiscal_cost_bn": 41.45,
         "avg_benefit_per_hh": 1219,
-        "targeting_bottom3": 27.6,
+        "targeting_bottom40": 36.8,
         "fp_rate_before_pct": 10.3,
         "fp_rate_after_pct": 6.0,
         "n_lifted_from_poverty": 970899,
-        "by_decile": [
+        "by_quintile": [
           {
-            "decile": 1,
-            "mean_benefit": 1031,
-            "mean_residual_impact": 37,
-            "mean_benefit_pct_income": 15.7,
-            "benefit_share_pct": 8.7
+            "quintile": 1,
+            "mean_benefit": 1039,
+            "mean_residual_impact": 28,
+            "mean_benefit_pct_income": 9.8,
+            "benefit_share_pct": 18.0
           },
           {
-            "decile": 2,
-            "mean_benefit": 1047,
-            "mean_residual_impact": 20,
-            "mean_benefit_pct_income": 4.3,
-            "benefit_share_pct": 9.3
+            "quintile": 2,
+            "mean_benefit": 1238,
+            "mean_residual_impact": 72,
+            "mean_benefit_pct_income": 3.5,
+            "benefit_share_pct": 18.8
           },
           {
-            "decile": 3,
-            "mean_benefit": 1211,
-            "mean_residual_impact": 62,
-            "mean_benefit_pct_income": 3.7,
-            "benefit_share_pct": 9.7
+            "quintile": 3,
+            "mean_benefit": 1253,
+            "mean_residual_impact": 154,
+            "mean_benefit_pct_income": 2.8,
+            "benefit_share_pct": 20.7
           },
           {
-            "decile": 4,
-            "mean_benefit": 1267,
-            "mean_residual_impact": 83,
-            "mean_benefit_pct_income": 3.3,
-            "benefit_share_pct": 9.1
-          },
-          {
-            "decile": 5,
-            "mean_benefit": 1296,
-            "mean_residual_impact": 142,
-            "mean_benefit_pct_income": 3.1,
-            "benefit_share_pct": 10.6
-          },
-          {
-            "decile": 6,
-            "mean_benefit": 1211,
-            "mean_residual_impact": 165,
-            "mean_benefit_pct_income": 2.5,
-            "benefit_share_pct": 10.1
-          },
-          {
-            "decile": 7,
-            "mean_benefit": 1242,
-            "mean_residual_impact": 301,
+            "quintile": 4,
+            "mean_benefit": 1312,
+            "mean_residual_impact": 323,
             "mean_benefit_pct_income": 2.1,
-            "benefit_share_pct": 9.8
+            "benefit_share_pct": 20.3
           },
           {
-            "decile": 8,
-            "mean_benefit": 1383,
-            "mean_residual_impact": 345,
-            "mean_benefit_pct_income": 2.1,
-            "benefit_share_pct": 10.6
-          },
-          {
-            "decile": 9,
-            "mean_benefit": 1291,
-            "mean_residual_impact": 440,
-            "mean_benefit_pct_income": 1.6,
-            "benefit_share_pct": 11.0
-          },
-          {
-            "decile": 10,
-            "mean_benefit": 1239,
-            "mean_residual_impact": 483,
-            "mean_benefit_pct_income": 1.0,
-            "benefit_share_pct": 11.2
+            "quintile": 5,
+            "mean_benefit": 1265,
+            "mean_residual_impact": 462,
+            "mean_benefit_pct_income": 1.3,
+            "benefit_share_pct": 22.2
           }
         ],
         "winners_losers": [
           {
-            "decile": 1,
+            "quintile": 1,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 2,
+            "quintile": 2,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 3,
+            "quintile": 3,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 4,
+            "quintile": 4,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 5,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 6,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 7,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 8,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 9,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 10,
+            "quintile": 5,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
@@ -4249,141 +2764,76 @@
         "name": "Energy Price Guarantee",
         "fiscal_cost_bn": 31.5,
         "avg_benefit_per_hh": 1065,
-        "targeting_bottom3": 25.2,
+        "targeting_bottom40": 33.9,
         "fp_rate_before_pct": 15.3,
         "fp_rate_after_pct": 6.5,
         "n_lifted_from_poverty": 1020197,
-        "by_decile": [
+        "by_quintile": [
           {
-            "decile": 1,
-            "mean_benefit": 857,
-            "mean_residual_impact": 1129,
-            "mean_benefit_pct_income": 15.2,
-            "benefit_share_pct": 8.3
+            "quintile": 1,
+            "mean_benefit": 847,
+            "mean_residual_impact": 1138,
+            "mean_benefit_pct_income": 9.1,
+            "benefit_share_pct": 16.7
           },
           {
-            "decile": 2,
-            "mean_benefit": 838,
-            "mean_residual_impact": 1146,
-            "mean_benefit_pct_income": 3.3,
-            "benefit_share_pct": 8.5
-          },
-          {
-            "decile": 3,
-            "mean_benefit": 930,
-            "mean_residual_impact": 1428,
+            "quintile": 2,
+            "mean_benefit": 987,
+            "mean_residual_impact": 1442,
             "mean_benefit_pct_income": 2.8,
-            "benefit_share_pct": 8.5
+            "benefit_share_pct": 17.2
           },
           {
-            "decile": 4,
-            "mean_benefit": 1051,
-            "mean_residual_impact": 1458,
-            "mean_benefit_pct_income": 2.7,
-            "benefit_share_pct": 8.7
+            "quintile": 3,
+            "mean_benefit": 1021,
+            "mean_residual_impact": 1579,
+            "mean_benefit_pct_income": 2.3,
+            "benefit_share_pct": 19.3
           },
           {
-            "decile": 5,
-            "mean_benefit": 1054,
-            "mean_residual_impact": 1606,
-            "mean_benefit_pct_income": 2.5,
-            "benefit_share_pct": 9.9
-          },
-          {
-            "decile": 6,
-            "mean_benefit": 989,
-            "mean_residual_impact": 1552,
+            "quintile": 4,
+            "mean_benefit": 1236,
+            "mean_residual_impact": 1788,
             "mean_benefit_pct_income": 2.0,
-            "benefit_share_pct": 9.4
+            "benefit_share_pct": 21.9
           },
           {
-            "decile": 7,
-            "mean_benefit": 1068,
-            "mean_residual_impact": 1774,
-            "mean_benefit_pct_income": 1.8,
-            "benefit_share_pct": 9.6
-          },
-          {
-            "decile": 8,
-            "mean_benefit": 1409,
-            "mean_residual_impact": 1803,
-            "mean_benefit_pct_income": 2.2,
-            "benefit_share_pct": 12.3
-          },
-          {
-            "decile": 9,
-            "mean_benefit": 1244,
-            "mean_residual_impact": 1946,
-            "mean_benefit_pct_income": 1.4,
-            "benefit_share_pct": 12.2
-          },
-          {
-            "decile": 10,
-            "mean_benefit": 1232,
-            "mean_residual_impact": 1940,
-            "mean_benefit_pct_income": 1.0,
-            "benefit_share_pct": 12.7
+            "quintile": 5,
+            "mean_benefit": 1238,
+            "mean_residual_impact": 1943,
+            "mean_benefit_pct_income": 1.2,
+            "benefit_share_pct": 24.9
           }
         ],
         "winners_losers": [
           {
-            "decile": 1,
-            "pct_winners": 98.8,
-            "pct_unchanged": 1.2,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 2,
+            "quintile": 1,
             "pct_winners": 98.7,
             "pct_unchanged": 1.3,
             "pct_losers": 0.0
           },
           {
-            "decile": 3,
-            "pct_winners": 99.1,
-            "pct_unchanged": 0.9,
+            "quintile": 2,
+            "pct_winners": 98.8,
+            "pct_unchanged": 1.2,
             "pct_losers": 0.0
           },
           {
-            "decile": 4,
-            "pct_winners": 98.6,
-            "pct_unchanged": 1.4,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 5,
-            "pct_winners": 97.9,
-            "pct_unchanged": 2.1,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 6,
+            "quintile": 3,
             "pct_winners": 98.0,
             "pct_unchanged": 2.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 7,
+            "quintile": 4,
             "pct_winners": 98.1,
             "pct_unchanged": 1.9,
             "pct_losers": 0.0
           },
           {
-            "decile": 8,
-            "pct_winners": 98.1,
-            "pct_unchanged": 1.9,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 9,
-            "pct_winners": 92.2,
-            "pct_unchanged": 7.8,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 10,
-            "pct_winners": 99.5,
-            "pct_unchanged": 0.5,
+            "quintile": 5,
+            "pct_winners": 95.9,
+            "pct_unchanged": 4.1,
             "pct_losers": 0.0
           }
         ]
@@ -4392,139 +2842,74 @@
         "name": "Flat energy rebate",
         "fiscal_cost_bn": 11.83,
         "avg_benefit_per_hh": 400,
-        "targeting_bottom3": 30.8,
+        "targeting_bottom40": 39.6,
         "fp_rate_before_pct": 15.3,
         "fp_rate_after_pct": 14.8,
         "n_lifted_from_poverty": 496021,
-        "by_decile": [
+        "by_quintile": [
           {
-            "decile": 1,
+            "quintile": 1,
             "mean_benefit": 400,
-            "mean_residual_impact": 1586,
-            "mean_benefit_pct_income": 5.5,
-            "benefit_share_pct": 10.3
+            "mean_residual_impact": 1585,
+            "mean_benefit_pct_income": 3.5,
+            "benefit_share_pct": 21.1
           },
           {
-            "decile": 2,
+            "quintile": 2,
             "mean_benefit": 400,
-            "mean_residual_impact": 1584,
-            "mean_benefit_pct_income": 1.7,
-            "benefit_share_pct": 10.8
-          },
-          {
-            "decile": 3,
-            "mean_benefit": 400,
-            "mean_residual_impact": 1957,
-            "mean_benefit_pct_income": 1.2,
-            "benefit_share_pct": 9.7
-          },
-          {
-            "decile": 4,
-            "mean_benefit": 400,
-            "mean_residual_impact": 2109,
+            "mean_residual_impact": 2029,
             "mean_benefit_pct_income": 1.1,
-            "benefit_share_pct": 8.8
+            "benefit_share_pct": 18.5
           },
           {
-            "decile": 5,
+            "quintile": 3,
             "mean_benefit": 400,
-            "mean_residual_impact": 2260,
-            "mean_benefit_pct_income": 1.0,
-            "benefit_share_pct": 10.0
+            "mean_residual_impact": 2200,
+            "mean_benefit_pct_income": 0.9,
+            "benefit_share_pct": 20.1
           },
           {
-            "decile": 6,
+            "quintile": 4,
             "mean_benefit": 400,
-            "mean_residual_impact": 2141,
-            "mean_benefit_pct_income": 0.8,
-            "benefit_share_pct": 10.1
-          },
-          {
-            "decile": 7,
-            "mean_benefit": 400,
-            "mean_residual_impact": 2441,
-            "mean_benefit_pct_income": 0.7,
-            "benefit_share_pct": 9.6
-          },
-          {
-            "decile": 8,
-            "mean_benefit": 400,
-            "mean_residual_impact": 2812,
+            "mean_residual_impact": 2624,
             "mean_benefit_pct_income": 0.6,
-            "benefit_share_pct": 9.3
+            "benefit_share_pct": 18.9
           },
           {
-            "decile": 9,
+            "quintile": 5,
             "mean_benefit": 400,
-            "mean_residual_impact": 2790,
-            "mean_benefit_pct_income": 0.5,
-            "benefit_share_pct": 10.4
-          },
-          {
-            "decile": 10,
-            "mean_benefit": 400,
-            "mean_residual_impact": 2772,
-            "mean_benefit_pct_income": 0.3,
-            "benefit_share_pct": 11.0
+            "mean_residual_impact": 2781,
+            "mean_benefit_pct_income": 0.4,
+            "benefit_share_pct": 21.4
           }
         ],
         "winners_losers": [
           {
-            "decile": 1,
+            "quintile": 1,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 2,
+            "quintile": 2,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 3,
+            "quintile": 3,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 4,
+            "quintile": 4,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 5,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 6,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 7,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 8,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 9,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 10,
+            "quintile": 5,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
@@ -4535,141 +2920,76 @@
         "name": "Council tax rebate",
         "fiscal_cost_bn": 6.63,
         "avg_benefit_per_hh": 224,
-        "targeting_bottom3": 34.6,
+        "targeting_bottom40": 44.1,
         "fp_rate_before_pct": 15.3,
         "fp_rate_after_pct": 15.1,
         "n_lifted_from_poverty": 248898,
-        "by_decile": [
+        "by_quintile": [
           {
-            "decile": 1,
-            "mean_benefit": 232,
-            "mean_residual_impact": 1754,
-            "mean_benefit_pct_income": 3.4,
-            "benefit_share_pct": 10.6
-          },
-          {
-            "decile": 2,
-            "mean_benefit": 268,
-            "mean_residual_impact": 1716,
-            "mean_benefit_pct_income": 1.1,
-            "benefit_share_pct": 12.9
-          },
-          {
-            "decile": 3,
-            "mean_benefit": 256,
-            "mean_residual_impact": 2102,
-            "mean_benefit_pct_income": 0.8,
-            "benefit_share_pct": 11.1
-          },
-          {
-            "decile": 4,
-            "mean_benefit": 241,
-            "mean_residual_impact": 2268,
-            "mean_benefit_pct_income": 0.7,
-            "benefit_share_pct": 9.5
-          },
-          {
-            "decile": 5,
+            "quintile": 1,
             "mean_benefit": 250,
-            "mean_residual_impact": 2409,
-            "mean_benefit_pct_income": 0.6,
-            "benefit_share_pct": 11.1
+            "mean_residual_impact": 1734,
+            "mean_benefit_pct_income": 2.3,
+            "benefit_share_pct": 23.5
           },
           {
-            "decile": 6,
-            "mean_benefit": 230,
-            "mean_residual_impact": 2311,
+            "quintile": 2,
+            "mean_benefit": 249,
+            "mean_residual_impact": 2180,
+            "mean_benefit_pct_income": 0.7,
+            "benefit_share_pct": 20.6
+          },
+          {
+            "quintile": 3,
+            "mean_benefit": 240,
+            "mean_residual_impact": 2360,
             "mean_benefit_pct_income": 0.5,
-            "benefit_share_pct": 10.4
+            "benefit_share_pct": 21.5
           },
           {
-            "decile": 7,
-            "mean_benefit": 217,
-            "mean_residual_impact": 2624,
-            "mean_benefit_pct_income": 0.4,
-            "benefit_share_pct": 9.3
-          },
-          {
-            "decile": 8,
-            "mean_benefit": 203,
-            "mean_residual_impact": 3008,
+            "quintile": 4,
+            "mean_benefit": 210,
+            "mean_residual_impact": 2814,
             "mean_benefit_pct_income": 0.3,
-            "benefit_share_pct": 8.4
+            "benefit_share_pct": 17.7
           },
           {
-            "decile": 9,
-            "mean_benefit": 198,
-            "mean_residual_impact": 2992,
-            "mean_benefit_pct_income": 0.3,
-            "benefit_share_pct": 9.2
-          },
-          {
-            "decile": 10,
-            "mean_benefit": 153,
-            "mean_residual_impact": 3019,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 7.5
+            "quintile": 5,
+            "mean_benefit": 175,
+            "mean_residual_impact": 3006,
+            "mean_benefit_pct_income": 0.2,
+            "benefit_share_pct": 16.7
           }
         ],
         "winners_losers": [
           {
-            "decile": 1,
-            "pct_winners": 77.4,
-            "pct_unchanged": 22.6,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 2,
-            "pct_winners": 89.3,
-            "pct_unchanged": 10.7,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 3,
-            "pct_winners": 85.3,
-            "pct_unchanged": 14.7,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 4,
-            "pct_winners": 80.4,
-            "pct_unchanged": 19.6,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 5,
+            "quintile": 1,
             "pct_winners": 83.5,
             "pct_unchanged": 16.5,
             "pct_losers": 0.0
           },
           {
-            "decile": 6,
-            "pct_winners": 76.5,
-            "pct_unchanged": 23.5,
+            "quintile": 2,
+            "pct_winners": 83.0,
+            "pct_unchanged": 17.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 7,
-            "pct_winners": 72.3,
-            "pct_unchanged": 27.7,
+            "quintile": 3,
+            "pct_winners": 80.0,
+            "pct_unchanged": 20.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 8,
-            "pct_winners": 67.8,
-            "pct_unchanged": 32.2,
+            "quintile": 4,
+            "pct_winners": 70.1,
+            "pct_unchanged": 29.9,
             "pct_losers": 0.0
           },
           {
-            "decile": 9,
-            "pct_winners": 66.0,
-            "pct_unchanged": 34.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 10,
-            "pct_winners": 51.0,
-            "pct_unchanged": 49.0,
+            "quintile": 5,
+            "pct_winners": 58.3,
+            "pct_unchanged": 41.7,
             "pct_losers": 0.0
           }
         ]
@@ -4678,141 +2998,76 @@
         "name": "UC uplift",
         "fiscal_cost_bn": 2.34,
         "avg_benefit_per_hh": 79,
-        "targeting_bottom3": 64.1,
+        "targeting_bottom40": 75.2,
         "fp_rate_before_pct": 15.3,
         "fp_rate_after_pct": 15.2,
         "n_lifted_from_poverty": 220266,
-        "by_decile": [
+        "by_quintile": [
           {
-            "decile": 1,
+            "quintile": 1,
             "mean_benefit": 168,
-            "mean_residual_impact": 1818,
-            "mean_benefit_pct_income": 1.3,
-            "benefit_share_pct": 21.7
+            "mean_residual_impact": 1817,
+            "mean_benefit_pct_income": 1.0,
+            "benefit_share_pct": 44.6
           },
           {
-            "decile": 2,
-            "mean_benefit": 168,
-            "mean_residual_impact": 1816,
-            "mean_benefit_pct_income": 0.7,
-            "benefit_share_pct": 22.9
-          },
-          {
-            "decile": 3,
-            "mean_benefit": 159,
-            "mean_residual_impact": 2199,
+            "quintile": 2,
+            "mean_benefit": 131,
+            "mean_residual_impact": 2299,
             "mean_benefit_pct_income": 0.4,
-            "benefit_share_pct": 19.5
+            "benefit_share_pct": 30.6
           },
           {
-            "decile": 4,
-            "mean_benefit": 100,
-            "mean_residual_impact": 2409,
-            "mean_benefit_pct_income": 0.3,
-            "benefit_share_pct": 11.1
+            "quintile": 3,
+            "mean_benefit": 71,
+            "mean_residual_impact": 2529,
+            "mean_benefit_pct_income": 0.2,
+            "benefit_share_pct": 17.9
           },
           {
-            "decile": 5,
-            "mean_benefit": 105,
-            "mean_residual_impact": 2555,
-            "mean_benefit_pct_income": 0.3,
-            "benefit_share_pct": 13.2
-          },
-          {
-            "decile": 6,
-            "mean_benefit": 37,
-            "mean_residual_impact": 2504,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 4.7
-          },
-          {
-            "decile": 7,
-            "mean_benefit": 27,
-            "mean_residual_impact": 2814,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 3.3
-          },
-          {
-            "decile": 8,
-            "mean_benefit": 14,
-            "mean_residual_impact": 3198,
+            "quintile": 4,
+            "mean_benefit": 21,
+            "mean_residual_impact": 3003,
             "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 1.6
+            "benefit_share_pct": 4.9
           },
           {
-            "decile": 9,
-            "mean_benefit": 8,
-            "mean_residual_impact": 3182,
+            "quintile": 5,
+            "mean_benefit": 7,
+            "mean_residual_impact": 3174,
             "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 1.1
-          },
-          {
-            "decile": 10,
-            "mean_benefit": 6,
-            "mean_residual_impact": 3166,
-            "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 0.9
+            "benefit_share_pct": 2.0
           }
         ],
         "winners_losers": [
           {
-            "decile": 1,
+            "quintile": 1,
             "pct_winners": 16.1,
             "pct_unchanged": 83.9,
             "pct_losers": 0.0
           },
           {
-            "decile": 2,
-            "pct_winners": 16.2,
-            "pct_unchanged": 83.8,
+            "quintile": 2,
+            "pct_winners": 12.6,
+            "pct_unchanged": 87.4,
             "pct_losers": 0.0
           },
           {
-            "decile": 3,
-            "pct_winners": 15.3,
-            "pct_unchanged": 84.7,
+            "quintile": 3,
+            "pct_winners": 6.8,
+            "pct_unchanged": 93.2,
             "pct_losers": 0.0
           },
           {
-            "decile": 4,
-            "pct_winners": 9.6,
-            "pct_unchanged": 90.4,
+            "quintile": 4,
+            "pct_winners": 2.0,
+            "pct_unchanged": 98.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 5,
-            "pct_winners": 10.1,
-            "pct_unchanged": 89.9,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 6,
-            "pct_winners": 3.5,
-            "pct_unchanged": 96.5,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 7,
-            "pct_winners": 2.6,
-            "pct_unchanged": 97.4,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 8,
-            "pct_winners": 1.3,
-            "pct_unchanged": 98.7,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 9,
-            "pct_winners": 0.8,
-            "pct_unchanged": 99.2,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 10,
-            "pct_winners": 0.6,
-            "pct_unchanged": 99.4,
+            "quintile": 5,
+            "pct_winners": 0.7,
+            "pct_unchanged": 99.3,
             "pct_losers": 0.0
           }
         ]
@@ -4821,139 +3076,74 @@
         "name": "Fuel duty cut extension",
         "fiscal_cost_bn": 1.78,
         "avg_benefit_per_hh": 60,
-        "targeting_bottom3": 23.5,
+        "targeting_bottom40": 31.4,
         "fp_rate_before_pct": 15.3,
         "fp_rate_after_pct": 15.3,
         "n_lifted_from_poverty": 24522,
-        "by_decile": [
+        "by_quintile": [
           {
-            "decile": 1,
+            "quintile": 1,
             "mean_benefit": 42,
-            "mean_residual_impact": 1944,
-            "mean_benefit_pct_income": 0.6,
-            "benefit_share_pct": 7.2
+            "mean_residual_impact": 1943,
+            "mean_benefit_pct_income": 0.4,
+            "benefit_share_pct": 14.7
           },
           {
-            "decile": 2,
-            "mean_benefit": 42,
-            "mean_residual_impact": 1942,
-            "mean_benefit_pct_income": 0.2,
-            "benefit_share_pct": 7.6
-          },
-          {
-            "decile": 3,
+            "quintile": 2,
             "mean_benefit": 54,
-            "mean_residual_impact": 2303,
+            "mean_residual_impact": 2375,
             "mean_benefit_pct_income": 0.2,
-            "benefit_share_pct": 8.8
+            "benefit_share_pct": 16.7
           },
           {
-            "decile": 4,
-            "mean_benefit": 54,
-            "mean_residual_impact": 2455,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 7.9
-          },
-          {
-            "decile": 5,
+            "quintile": 3,
             "mean_benefit": 60,
-            "mean_residual_impact": 2600,
+            "mean_residual_impact": 2540,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 10.0
+            "benefit_share_pct": 20.1
           },
           {
-            "decile": 6,
-            "mean_benefit": 60,
-            "mean_residual_impact": 2481,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 10.1
-          },
-          {
-            "decile": 7,
+            "quintile": 4,
             "mean_benefit": 69,
-            "mean_residual_impact": 2772,
+            "mean_residual_impact": 2955,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 11.0
+            "benefit_share_pct": 21.7
           },
           {
-            "decile": 8,
-            "mean_benefit": 69,
-            "mean_residual_impact": 3143,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 10.7
-          },
-          {
-            "decile": 9,
+            "quintile": 5,
             "mean_benefit": 75,
-            "mean_residual_impact": 3115,
+            "mean_residual_impact": 3106,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 13.0
-          },
-          {
-            "decile": 10,
-            "mean_benefit": 75,
-            "mean_residual_impact": 3097,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 13.8
+            "benefit_share_pct": 26.8
           }
         ],
         "winners_losers": [
           {
-            "decile": 1,
+            "quintile": 1,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 2,
+            "quintile": 2,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 3,
+            "quintile": 3,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 4,
+            "quintile": 4,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 5,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 6,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 7,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 8,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 9,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 10,
+            "quintile": 5,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
@@ -4964,139 +3154,74 @@
         "name": "Means-tested cost-of-living payment",
         "fiscal_cost_bn": 2.38,
         "avg_benefit_per_hh": 80,
-        "targeting_bottom3": 60.5,
+        "targeting_bottom40": 74.0,
         "fp_rate_before_pct": 15.3,
         "fp_rate_after_pct": 15.2,
         "n_lifted_from_poverty": 219349,
-        "by_decile": [
+        "by_quintile": [
           {
-            "decile": 1,
-            "mean_benefit": 148,
-            "mean_residual_impact": 1838,
-            "mean_benefit_pct_income": 1.1,
-            "benefit_share_pct": 18.9
+            "quintile": 1,
+            "mean_benefit": 165,
+            "mean_residual_impact": 1820,
+            "mean_benefit_pct_income": 1.0,
+            "benefit_share_pct": 43.1
           },
           {
-            "decile": 2,
-            "mean_benefit": 181,
-            "mean_residual_impact": 1803,
-            "mean_benefit_pct_income": 0.8,
-            "benefit_share_pct": 24.3
-          },
-          {
-            "decile": 3,
-            "mean_benefit": 144,
-            "mean_residual_impact": 2214,
+            "quintile": 2,
+            "mean_benefit": 134,
+            "mean_residual_impact": 2295,
             "mean_benefit_pct_income": 0.4,
-            "benefit_share_pct": 17.4
+            "benefit_share_pct": 30.8
           },
           {
-            "decile": 4,
-            "mean_benefit": 123,
-            "mean_residual_impact": 2386,
-            "mean_benefit_pct_income": 0.4,
-            "benefit_share_pct": 13.4
+            "quintile": 3,
+            "mean_benefit": 78,
+            "mean_residual_impact": 2522,
+            "mean_benefit_pct_income": 0.2,
+            "benefit_share_pct": 19.5
           },
           {
-            "decile": 5,
-            "mean_benefit": 107,
-            "mean_residual_impact": 2553,
-            "mean_benefit_pct_income": 0.3,
-            "benefit_share_pct": 13.2
-          },
-          {
-            "decile": 6,
-            "mean_benefit": 50,
-            "mean_residual_impact": 2491,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 6.3
-          },
-          {
-            "decile": 7,
-            "mean_benefit": 26,
-            "mean_residual_impact": 2815,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 3.1
-          },
-          {
-            "decile": 8,
-            "mean_benefit": 11,
-            "mean_residual_impact": 3200,
+            "quintile": 4,
+            "mean_benefit": 19,
+            "mean_residual_impact": 3005,
             "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 1.3
+            "benefit_share_pct": 4.4
           },
           {
-            "decile": 9,
+            "quintile": 5,
             "mean_benefit": 8,
-            "mean_residual_impact": 3182,
+            "mean_residual_impact": 3173,
             "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 1.1
-          },
-          {
-            "decile": 10,
-            "mean_benefit": 8,
-            "mean_residual_impact": 3165,
-            "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 1.0
+            "benefit_share_pct": 2.1
           }
         ],
         "winners_losers": [
           {
-            "decile": 1,
-            "pct_winners": 22.8,
-            "pct_unchanged": 77.2,
+            "quintile": 1,
+            "pct_winners": 25.4,
+            "pct_unchanged": 74.6,
             "pct_losers": 0.0
           },
           {
-            "decile": 2,
-            "pct_winners": 27.8,
-            "pct_unchanged": 72.2,
+            "quintile": 2,
+            "pct_winners": 20.6,
+            "pct_unchanged": 79.4,
             "pct_losers": 0.0
           },
           {
-            "decile": 3,
-            "pct_winners": 22.1,
-            "pct_unchanged": 77.9,
+            "quintile": 3,
+            "pct_winners": 12.0,
+            "pct_unchanged": 88.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 4,
-            "pct_winners": 18.9,
-            "pct_unchanged": 81.1,
+            "quintile": 4,
+            "pct_winners": 2.9,
+            "pct_unchanged": 97.1,
             "pct_losers": 0.0
           },
           {
-            "decile": 5,
-            "pct_winners": 16.4,
-            "pct_unchanged": 83.6,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 6,
-            "pct_winners": 7.7,
-            "pct_unchanged": 92.3,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 7,
-            "pct_winners": 4.0,
-            "pct_unchanged": 96.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 8,
-            "pct_winners": 1.8,
-            "pct_unchanged": 98.2,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 9,
-            "pct_winners": 1.3,
-            "pct_unchanged": 98.7,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 10,
+            "quintile": 5,
             "pct_winners": 1.2,
             "pct_unchanged": 98.8,
             "pct_losers": 0.0
@@ -5107,141 +3232,76 @@
         "name": "Electricity VAT cut (extended)",
         "fiscal_cost_bn": 1.98,
         "avg_benefit_per_hh": 67,
-        "targeting_bottom3": 25.2,
+        "targeting_bottom40": 33.9,
         "fp_rate_before_pct": 15.3,
         "fp_rate_after_pct": 14.9,
         "n_lifted_from_poverty": 48632,
-        "by_decile": [
+        "by_quintile": [
           {
-            "decile": 1,
-            "mean_benefit": 54,
-            "mean_residual_impact": 1932,
-            "mean_benefit_pct_income": 0.9,
-            "benefit_share_pct": 8.3
-          },
-          {
-            "decile": 2,
-            "mean_benefit": 52,
+            "quintile": 1,
+            "mean_benefit": 53,
             "mean_residual_impact": 1931,
-            "mean_benefit_pct_income": 0.2,
-            "benefit_share_pct": 8.4
+            "mean_benefit_pct_income": 0.5,
+            "benefit_share_pct": 16.7
           },
           {
-            "decile": 3,
-            "mean_benefit": 58,
-            "mean_residual_impact": 2299,
-            "mean_benefit_pct_income": 0.2,
-            "benefit_share_pct": 8.5
-          },
-          {
-            "decile": 4,
-            "mean_benefit": 66,
-            "mean_residual_impact": 2442,
-            "mean_benefit_pct_income": 0.2,
-            "benefit_share_pct": 8.7
-          },
-          {
-            "decile": 5,
-            "mean_benefit": 67,
-            "mean_residual_impact": 2593,
-            "mean_benefit_pct_income": 0.2,
-            "benefit_share_pct": 9.9
-          },
-          {
-            "decile": 6,
+            "quintile": 2,
             "mean_benefit": 62,
-            "mean_residual_impact": 2479,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 9.4
+            "mean_residual_impact": 2367,
+            "mean_benefit_pct_income": 0.2,
+            "benefit_share_pct": 17.2
           },
           {
-            "decile": 7,
-            "mean_benefit": 67,
-            "mean_residual_impact": 2774,
+            "quintile": 3,
+            "mean_benefit": 64,
+            "mean_residual_impact": 2535,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 9.6
+            "benefit_share_pct": 19.3
           },
           {
-            "decile": 8,
-            "mean_benefit": 89,
-            "mean_residual_impact": 3123,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 12.4
-          },
-          {
-            "decile": 9,
+            "quintile": 4,
             "mean_benefit": 78,
-            "mean_residual_impact": 3112,
+            "mean_residual_impact": 2946,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 12.0
+            "benefit_share_pct": 22.0
           },
           {
-            "decile": 10,
+            "quintile": 5,
             "mean_benefit": 78,
-            "mean_residual_impact": 3094,
+            "mean_residual_impact": 3103,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 12.8
+            "benefit_share_pct": 24.8
           }
         ],
         "winners_losers": [
           {
-            "decile": 1,
-            "pct_winners": 83.7,
-            "pct_unchanged": 16.3,
+            "quintile": 1,
+            "pct_winners": 81.8,
+            "pct_unchanged": 18.2,
             "pct_losers": 0.0
           },
           {
-            "decile": 2,
-            "pct_winners": 80.1,
-            "pct_unchanged": 19.9,
+            "quintile": 2,
+            "pct_winners": 84.2,
+            "pct_unchanged": 15.8,
             "pct_losers": 0.0
           },
           {
-            "decile": 3,
-            "pct_winners": 85.1,
-            "pct_unchanged": 14.9,
+            "quintile": 3,
+            "pct_winners": 80.3,
+            "pct_unchanged": 19.7,
             "pct_losers": 0.0
           },
           {
-            "decile": 4,
-            "pct_winners": 83.2,
-            "pct_unchanged": 16.8,
+            "quintile": 4,
+            "pct_winners": 83.0,
+            "pct_unchanged": 17.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 5,
-            "pct_winners": 81.3,
-            "pct_unchanged": 18.7,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 6,
-            "pct_winners": 79.2,
-            "pct_unchanged": 20.8,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 7,
-            "pct_winners": 83.2,
-            "pct_unchanged": 16.8,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 8,
-            "pct_winners": 82.9,
-            "pct_unchanged": 17.1,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 9,
-            "pct_winners": 74.4,
-            "pct_unchanged": 25.6,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 10,
-            "pct_winners": 78.3,
-            "pct_unchanged": 21.7,
+            "quintile": 5,
+            "pct_winners": 76.4,
+            "pct_unchanged": 23.6,
             "pct_losers": 0.0
           }
         ]
@@ -5250,141 +3310,76 @@
         "name": "Accelerated benefit uprating",
         "fiscal_cost_bn": 2.14,
         "avg_benefit_per_hh": 72,
-        "targeting_bottom3": 42.6,
+        "targeting_bottom40": 58.5,
         "fp_rate_before_pct": 15.3,
         "fp_rate_after_pct": 15.2,
         "n_lifted_from_poverty": 207985,
-        "by_decile": [
+        "by_quintile": [
           {
-            "decile": 1,
-            "mean_benefit": 83,
-            "mean_residual_impact": 1903,
-            "mean_benefit_pct_income": 0.5,
-            "benefit_share_pct": 11.8
-          },
-          {
-            "decile": 2,
-            "mean_benefit": 102,
-            "mean_residual_impact": 1881,
+            "quintile": 1,
+            "mean_benefit": 93,
+            "mean_residual_impact": 1892,
             "mean_benefit_pct_income": 0.4,
-            "benefit_share_pct": 15.2
+            "benefit_share_pct": 27.0
           },
           {
-            "decile": 3,
-            "mean_benefit": 116,
-            "mean_residual_impact": 2242,
+            "quintile": 2,
+            "mean_benefit": 123,
+            "mean_residual_impact": 2306,
             "mean_benefit_pct_income": 0.3,
-            "benefit_share_pct": 15.6
+            "benefit_share_pct": 31.5
           },
           {
-            "decile": 4,
-            "mean_benefit": 131,
-            "mean_residual_impact": 2378,
-            "mean_benefit_pct_income": 0.4,
-            "benefit_share_pct": 15.9
+            "quintile": 3,
+            "mean_benefit": 86,
+            "mean_residual_impact": 2514,
+            "mean_benefit_pct_income": 0.2,
+            "benefit_share_pct": 24.0
           },
           {
-            "decile": 5,
-            "mean_benefit": 109,
-            "mean_residual_impact": 2550,
-            "mean_benefit_pct_income": 0.3,
-            "benefit_share_pct": 15.1
-          },
-          {
-            "decile": 6,
-            "mean_benefit": 64,
-            "mean_residual_impact": 2477,
+            "quintile": 4,
+            "mean_benefit": 48,
+            "mean_residual_impact": 2976,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 8.9
+            "benefit_share_pct": 12.4
           },
           {
-            "decile": 7,
-            "mean_benefit": 54,
-            "mean_residual_impact": 2787,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 7.2
-          },
-          {
-            "decile": 8,
-            "mean_benefit": 41,
-            "mean_residual_impact": 3171,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 5.2
-          },
-          {
-            "decile": 9,
-            "mean_benefit": 20,
-            "mean_residual_impact": 3170,
+            "quintile": 5,
+            "mean_benefit": 17,
+            "mean_residual_impact": 3164,
             "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 2.8
-          },
-          {
-            "decile": 10,
-            "mean_benefit": 15,
-            "mean_residual_impact": 3157,
-            "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 2.3
+            "benefit_share_pct": 5.1
           }
         ],
         "winners_losers": [
           {
-            "decile": 1,
-            "pct_winners": 51.1,
-            "pct_unchanged": 48.9,
+            "quintile": 1,
+            "pct_winners": 51.5,
+            "pct_unchanged": 48.5,
             "pct_losers": 0.0
           },
           {
-            "decile": 2,
-            "pct_winners": 51.8,
-            "pct_unchanged": 48.2,
+            "quintile": 2,
+            "pct_winners": 52.4,
+            "pct_unchanged": 47.6,
             "pct_losers": 0.0
           },
           {
-            "decile": 3,
-            "pct_winners": 49.9,
-            "pct_unchanged": 50.1,
+            "quintile": 3,
+            "pct_winners": 45.2,
+            "pct_unchanged": 54.8,
             "pct_losers": 0.0
           },
           {
-            "decile": 4,
-            "pct_winners": 55.1,
-            "pct_unchanged": 44.9,
+            "quintile": 4,
+            "pct_winners": 39.0,
+            "pct_unchanged": 61.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 5,
-            "pct_winners": 51.4,
-            "pct_unchanged": 48.6,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 6,
-            "pct_winners": 39.1,
-            "pct_unchanged": 60.9,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 7,
-            "pct_winners": 41.2,
-            "pct_unchanged": 58.8,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 8,
-            "pct_winners": 36.6,
-            "pct_unchanged": 63.4,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 9,
-            "pct_winners": 20.1,
-            "pct_unchanged": 79.9,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 10,
-            "pct_winners": 21.8,
-            "pct_unchanged": 78.2,
+            "quintile": 5,
+            "pct_winners": 21.0,
+            "pct_unchanged": 79.0,
             "pct_losers": 0.0
           }
         ]
@@ -5393,141 +3388,76 @@
         "name": "Social tariff",
         "fiscal_cost_bn": 2.4,
         "avg_benefit_per_hh": 81,
-        "targeting_bottom3": 72.2,
+        "targeting_bottom40": 76.4,
         "fp_rate_before_pct": 15.3,
         "fp_rate_after_pct": 14.0,
         "n_lifted_from_poverty": 82202,
-        "by_decile": [
+        "by_quintile": [
           {
-            "decile": 1,
-            "mean_benefit": 321,
-            "mean_residual_impact": 1665,
-            "mean_benefit_pct_income": 8.0,
-            "benefit_share_pct": 40.6
+            "quintile": 1,
+            "mean_benefit": 246,
+            "mean_residual_impact": 1739,
+            "mean_benefit_pct_income": 4.4,
+            "benefit_share_pct": 63.9
           },
           {
-            "decile": 2,
-            "mean_benefit": 175,
-            "mean_residual_impact": 1809,
-            "mean_benefit_pct_income": 0.9,
-            "benefit_share_pct": 23.3
-          },
-          {
-            "decile": 3,
-            "mean_benefit": 70,
-            "mean_residual_impact": 2288,
-            "mean_benefit_pct_income": 0.3,
-            "benefit_share_pct": 8.4
-          },
-          {
-            "decile": 4,
-            "mean_benefit": 39,
-            "mean_residual_impact": 2470,
+            "quintile": 2,
+            "mean_benefit": 55,
+            "mean_residual_impact": 2374,
             "mean_benefit_pct_income": 0.2,
-            "benefit_share_pct": 4.2
+            "benefit_share_pct": 12.5
           },
           {
-            "decile": 5,
-            "mean_benefit": 39,
-            "mean_residual_impact": 2620,
+            "quintile": 3,
+            "mean_benefit": 27,
+            "mean_residual_impact": 2573,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 4.8
+            "benefit_share_pct": 6.7
           },
           {
-            "decile": 6,
+            "quintile": 4,
             "mean_benefit": 15,
-            "mean_residual_impact": 2526,
-            "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 1.9
-          },
-          {
-            "decile": 7,
-            "mean_benefit": 12,
-            "mean_residual_impact": 2829,
-            "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 1.4
-          },
-          {
-            "decile": 8,
-            "mean_benefit": 18,
-            "mean_residual_impact": 3193,
+            "mean_residual_impact": 3009,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 2.1
+            "benefit_share_pct": 3.5
           },
           {
-            "decile": 9,
-            "mean_benefit": 100,
-            "mean_residual_impact": 3090,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 12.8
-          },
-          {
-            "decile": 10,
-            "mean_benefit": 4,
-            "mean_residual_impact": 3169,
+            "quintile": 5,
+            "mean_benefit": 51,
+            "mean_residual_impact": 3130,
             "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 0.5
+            "benefit_share_pct": 13.3
           }
         ],
         "winners_losers": [
           {
-            "decile": 1,
-            "pct_winners": 70.2,
-            "pct_unchanged": 29.8,
+            "quintile": 1,
+            "pct_winners": 57.3,
+            "pct_unchanged": 42.7,
             "pct_losers": 0.0
           },
           {
-            "decile": 2,
-            "pct_winners": 45.0,
-            "pct_unchanged": 55.0,
+            "quintile": 2,
+            "pct_winners": 14.0,
+            "pct_unchanged": 86.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 3,
-            "pct_winners": 17.6,
-            "pct_unchanged": 82.4,
+            "quintile": 3,
+            "pct_winners": 6.9,
+            "pct_unchanged": 93.1,
             "pct_losers": 0.0
           },
           {
-            "decile": 4,
-            "pct_winners": 9.9,
-            "pct_unchanged": 90.1,
+            "quintile": 4,
+            "pct_winners": 2.3,
+            "pct_unchanged": 97.7,
             "pct_losers": 0.0
           },
           {
-            "decile": 5,
-            "pct_winners": 10.1,
-            "pct_unchanged": 89.9,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 6,
-            "pct_winners": 3.8,
-            "pct_unchanged": 96.2,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 7,
-            "pct_winners": 2.6,
-            "pct_unchanged": 97.4,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 8,
-            "pct_winners": 1.9,
-            "pct_unchanged": 98.1,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 9,
-            "pct_winners": 3.6,
-            "pct_unchanged": 96.4,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 10,
-            "pct_winners": 0.6,
-            "pct_unchanged": 99.4,
+            "quintile": 5,
+            "pct_winners": 2.1,
+            "pct_unchanged": 97.9,
             "pct_losers": 0.0
           }
         ]
@@ -5536,139 +3466,74 @@
         "name": "Combined package",
         "fiscal_cost_bn": 60.59,
         "avg_benefit_per_hh": 1943,
-        "targeting_bottom3": 28.6,
+        "targeting_bottom40": 37.8,
         "fp_rate_before_pct": 15.3,
         "fp_rate_after_pct": 5.9,
         "n_lifted_from_poverty": 1860773,
-        "by_decile": [
+        "by_quintile": [
           {
-            "decile": 1,
-            "mean_benefit": 1726,
-            "mean_residual_impact": 260,
-            "mean_benefit_pct_income": 26.6,
-            "benefit_share_pct": 9.1
+            "quintile": 1,
+            "mean_benefit": 1748,
+            "mean_residual_impact": 237,
+            "mean_benefit_pct_income": 16.6,
+            "benefit_share_pct": 18.9
           },
           {
-            "decile": 2,
-            "mean_benefit": 1769,
-            "mean_residual_impact": 215,
-            "mean_benefit_pct_income": 7.2,
-            "benefit_share_pct": 9.8
+            "quintile": 2,
+            "mean_benefit": 1975,
+            "mean_residual_impact": 454,
+            "mean_benefit_pct_income": 5.6,
+            "benefit_share_pct": 18.8
           },
           {
-            "decile": 3,
-            "mean_benefit": 1920,
-            "mean_residual_impact": 437,
-            "mean_benefit_pct_income": 5.9,
-            "benefit_share_pct": 9.6
+            "quintile": 3,
+            "mean_benefit": 1949,
+            "mean_residual_impact": 651,
+            "mean_benefit_pct_income": 4.4,
+            "benefit_share_pct": 20.2
           },
           {
-            "decile": 4,
-            "mean_benefit": 2035,
-            "mean_residual_impact": 473,
-            "mean_benefit_pct_income": 5.4,
-            "benefit_share_pct": 9.2
-          },
-          {
-            "decile": 5,
-            "mean_benefit": 2046,
-            "mean_residual_impact": 614,
-            "mean_benefit_pct_income": 5.0,
-            "benefit_share_pct": 10.5
-          },
-          {
-            "decile": 6,
-            "mean_benefit": 1854,
-            "mean_residual_impact": 687,
-            "mean_benefit_pct_income": 3.9,
-            "benefit_share_pct": 9.7
-          },
-          {
-            "decile": 7,
-            "mean_benefit": 1906,
-            "mean_residual_impact": 935,
+            "quintile": 4,
+            "mean_benefit": 2064,
+            "mean_residual_impact": 960,
             "mean_benefit_pct_income": 3.3,
-            "benefit_share_pct": 9.4
+            "benefit_share_pct": 20.1
           },
           {
-            "decile": 8,
-            "mean_benefit": 2226,
-            "mean_residual_impact": 986,
-            "mean_benefit_pct_income": 3.4,
-            "benefit_share_pct": 10.7
-          },
-          {
-            "decile": 9,
-            "mean_benefit": 2025,
-            "mean_residual_impact": 1165,
-            "mean_benefit_pct_income": 2.4,
-            "benefit_share_pct": 10.8
-          },
-          {
-            "decile": 10,
-            "mean_benefit": 1964,
-            "mean_residual_impact": 1209,
-            "mean_benefit_pct_income": 1.6,
-            "benefit_share_pct": 11.1
+            "quintile": 5,
+            "mean_benefit": 1994,
+            "mean_residual_impact": 1187,
+            "mean_benefit_pct_income": 2.0,
+            "benefit_share_pct": 22.0
           }
         ],
         "winners_losers": [
           {
-            "decile": 1,
+            "quintile": 1,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 2,
+            "quintile": 2,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 3,
+            "quintile": 3,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 4,
+            "quintile": 4,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0
           },
           {
-            "decile": 5,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 6,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 7,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 8,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 9,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
-          },
-          {
-            "decile": 10,
+            "quintile": 5,
             "pct_winners": 100.0,
             "pct_unchanged": 0.0,
             "pct_losers": 0.0

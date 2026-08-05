@@ -105,11 +105,11 @@ export default function PolicyTab({ data }) {
   const scenarioOptions = getScenarioOptions(data);
 
   // Decile data for selected policy
-  const decileData = useMemo(() => {
-    if (!policy?.by_decile) return [];
-    return policy.by_decile.map((d) => ({
-      ...d,
-      label: `${d.decile}`,
+  const quintileData = useMemo(() => {
+    if (!policy?.by_quintile) return [];
+    return policy.by_quintile.map((q) => ({
+      ...q,
+      label: `Q${q.quintile}`,
     }));
   }, [policy]);
 
@@ -117,7 +117,7 @@ export default function PolicyTab({ data }) {
     if (!policy?.winners_losers) return [];
     return policy.winners_losers.map((d) => ({
       ...d,
-      label: `${d.decile}`,
+      label: `Q${d.quintile}`,
     }));
   }, [policy]);
 
@@ -132,7 +132,7 @@ export default function PolicyTab({ data }) {
         fiscal_cost_bn: p.fiscal_cost_bn,
         avg_household_benefit: p.avg_household_benefit,
         fuel_poverty_reduction_pp: p.fuel_poverty_reduction_pp,
-        targeting_bottom3: p.targeting_bottom3,
+        targeting_bottom40: p.targeting_bottom40,
         color: policyColors[key] || colors.gray[400],
       };
     }).filter(Boolean);
@@ -287,17 +287,17 @@ export default function PolicyTab({ data }) {
 
           <div className="grid items-stretch gap-6 xl:grid-cols-2">
             <div className="flex h-full flex-col">
-              {decileData.length > 0 ? (
+              {quintileData.length > 0 ? (
                 <div className="section-card flex h-[560px] flex-col">
                   <div className="min-h-[132px]">
                     <SectionHeading
-                      title="Distributional impact by decile"
-                      description={`Average household reduction in the selected shock scenario's residual impact after ${policyLabel.toLowerCase()}, by income decile.`}
+                      title="Distributional impact by quintile"
+                      description={`Average household reduction in the selected shock scenario's residual impact after ${policyLabel.toLowerCase()}, by income quintile (Q1 = lowest income).`}
                     />
                   </div>
                   <div className="min-h-0 flex-1 w-full">
                     <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={decileData}>
+                      <BarChart data={quintileData}>
                         <CartesianGrid strokeDasharray="3 3" stroke={colors.border.light} />
                         <XAxis dataKey="label" tick={AXIS_STYLE} tickLine={false} />
                         <YAxis

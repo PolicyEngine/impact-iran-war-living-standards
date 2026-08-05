@@ -16,9 +16,8 @@ import {
 import SectionHeading from "./SectionHeading";
 import {
   getScenario,
-  getDecileBreakdown,
+  getQuintileBreakdown,
   getFuelPoverty,
-  getRegionalBreakdown,
   getCountryBreakdown,
   getTenureBreakdown,
   getChannelDecomposition,
@@ -120,8 +119,7 @@ const CHANNEL_STACK = [
 ];
 
 const DIST_VIEWS = [
-  { id: "decile", label: "Income decile" },
-  { id: "region", label: "Region" },
+  { id: "quintile", label: "Income quintile" },
   { id: "country", label: "Country" },
   { id: "tenure", label: "Tenure" },
   { id: "household_type", label: "Household type" },
@@ -214,7 +212,7 @@ function ExampleHousehold({ data, scenario }) {
       <div className="border-t border-slate-200 pt-10">
         <SectionHeading
           title="What would this mean for a household like yours?"
-          description="Enter your household's details to see the estimated extra cost under the selected scenario, using the same shock parameters as the full microsimulation: your energy bill scales with the cap increase, fuel and food spending with the price rises, and any CPI-linked benefit income loses real value until the next uprating. Set a field to zero if it doesn't apply — for example fuel if you don't run a car, or benefit income if you don't receive any."
+          description="Enter your household's details to see the estimated extra cost under the selected scenario, using the same shock parameters as the full microsimulation. Set a field to zero if it doesn't apply."
         />
       </div>
       <div className="section-card">
@@ -300,18 +298,14 @@ function ExampleHousehold({ data, scenario }) {
   );
 }
 
-function DistributionalBreakdown({ decileData, regionalData, countryData, tenureData, hhTypeData }) {
-  const [view, setView] = useState("decile");
+function DistributionalBreakdown({ quintileData, countryData, tenureData, hhTypeData }) {
+  const [view, setView] = useState("quintile");
 
   const labelled = (rows, key, labels) =>
     rows
       .map((r) => ({ ...r, label: labels[r[key]] || r[key] }))
       .sort((a, b) => (b.avg_cost || 0) - (a.avg_cost || 0));
 
-  const sortedRegional = useMemo(
-    () => labelled(regionalData, "region", REGION_LABELS),
-    [regionalData]
-  );
   const sortedCountry = useMemo(
     () => labelled(countryData, "country", REGION_LABELS),
     [countryData]
@@ -325,17 +319,14 @@ function DistributionalBreakdown({ decileData, regionalData, countryData, tenure
     [hhTypeData]
   );
 
-  // Decile uses vertical stacked bars; everything else uses horizontal stacked bars
-  const isVertical = view === "decile";
+  // Quintile uses vertical stacked bars; everything else uses horizontal stacked bars
+  const isVertical = view === "quintile";
 
   const labelKey = "label";
   let chartData, chartHeight;
-  if (view === "decile") {
-    chartData = decileData;
+  if (view === "quintile") {
+    chartData = quintileData;
     chartHeight = 380;
-  } else if (view === "region") {
-    chartData = sortedRegional;
-    chartHeight = 520;
   } else if (view === "country") {
     chartData = sortedCountry;
     chartHeight = Math.max(300, sortedCountry.length * 80 + 60);
@@ -354,7 +345,7 @@ function DistributionalBreakdown({ decileData, regionalData, countryData, tenure
       <div className="border-t border-slate-200 pt-10">
         <SectionHeading
           title="Distributional impact"
-          description="Who bears the cost. Each bar shows the average household cost in 2027-28, stacked by transmission channel, for a different slice of the population: income decile (1 = lowest income, 10 = highest), UK region, country, housing tenure, or household type. Higher-income households pay more in cash terms because they consume more energy and fuel — but as a share of income the burden falls hardest on the lowest deciles, who spend roughly three times as much of their budget on energy. Pensioner and benefit-reliant households also carry the uprating-lag loss that working households avoid."
+          description="Who bears the cost: average household cost in 2027-28, stacked by channel, split by income quintile (Q1 = lowest income), country, housing tenure, or household type. Higher-income households pay more in cash terms, but as a share of income the burden falls hardest on the lowest quintiles."
         />
       </div>
 
@@ -461,9 +452,8 @@ export default function ScenariosTab({ data }) {
   const [scenario, setScenario] = useState("low_shock");
 
   const scenarioData = getScenario(data, scenario);
-  const decileData = getDecileBreakdown(data, scenario);
+  const quintileData = getQuintileBreakdown(data, scenario);
   const fuelPoverty = getFuelPoverty(data, scenario);
-  const regionalData = getRegionalBreakdown(data, scenario);
   const countryData = getCountryBreakdown(data, scenario);
   const tenureData = getTenureBreakdown(data, scenario);
   const channels = getChannelDecomposition(data, scenario);
@@ -589,7 +579,7 @@ export default function ScenariosTab({ data }) {
       <div className="border-t border-slate-200 pt-10">
         <SectionHeading
           title="Cost breakdown by transmission channel"
-          description="How the average household cost in 2027-28 splits across the four routes the shock reaches households. Energy: higher gas and electricity bills as the Ofgem price cap passes wholesale prices through. Fuel: petrol and diesel at the pump, scaled by how much each income decile typically spends on motoring. Food: energy is a major input to food production and distribution, so grocery prices follow with a lag. Benefit uprating lag: CPI-linked benefits were fixed from September 2025 prices, so their real value erodes during the shock until the April 2027 uprating — a loss that only affects benefit-recipient households. Direct energy bills are usually the largest channel, but the mix varies by scenario severity."
+          description="How the average household cost in 2027-28 splits across the four routes the shock reaches households: energy bills (via the Ofgem cap), fuel at the pump, food prices (energy is a major input cost), and the real-value loss on CPI-linked benefits until the next uprating — a loss that only affects benefit-recipient households."
         />
       </div>
 
@@ -628,11 +618,10 @@ export default function ScenariosTab({ data }) {
       )}
 
       {/* ================================================================ */}
-      {/* DISTRIBUTIONAL IMPACT (decile / region / country / hh type)       */}
+      {/* DISTRIBUTIONAL IMPACT (decile / country / tenure / hh type)        */}
       {/* ================================================================ */}
       <DistributionalBreakdown
-        decileData={decileData}
-        regionalData={regionalData}
+        quintileData={quintileData}
         countryData={countryData}
         tenureData={tenureData}
         hhTypeData={hhTypeData}

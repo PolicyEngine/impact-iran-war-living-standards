@@ -246,6 +246,7 @@ def run_baseline(year=YEAR):
         "people": people,
         "weights": weights,
         "decile": decile,
+        "quintile": (decile + 1) // 2,
         "region": region,
         "tenure": tenure,
         "hh_type": hh_type,
@@ -459,17 +460,17 @@ def _shocked_energy(data, impacts):
     return data["energy"] + impacts["energy_shock"]
 
 
-def _by_decile(data, impacts, shocked_fuel_poor):
+def _by_quintile(data, impacts, shocked_fuel_poor):
     weights = data["weights"]
-    decile = data["decile"]
+    quintile = data["quintile"]
     income = data["income"]
     net = impacts["net_impact"]
     net_pct = _impact_pct(net, income)
     rows = []
-    for d in range(1, 11):
-        mask = decile == d
+    for q in range(1, 6):
+        mask = quintile == q
         rows.append({
-            "decile": d,
+            "quintile": q,
             "mean_impact": round(weighted_mean(net, weights, mask)),
             "mean_impact_pct": round(weighted_mean(net_pct, weights, mask), 1),
             "energy": round(weighted_mean(impacts["energy_shock"], weights, mask)),
@@ -572,7 +573,6 @@ def _equiv_after_cost(data, cost):
 def _eval_policy(data, impacts, policy_name, effect):
     weights = data["weights"]
     income = data["income"]
-    decile = data["decile"]
     baseline_energy = data["energy"]
     net = impacts["net_impact"]
     shocked_energy = _shocked_energy(data, impacts)
@@ -594,17 +594,18 @@ def _eval_policy(data, impacts, policy_name, effect):
     lifted_out = (shocked_equiv < poverty_line) & (post_policy_equiv >= poverty_line)
 
     total_benefit = weighted_sum(benefit, weights)
-    by_decile = []
+    quintile = data["quintile"]
+    by_quintile = []
     winners_losers = []
     change_vs_no_policy = net - residual
     is_winner = (change_vs_no_policy > WINNERS_LOSERS_THRESHOLD).astype(float)
     is_loser = (change_vs_no_policy < -WINNERS_LOSERS_THRESHOLD).astype(float)
-    for d in range(1, 11):
-        mask = decile == d
+    for q in range(1, 6):
+        mask = quintile == q
         pct_winners = weighted_mean(is_winner, weights, mask) * 100
         pct_losers = weighted_mean(is_loser, weights, mask) * 100
-        by_decile.append({
-            "decile": d,
+        by_quintile.append({
+            "quintile": q,
             "mean_benefit": round(weighted_mean(benefit, weights, mask)),
             "mean_residual_impact": round(weighted_mean(residual, weights, mask)),
             "mean_benefit_pct_income": round(
@@ -616,7 +617,7 @@ def _eval_policy(data, impacts, policy_name, effect):
             ),
         })
         winners_losers.append({
-            "decile": d,
+            "quintile": q,
             "pct_winners": round(pct_winners, 1),
             "pct_unchanged": round(100 - pct_winners - pct_losers, 1),
             "pct_losers": round(pct_losers, 1),
@@ -626,8 +627,8 @@ def _eval_policy(data, impacts, policy_name, effect):
         "name": policy_name,
         "fiscal_cost_bn": round(weighted_sum(fiscal_outlay, weights) / 1e9, 2),
         "avg_benefit_per_hh": round(weighted_mean(benefit, weights)),
-        "targeting_bottom3": round(
-            weighted_sum(benefit, weights, decile <= 3) / total_benefit * 100,
+        "targeting_bottom40": round(
+            weighted_sum(benefit, weights, quintile <= 2) / total_benefit * 100,
             1,
         ),
         "fp_rate_before_pct": round(weighted_mean(fp_before.astype(float), weights) * 100, 1),
@@ -635,7 +636,7 @@ def _eval_policy(data, impacts, policy_name, effect):
         "n_lifted_from_poverty": round(
             weighted_sum(lifted_out.astype(float), person_weights)
         ),
-        "by_decile": by_decile,
+        "by_quintile": by_quintile,
         "winners_losers": winners_losers,
     }
 
@@ -714,7 +715,7 @@ def _scenario_output(data, scenario_key):
     return {
         "params": SCENARIOS[scenario_key],
         "summary": summary,
-        "by_decile": _by_decile(data, impacts, shocked_fuel_poor),
+        "by_quintile": _by_quintile(data, impacts, shocked_fuel_poor),
         "by_region": _grouped_impacts(
             data, impacts, "region", "region", shocked_fuel_poor
         ),
@@ -781,30 +782,30 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
             "fuel_poor_households": round(
                 weighted_sum(baseline_fuel_poor.astype(float), weights)
             ),
-            "by_decile": [
+            "by_quintile": [
                 {
-                    "decile": d,
+                    "quintile": q,
                     "mean_energy_spend": round(
-                        weighted_mean(data["energy"], weights, data["decile"] == d)
+                        weighted_mean(data["energy"], weights, data["quintile"] == q)
                     ),
                     "mean_net_income": round(
-                        weighted_mean(data["income"], weights, data["decile"] == d)
+                        weighted_mean(data["income"], weights, data["quintile"] == q)
                     ),
                     "energy_share_pct": round(
-                        weighted_mean(energy_share, weights, data["decile"] == d) * 100,
+                        weighted_mean(energy_share, weights, data["quintile"] == q) * 100,
                         1,
                     ),
                     "fp_rate_pct": round(
                         weighted_mean(
                             baseline_fuel_poor.astype(float),
                             weights,
-                            data["decile"] == d,
+                            data["quintile"] == q,
                         )
                         * 100,
                         1,
                     ),
                 }
-                for d in range(1, 11)
+                for q in range(1, 6)
             ],
         },
         "scenarios": {},
