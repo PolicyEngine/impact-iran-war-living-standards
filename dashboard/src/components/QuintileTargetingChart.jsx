@@ -21,7 +21,7 @@ const AXIS_STYLE = {
   fill: colors.gray[500],
 };
 
-const QUINTILE_KEYS = ["Q1 (poorest)", "Q2", "Q3", "Q4", "Q5 (richest)"];
+const QUINTILE_KEYS = ["Q1 (lowest income)", "Q2", "Q3", "Q4", "Q5 (highest income)"];
 
 function CustomTooltip({ active, payload, label }) {
   if (!active || !payload?.length) return null;
@@ -62,7 +62,7 @@ export default function QuintileTargetingChart({ data, scenarioKey }) {
     <div className="border-t border-slate-200 pt-10">
       <SectionHeading
         title="Policy targeting by income quintile"
-        description="Share of each policy's total spending going to each income quintile. Policies that concentrate spending on the poorest quintiles are more progressive."
+        description="Share of each policy's total spending going to each income quintile. Policies that concentrate spending on the lowest-income quintiles are more progressive."
       />
       <div className="section-card">
         <div style={{ height: chartHeight }} className="w-full">

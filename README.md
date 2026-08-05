@@ -1,16 +1,18 @@
 # Impact of Energy Price Shocks on UK Living Standards
 
-Microsimulation-based analysis of how energy price shocks from a sustained disruption to Middle East oil and gas supply would affect UK households in 2026-27 — modelling impacts through energy bills, fuel costs, food inflation, and benefit uprating lag across ~32 million households using [PolicyEngine UK](https://policyengine.org).
+Microsimulation-based analysis of how energy price rises from the ongoing Middle East conflict (active since late February 2026, with recurrent Strait of Hormuz disruption) affect UK households in 2026-27 — modelling impacts through energy bills, fuel costs, food inflation, and benefit uprating lag across ~32 million households using [PolicyEngine UK](https://policyengine.org). The policy analysis is oriented to the cost-of-living decisions facing the government at the Autumn Budget on 28 October 2026.
 
 **[Live Dashboard](https://dashboard-policy-engine.vercel.app)**
 
 ## Scenarios
 
+Calibrated to conditions as of August 2026 (Ofgem Q3 2026 cap £1,663 on the new typical-consumption basis; Brent ~$85/bbl after a ~$109 peak). Anchors: observed path (low), Goldman Sachs extended Hormuz-closure Brent >$100 (central), Goldman extreme-adverse / Oxford Economics prolonged-war (high).
+
 | Scenario | Energy cap | Fuel price | Food price | CPI |
 |---|---|---|---|---|
-| Low | +30% | +20% | +2.0% | +1.5pp |
-| Central | +75% | +50% | +4.5% | +3.5pp |
-| High | +150% | +100% | +6.4% | +6.0pp |
+| Low | +15% | +20% | +2.0% | +1.0pp |
+| Central | +45% | +45% | +4.0% | +2.5pp |
+| High | +90% | +80% | +6.5% | +4.5pp |
 
 ## How it works
 
@@ -19,22 +21,26 @@ The pipeline applies price increases through four transmission channels and comp
 1. **Energy** — Higher domestic bills via energy price cap increase
 2. **Fuel** — Petrol/diesel price increase
 3. **Food** — Food price inflation from energy input costs
-4. **Benefit uprating lag** — CPI-uprated benefits lag 12 months behind actual inflation
+4. **Benefit uprating lag** — CPI-linked benefits (state pension excluded: triple lock) erode in real terms until the next April uprating; an expected-lag factor of 0.5 is applied
 
-Results are broken down by income decile, region, tenure type, and household composition.
+Poverty is measured as people below 60% of median equivalised household net income (BHC). Fuel poverty uses the indicative 10%-of-income ratio (not the official LILEE metric). Results are broken down by income decile, region, country, tenure type, and household composition.
 
 ## Policy responses evaluated
+
+Aligned to the live Autumn Budget 2026 decisions where applicable:
 
 - Energy Price Guarantee (cap subsidy)
 - Flat energy rebate (£400/household)
 - Council tax rebate (bands A–D)
-- Universal Credit uplift (£25/week)
-- Fuel duty cut (5p/litre)
-- Means-tested cost-of-living payment (£650)
+- Universal Credit uplift (£20/week, matching the 2020-21 uplift)
+- Fuel duty cut extension (5p/litre, scaled by household fuel spending; the current cut expires 31 Dec 2026)
+- Means-tested cost-of-living payment (£650, keyed to means-tested benefit receipt)
 - Accelerated benefit uprating
+- Electricity VAT cut extension (5% → 0%, enacted Oct 2026–Mar 2027; modelled full-year)
 - Social tariff
+- Combined package
 
-Each policy is assessed on fiscal cost, targeting efficiency (share reaching bottom quintiles), and fuel poverty reduction.
+Each policy is assessed on fiscal cost (unclipped government outlay), targeting efficiency (share reaching bottom quintiles), and fuel poverty reduction.
 
 ## Project structure
 

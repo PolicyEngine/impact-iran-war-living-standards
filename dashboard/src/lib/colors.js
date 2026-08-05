@@ -53,15 +53,16 @@ export const policyColors = {
   fuel_duty_cut: "#6B7280",    // gray-500
   means_tested: "#4B5563",     // gray-600
   accelerated_uprating: "#9CA3AF", // gray-400
+  elec_vat_cut: "#4FD1C5",     // primary-300
   social_tariff: "#319795",       // primary-500
-  combined: "#1D4044",         // primary-900
+  combined: "#344054",         // gray-700
 };
 
-// Quintile colors — darkest for poorest, lightest for richest
+// Quintile colors — darkest for the lowest-income quintile, lightest for the highest
 export const quintileColors = {
-  "Q1 (poorest)": "#1D4044",   // primary-900
+  "Q1 (lowest income)": "#1D4044",   // primary-900
   "Q2": "#285E61",             // primary-700
   "Q3": "#2C7A7B",            // primary-600
   "Q4": "#9CA3AF",            // gray-400
-  "Q5 (richest)": "#D1D5DB",  // gray-300
+  "Q5 (highest income)": "#D1D5DB",  // gray-300
 };

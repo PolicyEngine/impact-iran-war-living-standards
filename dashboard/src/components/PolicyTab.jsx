@@ -14,8 +14,8 @@ import {
   YAxis,
 } from "recharts";
 import SectionHeading from "./SectionHeading";
-import { getPolicyComparison } from "../lib/dataHelpers";
-import { formatCurrency, formatBn, formatPct } from "../lib/formatters";
+import { getPolicyComparison, POLICY_KEYS, POLICY_LABELS } from "../lib/dataHelpers";
+import { formatCurrency, formatBn } from "../lib/formatters";
 import ChartLogo from "./ChartLogo";
 import QuintileTargetingChart from "./QuintileTargetingChart";
 import { getScenarioNarrative, getScenarioOptions } from "../lib/scenarioContent";
@@ -25,31 +25,9 @@ const AXIS_STYLE = {
   fill: colors.gray[500],
 };
 
-const POLICY_KEYS = [
-  "epg",
-  "flat_rebate",
-  "ct_rebate",
-  "uc_uplift",
-  "fuel_duty_cut",
-  "means_tested",
-  "accelerated_uprating",
-  "social_tariff",
-];
-
-const POLICY_LABELS = {
-  epg: "Energy Price Guarantee",
-  flat_rebate: "Flat rebate",
-  ct_rebate: "Council Tax rebate",
-  uc_uplift: "UC uplift",
-  fuel_duty_cut: "Fuel duty cut",
-  means_tested: "Means-tested payment",
-  accelerated_uprating: "Accelerated uprating",
-  social_tariff: "Social tariff",
-};
-
 const POLICY_DESCRIPTIONS = {
   epg: {
-    mechanism: "Caps the domestic energy-bill increase at 10% of each household's pre-shock energy bill.",
+    mechanism: "Caps the domestic energy-bill increase at 10% of each household's pre-shock energy bill — a stylised version of the 2022 Energy Price Guarantee, which froze the unit-price level rather than the percentage increase. Ministers have ruled out repeating universal 2022-scale support, favouring targeted help, so this is modelled as the ruled-out benchmark the targeted options are judged against.",
     model: "The model treats this as a direct reduction in the household energy bill, so it can reduce both residual household impact and fuel poverty.",
   },
   flat_rebate: {
@@ -61,16 +39,20 @@ const POLICY_DESCRIPTIONS = {
     model: "The model treats this as targeted cash support. Eligibility is based on the household council tax band in the microsimulation.",
   },
   uc_uplift: {
-    mechanism: "Increases Universal Credit by £25 per week for UC-recipient households.",
-    model: "The model annualises this to £1,300 for households receiving UC and treats it as income support during the selected shock scenario.",
+    mechanism: "Increases Universal Credit by £20 per week for UC-recipient households, matching the 2020-21 covid uplift.",
+    model: "The model annualises this to £1,040 for households receiving UC and treats it as income support during the selected shock scenario.",
   },
   fuel_duty_cut: {
-    mechanism: "Cuts fuel duty by 5p per litre.",
-    model: "The model applies this as a £60 annual transport-fuel saving per household. It reduces residual household impact but does not directly lower domestic energy bills.",
+    mechanism: "Extends the existing 5p per litre fuel duty cut (currently legislated to expire 31 December 2026) through the shock period.",
+    model: "The model applies an average £60 annual transport-fuel saving, scaled by each household's imputed fuel spending so low-mileage and non-driving households receive less.",
   },
   means_tested: {
-    mechanism: "Pays £650 to households with annual net income below £25,000.",
-    model: "The model treats this as income support for low-income households in the selected shock scenario.",
+    mechanism: "Pays £650 to households receiving a means-tested benefit (UC, Pension Credit or income-related legacy benefits), mirroring the 2022 Cost of Living Payment.",
+    model: "The model treats this as income support for benefit-recipient households in the selected shock scenario.",
+  },
+  elec_vat_cut: {
+    mechanism: "Extends the electricity VAT cut (5% to 0%) announced in July 2026 — currently legislated for October 2026 to March 2027 — for a full year.",
+    model: "The model removes the 5% VAT component from each household's post-shock electricity bill, directly reducing energy costs and fuel poverty.",
   },
   accelerated_uprating: {
     mechanism: "Updates benefit levels immediately for the shock-driven inflation increase instead of waiting for the usual uprating cycle.",
@@ -79,6 +61,10 @@ const POLICY_DESCRIPTIONS = {
   social_tariff: {
     mechanism: "Offers a discounted energy tariff to low-income and vulnerable households, halving the energy price shock for those on Universal Credit or with household income below \u00A320,000.",
     model: "The model applies a 50% reduction in the energy price shock for eligible households. This directly reduces both residual household impact and fuel poverty, and is the most progressive policy option modelled.",
+  },
+  combined: {
+    mechanism: "Applies all policies above together (excluding the social tariff).",
+    model: "Household benefit is capped at the size of the shock, but the fiscal cost reflects the full unclipped government outlay of every component policy.",
   },
 };
 
@@ -283,7 +269,7 @@ export default function PolicyTab({ data }) {
               </div>
               <div className="mt-2 text-3xl font-bold tracking-tight text-slate-900">
                 {policy.fuel_poverty_reduction_pp != null
-                  ? formatPct(policy.fuel_poverty_reduction_pp)
+                  ? `${policy.fuel_poverty_reduction_pp.toFixed(1)}pp`
                   : "--"}
               </div>
               <div className="mt-2 text-sm leading-6 text-slate-500">
@@ -380,7 +366,7 @@ export default function PolicyTab({ data }) {
                           dataKey="pct_losers"
                           name="Worse off"
                           stackId="shares"
-                          fill={colors.error || "#dc2626"}
+                          fill="#dc2626"
                         />
                       </ComposedChart>
                     </ResponsiveContainer>

@@ -1,21 +1,21 @@
 export const SCENARIO_CONTENT = {
   low_shock: {
     shortLabel: "Low",
-    selectorLabel: "Low (+30% energy, +20% fuel, +1.5pp CPI)",
+    selectorLabel: "Low (+15% energy, +20% fuel, +1pp CPI)",
     description:
-      "A moderate energy price shock: +30% energy price cap, +20% fuel costs, +2% food prices, and a 1.5 percentage point CPI increase, sustained for 12 months. Calibrated to a short-duration supply disruption.",
+      "Conflict de-escalation from the August 2026 position: energy cap +15% (in line with the observed +13% July 2026 rise and Cornwall Insight's Q4 forecast), fuel +20% (roughly today's pump prices vs late 2025), +2% food prices, and a 1 percentage point CPI addition, sustained for 12 months.",
   },
   central_shock: {
     shortLabel: "Central",
-    selectorLabel: "Central (+75% energy, +50% fuel, +3.5pp CPI)",
+    selectorLabel: "Central (+45% energy, +45% fuel, +2.5pp CPI)",
     description:
-      "A central energy price shock: +75% energy price cap, +50% fuel costs, +4.5% food prices, and a 3.5 percentage point CPI increase, sustained for 12 months. The benefit uprating lag compounds direct price effects for benefit-reliant households.",
+      "A sustained Strait of Hormuz constraint keeping Brent above $100/bbl through 2026 (Goldman Sachs closure scenario): energy cap +45%, fuel +45%, +4% food prices, and a 2.5 percentage point CPI addition, sustained for 12 months. The benefit uprating lag compounds direct price effects for benefit-reliant households.",
   },
   severe_shock: {
     shortLabel: "High",
-    selectorLabel: "High (+150% energy, +100% fuel, +6pp CPI)",
+    selectorLabel: "High (+90% energy, +80% fuel, +4.5pp CPI)",
     description:
-      "A severe energy price shock: +150% energy price cap, +100% fuel costs, +6.4% food prices, and a 6 percentage point CPI increase, sustained for 12 months. Calibrated to a major and sustained disruption to oil and gas supply routes.",
+      "An extended full closure / prolonged war (Goldman extreme-adverse Brent >$115-120; Oxford Economics prolonged-war scenario): energy cap +90%, fuel +80%, +6.5% food prices, and a 4.5 percentage point CPI addition, sustained for 12 months.",
   },
 };
 
