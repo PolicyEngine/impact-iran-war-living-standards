@@ -5,7 +5,7 @@ Middle East conflict (US/Israel-Iran war from late February 2026, with recurrent
 Strait of Hormuz disruption). Sources are cited inline.
 """
 
-YEAR = 2026
+YEAR = 2027  # 2027-28 tax year — the year the Autumn Budget 2026 decisions apply to
 
 # Ofgem default tariff cap, 1 Jul-30 Sep 2026, typical dual-fuel direct-debit
 # household under Ofgem's NEW Typical Domestic Consumption Values (revised

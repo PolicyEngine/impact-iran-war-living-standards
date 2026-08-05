@@ -1,6 +1,6 @@
 # Impact of Energy Price Shocks on UK Living Standards
 
-Microsimulation-based analysis of how energy price rises from the ongoing Middle East conflict (active since late February 2026, with recurrent Strait of Hormuz disruption) affect UK households in 2026-27 — modelling impacts through energy bills, fuel costs, food inflation, and benefit uprating lag across ~32 million households using [PolicyEngine UK](https://policyengine.org).
+Microsimulation-based analysis of how energy price rises from the ongoing Middle East conflict (active since late February 2026, with recurrent Strait of Hormuz disruption) affect UK households in 2027-28 — modelling impacts through energy bills, fuel costs, food inflation, and benefit uprating lag across ~32 million households using [PolicyEngine UK](https://policyengine.org).
 
 **[Live Dashboard](https://uk-energy-shock-impact.vercel.app)**
 
@@ -16,7 +16,7 @@ Calibrated to conditions as of August 2026 (Ofgem Q3 2026 cap £1,663 on the new
 
 ## How it works
 
-The pipeline applies price increases through four transmission channels and computes household-level impacts for the 2026-27 tax year:
+The pipeline applies price increases through four transmission channels and computes household-level impacts for the 2027-28 tax year:
 
 1. **Energy** — Higher domestic bills via energy price cap increase
 2. **Fuel** — Petrol/diesel price increase

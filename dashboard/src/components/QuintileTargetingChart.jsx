@@ -62,7 +62,7 @@ export default function QuintileTargetingChart({ data, scenarioKey }) {
     <div className="border-t border-slate-200 pt-10">
       <SectionHeading
         title="Policy targeting by income quintile"
-        description="Share of each policy's total 2026-27 spending going to each income quintile (fifth of households, Q1 = lowest income). A flat universal payment spreads roughly 20% to each quintile; means-tested and benefit-linked policies concentrate spending on the lowest-income quintiles, delivering more protection per pound of fiscal cost. This targeting is the key trade-off in the Autumn Budget decisions between universal support (like the electricity VAT cut) and targeted support (like the means-tested payment or social tariff)."
+        description="Share of each policy's total 2027-28 spending going to each income quintile (fifth of households, Q1 = lowest income). A flat universal payment spreads roughly 20% to each quintile; means-tested and benefit-linked policies concentrate spending on the lowest-income quintiles, delivering more protection per pound of fiscal cost. This targeting is the key trade-off in the Autumn Budget decisions between universal support (like the electricity VAT cut) and targeted support (like the means-tested payment or social tariff)."
       />
       <div className="section-card">
         <div style={{ height: chartHeight }} className="w-full">
