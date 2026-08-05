@@ -160,21 +160,37 @@ const TENURE_LABELS = {
   OWNED_WITH_MORTGAGE: "Owned with mortgage",
 };
 
-function ExampleHousehold({ data, decileData }) {
-  const [decile, setDecile] = useState(3);
-  const [hasBenefits, setHasBenefits] = useState(true);
-  const [hasCar, setHasCar] = useState(true);
+function NumberInput({ label, value, onChange }) {
+  return (
+    <label className="flex flex-col gap-1 text-sm text-slate-600">
+      {label}
+      <input
+        type="number"
+        min="0"
+        className="w-40 rounded-lg border border-slate-300 px-3 py-1.5 text-sm"
+        value={value}
+        onChange={(e) => onChange(Math.max(0, Number(e.target.value)))}
+      />
+    </label>
+  );
+}
 
-  const baselineRow = data?.baseline?.by_decile?.find((d) => d.decile === decile);
-  const scenarioRow = decileData.find((d) => d.decile === decile);
-  if (!baselineRow || !scenarioRow) return null;
+function ExampleHousehold({ data, scenario }) {
+  const [income, setIncome] = useState(35000);
+  const [energyBill, setEnergyBill] = useState(1700);
+  const [fuelSpend, setFuelSpend] = useState(1300);
+  const [foodSpend, setFoodSpend] = useState(5000);
+  const [benefitIncome, setBenefitIncome] = useState(0);
 
-  const energy = scenarioRow.energy;
-  const fuel = hasCar ? scenarioRow.fuel : 0;
-  const food = scenarioRow.food;
-  const uprating = hasBenefits ? scenarioRow.benefit_uprating_lag : 0;
+  const params = data?.scenarios?.[scenario]?.params;
+  if (!params) return null;
+
+  const energy = energyBill * (params.cap_increase_pct / 100);
+  const fuel = fuelSpend * (params.fuel_pct / 100);
+  const food = foodSpend * (params.food_increase_pct / 100);
+  const uprating = benefitIncome * (params.cpi_increase_pp / 100) * 0.5;
   const total = energy + fuel + food + uprating;
-  const pctIncome = (total / baselineRow.mean_net_income) * 100;
+  const pctIncome = income > 0 ? (total / income) * 100 : null;
 
   const rows = [
     { label: "Higher energy bills", value: energy },
@@ -188,53 +204,34 @@ function ExampleHousehold({ data, decileData }) {
       <div className="border-t border-slate-200 pt-10">
         <SectionHeading
           title="What would this mean for a household like yours?"
-          description="Pick an income decile and household characteristics to see the estimated 2026-27 cost for a typical household in that group under the selected scenario. Figures are decile averages from the microsimulation — an individual household's cost depends on its actual energy use, mileage, and benefit income."
+          description="Enter your household's details to see the estimated extra cost under the selected scenario, using the same shock parameters as the full microsimulation: your energy bill scales with the cap increase, fuel and food spending with the price rises, and any CPI-linked benefit income loses real value until the next uprating. Set a field to zero if it doesn't apply — for example fuel if you don't run a car, or benefit income if you don't receive any."
         />
       </div>
       <div className="section-card">
-        <div className="flex flex-wrap items-center gap-6">
-          <label className="flex items-center gap-2 text-sm text-slate-600">
-            Income decile (1 = lowest income)
-            <select
-              className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm"
-              value={decile}
-              onChange={(e) => setDecile(Number(e.target.value))}
-            >
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((d) => (
-                <option key={d} value={d}>{d}</option>
-              ))}
-            </select>
-          </label>
-          <label className="flex items-center gap-2 text-sm text-slate-600">
-            <input
-              type="checkbox"
-              checked={hasBenefits}
-              onChange={(e) => setHasBenefits(e.target.checked)}
-            />
-            Receives CPI-linked benefits (UC, child benefit, PIP, etc.)
-          </label>
-          <label className="flex items-center gap-2 text-sm text-slate-600">
-            <input
-              type="checkbox"
-              checked={hasCar}
-              onChange={(e) => setHasCar(e.target.checked)}
-            />
-            Runs a car
-          </label>
+        <div className="flex flex-wrap items-end gap-6">
+          <NumberInput label="Annual net income (£)" value={income} onChange={setIncome} />
+          <NumberInput label="Annual energy bill (£)" value={energyBill} onChange={setEnergyBill} />
+          <NumberInput label="Annual petrol/diesel spend (£)" value={fuelSpend} onChange={setFuelSpend} />
+          <NumberInput label="Annual food spend (£)" value={foodSpend} onChange={setFoodSpend} />
+          <NumberInput
+            label="Annual CPI-linked benefit income (£)"
+            value={benefitIncome}
+            onChange={setBenefitIncome}
+          />
         </div>
 
         <div className="mt-6 grid gap-6 md:grid-cols-2">
           <div>
             <div className="text-xs font-medium uppercase tracking-[0.08em] text-slate-500">
-              Estimated extra cost in 2026-27
+              Estimated extra cost for your household
             </div>
             <div className="mt-2 text-4xl font-bold tracking-tight" style={{ color: colors.primary[800] }}>
               {formatCurrency(total)}
             </div>
             <div className="mt-1 text-sm text-slate-500">
-              {pctIncome.toFixed(1)}% of this group{"’"}s average net income
-              ({formatCurrency(baselineRow.mean_net_income)}/yr); typical baseline energy
-              bill {formatCurrency(baselineRow.mean_energy_spend)}/yr
+              {pctIncome != null ? `${pctIncome.toFixed(1)}% of your net income. ` : ""}
+              UK typical values for reference: energy bill ~{formatCurrency(1663)}/yr (Ofgem cap),
+              fuel ~{formatCurrency(1300)}/yr, food ~{formatCurrency(5000)}/yr.
             </div>
           </div>
           <div>
@@ -317,7 +314,7 @@ function DistributionalBreakdown({ decileData, regionalData, countryData, tenure
       <div className="border-t border-slate-200 pt-10">
         <SectionHeading
           title="Distributional impact"
-          description="Who bears the cost. Each bar shows the average household cost in 2026-27, stacked by transmission channel, for a different slice of the population: income decile (1 = lowest income, 10 = highest), UK region, country, housing tenure, or household type. Higher-income households pay more in cash terms because they consume more energy and fuel — but as a share of income the burden falls hardest on the lowest deciles, who spend roughly three times as much of their budget on energy. Pensioner and benefit-reliant households also carry the uprating-lag loss that working households avoid."
+          description="Who bears the cost. Each bar shows the average household cost in 2027-28, stacked by transmission channel, for a different slice of the population: income decile (1 = lowest income, 10 = highest), UK region, country, housing tenure, or household type. Higher-income households pay more in cash terms because they consume more energy and fuel — but as a share of income the burden falls hardest on the lowest deciles, who spend roughly three times as much of their budget on energy. Pensioner and benefit-reliant households also carry the uprating-lag loss that working households avoid."
         />
       </div>
 
@@ -443,7 +440,6 @@ export default function ScenariosTab({ data }) {
     const severe = scen("severe_shock");
     const nHH = data?.baseline?.n_households_m;
     if (!low || !central || !severe || !nHH) return [];
-    const fpMillions = (s) => ((s.summary.fp_rate_shocked_pct / 100) * nHH).toFixed(1);
     return [
       {
         metric: "Extra energy bill per household per year",
@@ -456,16 +452,7 @@ export default function ScenariosTab({ data }) {
         note: "Our low scenario matches the observed cap rise; the RF sustained case sits between our low and central.",
       },
       {
-        metric: "Households in fuel poverty (10%-of-income indicator)",
-        external: [
-          { label: "End Fuel Poverty Coalition: ~13m UK households >10% after the July rise (income after housing costs)", url: "https://www.endfuelpoverty.org.uk/government-urged-to-prepare-emergency-energy-bill-support/" },
-          { label: "NEA: over 10 million after the July cap rise", url: "https://www.nea.org.uk/about-us/energy-crisis/energy-crisis-timeline/" },
-        ],
-        ours: `${fpMillions(low)}m (low) to ${fpMillions(central)}m (central)`,
-        note: "Definitions differ: our indicator uses net income before housing costs, so our counts are lower than the after-housing-costs campaign figures.",
-      },
-      {
-        metric: "Pushed into poverty in 2026-27",
+        metric: "Pushed into poverty in 2027-28",
         external: [
           { label: "NIESR: 200,000 additional UK households", url: "https://www.gbnews.com/money/iran-war-british-households-poverty-cost-of-living" },
         ],
@@ -481,14 +468,6 @@ export default function ScenariosTab({ data }) {
         ],
         ours: `+${low.params.cpi_increase_pp}pp (low), +${central.params.cpi_increase_pp}pp (central), +${severe.params.cpi_increase_pp}pp (high)`,
         note: "Our low matches the OBR/BoE view of the shock as it stands; central and high match NIESR's pessimistic range.",
-      },
-      {
-        metric: "Total household cost (all channels)",
-        external: [
-          { label: "No published aggregate estimate exists for this metric", url: null },
-        ],
-        ours: `£${low.summary.total_impact_bn}bn (low) to £${severe.summary.total_impact_bn}bn (high) per year`,
-        note: "For scale: the 2022-23 Energy Price Guarantee cost ~£23bn, and ministers ruled out repeating ~£40bn universal support.",
       },
     ];
   }, [data]);
@@ -510,7 +489,7 @@ export default function ScenariosTab({ data }) {
       {/* Scenario selector */}
       <SectionHeading
         title="Select scenario"
-        description="Choose a conflict path to see its estimated impact on UK households over the 2026-27 tax year. Each scenario applies a different magnitude of energy, fuel, food, and inflation shock, sustained for 12 months."
+        description="Choose a conflict path to see its estimated impact on UK households over the 2027-28 tax year. Each scenario applies a different magnitude of energy, fuel, food, and inflation shock, sustained for 12 months."
       />
       <ScenarioSelector data={data} selected={scenario} onSelect={setScenario} />
 
@@ -528,7 +507,7 @@ export default function ScenariosTab({ data }) {
               : "--"}
           </div>
           <div className="mt-1 text-sm text-slate-500">
-            Additional cost per household in 2026-27 under {scenarioLabel.toLowerCase()}
+            Additional cost per household in 2027-28 under {scenarioLabel.toLowerCase()}
           </div>
         </div>
         <div className="metric-card">
@@ -541,7 +520,7 @@ export default function ScenariosTab({ data }) {
               : "--"}
           </div>
           <div className="mt-1 text-sm text-slate-500">
-            Percentage point increase in the 10%-of-income fuel poverty indicator in 2026-27
+            Percentage point increase in the 10%-of-income fuel poverty indicator in 2027-28
           </div>
         </div>
         <div className="metric-card">
@@ -554,7 +533,7 @@ export default function ScenariosTab({ data }) {
               : "--"}
           </div>
           <div className="mt-1 text-sm text-slate-500">
-            People pushed below 60% of median equivalised income in 2026-27
+            People pushed below 60% of median equivalised income in 2027-28
           </div>
         </div>
       </div>
@@ -562,7 +541,7 @@ export default function ScenariosTab({ data }) {
       {/* ================================================================ */}
       {/* EXAMPLE HOUSEHOLD                                                 */}
       {/* ================================================================ */}
-      <ExampleHousehold data={data} decileData={decileData} />
+      <ExampleHousehold data={data} scenario={scenario} />
 
       {/* ================================================================ */}
       {/* CHANNEL DECOMPOSITION                                             */}
@@ -570,7 +549,7 @@ export default function ScenariosTab({ data }) {
       <div className="border-t border-slate-200 pt-10">
         <SectionHeading
           title="Cost breakdown by transmission channel"
-          description="How the average household cost in 2026-27 splits across the four routes the shock reaches households. Energy: higher gas and electricity bills as the Ofgem price cap passes wholesale prices through. Fuel: petrol and diesel at the pump, scaled by how much each income decile typically spends on motoring. Food: energy is a major input to food production and distribution, so grocery prices follow with a lag. Benefit uprating lag: CPI-linked benefits were fixed from September 2025 prices, so their real value erodes during the shock until the April 2027 uprating — a loss that only affects benefit-recipient households. Direct energy bills are usually the largest channel, but the mix varies by scenario severity."
+          description="How the average household cost in 2027-28 splits across the four routes the shock reaches households. Energy: higher gas and electricity bills as the Ofgem price cap passes wholesale prices through. Fuel: petrol and diesel at the pump, scaled by how much each income decile typically spends on motoring. Food: energy is a major input to food production and distribution, so grocery prices follow with a lag. Benefit uprating lag: CPI-linked benefits were fixed from September 2025 prices, so their real value erodes during the shock until the April 2027 uprating — a loss that only affects benefit-recipient households. Direct energy bills are usually the largest channel, but the mix varies by scenario severity."
         />
       </div>
 

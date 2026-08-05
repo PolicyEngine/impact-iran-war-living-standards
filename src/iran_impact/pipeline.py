@@ -208,9 +208,9 @@ def _build_benefit_income(sim, year=YEAR):
 
 def run_baseline(year=YEAR):
     """Run baseline simulation and return dict of household-level arrays."""
-    from policyengine_uk import Microsimulation
+    from policyengine.tax_benefit_models.uk import managed_microsimulation
 
-    sim = Microsimulation()
+    sim = managed_microsimulation()
 
     electricity = _vals(sim, "electricity_consumption", year)
     energy = electricity + _vals(sim, "gas_consumption", year)

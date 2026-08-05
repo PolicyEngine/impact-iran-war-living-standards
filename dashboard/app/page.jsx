@@ -74,18 +74,18 @@ function Dashboard() {
               rel="noreferrer"
               className="underline"
             >
-              Bloomberg on the Burnham government&apos;s electricity VAT cut
+              Bloomberg
             </a>{" "}
-            and the{" "}
+            on the Burnham government&apos;s electricity VAT cut and the{" "}
             <a
               href="https://www.resolutionfoundation.org/press-releases/poorest-households-are-set-to-see-inflation-nearly-a-third-higher-than-the-richest/"
               target="_blank"
               rel="noreferrer"
               className="underline"
             >
-              Resolution Foundation&apos;s analysis of who the energy shock hits hardest
+              Resolution Foundation
             </a>
-            .
+            {"’"}s analysis of who the energy shock hits hardest.
           </p>
         </div>
 
@@ -121,7 +121,11 @@ function Dashboard() {
             >
               PolicyEngine/impact-iran-war-living-standards
             </a>
-            . Built with policyengine-uk 2.89.4 and policyengine-uk-data 1.11.1.
+            . Built with{" "}
+            <a href="https://github.com/PolicyEngine/policyengine.py" target="_blank" rel="noreferrer">
+              policyengine.py
+            </a>{" "}
+            5.0.1.
           </p>
         </footer>
       </main>

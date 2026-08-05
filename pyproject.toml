@@ -16,12 +16,10 @@ dependencies = [
 
 [project.optional-dependencies]
 uk = [
-  "policyengine-uk==2.89.4",
-  "policyengine-uk-data==1.11.1",
+  "policyengine==5.0.1",
 ]
 simulation = [
-  "policyengine-uk==2.89.4",
-  "policyengine-uk-data==1.11.1",
+  "policyengine==5.0.1",
 ]
 dev = [
   "pytest>=8.0",

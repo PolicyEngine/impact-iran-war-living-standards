@@ -24,7 +24,7 @@ export default function MethodologyTab({ data }) {
           paths for the conflict (de-escalation, sustained disruption, prolonged war),
           each transmitted to households through four channels: higher energy bills,
           increased fuel costs, food price inflation, and the real-value loss from
-          delayed benefit uprating. The analysis covers the 2026-27 tax year. The model
+          delayed benefit uprating. The analysis covers the 2027-28 tax year. The model
           is built on{" "}
           <a href="https://policyengine.org" target="_blank" rel="noreferrer" className="underline">PolicyEngine UK</a>{" "}
           microsimulation using the Enhanced Family Resources Survey, covering approximately
@@ -147,8 +147,9 @@ export default function MethodologyTab({ data }) {
             factor is the expected fraction of the year a mid-year shock goes un-indexed
             (rather than the 12-month maximum). The state pension is excluded because it
             is uprated by the triple lock (+4.8% via earnings in April 2026), not CPI.
-            The April 2027 uprating will use September 2026 CPI, so under sustained
-            conflict inflation this channel unwinds from April 2027.
+            For the 2027-28 year, the April 2027 uprating is set from September 2026
+            CPI, so the channel captures conflict inflation running ahead of that
+            indexation point while the shock is sustained.
           </div>
         </div>
       </div>
