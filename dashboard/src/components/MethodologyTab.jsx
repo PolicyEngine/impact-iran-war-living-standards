@@ -254,7 +254,7 @@ export default function MethodologyTab({ data }) {
             <li>Fuel cost increases from higher oil prices (decile-average spending estimates from ONS)</li>
             <li>Second-round food price inflation from energy input costs (decile-average spending estimates from ONS/DEFRA)</li>
             <li>Real-value loss of means-tested benefits between uprating dates (household-level benefit data from PolicyEngine)</li>
-            <li>Distributional analysis by income decile, region, country, tenure, and household type</li>
+            <li>Distributional analysis by income quintile, country, tenure, and household type</li>
             <li>Fuel poverty impact using the indicative 10%-of-income ratio</li>
             <li>Ten policy responses with fiscal cost and targeting analysis, including the enacted electricity VAT cut and fuel duty extension, a social tariff, and a combined package</li>
           </ul>

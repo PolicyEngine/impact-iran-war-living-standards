@@ -25,14 +25,14 @@ export function getScenario(data, scenarioKey) {
 }
 
 /**
- * Decile breakdown — components use `avg_cost` as the bar dataKey.
+ * Quintile breakdown — components use `avg_cost` as the bar dataKey.
  */
-export function getDecileBreakdown(data, scenarioKey) {
-  const raw = data?.scenarios?.[scenarioKey]?.by_decile || [];
-  return raw.map((d) => ({
-    ...d,
-    avg_cost: d.mean_impact,
-    label: `${d.decile}`,
+export function getQuintileBreakdown(data, scenarioKey) {
+  const raw = data?.scenarios?.[scenarioKey]?.by_quintile || [];
+  return raw.map((q) => ({
+    ...q,
+    avg_cost: q.mean_impact,
+    label: `Q${q.quintile}`,
   }));
 }
 
@@ -139,23 +139,21 @@ export const POLICY_LABELS = {
 /**
  * Quintile shares — what % of each policy's total spending goes to each
  * quintile. Uses the pipeline's household-weighted `benefit_share_pct` per
- * decile, so it is consistent with the `targeting_bottom3` statistic.
+ * quintile, so it is consistent with the `targeting_bottom40` statistic.
  */
 export function getQuintileShares(data, scenarioKey) {
   const pr = data?.policy_responses?.[scenarioKey];
   if (!pr) return [];
   return POLICY_KEYS.filter((k) => k !== "combined").map(key => {
-    const deciles = pr[key]?.by_decile || [];
-    if (deciles.length < 10) return null;
-    const share = (i) => deciles[i].benefit_share_pct;
-    const quintile = (i) => +(share(2 * i) + share(2 * i + 1)).toFixed(1);
+    const quintiles = pr[key]?.by_quintile || [];
+    if (quintiles.length < 5) return null;
     return {
       policy: POLICY_LABELS[key] || key,
-      "Q1 (lowest income)": quintile(0),
-      "Q2": quintile(1),
-      "Q3": quintile(2),
-      "Q4": quintile(3),
-      "Q5 (highest income)": quintile(4),
+      "Q1 (lowest income)": quintiles[0].benefit_share_pct,
+      "Q2": quintiles[1].benefit_share_pct,
+      "Q3": quintiles[2].benefit_share_pct,
+      "Q4": quintiles[3].benefit_share_pct,
+      "Q5 (highest income)": quintiles[4].benefit_share_pct,
     };
   }).filter(Boolean);
 }
@@ -178,7 +176,7 @@ export function getPolicyComparison(data, scenarioKey) {
       ...p,
       avg_household_benefit: p.avg_benefit_per_hh,
       fuel_poverty_reduction_pp: fpBefore - fpAfter,
-      targeting_bottom3: p.targeting_bottom3,
+      targeting_bottom40: p.targeting_bottom40,
     };
   };
 
