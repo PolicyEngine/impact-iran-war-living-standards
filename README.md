@@ -1,6 +1,6 @@
-# Impact of Energy Price Shocks on UK Living Standards
+# Impact of the Middle East War on UK Living Standards
 
-Microsimulation-based analysis of how energy price rises from the ongoing Middle East conflict (active since late February 2026, with recurrent Strait of Hormuz disruption) affect UK households in 2027-28 — modelling impacts through energy bills, fuel costs, food inflation, and benefit uprating lag across ~32 million households using [PolicyEngine UK](https://policyengine.org).
+Microsimulation-based analysis of how energy price rises from the ongoing Middle East conflict (active since late February 2026, with recurrent Strait of Hormuz disruption) affect UK households in 2027-28 — modelling impacts through energy bills, fuel costs, food inflation, and benefit uprating lag across ~32 million households using [policyengine.py](https://github.com/PolicyEngine/policyengine.py) 5.0.1.
 
 **[Live Dashboard](https://uk-energy-shock-impact.vercel.app)**
 
@@ -71,7 +71,7 @@ cd dashboard && npm install && npm run dev
 
 ## Data sources
 
-- [PolicyEngine UK](https://policyengine.org) microsimulation (Enhanced FRS 2023–24)
+- [policyengine.py](https://github.com/PolicyEngine/policyengine.py) 5.0.1 managed UK microsimulation (Enhanced FRS 2023–24)
 - ONS Consumer Price Index weights
 - Ofgem energy price cap data
 - OBR fiscal forecasts
