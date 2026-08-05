@@ -160,6 +160,109 @@ const TENURE_LABELS = {
   OWNED_WITH_MORTGAGE: "Owned with mortgage",
 };
 
+function ExampleHousehold({ data, decileData }) {
+  const [decile, setDecile] = useState(3);
+  const [hasBenefits, setHasBenefits] = useState(true);
+  const [hasCar, setHasCar] = useState(true);
+
+  const baselineRow = data?.baseline?.by_decile?.find((d) => d.decile === decile);
+  const scenarioRow = decileData.find((d) => d.decile === decile);
+  if (!baselineRow || !scenarioRow) return null;
+
+  const energy = scenarioRow.energy;
+  const fuel = hasCar ? scenarioRow.fuel : 0;
+  const food = scenarioRow.food;
+  const uprating = hasBenefits ? scenarioRow.benefit_uprating_lag : 0;
+  const total = energy + fuel + food + uprating;
+  const pctIncome = (total / baselineRow.mean_net_income) * 100;
+
+  const rows = [
+    { label: "Higher energy bills", value: energy },
+    { label: "Higher fuel costs", value: fuel },
+    { label: "Higher food prices", value: food },
+    { label: "Lost real benefit value (uprating lag)", value: uprating },
+  ];
+
+  return (
+    <>
+      <div className="border-t border-slate-200 pt-10">
+        <SectionHeading
+          title="What would this mean for a household like yours?"
+          description="Pick an income decile and household characteristics to see the estimated 2026-27 cost for a typical household in that group under the selected scenario. Figures are decile averages from the microsimulation — an individual household's cost depends on its actual energy use, mileage, and benefit income."
+        />
+      </div>
+      <div className="section-card">
+        <div className="flex flex-wrap items-center gap-6">
+          <label className="flex items-center gap-2 text-sm text-slate-600">
+            Income decile (1 = lowest income)
+            <select
+              className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm"
+              value={decile}
+              onChange={(e) => setDecile(Number(e.target.value))}
+            >
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((d) => (
+                <option key={d} value={d}>{d}</option>
+              ))}
+            </select>
+          </label>
+          <label className="flex items-center gap-2 text-sm text-slate-600">
+            <input
+              type="checkbox"
+              checked={hasBenefits}
+              onChange={(e) => setHasBenefits(e.target.checked)}
+            />
+            Receives CPI-linked benefits (UC, child benefit, PIP, etc.)
+          </label>
+          <label className="flex items-center gap-2 text-sm text-slate-600">
+            <input
+              type="checkbox"
+              checked={hasCar}
+              onChange={(e) => setHasCar(e.target.checked)}
+            />
+            Runs a car
+          </label>
+        </div>
+
+        <div className="mt-6 grid gap-6 md:grid-cols-2">
+          <div>
+            <div className="text-xs font-medium uppercase tracking-[0.08em] text-slate-500">
+              Estimated extra cost in 2026-27
+            </div>
+            <div className="mt-2 text-4xl font-bold tracking-tight" style={{ color: colors.primary[800] }}>
+              {formatCurrency(total)}
+            </div>
+            <div className="mt-1 text-sm text-slate-500">
+              {pctIncome.toFixed(1)}% of this group{"’"}s average net income
+              ({formatCurrency(baselineRow.mean_net_income)}/yr); typical baseline energy
+              bill {formatCurrency(baselineRow.mean_energy_spend)}/yr
+            </div>
+          </div>
+          <div>
+            <table className="data-table">
+              <tbody>
+                {rows.map((r) => (
+                  <tr key={r.label}>
+                    <td className="text-slate-600">{r.label}</td>
+                    <td className="text-right font-medium">
+                      {r.value > 0 ? `+${formatCurrency(r.value)}` : "—"}
+                    </td>
+                  </tr>
+                ))}
+                <tr>
+                  <td className="font-semibold text-slate-800">Total</td>
+                  <td className="text-right font-semibold" style={{ color: colors.primary[800] }}>
+                    +{formatCurrency(total)}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
 function DistributionalBreakdown({ decileData, regionalData, countryData, tenureData, hhTypeData }) {
   const [view, setView] = useState("decile");
 
@@ -214,7 +317,7 @@ function DistributionalBreakdown({ decileData, regionalData, countryData, tenure
       <div className="border-t border-slate-200 pt-10">
         <SectionHeading
           title="Distributional impact"
-          description="Average annual household cost decomposed by transmission channel, broken down by income decile, UK region, country, or household type."
+          description="Who bears the cost. Each bar shows the average household cost in 2026-27, stacked by transmission channel, for a different slice of the population: income decile (1 = lowest income, 10 = highest), UK region, country, housing tenure, or household type. Higher-income households pay more in cash terms because they consume more energy and fuel — but as a share of income the burden falls hardest on the lowest deciles, who spend roughly three times as much of their budget on energy. Pensioner and benefit-reliant households also carry the uprating-lag loss that working households avoid."
         />
       </div>
 
@@ -330,8 +433,9 @@ export default function ScenariosTab({ data }) {
   const hhTypeData = getHouseholdTypeBreakdown(data, scenario);
   const scenarioLabel = getScenarioNarrative(scenario)?.selectorLabel || scenario;
 
-  // "Our model" figures for the external-comparison table, computed from the
-  // pipeline output so they stay in sync when the data regenerates.
+  // External-comparison table: each row is a metric that BOTH a published
+  // source and our model put a number on, computed live from the pipeline
+  // output so it stays in sync when the data regenerates.
   const comparisonRows = useMemo(() => {
     const scen = (key) => data?.scenarios?.[key];
     const low = scen("low_shock");
@@ -339,79 +443,52 @@ export default function ScenariosTab({ data }) {
     const severe = scen("severe_shock");
     const nHH = data?.baseline?.n_households_m;
     if (!low || !central || !severe || !nHH) return [];
-    const energyFuelBn = (s) =>
-      ((s.channel_decomposition.energy_shock + s.channel_decomposition.fuel_shock) * nHH) / 1000;
+    const fpMillions = (s) => ((s.summary.fp_rate_shocked_pct / 100) * nHH).toFixed(1);
     return [
       {
-        source: "Ofgem",
-        url: "https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-july-and-30-september-2026",
-        energy: `+13% to ${formatCurrency(1663)}/yr (Jul–Sep 2026)`,
-        inflation: "--",
-        ours: `Low: +${low.params.cap_increase_pct}% cap → ${formatCurrency(low.channel_decomposition.energy_shock)}/hh energy`,
-        findings:
-          "Price cap rose 13% for Jul–Sep 2026 on conflict-driven wholesale gas prices. " +
-          `Figure is on Ofgem’s new typical-consumption basis (≈${formatCurrency(1862)} on the pre-July basis).`,
+        metric: "Extra energy bill per household per year",
+        external: [
+          { label: `Ofgem (observed): +${formatCurrency(221)} (+13.5%, July 2026 cap)`, url: "https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-july-and-30-september-2026" },
+          { label: `JRF: +${formatCurrency(288)} predicted`, url: "https://www.jrf.org.uk/cost-of-living/addressing-the-2026-energy-price-crisis" },
+          { label: `Resolution Foundation: ~+${formatCurrency(500)} if rises are sustained`, url: "https://www.resolutionfoundation.org/press-releases/poorest-households-are-set-to-see-inflation-nearly-a-third-higher-than-the-richest/" },
+        ],
+        ours: `${formatCurrency(low.channel_decomposition.energy_shock)} (low) to ${formatCurrency(central.channel_decomposition.energy_shock)} (central)`,
+        note: "Our low scenario matches the observed cap rise; the RF sustained case sits between our low and central.",
       },
       {
-        source: "Cornwall Insight",
-        url: "https://www.cornwall-insight.com/predictions-and-insights-into-the-default-tariff-cap/",
-        energy: `${formatCurrency(1700)}/yr forecast (Oct–Dec 2026)`,
-        inflation: "--",
-        ours: `Low assumes +${low.params.cap_increase_pct}% sustained over 2026-27`,
-        findings:
-          `Q4 2026 cap forecast cut to ~${formatCurrency(1700)} (new basis) after the ` +
-          "electricity VAT removal announced in July 2026",
+        metric: "Households in fuel poverty (10%-of-income indicator)",
+        external: [
+          { label: "End Fuel Poverty Coalition: ~13m UK households >10% after the July rise (income after housing costs)", url: "https://www.endfuelpoverty.org.uk/government-urged-to-prepare-emergency-energy-bill-support/" },
+          { label: "NEA: over 10 million after the July cap rise", url: "https://www.nea.org.uk/about-us/energy-crisis/energy-crisis-timeline/" },
+        ],
+        ours: `${fpMillions(low)}m (low) to ${fpMillions(central)}m (central)`,
+        note: "Definitions differ: our indicator uses net income before housing costs, so our counts are lower than the after-housing-costs campaign figures.",
       },
       {
-        source: "Resolution Foundation",
-        url: "https://www.resolutionfoundation.org/press-releases/poorest-households-are-set-to-see-inflation-nearly-a-third-higher-than-the-richest/",
-        energy: "+£11bn energy + fuel spend in 2026",
-        inflation: "3.8% vs 2.9%",
-        ours: `Low: £${energyFuelBn(low).toFixed(1)}bn/yr energy + fuel (≈£11bn over the ~8-month 2026 shock period)`,
-        findings:
-          "Bottom-decile inflation of 3.8% vs 2.9% for the top decile by end-2026 — " +
-          "the energy shock hits poorer households ~a third harder",
+        metric: "Pushed into poverty in 2026-27",
+        external: [
+          { label: "NIESR: 200,000 additional UK households", url: "https://www.gbnews.com/money/iran-war-british-households-poverty-cost-of-living" },
+        ],
+        ours: `${formatCount(low.summary.n_pushed_into_poverty)} people (low) to ${formatCount(central.summary.n_pushed_into_poverty)} people (central)`,
+        note: "NIESR counts households; we count people, so our low scenario (~386k people ≈ ~170k households) is close to NIESR's estimate.",
       },
       {
-        source: "NIESR",
-        url: "https://niesr.ac.uk/blog/impact-middle-east-conflict-uk-energy-prices-and-fiscal-policy",
-        energy: `Cap +20% to ~${formatCurrency(1973)}`,
-        inflation: "--",
-        ours: `Bracketed by low (+${low.params.cap_increase_pct}%) and central (+${central.params.cap_increase_pct}%)`,
-        findings:
-          `Projects the conflict wiping out roughly half of fiscal headroom and ~£28bn ` +
-          "lower output over two years; recommends a variable (rising-block) price cap and " +
-          "benefit-targeted support over universal subsidies",
+        metric: "Conflict impact on CPI inflation",
+        external: [
+          { label: "OBR: ~+1pp (CPI to 3% by end-2026 vs 2% anticipated)", url: "https://www.investmentweek.co.uk/news/4526778/obr-warns-iran-conflict-force-uk-inflation-end-2026" },
+          { label: "NIESR: +1pp to +3pp (central ~4% CPI, pessimistic ~5%)", url: "https://niesr.ac.uk/blog/possible-effects-uk-inflation-2026-us-iran-conflict" },
+          { label: "Bank of England: ~3% Q3, ~3¼% Q4 2026", url: "https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/june-2026" },
+        ],
+        ours: `+${low.params.cpi_increase_pp}pp (low), +${central.params.cpi_increase_pp}pp (central), +${severe.params.cpi_increase_pp}pp (high)`,
+        note: "Our low matches the OBR/BoE view of the shock as it stands; central and high match NIESR's pessimistic range.",
       },
       {
-        source: "Bank of England",
-        url: "https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/june-2026",
-        energy: "--",
-        inflation: "~3–3.25%",
-        ours: `Low CPI adder +${low.params.cpi_increase_pp}pp on a ~2% pre-conflict trend → ~3%`,
-        findings:
-          "June 2026 projection: CPI a little under 3% in Q3 and a little over 3¼% in " +
-          "Q4 2026 on conflict-era energy pricing; Bank Rate held at 3.75%",
-      },
-      {
-        source: "Goldman Sachs",
-        url: "https://oilprice.com/Latest-Energy-News/World-News/Goldman-Another-Month-of-Hormuz-Closure-Means-Over-100-Brent-Throughout-2026.html",
-        energy: "--",
-        inflation: "--",
-        ours: `Central scenario anchor: +${central.params.cap_increase_pct}% cap, +${central.params.cpi_increase_pp}pp CPI, ${formatCurrency(central.summary.mean_net_impact)}/hh`,
-        findings:
-          "One more month of Strait of Hormuz closure would keep Brent above $100/bbl " +
-          "through 2026 ($120 Q3, $115 Q4); extreme-adverse case above $115–120",
-      },
-      {
-        source: "Oxford Economics",
-        url: "https://www.oxfordeconomics.com/resource/iran-war-scenarios-the-oil-price-that-breaks-parts-of-the-economy/",
-        energy: "--",
-        inflation: "World CPI 7.7% (prolonged war)",
-        ours: `High scenario anchor: +${severe.params.cap_increase_pct}% cap, +${severe.params.cpi_increase_pp}pp CPI, ${formatCurrency(severe.summary.mean_net_impact)}/hh`,
-        findings:
-          "Prolonged-war scenario implies a global recession and a mild UK contraction; " +
-          "UK 2026 growth forecast cut from 1.1% to 0.4%",
+        metric: "Total household cost (all channels)",
+        external: [
+          { label: "No published aggregate estimate exists for this metric", url: null },
+        ],
+        ours: `£${low.summary.total_impact_bn}bn (low) to £${severe.summary.total_impact_bn}bn (high) per year`,
+        note: "For scale: the 2022-23 Energy Price Guarantee cost ~£23bn, and ministers ruled out repeating ~£40bn universal support.",
       },
     ];
   }, [data]);
@@ -433,7 +510,7 @@ export default function ScenariosTab({ data }) {
       {/* Scenario selector */}
       <SectionHeading
         title="Select scenario"
-        description="Choose a scenario to see its estimated impact on UK households."
+        description="Choose a conflict path to see its estimated impact on UK households over the 2026-27 tax year. Each scenario applies a different magnitude of energy, fuel, food, and inflation shock, sustained for 12 months."
       />
       <ScenarioSelector data={data} selected={scenario} onSelect={setScenario} />
 
@@ -451,7 +528,7 @@ export default function ScenariosTab({ data }) {
               : "--"}
           </div>
           <div className="mt-1 text-sm text-slate-500">
-            Annual additional cost per household under {scenarioLabel.toLowerCase()}
+            Additional cost per household in 2026-27 under {scenarioLabel.toLowerCase()}
           </div>
         </div>
         <div className="metric-card">
@@ -464,7 +541,7 @@ export default function ScenariosTab({ data }) {
               : "--"}
           </div>
           <div className="mt-1 text-sm text-slate-500">
-            Percentage point increase in the 10%-of-income fuel poverty indicator
+            Percentage point increase in the 10%-of-income fuel poverty indicator in 2026-27
           </div>
         </div>
         <div className="metric-card">
@@ -477,10 +554,15 @@ export default function ScenariosTab({ data }) {
               : "--"}
           </div>
           <div className="mt-1 text-sm text-slate-500">
-            People pushed below 60% of median equivalised income
+            People pushed below 60% of median equivalised income in 2026-27
           </div>
         </div>
       </div>
+
+      {/* ================================================================ */}
+      {/* EXAMPLE HOUSEHOLD                                                 */}
+      {/* ================================================================ */}
+      <ExampleHousehold data={data} decileData={decileData} />
 
       {/* ================================================================ */}
       {/* CHANNEL DECOMPOSITION                                             */}
@@ -488,7 +570,7 @@ export default function ScenariosTab({ data }) {
       <div className="border-t border-slate-200 pt-10">
         <SectionHeading
           title="Cost breakdown by transmission channel"
-          description="How the net household cost decomposes across energy bills, fuel prices, food prices, and benefit uprating lag."
+          description="How the average household cost in 2026-27 splits across the four routes the shock reaches households. Energy: higher gas and electricity bills as the Ofgem price cap passes wholesale prices through. Fuel: petrol and diesel at the pump, scaled by how much each income decile typically spends on motoring. Food: energy is a major input to food production and distribution, so grocery prices follow with a lag. Benefit uprating lag: CPI-linked benefits were fixed from September 2025 prices, so their real value erodes during the shock until the April 2027 uprating — a loss that only affects benefit-recipient households. Direct energy bills are usually the largest channel, but the mix varies by scenario severity."
         />
       </div>
 
@@ -559,31 +641,38 @@ export default function ScenariosTab({ data }) {
         <div className="mt-6 overflow-x-auto border-t border-slate-200 pt-5">
           <table className="data-table" style={{ tableLayout: "fixed" }}>
             <colgroup>
-              <col style={{ width: "14%" }} />
-              <col style={{ width: "18%" }} />
-              <col style={{ width: "12%" }} />
               <col style={{ width: "20%" }} />
-              <col style={{ width: "36%" }} />
+              <col style={{ width: "32%" }} />
+              <col style={{ width: "22%" }} />
+              <col style={{ width: "26%" }} />
             </colgroup>
             <thead>
               <tr>
-                <th>Source</th>
-                <th>Energy bill impact</th>
-                <th style={{ textAlign: "right" }}>Inflation</th>
+                <th>Metric</th>
+                <th>Published estimates</th>
                 <th>Our model</th>
-                <th>Key findings</th>
+                <th>How they compare</th>
               </tr>
             </thead>
             <tbody>
               {comparisonRows.map((row) => (
-                <tr key={row.source}>
-                  <td className="font-medium">
-                    <a href={row.url} target="_blank" rel="noreferrer" className="underline">{row.source}</a>
+                <tr key={row.metric}>
+                  <td className="font-medium">{row.metric}</td>
+                  <td>
+                    <ul className="list-disc pl-4 space-y-1">
+                      {row.external.map((e) => (
+                        <li key={e.label}>
+                          {e.url ? (
+                            <a href={e.url} target="_blank" rel="noreferrer" className="underline">{e.label}</a>
+                          ) : (
+                            <span className="text-slate-500">{e.label}</span>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
                   </td>
-                  <td>{row.energy}</td>
-                  <td style={{ textAlign: "right" }}>{row.inflation}</td>
                   <td className="font-medium" style={{ color: colors.primary[800] }}>{row.ours}</td>
-                  <td className="text-slate-500">{row.findings}</td>
+                  <td className="text-slate-500">{row.note}</td>
                 </tr>
               ))}
             </tbody>

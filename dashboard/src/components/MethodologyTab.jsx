@@ -46,13 +46,16 @@ export default function MethodologyTab({ data }) {
         <p className="mt-4 text-sm leading-7 text-slate-600">
           Each scenario represents a forward path for the conflict from the August 2026
           position. The low scenario tracks the observed price path assuming
-          de-escalation (Ofgem cap +13% in July 2026; Brent ~$85/bbl in early August).
-          The central scenario follows Goldman Sachs&apos; extended Strait of Hormuz
-          closure case (Brent above $100/bbl through 2026). The high scenario reflects
-          Goldman&apos;s extreme-adverse case (Brent above $115-120) and Oxford
-          Economics&apos; prolonged-war scenario. CPI transmission draws on Bank of
-          England June 2026 projections and the Commons Library briefing on the conflict
-          and the UK economy (CBP-10601).
+          de-escalation (<a href="https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-july-and-30-september-2026" target="_blank" rel="noreferrer" className="underline">Ofgem cap +13% in July 2026</a>;
+          Brent ~$85/bbl in early August). The central scenario follows{" "}
+          <a href="https://oilprice.com/Latest-Energy-News/World-News/Goldman-Another-Month-of-Hormuz-Closure-Means-Over-100-Brent-Throughout-2026.html" target="_blank" rel="noreferrer" className="underline">Goldman Sachs&apos; extended Strait of Hormuz closure case</a>{" "}
+          (Brent above $100/bbl through 2026). The high scenario reflects
+          Goldman&apos;s extreme-adverse case (Brent above $115-120) and{" "}
+          <a href="https://www.oxfordeconomics.com/resource/iran-war-scenarios-the-oil-price-that-breaks-parts-of-the-economy/" target="_blank" rel="noreferrer" className="underline">Oxford Economics&apos; prolonged-war scenario</a>.
+          CPI transmission draws on{" "}
+          <a href="https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/june-2026" target="_blank" rel="noreferrer" className="underline">Bank of England June 2026 projections</a>{" "}
+          and the{" "}
+          <a href="https://commonslibrary.parliament.uk/research-briefings/cbp-10601/" target="_blank" rel="noreferrer" className="underline">Commons Library briefing on the conflict and the UK economy</a>.
         </p>
         <div className="mt-4 overflow-x-auto">
           <table className="data-table" style={{ tableLayout: "fixed" }}>
@@ -105,8 +108,9 @@ export default function MethodologyTab({ data }) {
         <div className="mt-4 space-y-4 text-sm leading-7 text-slate-600">
           <div>
             <strong className="text-slate-800">Energy bills:</strong>{" "}
-            Higher wholesale gas prices feed through to the Ofgem price cap (Ofgem, 2026;
-            model baseline: &pound;{currentEnergyCap.toLocaleString("en-GB")}/yr,
+            Higher wholesale gas prices feed through to the{" "}
+            <a href="https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-july-and-30-september-2026" target="_blank" rel="noreferrer" className="underline">Ofgem price cap</a>{" "}
+            (model baseline: &pound;{currentEnergyCap.toLocaleString("en-GB")}/yr,
             the July&ndash;September 2026 cap on Ofgem&apos;s new typical-consumption basis,
             equivalent to ~&pound;1,862 on the pre-July basis). We model the pass-through from wholesale to
             retail energy prices using historical cap-setting methodology, applying the
@@ -115,7 +119,7 @@ export default function MethodologyTab({ data }) {
           <div>
             <strong className="text-slate-800">Fuel costs:</strong>{" "}
             Oil price increases translate to higher petrol and diesel prices at the pump.
-            Fuel spending is estimated at &pound;1,300/yr on average (ONS, 2025), scaled
+            Fuel spending is estimated at &pound;1,300/yr on average (<a href="https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/expenditure/bulletins/familyspendingintheuk/april2023tomarch2024" target="_blank" rel="noreferrer" className="underline">ONS Family Spending</a>), scaled
             by income decile using ONS ad-hoc fuel expenditure tables (70% of average for
             the lowest deciles to 125% for the highest). These are decile-level averages,
             not household-level microdata; within-decile variation in fuel spending is not
@@ -125,7 +129,7 @@ export default function MethodologyTab({ data }) {
             <strong className="text-slate-800">Food prices:</strong>{" "}
             Energy is a major input cost in food production, processing, and distribution.
             We apply scenario-specific annual food price increases of 2.0%, 4.0%, and
-            6.5% to average food spending of &pound;5,000/yr (ONS, 2025; DEFRA, 2025),
+            6.5% to average food spending of &pound;5,000/yr (<a href="https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/expenditure/bulletins/familyspendingintheuk/april2023tomarch2024" target="_blank" rel="noreferrer" className="underline">ONS</a>; DEFRA Family Food),
             scaled by decile following Engel&apos;s Law. As with fuel, these are
             decile-level spending estimates rather than household-level microdata. The
             high scenario is anchored to IGD&apos;s severe 2026 food-inflation warning
@@ -137,8 +141,8 @@ export default function MethodologyTab({ data }) {
             CPI — a lag of up to 18 months. Between uprating dates, higher prices reduce
             the real value of benefit payments. During the 2022 energy crisis, this
             mechanism eroded benefit real value by approximately 5% (&pound;12bn total),
-            with April 2022 uprating at 3.1% against 9% actual inflation (IFS, 2022;
-            House of Commons Library, 2023). The model estimates the annual real loss as:
+            with April 2022 uprating at 3.1% against 9% actual inflation (<a href="https://ifs.org.uk/news/many-benefit-recipients-will-be-worse-until-april-2025-because-failure-payments-keep" target="_blank" rel="noreferrer" className="underline">IFS</a>;{" "}
+            <a href="https://commonslibrary.parliament.uk/research-briefings/cbp-10403/" target="_blank" rel="noreferrer" className="underline">Commons Library CBP-10403</a>). The model estimates the annual real loss as:
             CPI-linked benefit income &times; CPI increase &times; 0.5, where the 0.5
             factor is the expected fraction of the year a mid-year shock goes un-indexed
             (rather than the 12-month maximum). The state pension is excluded because it
@@ -275,143 +279,8 @@ export default function MethodologyTab({ data }) {
         </div>
       </div>
 
-      {/* ================================================================ */}
-      {/* AUTUMN BUDGET 2026 CONTEXT                                        */}
-      {/* ================================================================ */}
-      <div className="section-card">
-        <div className="eyebrow text-slate-500">Policy context</div>
-        <h3 className="mt-2 text-lg font-semibold text-slate-900">
-          Autumn Budget 2026: the decisions this analysis informs
-        </h3>
-        <p className="mt-4 text-sm leading-7 text-slate-600">
-          The Budget on <strong>28 October 2026</strong> (Chancellor John Healey, under
-          the Burnham government) faces a set of live cost-of-living decisions that map
-          directly onto the policies modelled here, against thin fiscal headroom
-          (NIESR estimates ~&pound;3.4bn; IPPR puts the conflict&apos;s fiscal hit at up
-          to &pound;8bn):
-        </p>
-        <ul className="mt-4 list-disc pl-5 text-sm leading-7 text-slate-600 space-y-1">
-          <li>
-            <strong>Electricity VAT cut</strong> — the 0% rate runs 1 October 2026 to
-            31 March 2027 (~&pound;45/household, ~&pound;850m); whether to extend it will
-            be decided at the Budget. Modelled as the &ldquo;Electricity VAT cut&rdquo; policy.
-          </li>
-          <li>
-            <strong>Fuel duty</strong> — the 5p cut is legislated to expire 31 December
-            2026, with staged restoration in January and March 2027; whether the
-            restoration proceeds is a live Budget question. Modelled as the
-            &ldquo;Fuel duty cut extension&rdquo; policy.
-          </li>
-          <li>
-            <strong>Targeted winter energy support</strong> — officials have built a
-            delivery mechanism for energy-bill support routed via means-tested benefit
-            receipt, awaiting a Budget decision. Modelled as the
-            &ldquo;Means-tested payment&rdquo; policy.
-          </li>
-          <li>
-            <strong>April 2027 benefit uprating</strong> — will use September 2026 CPI,
-            elevated by the conflict; the &ldquo;Accelerated uprating&rdquo; policy shows
-            the effect of bringing that support forward.
-          </li>
-          <li>
-            <strong>Social tariff</strong> — the government is &ldquo;open to further
-            action&rdquo;; NIESR instead proposes a variable (rising-block) price cap.
-            Modelled as the &ldquo;Social tariff&rdquo; policy.
-          </li>
-        </ul>
-      </div>
 
-      {/* ================================================================ */}
-      {/* REFERENCES                                                        */}
-      {/* ================================================================ */}
-      <div className="section-card">
-        <div className="eyebrow text-slate-500">References</div>
-        <h3 className="mt-2 text-lg font-semibold text-slate-900">
-          Academic and institutional sources
-        </h3>
-        <ul className="mt-4 list-disc pl-5 text-sm leading-7 text-slate-600 space-y-1">
-            <li>Labandeira, X., Labeaga, J.M. & Lopez-Otero, X. (2017) &lsquo;A meta-analysis on the price elasticity of energy demand&rsquo;, <em>Energy Policy</em>, 102, pp. 549-568.</li>
-            <li>Espey, M. (1998) &lsquo;Gasoline demand revisited: an international meta-analysis of elasticities&rsquo;, <em>Energy Economics</em>, 20(3), pp. 273-295.</li>
-            <li>Dahl, C. & Sterner, T. (1991) &lsquo;Analysing gasoline demand elasticities: a survey&rsquo;, <em>Energy Economics</em>, 13(3), pp. 203-210.</li>
-            <li>Bonciani, D., Ploeckl, F. & Tong, M. (2023) &lsquo;How do firms pass energy and food costs through the supply chain&rsquo;, Bank of England (Bank Underground).</li>
-            <li>Boardman, B. (1991) <em>Fuel Poverty: From Cold Homes to Affordable Warmth</em>. London: Belhaven Press.</li>
-            <li>Ofgem (2026) &lsquo;Changes to energy price cap between 1 July and 30 September 2026&rsquo;.</li>
-            <li>Cornwall Insight (2026) &lsquo;Default tariff cap forecasts&rsquo; (updated after the electricity VAT reduction).</li>
-            <li>Bank of England (2026) Monetary Policy Summary and minutes, June 2026.</li>
-            <li>House of Commons Library (2026) &lsquo;Economic update: Middle East conflict and the UK economy&rsquo;, CBP-10601.</li>
-            <li>House of Commons Library (2026) &lsquo;Benefits uprating 2026/27&rsquo;, CBP-10403.</li>
-            <li>Resolution Foundation (2026) &lsquo;Living Standards Outlook 2026&rsquo; and distributional inflation analysis of the energy shock.</li>
-            <li>NIESR (2026) &lsquo;The impact of the Middle East conflict on UK energy prices and fiscal policy&rsquo;.</li>
-            <li>Oxford Economics (2026) &lsquo;Iran war scenarios: the oil price that breaks parts of the economy&rsquo; and &lsquo;Drawn-out Iran conflict prompts broad-based forecast revisions&rsquo;.</li>
-            <li>Goldman Sachs (2026) Strait of Hormuz closure oil-price scenarios (reported June-July 2026).</li>
-            <li>IFS (2022) &lsquo;Many benefit recipients will be worse off until April 2025 because of failure of payments to keep up with inflation&rsquo;.</li>
-            <li>HM Treasury / Prime Minister&apos;s Office (2026) &lsquo;New PM cuts tax on household electricity bills&rsquo;, July 2026.</li>
-            <li>HMRC (2026) &lsquo;Amended fuel duty rates for 2026 to 2027&rsquo;.</li>
-            <li>ONS (2025) &lsquo;Family spending in the UK: April 2023 to March 2024&rsquo;.</li>
-            <li>ONS (2026) Consumer price inflation, June 2026.</li>
-            <li>DEFRA (2025) &lsquo;Family Food FYE 2024&rsquo;.</li>
-            <li>Hamilton, J.D. (2003) &lsquo;What is an oil shock?&rsquo;, <em>Journal of Econometrics</em>, 113(2), pp. 363-398.</li>
-          </ul>
-      </div>
 
-      {/* ================================================================ */}
-      {/* DATA SOURCES                                                      */}
-      {/* ================================================================ */}
-      <div className="section-card">
-        <div className="eyebrow text-slate-500">Data</div>
-        <h3 className="mt-2 text-lg font-semibold text-slate-900">
-          Data sources
-        </h3>
-        <ul className="mt-4 list-disc pl-5 text-sm leading-7 text-slate-600 space-y-1">
-          <li>
-            <a href="https://policyengine.org" target="_blank" rel="noreferrer" className="underline">PolicyEngine UK</a>{" "}
-            microsimulation (Enhanced FRS 2023-24)
-          </li>
-          <li>
-            <a href="https://www.ofgem.gov.uk/check-if-energy-price-cap-affects-you" target="_blank" rel="noreferrer" className="underline">Ofgem</a>{" "}
-            energy price cap methodology and historical data
-          </li>
-          <li>
-            <a href="https://www.ons.gov.uk/economy/inflationandpriceindices" target="_blank" rel="noreferrer" className="underline">ONS</a>{" "}
-            CPI, household expenditure data, and Family Spending tables
-          </li>
-          <li>
-            <a href="https://obr.uk/" target="_blank" rel="noreferrer" className="underline">OBR</a>{" "}
-            fiscal forecasts, tax threshold schedules, and Economic &amp; Fiscal Outlook
-          </li>
-          <li>
-            <a href="https://www.gov.uk/government/organisations/department-for-work-pensions" target="_blank" rel="noreferrer" className="underline">DWP</a>{" "}
-            benefit expenditure and caseload statistics
-          </li>
-          <li>
-            <a href="https://www.gov.uk/government/organisations/hm-revenue-customs" target="_blank" rel="noreferrer" className="underline">HMRC</a>{" "}
-            income tax liabilities statistics
-          </li>
-        </ul>
-      </div>
-
-      {/* ================================================================ */}
-      {/* REPLICATION                                                       */}
-      {/* ================================================================ */}
-      <div className="section-card">
-        <div className="eyebrow text-slate-500">Replication</div>
-        <h3 className="mt-2 text-lg font-semibold text-slate-900">
-          Code and data
-        </h3>
-        <p className="mt-4 text-sm leading-7 text-slate-600">
-          The Python pipeline generates{" "}
-          <code>iran_impact_results.json</code>, which the dashboard consumes.
-          All source code is in the{" "}
-          <a
-            href="https://github.com/PolicyEngine/impact-iran-war-living-standards"
-            target="_blank"
-            rel="noreferrer"
-            className="underline"
-          >
-            public repository
-          </a>.
-        </p>
-      </div>
     </div>
   );
 }

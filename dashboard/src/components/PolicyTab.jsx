@@ -145,11 +145,18 @@ export default function PolicyTab({ data }) {
       {/* SCENARIO SELECTOR                                                 */}
       {/* ================================================================ */}
       <p className="text-sm leading-7 text-slate-600">
-        The baseline for this tab is the selected shock scenario before any policy response.
-        The reform case is the same shock scenario with the selected policy applied. Fiscal
-        cost is the government cost of that policy; average household benefit is the reduction
-        in annual household impact after the energy price shock; fuel poverty reduction compares
-        fuel poverty in the shock scenario before and after the policy.
+        This tab compares the government support options for the 2026-27 tax year — including
+        the decisions on the table for the Autumn Budget on 28 October 2026 (extending the
+        electricity VAT cut and the 5p fuel duty cut, a benefits-targeted winter energy
+        payment, and the timing of benefit uprating). The baseline for every comparison is
+        the selected shock scenario before any policy response; the reform case is the same
+        scenario with the selected policy applied. Fiscal cost is the full government outlay
+        of the policy in 2026-27; average household benefit is the reduction in annual
+        household impact from the energy price shock; fuel poverty reduction compares the
+        10%-of-income fuel poverty indicator before and after the policy. Targeting matters
+        as much as scale: a policy that spends less but concentrates support on the
+        lowest-income households can protect them better per pound than a larger universal
+        scheme.
       </p>
 
       <div className="grid items-stretch gap-6 lg:grid-cols-2">
@@ -247,7 +254,7 @@ export default function PolicyTab({ data }) {
                 {policy.fiscal_cost_bn != null ? formatBn(policy.fiscal_cost_bn) : "--"}
               </div>
               <div className="mt-2 text-sm leading-6 text-slate-500">
-                Estimated government cost of applying {policyLabel.toLowerCase()} in the selected shock scenario.
+                Estimated government cost of applying {policyLabel.toLowerCase()} in the selected shock scenario over 2026-27.
               </div>
             </div>
             <div className="metric-card">
@@ -260,7 +267,7 @@ export default function PolicyTab({ data }) {
                   : "--"}
               </div>
               <div className="mt-2 text-sm leading-6 text-slate-500">
-                Average reduction in annual household impact from the energy price shock after this policy.
+                Average reduction in 2026-27 household impact from the energy price shock after this policy.
               </div>
             </div>
             <div className="metric-card">
