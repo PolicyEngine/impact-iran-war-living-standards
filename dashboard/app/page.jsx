@@ -8,8 +8,8 @@ import MethodologyTab from "../src/components/MethodologyTab";
 import data from "../public/data/iran_impact_results.json";
 
 const TAB_OPTIONS = [
-  { id: "scenarios", label: "Impact Scenarios" },
-  { id: "policy", label: "Policy Responses" },
+  { id: "scenarios", label: "Household Impacts" },
+  { id: "policy", label: "Policy Options" },
   { id: "methodology", label: "Methodology" },
 ];
 
@@ -57,17 +57,35 @@ function Dashboard() {
             </a>
             &apos;s microsimulation model to estimate how energy price rises from the
             ongoing Middle East conflict and Strait of Hormuz disruption affect UK
-            household living standards, and to compare the support options facing the
-            government ahead of the <strong>Autumn Budget on 28 October 2026</strong>. The{" "}
-            <strong>Impact Scenarios</strong> tab models three conflict paths (de-escalation,
+            household living standards. The{" "}
+            <strong>Household Impacts</strong> tab models three conflict paths (de-escalation,
             sustained disruption, prolonged war) and their distributional effects across
             income deciles, regions, countries, tenures, and household types. The{" "}
-            <strong>Policy Responses</strong> tab evaluates ten interventions — including
+            <strong>Policy Options</strong> tab evaluates ten interventions — including
             the live Budget decisions on extending the electricity VAT cut and the 5p fuel
             duty cut, and the benefits-targeted winter energy payment under consideration —
             with their fiscal costs and targeting. The{" "}
             <strong>Methodology</strong> tab explains the modelling approach,
-            assumptions, and data sources.
+            assumptions, and data sources. For recent coverage of the government&apos;s
+            likely next steps, see{" "}
+            <a
+              href="https://www.bloomberg.com/news/articles/2026-07-21/burnham-cuts-taxes-energy-bills-ease-cost-of-living-burden"
+              target="_blank"
+              rel="noreferrer"
+              className="underline"
+            >
+              Bloomberg on the Burnham government&apos;s electricity VAT cut
+            </a>{" "}
+            and the{" "}
+            <a
+              href="https://www.resolutionfoundation.org/press-releases/poorest-households-are-set-to-see-inflation-nearly-a-third-higher-than-the-richest/"
+              target="_blank"
+              rel="noreferrer"
+              className="underline"
+            >
+              Resolution Foundation&apos;s analysis of who the energy shock hits hardest
+            </a>
+            .
           </p>
         </div>
 
@@ -103,7 +121,7 @@ function Dashboard() {
             >
               PolicyEngine/impact-iran-war-living-standards
             </a>
-            .
+            . Built with policyengine-uk 2.89.4 and policyengine-uk-data 1.11.1.
           </p>
         </footer>
       </main>
