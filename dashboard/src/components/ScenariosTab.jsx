@@ -6,6 +6,7 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
+  Cell,
   Legend,
   ResponsiveContainer,
   Tooltip,
@@ -19,10 +20,11 @@ import {
   getFuelPoverty,
   getRegionalBreakdown,
   getCountryBreakdown,
+  getTenureBreakdown,
   getChannelDecomposition,
   getHouseholdTypeBreakdown,
 } from "../lib/dataHelpers";
-import { formatCurrency, formatPct, formatCount } from "../lib/formatters";
+import { formatCurrency, formatCount } from "../lib/formatters";
 import ChartLogo from "./ChartLogo";
 import { getScenarioNarrative, getScenarioOptions } from "../lib/scenarioContent";
 
@@ -101,6 +103,15 @@ function ScenarioSelector({ data, selected, onSelect }) {
   );
 }
 
+// Channel chart bar fills, darkest for the largest cost
+const SORTED_FILLS = [
+  colors.primary[900],
+  colors.primary[700],
+  colors.primary[500],
+  colors.gray[500],
+  colors.gray[300],
+];
+
 const CHANNEL_STACK = [
   { key: "energy", label: "Energy", color: channelColors.energy },
   { key: "fuel", label: "Fuel", color: channelColors.fuel },
@@ -112,6 +123,7 @@ const DIST_VIEWS = [
   { id: "decile", label: "Income decile" },
   { id: "region", label: "Region" },
   { id: "country", label: "Country" },
+  { id: "tenure", label: "Tenure" },
   { id: "household_type", label: "Household type" },
 ];
 
@@ -119,46 +131,79 @@ const HH_TYPE_LABELS = {
   COUPLE_NO_CHILDREN: "Couple, no children",
   COUPLE_WITH_CHILDREN: "Couple with children",
   LONE_PARENT: "Lone parent",
-  PENSIONER: "Pensioner",
+  SINGLE_PENSIONER: "Single pensioner",
+  COUPLE_PENSIONER: "Pensioner couple",
   SINGLE_WORKING_AGE: "Single working age",
 };
 
-function DistributionalBreakdown({ decileData, regionalData, countryData, hhTypeData }) {
+const REGION_LABELS = {
+  EAST_MIDLANDS: "East Midlands",
+  EAST_OF_ENGLAND: "East of England",
+  LONDON: "London",
+  NORTH_EAST: "North East",
+  NORTH_WEST: "North West",
+  SOUTH_EAST: "South East",
+  SOUTH_WEST: "South West",
+  WEST_MIDLANDS: "West Midlands",
+  YORKSHIRE: "Yorkshire and the Humber",
+  SCOTLAND: "Scotland",
+  WALES: "Wales",
+  NORTHERN_IRELAND: "Northern Ireland",
+  ENGLAND: "England",
+};
+
+const TENURE_LABELS = {
+  RENT_FROM_COUNCIL: "Council rent",
+  RENT_FROM_HA: "Housing association rent",
+  RENT_PRIVATELY: "Private rent",
+  OWNED_OUTRIGHT: "Owned outright",
+  OWNED_WITH_MORTGAGE: "Owned with mortgage",
+};
+
+function DistributionalBreakdown({ decileData, regionalData, countryData, tenureData, hhTypeData }) {
   const [view, setView] = useState("decile");
 
-  const sortedRegional = useMemo(() => {
-    return [...regionalData].sort((a, b) => (b.avg_cost || 0) - (a.avg_cost || 0));
-  }, [regionalData]);
-
-  const sortedCountry = useMemo(() => {
-    return [...countryData].sort((a, b) => (b.avg_cost || 0) - (a.avg_cost || 0));
-  }, [countryData]);
-
-  const sortedHhType = useMemo(() => {
-    return [...hhTypeData]
-      .map((h) => ({ ...h, label: HH_TYPE_LABELS[h.hh_type] || h.hh_type }))
+  const labelled = (rows, key, labels) =>
+    rows
+      .map((r) => ({ ...r, label: labels[r[key]] || r[key] }))
       .sort((a, b) => (b.avg_cost || 0) - (a.avg_cost || 0));
-  }, [hhTypeData]);
+
+  const sortedRegional = useMemo(
+    () => labelled(regionalData, "region", REGION_LABELS),
+    [regionalData]
+  );
+  const sortedCountry = useMemo(
+    () => labelled(countryData, "country", REGION_LABELS),
+    [countryData]
+  );
+  const sortedTenure = useMemo(
+    () => labelled(tenureData, "tenure", TENURE_LABELS),
+    [tenureData]
+  );
+  const sortedHhType = useMemo(
+    () => labelled(hhTypeData, "hh_type", HH_TYPE_LABELS),
+    [hhTypeData]
+  );
 
   // Decile uses vertical stacked bars; everything else uses horizontal stacked bars
   const isVertical = view === "decile";
 
-  let chartData, labelKey, chartHeight;
+  const labelKey = "label";
+  let chartData, chartHeight;
   if (view === "decile") {
     chartData = decileData;
-    labelKey = "label";
     chartHeight = 380;
   } else if (view === "region") {
     chartData = sortedRegional;
-    labelKey = "region";
     chartHeight = 520;
   } else if (view === "country") {
     chartData = sortedCountry;
-    labelKey = "country";
     chartHeight = Math.max(300, sortedCountry.length * 80 + 60);
+  } else if (view === "tenure") {
+    chartData = sortedTenure;
+    chartHeight = Math.max(300, sortedTenure.length * 80 + 60);
   } else {
     chartData = sortedHhType;
-    labelKey = "label";
     chartHeight = Math.max(300, sortedHhType.length * 80 + 60);
   }
 
@@ -280,19 +325,97 @@ export default function ScenariosTab({ data }) {
   const fuelPoverty = getFuelPoverty(data, scenario);
   const regionalData = getRegionalBreakdown(data, scenario);
   const countryData = getCountryBreakdown(data, scenario);
+  const tenureData = getTenureBreakdown(data, scenario);
   const channels = getChannelDecomposition(data, scenario);
   const hhTypeData = getHouseholdTypeBreakdown(data, scenario);
   const scenarioLabel = getScenarioNarrative(scenario)?.selectorLabel || scenario;
-  const activeColor = colors.primary[800];
 
-  // Build channel chart data, sorted by cost descending with gradient colors
-  const SORTED_FILLS = [
-    colors.primary[900],
-    colors.primary[700],
-    colors.primary[500],
-    colors.gray[500],
-    colors.gray[300],
-  ];
+  // "Our model" figures for the external-comparison table, computed from the
+  // pipeline output so they stay in sync when the data regenerates.
+  const comparisonRows = useMemo(() => {
+    const scen = (key) => data?.scenarios?.[key];
+    const low = scen("low_shock");
+    const central = scen("central_shock");
+    const severe = scen("severe_shock");
+    const nHH = data?.baseline?.n_households_m;
+    if (!low || !central || !severe || !nHH) return [];
+    const energyFuelBn = (s) =>
+      ((s.channel_decomposition.energy_shock + s.channel_decomposition.fuel_shock) * nHH) / 1000;
+    return [
+      {
+        source: "Ofgem",
+        url: "https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-july-and-30-september-2026",
+        energy: `+13% to ${formatCurrency(1663)}/yr (Jul–Sep 2026)`,
+        inflation: "--",
+        ours: `Low: +${low.params.cap_increase_pct}% cap → ${formatCurrency(low.channel_decomposition.energy_shock)}/hh energy`,
+        findings:
+          "Price cap rose 13% for Jul–Sep 2026 on conflict-driven wholesale gas prices. " +
+          `Figure is on Ofgem’s new typical-consumption basis (≈${formatCurrency(1862)} on the pre-July basis).`,
+      },
+      {
+        source: "Cornwall Insight",
+        url: "https://www.cornwall-insight.com/predictions-and-insights-into-the-default-tariff-cap/",
+        energy: `${formatCurrency(1700)}/yr forecast (Oct–Dec 2026)`,
+        inflation: "--",
+        ours: `Low assumes +${low.params.cap_increase_pct}% sustained over 2026-27`,
+        findings:
+          `Q4 2026 cap forecast cut to ~${formatCurrency(1700)} (new basis) after the ` +
+          "electricity VAT removal announced in July 2026",
+      },
+      {
+        source: "Resolution Foundation",
+        url: "https://www.resolutionfoundation.org/press-releases/poorest-households-are-set-to-see-inflation-nearly-a-third-higher-than-the-richest/",
+        energy: "+£11bn energy + fuel spend in 2026",
+        inflation: "3.8% vs 2.9%",
+        ours: `Low: £${energyFuelBn(low).toFixed(1)}bn/yr energy + fuel (≈£11bn over the ~8-month 2026 shock period)`,
+        findings:
+          "Bottom-decile inflation of 3.8% vs 2.9% for the top decile by end-2026 — " +
+          "the energy shock hits poorer households ~a third harder",
+      },
+      {
+        source: "NIESR",
+        url: "https://niesr.ac.uk/blog/impact-middle-east-conflict-uk-energy-prices-and-fiscal-policy",
+        energy: `Cap +20% to ~${formatCurrency(1973)}`,
+        inflation: "--",
+        ours: `Bracketed by low (+${low.params.cap_increase_pct}%) and central (+${central.params.cap_increase_pct}%)`,
+        findings:
+          `Projects the conflict wiping out roughly half of fiscal headroom and ~£28bn ` +
+          "lower output over two years; recommends a variable (rising-block) price cap and " +
+          "benefit-targeted support over universal subsidies",
+      },
+      {
+        source: "Bank of England",
+        url: "https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/june-2026",
+        energy: "--",
+        inflation: "~3–3.25%",
+        ours: `Low CPI adder +${low.params.cpi_increase_pp}pp on a ~2% pre-conflict trend → ~3%`,
+        findings:
+          "June 2026 projection: CPI a little under 3% in Q3 and a little over 3¼% in " +
+          "Q4 2026 on conflict-era energy pricing; Bank Rate held at 3.75%",
+      },
+      {
+        source: "Goldman Sachs",
+        url: "https://oilprice.com/Latest-Energy-News/World-News/Goldman-Another-Month-of-Hormuz-Closure-Means-Over-100-Brent-Throughout-2026.html",
+        energy: "--",
+        inflation: "--",
+        ours: `Central scenario anchor: +${central.params.cap_increase_pct}% cap, +${central.params.cpi_increase_pp}pp CPI, ${formatCurrency(central.summary.mean_net_impact)}/hh`,
+        findings:
+          "One more month of Strait of Hormuz closure would keep Brent above $100/bbl " +
+          "through 2026 ($120 Q3, $115 Q4); extreme-adverse case above $115–120",
+      },
+      {
+        source: "Oxford Economics",
+        url: "https://www.oxfordeconomics.com/resource/iran-war-scenarios-the-oil-price-that-breaks-parts-of-the-economy/",
+        energy: "--",
+        inflation: "World CPI 7.7% (prolonged war)",
+        ours: `High scenario anchor: +${severe.params.cap_increase_pct}% cap, +${severe.params.cpi_increase_pp}pp CPI, ${formatCurrency(severe.summary.mean_net_impact)}/hh`,
+        findings:
+          "Prolonged-war scenario implies a global recession and a mild UK contraction; " +
+          "UK 2026 growth forecast cut from 1.1% to 0.4%",
+      },
+    ];
+  }, [data]);
+
   const channelChartData = useMemo(() => {
     if (!channels || typeof channels !== "object") return [];
     return Object.entries(channels)
@@ -337,11 +460,11 @@ export default function ScenariosTab({ data }) {
           </div>
           <div className="mt-2 text-3xl font-bold tracking-tight" style={{ color: colors.primary[800] }}>
             {fuelPoverty?.increase_pp != null
-              ? `+${formatPct(fuelPoverty.increase_pp, 1)}`
+              ? `+${fuelPoverty.increase_pp.toFixed(1)}pp`
               : "--"}
           </div>
           <div className="mt-1 text-sm text-slate-500">
-            Percentage point increase in fuel poverty rate
+            Percentage point increase in the 10%-of-income fuel poverty indicator
           </div>
         </div>
         <div className="metric-card">
@@ -354,7 +477,7 @@ export default function ScenariosTab({ data }) {
               : "--"}
           </div>
           <div className="mt-1 text-sm text-slate-500">
-            Additional households pushed into poverty
+            People pushed below 60% of median equivalised income
           </div>
         </div>
       </div>
@@ -389,7 +512,7 @@ export default function ScenariosTab({ data }) {
                 <Tooltip content={<CustomTooltip formatter={(v) => formatCurrency(v)} />} />
                 <Bar dataKey="cost" name="Avg household cost" radius={[6, 6, 0, 0]}>
                   {channelChartData.map((entry, idx) => (
-                    <rect key={idx} fill={entry.fill} />
+                    <Cell key={idx} fill={entry.fill} />
                   ))}
                 </Bar>
               </BarChart>
@@ -410,6 +533,7 @@ export default function ScenariosTab({ data }) {
         decileData={decileData}
         regionalData={regionalData}
         countryData={countryData}
+        tenureData={tenureData}
         hhTypeData={hhTypeData}
       />
 
@@ -435,87 +559,33 @@ export default function ScenariosTab({ data }) {
         <div className="mt-6 overflow-x-auto border-t border-slate-200 pt-5">
           <table className="data-table" style={{ tableLayout: "fixed" }}>
             <colgroup>
-              <col style={{ width: "18%" }} />
-              <col style={{ width: "18%" }} />
               <col style={{ width: "14%" }} />
-              <col style={{ width: "50%" }} />
+              <col style={{ width: "18%" }} />
+              <col style={{ width: "12%" }} />
+              <col style={{ width: "20%" }} />
+              <col style={{ width: "36%" }} />
             </colgroup>
             <thead>
               <tr>
                 <th>Source</th>
                 <th>Energy bill impact</th>
                 <th style={{ textAlign: "right" }}>Inflation</th>
+                <th>Our model</th>
                 <th>Key findings</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td className="font-medium">
-                  <a href="https://www.cornwall-insight.com/press/cornwall-insight-comments-on-the-impact-of-the-iran-conflict-on-uk-energy-bills/" target="_blank" rel="noreferrer" className="underline">Cornwall Insight</a>
-                </td>
-                <td>+{formatCurrency(288)}/yr (July cap)</td>
-                <td style={{ textAlign: "right" }}>--</td>
-                <td className="text-slate-500">
-                  Ofgem cap forecast to rise 18% to {formatCurrency(1929)} from July 2026;
-                  wholesale gas prices have doubled since the supply disruption began
-                </td>
-              </tr>
-              <tr>
-                <td className="font-medium">
-                  <a href="https://economy2030.resolutionfoundation.org/reports/tackling-the-cost-of-living-crunch/" target="_blank" rel="noreferrer" className="underline">Resolution Foundation</a>
-                </td>
-                <td>+{formatCurrency(500)}/yr; cap to {formatCurrency(1929)}{"\u2013"}{formatCurrency(2050)}</td>
-                <td style={{ textAlign: "right" }}>+1pp; food to ~10%</td>
-                <td className="text-slate-500">
-                  Median household {formatCurrency(480)} worse off. Below-average incomes lose 2.4pp of growth.
-                  730k households facing mortgage shock (+{formatCurrency(350)}/month).
-                  Social tariff best policy for vulnerable households.
-                </td>
-              </tr>
-              <tr>
-                <td className="font-medium">
-                  <a href="https://www.endfuelpoverty.org.uk/iran-conflict-pushes-gas-prices-higher-but-the-risk-for-bills-lies-ahead/" target="_blank" rel="noreferrer" className="underline">End Fuel Poverty Coalition</a>
-                </td>
-                <td>13m HH in fuel poverty</td>
-                <td style={{ textAlign: "right" }}>--</td>
-                <td className="text-slate-500">
-                  If bills increase from July, ~13m households could spend {">"}10% of income on energy;
-                  ~5m spending {">"}20%; heating oil already up 39% year-on-year
-                </td>
-              </tr>
-              <tr>
-                <td className="font-medium">
-                  <a href="https://niesr.ac.uk/blog/impact-middle-east-conflict-uk-energy-prices-and-fiscal-policy" target="_blank" rel="noreferrer" className="underline">NIESR</a>
-                </td>
-                <td>--</td>
-                <td style={{ textAlign: "right" }}>+0.7pp</td>
-                <td className="text-slate-500">
-                  NiGEM model: oil +30%, gas +50% sustained for 1 year; CPI +0.7pp;
-                  interest rates +0.8pp; GDP -0.3% in 2027
-                </td>
-              </tr>
-              <tr>
-                <td className="font-medium">
-                  <a href="https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/may-2026" target="_blank" rel="noreferrer" className="underline">Bank of England</a>
-                </td>
-                <td>--</td>
-                <td style={{ textAlign: "right" }}>3-3.5%</td>
-                <td className="text-slate-500">
-                  CPI likely 3-3.5% in Q2-Q3 2026 due to higher energy prices;
-                  oil up ~20%, gas up ~50% since the supply disruption began; rate cuts now unlikely
-                </td>
-              </tr>
-              <tr>
-                <td className="font-medium">
-                  <a href="https://obr.uk/efo/economic-and-fiscal-outlook-march-2026/" target="_blank" rel="noreferrer" className="underline">OBR</a>
-                </td>
-                <td>--</td>
-                <td style={{ textAlign: "right" }}>+1pp</td>
-                <td className="text-slate-500">
-                  Sustained energy spike could add 1pp to UK inflation in 2026;
-                  UK economy could face {"\u201c"}very significant{"\u201d"} impact; growth forecast cut to 0.7%
-                </td>
-              </tr>
+              {comparisonRows.map((row) => (
+                <tr key={row.source}>
+                  <td className="font-medium">
+                    <a href={row.url} target="_blank" rel="noreferrer" className="underline">{row.source}</a>
+                  </td>
+                  <td>{row.energy}</td>
+                  <td style={{ textAlign: "right" }}>{row.inflation}</td>
+                  <td className="font-medium" style={{ color: colors.primary[800] }}>{row.ours}</td>
+                  <td className="text-slate-500">{row.findings}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

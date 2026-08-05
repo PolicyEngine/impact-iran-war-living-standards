@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import ScenariosTab from "../src/components/ScenariosTab";
 import PolicyTab from "../src/components/PolicyTab";
 import MethodologyTab from "../src/components/MethodologyTab";
-import initialData from "../public/data/iran_impact_results.json";
+import data from "../public/data/iran_impact_results.json";
 
 const TAB_OPTIONS = [
   { id: "scenarios", label: "Impact Scenarios" },
@@ -25,35 +25,11 @@ function Dashboard() {
   const router = useRouter();
 
   const [activeTab, setActiveTab] = useState(() => getInitialTab(searchParams.get("tab")));
-  const [data, setData] = useState(initialData);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     const tabParam = searchParams.get("tab");
     setActiveTab(getInitialTab(tabParam));
   }, [searchParams]);
-
-  useEffect(() => {
-    async function loadData() {
-      try {
-        const response = await fetch("/data/iran_impact_results.json");
-        if (!response.ok) {
-          throw new Error("iran_impact_results.json not found");
-        }
-        const json = await response.json();
-        setData(json);
-      } catch (err) {
-        if (!initialData) {
-          setError(err.message);
-        }
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    loadData();
-  }, []);
 
   function handleTabChange(tab) {
     setActiveTab(tab);
@@ -79,22 +55,32 @@ function Dashboard() {
             <a href="https://policyengine.org" target="_blank" rel="noreferrer" className="underline">
               PolicyEngine UK
             </a>
-            &apos;s microsimulation model to estimate how energy price increases from a
-            sustained disruption to Middle East oil and gas supply would affect UK household
-            living standards. The{" "}
-            <strong>Impact Scenarios</strong> tab models three scenarios and their
-            distributional effects across income deciles, regions, and countries. The{" "}
-            <strong>Policy Responses</strong> tab evaluates eight potential government
-            interventions and their fiscal costs. The{" "}
+            &apos;s microsimulation model to estimate how energy price rises from the
+            ongoing Middle East conflict and Strait of Hormuz disruption affect UK
+            household living standards, and to compare the support options facing the
+            government ahead of the <strong>Autumn Budget on 28 October 2026</strong>. The{" "}
+            <strong>Impact Scenarios</strong> tab models three conflict paths (de-escalation,
+            sustained disruption, prolonged war) and their distributional effects across
+            income deciles, regions, countries, tenures, and household types. The{" "}
+            <strong>Policy Responses</strong> tab evaluates ten interventions — including
+            the live Budget decisions on extending the electricity VAT cut and the 5p fuel
+            duty cut, and the benefits-targeted winter energy payment under consideration —
+            with their fiscal costs and targeting. The{" "}
             <strong>Methodology</strong> tab explains the modelling approach,
             assumptions, and data sources.
           </p>
         </div>
 
-        <div className="mb-8 mt-8 flex w-fit flex-wrap border-b-2 border-slate-200">
+        <div
+          className="mb-8 mt-8 flex w-fit flex-wrap border-b-2 border-slate-200"
+          role="tablist"
+          aria-label="Dashboard sections"
+        >
           {TAB_OPTIONS.map((tab) => (
             <button
               key={tab.id}
+              role="tab"
+              aria-selected={activeTab === tab.id}
               className={`tab-button ${activeTab === tab.id ? "active" : ""}`}
               onClick={() => handleTabChange(tab.id)}
             >
@@ -103,24 +89,9 @@ function Dashboard() {
           ))}
         </div>
 
-        {error && (
-          <p className="rounded-2xl border border-red-200 bg-red-50 p-6 text-sm text-red-700">
-            Error: {error}
-          </p>
-        )}
-        {loading && !error && (
-          <p className="rounded-2xl border border-slate-200 bg-white p-6 text-sm text-slate-500">
-            Loading data...
-          </p>
-        )}
-
-        {!loading && !error && data && (
-          <>
-            {activeTab === "scenarios" && <ScenariosTab data={data} />}
-            {activeTab === "policy" && <PolicyTab data={data} />}
-            {activeTab === "methodology" && <MethodologyTab data={data} />}
-          </>
-        )}
+        {activeTab === "scenarios" && <ScenariosTab data={data} />}
+        {activeTab === "policy" && <PolicyTab data={data} />}
+        {activeTab === "methodology" && <MethodologyTab data={data} />}
 
         <footer className="mt-12 border-t border-slate-200 pt-8 text-center text-sm text-slate-500">
           <p>

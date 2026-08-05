@@ -99,34 +99,63 @@ export function getHouseholdTypeBreakdown(data, scenarioKey) {
 }
 
 /**
- * Quintile shares — what % of each policy's total spending goes to each quintile.
+ * Tenure breakdown — components use `avg_cost`.
+ */
+export function getTenureBreakdown(data, scenarioKey) {
+  const raw = data?.scenarios?.[scenarioKey]?.by_tenure || [];
+  return raw.map((t) => ({
+    ...t,
+    avg_cost: t.mean_impact,
+  }));
+}
+
+// Single source of truth for policy keys/labels, shared with PolicyTab.
+export const POLICY_KEYS = [
+  "epg",
+  "flat_rebate",
+  "ct_rebate",
+  "uc_uplift",
+  "fuel_duty_cut",
+  "means_tested",
+  "accelerated_uprating",
+  "elec_vat_cut",
+  "social_tariff",
+  "combined",
+];
+
+export const POLICY_LABELS = {
+  epg: "Energy Price Guarantee",
+  flat_rebate: "Flat rebate",
+  ct_rebate: "Council Tax rebate",
+  uc_uplift: "UC uplift",
+  fuel_duty_cut: "Fuel duty cut extension",
+  means_tested: "Means-tested payment",
+  accelerated_uprating: "Accelerated uprating",
+  elec_vat_cut: "Electricity VAT cut",
+  social_tariff: "Social tariff",
+  combined: "Combined package",
+};
+
+/**
+ * Quintile shares — what % of each policy's total spending goes to each
+ * quintile. Uses the pipeline's household-weighted `benefit_share_pct` per
+ * decile, so it is consistent with the `targeting_bottom3` statistic.
  */
 export function getQuintileShares(data, scenarioKey) {
   const pr = data?.policy_responses?.[scenarioKey];
   if (!pr) return [];
-  const POLICY_KEYS = ["epg","flat_rebate","ct_rebate","uc_uplift","fuel_duty_cut","means_tested","accelerated_uprating","social_tariff"];
-  const POLICY_LABELS = {
-    epg: "Energy Price Guarantee",
-    flat_rebate: "Flat rebate",
-    ct_rebate: "Council Tax rebate",
-    uc_uplift: "UC uplift",
-    fuel_duty_cut: "Fuel duty cut",
-    means_tested: "Means-tested payment",
-    accelerated_uprating: "Accelerated uprating",
-    social_tariff: "Social tariff",
-  };
-  return POLICY_KEYS.map(key => {
+  return POLICY_KEYS.filter((k) => k !== "combined").map(key => {
     const deciles = pr[key]?.by_decile || [];
     if (deciles.length < 10) return null;
-    const total = deciles.reduce((s, d) => s + (d.mean_benefit || 0), 0);
-    if (total === 0) return null;
+    const share = (i) => deciles[i].benefit_share_pct;
+    const quintile = (i) => +(share(2 * i) + share(2 * i + 1)).toFixed(1);
     return {
       policy: POLICY_LABELS[key] || key,
-      "Q1 (poorest)": +((( deciles[0]?.mean_benefit || 0) + (deciles[1]?.mean_benefit || 0)) / total * 100).toFixed(1),
-      "Q2": +(((deciles[2]?.mean_benefit || 0) + (deciles[3]?.mean_benefit || 0)) / total * 100).toFixed(1),
-      "Q3": +(((deciles[4]?.mean_benefit || 0) + (deciles[5]?.mean_benefit || 0)) / total * 100).toFixed(1),
-      "Q4": +(((deciles[6]?.mean_benefit || 0) + (deciles[7]?.mean_benefit || 0)) / total * 100).toFixed(1),
-      "Q5 (richest)": +(((deciles[8]?.mean_benefit || 0) + (deciles[9]?.mean_benefit || 0)) / total * 100).toFixed(1),
+      "Q1 (lowest income)": quintile(0),
+      "Q2": quintile(1),
+      "Q3": quintile(2),
+      "Q4": quintile(3),
+      "Q5 (highest income)": quintile(4),
     };
   }).filter(Boolean);
 }
