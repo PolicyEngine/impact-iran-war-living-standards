@@ -36,6 +36,12 @@ from .config import (
     EPG_CAP_PCT,
     REGION_TO_COUNTRY,
     ALLOCATE_FUEL_TO_VEHICLE_OWNERS,
+    PARAMETER_REGISTRY,
+    UPRATING_LAG_REGISTRY,
+    METHOD_LIMITATIONS,
+    SCENARIO_TYPE,
+    OCTOBER_2026_ENERGY_CAP,
+    FIXED_TARIFF_ACCOUNT_SHARE,
 )
 from .inputs import (
     FOOD_SPEND,
@@ -1050,6 +1056,8 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
             "base_fuel_spend": BASE_FUEL_SPEND,
             "base_food_spend": BASE_FOOD_SPEND,
             "fuel_poverty_threshold": FUEL_POVERTY_THRESHOLD,
+            "registry": PARAMETER_REGISTRY,
+            "uprating_lag": UPRATING_LAG_REGISTRY,
             "spending_inputs": {
                 "source": spending_source_metadata(),
                 "transport_fuel_annual_gbp_by_gross_decile": (
@@ -1072,9 +1080,26 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
             },
         },
         "metadata": {
+            "scenario_type": SCENARIO_TYPE,
+            "method_limitations": METHOD_LIMITATIONS,
             "cap_basis": (
+                "Reported for context only and NOT used in the calculation: "
                 "Ofgem default tariff cap £1,663/yr, Jul-Sep 2026, new TDCV "
-                "basis (≈£1,862 on the pre-July 2026 basis)"
+                "basis (≈£1,862 on the pre-July 2026 basis); the Oct-Dec 2026 "
+                f"cap is £{OCTOBER_2026_ENERGY_CAP:,}. The energy channel "
+                "multiplies each household's own baseline gas and electricity "
+                "expenditure by the scenario percentage and never references a "
+                "cap level, unit rate, standing charge, tariff type or cap "
+                "period. About "
+                f"{FIXED_TARIFF_ACCOUNT_SHARE:.0%} of accounts were on fixed "
+                "tariffs for the July 2026 cap, whose prices the cap does not set"
+            ),
+            "october_2026_energy_cap": OCTOBER_2026_ENERGY_CAP,
+            "fixed_tariff_account_share": FIXED_TARIFF_ACCOUNT_SHARE,
+            "timing_basis": (
+                "All changes are applied as full-year 2027-28 amounts. The "
+                "cited scenarios describe 2026 disruptions, some lasting a few "
+                "months; no time path or duration is modelled"
             ),
             "fuel_poverty_definition": (
                 "Indicative ratio: modelled domestic energy spend above 10% of "

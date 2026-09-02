@@ -43,6 +43,16 @@ export default function MethodologyTab({ data }) {
         <h3 className="mt-2 text-lg font-semibold text-slate-900">
           Scenario assumptions
         </h3>
+        <p className="mt-4 rounded-lg bg-amber-50 p-4 text-sm leading-7 text-slate-700">
+          <strong>These are stress tests, not forecasts.</strong> Each scenario applies a
+          set of price assumptions as full-year 2027&ndash;28 amounts, including where the
+          cited source describes a 2026 disruption lasting a few months. No time path,
+          quarterly profile or shock duration is modelled. The pass-through coefficients
+          and lags implied by the percentages below are judgements anchored to the cited
+          sources rather than equations derived from them; the results file records the
+          definition, source, reference period, derivation and range of every parameter
+          under <code>parameters.registry</code>.
+        </p>
         <p className="mt-4 text-sm leading-7 text-slate-600">
           Each scenario represents a forward path for the conflict from the August 2026
           position. The low scenario tracks the observed price path assuming
@@ -51,7 +61,10 @@ export default function MethodologyTab({ data }) {
           <a href="https://oilprice.com/Latest-Energy-News/World-News/Goldman-Another-Month-of-Hormuz-Closure-Means-Over-100-Brent-Throughout-2026.html" target="_blank" rel="noreferrer" className="underline">Goldman Sachs&apos; extended Strait of Hormuz closure case</a>{" "}
           (Brent above $100/bbl through 2026). The high scenario reflects
           Goldman&apos;s extreme-adverse case (Brent above $115-120) and{" "}
-          <a href="https://www.oxfordeconomics.com/resource/iran-war-scenarios-the-oil-price-that-breaks-parts-of-the-economy/" target="_blank" rel="noreferrer" className="underline">Oxford Economics&apos; prolonged-war scenario</a>.
+          <a href="https://www.oxfordeconomics.com/resource/iran-war-scenarios-the-oil-price-that-breaks-parts-of-the-economy/" target="_blank" rel="noreferrer" className="underline">Oxford Economics&apos; escalation scenario</a>,
+          which reports a 5.8% peak in <em>world</em> CPI under its two-month $140/bbl
+          case; the +4.5pp UK CPI assumption is a judgement above that, not a figure the
+          source publishes.
           CPI transmission draws on{" "}
           <a href="https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/june-2026" target="_blank" rel="noreferrer" className="underline">Bank of England June 2026 projections</a>{" "}
           and the{" "}
@@ -110,11 +123,16 @@ export default function MethodologyTab({ data }) {
             <strong className="text-slate-800">Energy bills:</strong>{" "}
             Higher wholesale gas prices feed through to the{" "}
             <a href="https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-july-and-30-september-2026" target="_blank" rel="noreferrer" className="underline">Ofgem price cap</a>{" "}
-            (model baseline: &pound;{currentEnergyCap.toLocaleString("en-GB")}/yr,
-            the July&ndash;September 2026 cap on Ofgem&apos;s new typical-consumption basis,
-            equivalent to ~&pound;1,862 on the pre-July basis). We model the pass-through from wholesale to
-            retail energy prices using historical cap-setting methodology, applying the
-            increase to household gas and electricity bills proportionally.
+            (&pound;{currentEnergyCap.toLocaleString("en-GB")}/yr for
+            July&ndash;September 2026 on Ofgem&apos;s new typical-consumption basis,
+            equivalent to ~&pound;1,862 on the pre-July basis; &pound;1,723 for
+            October&ndash;December 2026). The scenario percentage is applied to each
+            household&apos;s <strong>own baseline gas and electricity expenditure</strong>
+            in the microdata &mdash; the cap figures above are context and do not enter
+            the calculation. The model does not represent unit rates, standing charges,
+            the gas/electricity split, region, payment method, quarterly cap periods or
+            fixed-tariff coverage; about 40% of accounts were on fixed tariffs for the
+            July 2026 cap, whose prices the cap does not set.
           </div>
           <div>
             <strong className="text-slate-800">Fuel costs:</strong>{" "}
@@ -231,13 +249,15 @@ export default function MethodologyTab({ data }) {
                 </td>
               </tr>
               <tr>
-                <td className="font-medium">Energy price cap (Q3 2026)</td>
+                <td className="font-medium">Energy price cap (context only)</td>
                 <td>&pound;{currentEnergyCap.toLocaleString("en-GB")}/yr</td>
                 <td className="text-xs text-slate-500">
                   Ofgem, 1 July&ndash;30 September 2026, typical dual-fuel direct debit
                   household on the new typical-consumption basis (revised 1 July 2026;
-                  ~&pound;1,862 on the old basis). Cornwall Insight forecasts
-                  ~&pound;1,700 for Q4 2026 after the electricity VAT removal.
+                  ~&pound;1,862 on the old basis). The October&ndash;December 2026 cap is
+                  &pound;1,723. <strong>Not used in the calculation</strong> &mdash; the
+                  scenario percentage is applied to each household&apos;s own baseline
+                  gas and electricity expenditure.
                 </td>
               </tr>
               <tr>
