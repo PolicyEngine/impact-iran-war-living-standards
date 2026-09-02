@@ -2,8 +2,8 @@
   "year": 2027,
   "current_energy_cap": 1663,
   "provenance": {
-    "generated_at": "2026-09-02T10:21:56+00:00",
-    "git_revision": "e32e074255390e30f647a8c26b466b0a358f850c",
+    "generated_at": "2026-09-02T10:29:03+00:00",
+    "git_revision": "9ff9fbfdf671832bc11341704bd9aa3ef846b1bd",
     "git_dirty": false,
     "packages": {
       "policyengine": "5.0.1",
@@ -14,7 +14,7 @@
     },
     "source_hashes": {
       "config.py": "5793cd8bfd265464194fb756cc31d84bb188f9d883b63d6d3f8d61841f0633e8",
-      "pipeline.py": "ac77d32d30d4f30b46aa8c68dee65643b78f28a8bc02dbe16c60a689aa176e7d",
+      "pipeline.py": "a13f5611c4ac39a79f11aa7c4dec1d243f1292d7bdfcf841140803ae7b2e725c",
       "provenance.py": "dea9cad3cd2adf7f3e223749ead96669c66bd082a6ffe82ba15f4a994bab9749"
     },
     "release_bundle": {
@@ -1266,7 +1266,11 @@
     "low_shock": {
       "epg": {
         "name": "Energy Price Guarantee",
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 1.97,
         "fiscal_cost_bn": 1.97,
+        "household_protection_bn": 1.97,
+        "residual_impact_bn": 12.68,
         "avg_benefit_per_hh": 67,
         "targeting_bottom40": 33.9,
         "fp_rate_before_pct": 7.5,
@@ -1309,42 +1313,41 @@
             "benefit_share_pct": 24.9
           }
         ],
-        "winners_losers": [
+        "support_shares": [
           {
             "quintile": 1,
-            "pct_winners": 98.4,
-            "pct_unchanged": 1.6,
-            "pct_losers": 0.0
+            "pct_supported": 98.4,
+            "pct_unsupported": 1.6
           },
           {
             "quintile": 2,
-            "pct_winners": 98.2,
-            "pct_unchanged": 1.8,
-            "pct_losers": 0.0
+            "pct_supported": 98.2,
+            "pct_unsupported": 1.8
           },
           {
             "quintile": 3,
-            "pct_winners": 96.6,
-            "pct_unchanged": 3.4,
-            "pct_losers": 0.0
+            "pct_supported": 96.6,
+            "pct_unsupported": 3.4
           },
           {
             "quintile": 4,
-            "pct_winners": 97.7,
-            "pct_unchanged": 2.3,
-            "pct_losers": 0.0
+            "pct_supported": 97.7,
+            "pct_unsupported": 2.3
           },
           {
             "quintile": 5,
-            "pct_winners": 95.9,
-            "pct_unchanged": 4.1,
-            "pct_losers": 0.0
+            "pct_supported": 95.9,
+            "pct_unsupported": 4.1
           }
         ]
       },
       "flat_rebate": {
         "name": "Flat energy rebate",
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 11.83,
         "fiscal_cost_bn": 11.83,
+        "household_protection_bn": 11.83,
+        "residual_impact_bn": 4.71,
         "avg_benefit_per_hh": 400,
         "targeting_bottom40": 39.6,
         "fp_rate_before_pct": 7.5,
@@ -1387,42 +1390,41 @@
             "benefit_share_pct": 21.4
           }
         ],
-        "winners_losers": [
+        "support_shares": [
           {
             "quintile": 1,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
           },
           {
             "quintile": 2,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
           },
           {
             "quintile": 3,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
           },
           {
             "quintile": 4,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
           },
           {
             "quintile": 5,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
           }
         ]
       },
       "ct_rebate": {
         "name": "Council tax rebate",
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 6.63,
         "fiscal_cost_bn": 6.63,
+        "household_protection_bn": 6.63,
+        "residual_impact_bn": 8.86,
         "avg_benefit_per_hh": 224,
         "targeting_bottom40": 44.1,
         "fp_rate_before_pct": 7.5,
@@ -1465,42 +1467,41 @@
             "benefit_share_pct": 16.7
           }
         ],
-        "winners_losers": [
+        "support_shares": [
           {
             "quintile": 1,
-            "pct_winners": 83.5,
-            "pct_unchanged": 16.5,
-            "pct_losers": 0.0
+            "pct_supported": 83.5,
+            "pct_unsupported": 16.5
           },
           {
             "quintile": 2,
-            "pct_winners": 83.0,
-            "pct_unchanged": 17.0,
-            "pct_losers": 0.0
+            "pct_supported": 83.0,
+            "pct_unsupported": 17.0
           },
           {
             "quintile": 3,
-            "pct_winners": 80.0,
-            "pct_unchanged": 20.0,
-            "pct_losers": 0.0
+            "pct_supported": 80.0,
+            "pct_unsupported": 20.0
           },
           {
             "quintile": 4,
-            "pct_winners": 70.1,
-            "pct_unchanged": 29.9,
-            "pct_losers": 0.0
+            "pct_supported": 70.1,
+            "pct_unsupported": 29.9
           },
           {
             "quintile": 5,
-            "pct_winners": 58.3,
-            "pct_unchanged": 41.7,
-            "pct_losers": 0.0
+            "pct_supported": 58.3,
+            "pct_unsupported": 41.7
           }
         ]
       },
       "uc_uplift": {
         "name": "UC uplift",
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 2.34,
         "fiscal_cost_bn": 2.34,
+        "household_protection_bn": 2.34,
+        "residual_impact_bn": 13.86,
         "avg_benefit_per_hh": 79,
         "targeting_bottom40": 75.2,
         "fp_rate_before_pct": 7.5,
@@ -1543,198 +1544,195 @@
             "benefit_share_pct": 2.0
           }
         ],
-        "winners_losers": [
+        "support_shares": [
           {
             "quintile": 1,
-            "pct_winners": 16.1,
-            "pct_unchanged": 83.9,
-            "pct_losers": 0.0
+            "pct_supported": 16.1,
+            "pct_unsupported": 83.9
           },
           {
             "quintile": 2,
-            "pct_winners": 12.6,
-            "pct_unchanged": 87.4,
-            "pct_losers": 0.0
+            "pct_supported": 12.6,
+            "pct_unsupported": 87.4
           },
           {
             "quintile": 3,
-            "pct_winners": 6.8,
-            "pct_unchanged": 93.2,
-            "pct_losers": 0.0
+            "pct_supported": 6.8,
+            "pct_unsupported": 93.2
           },
           {
             "quintile": 4,
-            "pct_winners": 2.0,
-            "pct_unchanged": 98.0,
-            "pct_losers": 0.0
+            "pct_supported": 2.0,
+            "pct_unsupported": 98.0
           },
           {
             "quintile": 5,
-            "pct_winners": 0.7,
-            "pct_unchanged": 99.3,
-            "pct_losers": 0.0
+            "pct_supported": 0.7,
+            "pct_unsupported": 99.3
           }
         ]
       },
       "fuel_duty_cut": {
         "name": "Fuel duty cut extension",
-        "fiscal_cost_bn": 1.78,
-        "avg_benefit_per_hh": 60,
-        "targeting_bottom40": 31.4,
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 1.18,
+        "fiscal_cost_bn": 1.18,
+        "household_protection_bn": 1.18,
+        "residual_impact_bn": 13.47,
+        "avg_benefit_per_hh": 40,
+        "targeting_bottom40": 30.3,
         "fp_rate_before_pct": 7.5,
         "fp_rate_after_pct": 7.5,
-        "n_lifted_from_poverty": 48769,
+        "n_lifted_from_poverty": 41228,
         "by_quintile": [
           {
             "quintile": 1,
-            "mean_benefit": 33,
-            "mean_residual_impact": 289,
-            "mean_benefit_pct_income": 0.2,
-            "benefit_share_pct": 11.6
+            "mean_benefit": 30,
+            "mean_residual_impact": 312,
+            "mean_benefit_pct_income": 0.5,
+            "benefit_share_pct": 15.8
           },
           {
             "quintile": 2,
-            "mean_benefit": 49,
-            "mean_residual_impact": 368,
+            "mean_benefit": 31,
+            "mean_residual_impact": 413,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 15.1
+            "benefit_share_pct": 14.4
           },
           {
             "quintile": 3,
-            "mean_benefit": 60,
-            "mean_residual_impact": 408,
+            "mean_benefit": 37,
+            "mean_residual_impact": 450,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 19.9
+            "benefit_share_pct": 18.4
           },
           {
             "quintile": 4,
-            "mean_benefit": 76,
-            "mean_residual_impact": 501,
+            "mean_benefit": 55,
+            "mean_residual_impact": 533,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 24.0
+            "benefit_share_pct": 25.8
           },
           {
             "quintile": 5,
-            "mean_benefit": 83,
-            "mean_residual_impact": 529,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 29.4
+            "mean_benefit": 48,
+            "mean_residual_impact": 568,
+            "mean_benefit_pct_income": 0.0,
+            "benefit_share_pct": 25.5
           }
         ],
-        "winners_losers": [
+        "support_shares": [
           {
             "quintile": 1,
-            "pct_winners": 67.3,
-            "pct_unchanged": 32.7,
-            "pct_losers": 0.0
+            "pct_supported": 37.7,
+            "pct_unsupported": 62.3
           },
           {
             "quintile": 2,
-            "pct_winners": 72.2,
-            "pct_unchanged": 27.8,
-            "pct_losers": 0.0
+            "pct_supported": 41.9,
+            "pct_unsupported": 58.1
           },
           {
             "quintile": 3,
-            "pct_winners": 80.5,
-            "pct_unchanged": 19.5,
-            "pct_losers": 0.0
+            "pct_supported": 44.1,
+            "pct_unsupported": 55.9
           },
           {
             "quintile": 4,
-            "pct_winners": 87.7,
-            "pct_unchanged": 12.3,
-            "pct_losers": 0.0
+            "pct_supported": 49.7,
+            "pct_unsupported": 50.3
           },
           {
             "quintile": 5,
-            "pct_winners": 79.5,
-            "pct_unchanged": 20.5,
-            "pct_losers": 0.0
+            "pct_supported": 42.4,
+            "pct_unsupported": 57.6
           }
         ]
       },
       "means_tested": {
         "name": "Means-tested cost-of-living payment",
-        "fiscal_cost_bn": 2.38,
-        "avg_benefit_per_hh": 80,
-        "targeting_bottom40": 74.0,
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 2.23,
+        "fiscal_cost_bn": 2.23,
+        "household_protection_bn": 2.23,
+        "residual_impact_bn": 13.52,
+        "avg_benefit_per_hh": 75,
+        "targeting_bottom40": 73.3,
         "fp_rate_before_pct": 7.5,
         "fp_rate_after_pct": 7.5,
-        "n_lifted_from_poverty": 77034,
+        "n_lifted_from_poverty": 50912,
         "by_quintile": [
           {
             "quintile": 1,
-            "mean_benefit": 165,
-            "mean_residual_impact": 269,
-            "mean_benefit_pct_income": 1.0,
+            "mean_benefit": 154,
+            "mean_residual_impact": 280,
+            "mean_benefit_pct_income": 0.9,
             "benefit_share_pct": 43.1
           },
           {
             "quintile": 2,
-            "mean_benefit": 134,
-            "mean_residual_impact": 357,
+            "mean_benefit": 123,
+            "mean_residual_impact": 373,
             "mean_benefit_pct_income": 0.4,
-            "benefit_share_pct": 30.8
+            "benefit_share_pct": 30.3
           },
           {
             "quintile": 3,
-            "mean_benefit": 78,
-            "mean_residual_impact": 436,
+            "mean_benefit": 74,
+            "mean_residual_impact": 445,
             "mean_benefit_pct_income": 0.2,
-            "benefit_share_pct": 19.5
+            "benefit_share_pct": 19.8
           },
           {
             "quintile": 4,
             "mean_benefit": 19,
             "mean_residual_impact": 569,
             "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 4.4
+            "benefit_share_pct": 4.7
           },
           {
             "quintile": 5,
             "mean_benefit": 8,
             "mean_residual_impact": 607,
             "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 2.1
+            "benefit_share_pct": 2.2
           }
         ],
-        "winners_losers": [
+        "support_shares": [
           {
             "quintile": 1,
-            "pct_winners": 25.4,
-            "pct_unchanged": 74.6,
-            "pct_losers": 0.0
+            "pct_supported": 23.8,
+            "pct_unsupported": 76.2
           },
           {
             "quintile": 2,
-            "pct_winners": 20.6,
-            "pct_unchanged": 79.4,
-            "pct_losers": 0.0
+            "pct_supported": 19.0,
+            "pct_unsupported": 81.0
           },
           {
             "quintile": 3,
-            "pct_winners": 12.0,
-            "pct_unchanged": 88.0,
-            "pct_losers": 0.0
+            "pct_supported": 11.4,
+            "pct_unsupported": 88.6
           },
           {
             "quintile": 4,
-            "pct_winners": 2.9,
-            "pct_unchanged": 97.1,
-            "pct_losers": 0.0
+            "pct_supported": 2.9,
+            "pct_unsupported": 97.1
           },
           {
             "quintile": 5,
-            "pct_winners": 1.2,
-            "pct_unchanged": 98.8,
-            "pct_losers": 0.0
+            "pct_supported": 1.2,
+            "pct_unsupported": 98.8
           }
         ]
       },
       "elec_vat_cut": {
         "name": "Electricity VAT cut (extended)",
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 1.2,
         "fiscal_cost_bn": 1.2,
+        "household_protection_bn": 1.2,
+        "residual_impact_bn": 13.45,
         "avg_benefit_per_hh": 41,
         "targeting_bottom40": 33.9,
         "fp_rate_before_pct": 7.5,
@@ -1777,42 +1775,41 @@
             "benefit_share_pct": 24.8
           }
         ],
-        "winners_losers": [
+        "support_shares": [
           {
             "quintile": 1,
-            "pct_winners": 81.7,
-            "pct_unchanged": 18.3,
-            "pct_losers": 0.0
+            "pct_supported": 81.7,
+            "pct_unsupported": 18.3
           },
           {
             "quintile": 2,
-            "pct_winners": 83.7,
-            "pct_unchanged": 16.3,
-            "pct_losers": 0.0
+            "pct_supported": 83.7,
+            "pct_unsupported": 16.3
           },
           {
             "quintile": 3,
-            "pct_winners": 79.8,
-            "pct_unchanged": 20.2,
-            "pct_losers": 0.0
+            "pct_supported": 79.8,
+            "pct_unsupported": 20.2
           },
           {
             "quintile": 4,
-            "pct_winners": 82.7,
-            "pct_unchanged": 17.3,
-            "pct_losers": 0.0
+            "pct_supported": 82.7,
+            "pct_unsupported": 17.3
           },
           {
             "quintile": 5,
-            "pct_winners": 76.3,
-            "pct_unchanged": 23.7,
-            "pct_losers": 0.0
+            "pct_supported": 76.3,
+            "pct_unsupported": 23.7
           }
         ]
       },
       "accelerated_uprating": {
         "name": "Accelerated benefit uprating",
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 0.48,
         "fiscal_cost_bn": 0.48,
+        "household_protection_bn": 0.48,
+        "residual_impact_bn": 14.18,
         "avg_benefit_per_hh": 16,
         "targeting_bottom40": 58.5,
         "fp_rate_before_pct": 7.5,
@@ -1855,42 +1852,41 @@
             "benefit_share_pct": 5.1
           }
         ],
-        "winners_losers": [
+        "support_shares": [
           {
             "quintile": 1,
-            "pct_winners": 51.2,
-            "pct_unchanged": 48.8,
-            "pct_losers": 0.0
+            "pct_supported": 51.2,
+            "pct_unsupported": 48.8
           },
           {
             "quintile": 2,
-            "pct_winners": 52.3,
-            "pct_unchanged": 47.7,
-            "pct_losers": 0.0
+            "pct_supported": 52.3,
+            "pct_unsupported": 47.7
           },
           {
             "quintile": 3,
-            "pct_winners": 45.2,
-            "pct_unchanged": 54.8,
-            "pct_losers": 0.0
+            "pct_supported": 45.2,
+            "pct_unsupported": 54.8
           },
           {
             "quintile": 4,
-            "pct_winners": 39.0,
-            "pct_unchanged": 61.0,
-            "pct_losers": 0.0
+            "pct_supported": 39.0,
+            "pct_unsupported": 61.0
           },
           {
             "quintile": 5,
-            "pct_winners": 21.0,
-            "pct_unchanged": 79.0,
-            "pct_losers": 0.0
+            "pct_supported": 21.0,
+            "pct_unsupported": 79.0
           }
         ]
       },
       "social_tariff": {
         "name": "Social tariff",
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 0.4,
         "fiscal_cost_bn": 0.4,
+        "household_protection_bn": 0.4,
+        "residual_impact_bn": 14.25,
         "avg_benefit_per_hh": 14,
         "targeting_bottom40": 76.4,
         "fp_rate_before_pct": 7.5,
@@ -1933,114 +1929,108 @@
             "benefit_share_pct": 13.3
           }
         ],
-        "winners_losers": [
+        "support_shares": [
           {
             "quintile": 1,
-            "pct_winners": 57.0,
-            "pct_unchanged": 43.0,
-            "pct_losers": 0.0
+            "pct_supported": 57.0,
+            "pct_unsupported": 43.0
           },
           {
             "quintile": 2,
-            "pct_winners": 13.8,
-            "pct_unchanged": 86.2,
-            "pct_losers": 0.0
+            "pct_supported": 13.8,
+            "pct_unsupported": 86.2
           },
           {
             "quintile": 3,
-            "pct_winners": 6.9,
-            "pct_unchanged": 93.1,
-            "pct_losers": 0.0
+            "pct_supported": 6.9,
+            "pct_unsupported": 93.1
           },
           {
             "quintile": 4,
-            "pct_winners": 2.3,
-            "pct_unchanged": 97.7,
-            "pct_losers": 0.0
+            "pct_supported": 2.3,
+            "pct_unsupported": 97.7
           },
           {
             "quintile": 5,
-            "pct_winners": 2.1,
-            "pct_unchanged": 97.9,
-            "pct_losers": 0.0
+            "pct_supported": 2.1,
+            "pct_unsupported": 97.9
           }
         ]
       },
       "combined": {
         "name": "Combined package",
-        "fiscal_cost_bn": 28.61,
-        "avg_benefit_per_hh": 558,
-        "targeting_bottom40": 33.4,
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 27.82,
+        "fiscal_cost_bn": 27.82,
+        "household_protection_bn": 14.12,
+        "residual_impact_bn": 0.53,
+        "avg_benefit_per_hh": 477,
+        "targeting_bottom40": 32.2,
         "fp_rate_before_pct": 7.5,
         "fp_rate_after_pct": 6.6,
-        "n_lifted_from_poverty": 479981,
+        "n_lifted_from_poverty": 363587,
         "by_quintile": [
           {
             "quintile": 1,
-            "mean_benefit": 321,
-            "mean_residual_impact": 1,
-            "mean_benefit_pct_income": 2.9,
-            "benefit_share_pct": 14.5
+            "mean_benefit": 342,
+            "mean_residual_impact": 0,
+            "mean_benefit_pct_income": 3.0,
+            "benefit_share_pct": 15.1
           },
           {
             "quintile": 2,
-            "mean_benefit": 412,
+            "mean_benefit": 439,
             "mean_residual_impact": 5,
-            "mean_benefit_pct_income": 1.1,
-            "benefit_share_pct": 16.5
+            "mean_benefit_pct_income": 1.2,
+            "benefit_share_pct": 17.1
           },
           {
             "quintile": 3,
-            "mean_benefit": 461,
-            "mean_residual_impact": 7,
+            "mean_benefit": 481,
+            "mean_residual_impact": 6,
             "mean_benefit_pct_income": 1.0,
-            "benefit_share_pct": 19.9
+            "benefit_share_pct": 20.3
           },
           {
             "quintile": 4,
             "mean_benefit": 556,
             "mean_residual_impact": 21,
             "mean_benefit_pct_income": 0.9,
-            "benefit_share_pct": 22.6
+            "benefit_share_pct": 22.4
           },
           {
             "quintile": 5,
-            "mean_benefit": 574,
-            "mean_residual_impact": 38,
+            "mean_benefit": 562,
+            "mean_residual_impact": 54,
             "mean_benefit_pct_income": 0.6,
-            "benefit_share_pct": 26.5
+            "benefit_share_pct": 25.2
           }
         ],
-        "winners_losers": [
+        "support_shares": [
           {
             "quintile": 1,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
           },
           {
             "quintile": 2,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
           },
           {
             "quintile": 3,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
           },
           {
             "quintile": 4,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
           },
           {
             "quintile": 5,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
           }
         ]
       }
@@ -2048,7 +2038,11 @@
     "central_shock": {
       "epg": {
         "name": "Energy Price Guarantee",
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 13.78,
         "fiscal_cost_bn": 13.78,
+        "household_protection_bn": 13.78,
+        "residual_impact_bn": 23.19,
         "avg_benefit_per_hh": 466,
         "targeting_bottom40": 33.9,
         "fp_rate_before_pct": 11.0,
@@ -2091,42 +2085,41 @@
             "benefit_share_pct": 24.9
           }
         ],
-        "winners_losers": [
+        "support_shares": [
           {
             "quintile": 1,
-            "pct_winners": 98.7,
-            "pct_unchanged": 1.3,
-            "pct_losers": 0.0
+            "pct_supported": 98.7,
+            "pct_unsupported": 1.3
           },
           {
             "quintile": 2,
-            "pct_winners": 98.8,
-            "pct_unchanged": 1.2,
-            "pct_losers": 0.0
+            "pct_supported": 98.8,
+            "pct_unsupported": 1.2
           },
           {
             "quintile": 3,
-            "pct_winners": 98.0,
-            "pct_unchanged": 2.0,
-            "pct_losers": 0.0
+            "pct_supported": 98.0,
+            "pct_unsupported": 2.0
           },
           {
             "quintile": 4,
-            "pct_winners": 98.1,
-            "pct_unchanged": 1.9,
-            "pct_losers": 0.0
+            "pct_supported": 98.1,
+            "pct_unsupported": 1.9
           },
           {
             "quintile": 5,
-            "pct_winners": 95.9,
-            "pct_unchanged": 4.1,
-            "pct_losers": 0.0
+            "pct_supported": 95.9,
+            "pct_unsupported": 4.1
           }
         ]
       },
       "flat_rebate": {
         "name": "Flat energy rebate",
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 11.83,
         "fiscal_cost_bn": 11.83,
+        "household_protection_bn": 11.83,
+        "residual_impact_bn": 25.69,
         "avg_benefit_per_hh": 400,
         "targeting_bottom40": 39.6,
         "fp_rate_before_pct": 11.0,
@@ -2169,42 +2162,41 @@
             "benefit_share_pct": 21.4
           }
         ],
-        "winners_losers": [
+        "support_shares": [
           {
             "quintile": 1,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
           },
           {
             "quintile": 2,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
           },
           {
             "quintile": 3,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
           },
           {
             "quintile": 4,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
           },
           {
             "quintile": 5,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
           }
         ]
       },
       "ct_rebate": {
         "name": "Council tax rebate",
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 6.63,
         "fiscal_cost_bn": 6.63,
+        "household_protection_bn": 6.63,
+        "residual_impact_bn": 30.52,
         "avg_benefit_per_hh": 224,
         "targeting_bottom40": 44.1,
         "fp_rate_before_pct": 11.0,
@@ -2247,42 +2239,41 @@
             "benefit_share_pct": 16.7
           }
         ],
-        "winners_losers": [
+        "support_shares": [
           {
             "quintile": 1,
-            "pct_winners": 83.5,
-            "pct_unchanged": 16.5,
-            "pct_losers": 0.0
+            "pct_supported": 83.5,
+            "pct_unsupported": 16.5
           },
           {
             "quintile": 2,
-            "pct_winners": 83.0,
-            "pct_unchanged": 17.0,
-            "pct_losers": 0.0
+            "pct_supported": 83.0,
+            "pct_unsupported": 17.0
           },
           {
             "quintile": 3,
-            "pct_winners": 80.0,
-            "pct_unchanged": 20.0,
-            "pct_losers": 0.0
+            "pct_supported": 80.0,
+            "pct_unsupported": 20.0
           },
           {
             "quintile": 4,
-            "pct_winners": 70.1,
-            "pct_unchanged": 29.9,
-            "pct_losers": 0.0
+            "pct_supported": 70.1,
+            "pct_unsupported": 29.9
           },
           {
             "quintile": 5,
-            "pct_winners": 58.3,
-            "pct_unchanged": 41.7,
-            "pct_losers": 0.0
+            "pct_supported": 58.3,
+            "pct_unsupported": 41.7
           }
         ]
       },
       "uc_uplift": {
         "name": "UC uplift",
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 2.34,
         "fiscal_cost_bn": 2.34,
+        "household_protection_bn": 2.34,
+        "residual_impact_bn": 35.28,
         "avg_benefit_per_hh": 79,
         "targeting_bottom40": 75.2,
         "fp_rate_before_pct": 11.0,
@@ -2325,198 +2316,195 @@
             "benefit_share_pct": 2.0
           }
         ],
-        "winners_losers": [
+        "support_shares": [
           {
             "quintile": 1,
-            "pct_winners": 16.1,
-            "pct_unchanged": 83.9,
-            "pct_losers": 0.0
+            "pct_supported": 16.1,
+            "pct_unsupported": 83.9
           },
           {
             "quintile": 2,
-            "pct_winners": 12.6,
-            "pct_unchanged": 87.4,
-            "pct_losers": 0.0
+            "pct_supported": 12.6,
+            "pct_unsupported": 87.4
           },
           {
             "quintile": 3,
-            "pct_winners": 6.8,
-            "pct_unchanged": 93.2,
-            "pct_losers": 0.0
+            "pct_supported": 6.8,
+            "pct_unsupported": 93.2
           },
           {
             "quintile": 4,
-            "pct_winners": 2.0,
-            "pct_unchanged": 98.0,
-            "pct_losers": 0.0
+            "pct_supported": 2.0,
+            "pct_unsupported": 98.0
           },
           {
             "quintile": 5,
-            "pct_winners": 0.7,
-            "pct_unchanged": 99.3,
-            "pct_losers": 0.0
+            "pct_supported": 0.7,
+            "pct_unsupported": 99.3
           }
         ]
       },
       "fuel_duty_cut": {
         "name": "Fuel duty cut extension",
-        "fiscal_cost_bn": 1.78,
-        "avg_benefit_per_hh": 60,
-        "targeting_bottom40": 31.4,
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 1.18,
+        "fiscal_cost_bn": 1.18,
+        "household_protection_bn": 1.18,
+        "residual_impact_bn": 35.79,
+        "avg_benefit_per_hh": 40,
+        "targeting_bottom40": 30.3,
         "fp_rate_before_pct": 11.0,
         "fp_rate_after_pct": 11.0,
-        "n_lifted_from_poverty": 43202,
+        "n_lifted_from_poverty": 33932,
         "by_quintile": [
           {
             "quintile": 1,
-            "mean_benefit": 33,
-            "mean_residual_impact": 798,
-            "mean_benefit_pct_income": 0.2,
-            "benefit_share_pct": 11.6
+            "mean_benefit": 30,
+            "mean_residual_impact": 852,
+            "mean_benefit_pct_income": 0.5,
+            "benefit_share_pct": 15.8
           },
           {
             "quintile": 2,
-            "mean_benefit": 49,
-            "mean_residual_impact": 1012,
+            "mean_benefit": 31,
+            "mean_residual_impact": 1098,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 15.1
+            "benefit_share_pct": 14.4
           },
           {
             "quintile": 3,
-            "mean_benefit": 60,
-            "mean_residual_impact": 1119,
+            "mean_benefit": 37,
+            "mean_residual_impact": 1189,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 19.9
+            "benefit_share_pct": 18.4
           },
           {
             "quintile": 4,
-            "mean_benefit": 76,
-            "mean_residual_impact": 1376,
+            "mean_benefit": 55,
+            "mean_residual_impact": 1424,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 24.0
+            "benefit_share_pct": 25.8
           },
           {
             "quintile": 5,
-            "mean_benefit": 83,
-            "mean_residual_impact": 1444,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 29.4
+            "mean_benefit": 48,
+            "mean_residual_impact": 1489,
+            "mean_benefit_pct_income": 0.0,
+            "benefit_share_pct": 25.5
           }
         ],
-        "winners_losers": [
+        "support_shares": [
           {
             "quintile": 1,
-            "pct_winners": 67.3,
-            "pct_unchanged": 32.7,
-            "pct_losers": 0.0
+            "pct_supported": 37.7,
+            "pct_unsupported": 62.3
           },
           {
             "quintile": 2,
-            "pct_winners": 72.2,
-            "pct_unchanged": 27.8,
-            "pct_losers": 0.0
+            "pct_supported": 41.9,
+            "pct_unsupported": 58.1
           },
           {
             "quintile": 3,
-            "pct_winners": 80.5,
-            "pct_unchanged": 19.5,
-            "pct_losers": 0.0
+            "pct_supported": 44.1,
+            "pct_unsupported": 55.9
           },
           {
             "quintile": 4,
-            "pct_winners": 87.7,
-            "pct_unchanged": 12.3,
-            "pct_losers": 0.0
+            "pct_supported": 49.7,
+            "pct_unsupported": 50.3
           },
           {
             "quintile": 5,
-            "pct_winners": 79.5,
-            "pct_unchanged": 20.5,
-            "pct_losers": 0.0
+            "pct_supported": 42.4,
+            "pct_unsupported": 57.6
           }
         ]
       },
       "means_tested": {
         "name": "Means-tested cost-of-living payment",
-        "fiscal_cost_bn": 2.38,
-        "avg_benefit_per_hh": 80,
-        "targeting_bottom40": 74.0,
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 2.23,
+        "fiscal_cost_bn": 2.23,
+        "household_protection_bn": 2.23,
+        "residual_impact_bn": 35.07,
+        "avg_benefit_per_hh": 75,
+        "targeting_bottom40": 73.3,
         "fp_rate_before_pct": 11.0,
         "fp_rate_after_pct": 10.9,
-        "n_lifted_from_poverty": 145848,
+        "n_lifted_from_poverty": 101041,
         "by_quintile": [
           {
             "quintile": 1,
-            "mean_benefit": 165,
-            "mean_residual_impact": 723,
-            "mean_benefit_pct_income": 1.0,
+            "mean_benefit": 154,
+            "mean_residual_impact": 763,
+            "mean_benefit_pct_income": 0.9,
             "benefit_share_pct": 43.1
           },
           {
             "quintile": 2,
-            "mean_benefit": 134,
-            "mean_residual_impact": 955,
+            "mean_benefit": 123,
+            "mean_residual_impact": 1018,
             "mean_benefit_pct_income": 0.4,
-            "benefit_share_pct": 30.8
+            "benefit_share_pct": 30.3
           },
           {
             "quintile": 3,
-            "mean_benefit": 78,
-            "mean_residual_impact": 1121,
+            "mean_benefit": 74,
+            "mean_residual_impact": 1158,
             "mean_benefit_pct_income": 0.2,
-            "benefit_share_pct": 19.5
+            "benefit_share_pct": 19.8
           },
           {
             "quintile": 4,
             "mean_benefit": 19,
             "mean_residual_impact": 1438,
             "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 4.4
+            "benefit_share_pct": 4.7
           },
           {
             "quintile": 5,
             "mean_benefit": 8,
             "mean_residual_impact": 1520,
             "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 2.1
+            "benefit_share_pct": 2.2
           }
         ],
-        "winners_losers": [
+        "support_shares": [
           {
             "quintile": 1,
-            "pct_winners": 25.4,
-            "pct_unchanged": 74.6,
-            "pct_losers": 0.0
+            "pct_supported": 23.8,
+            "pct_unsupported": 76.2
           },
           {
             "quintile": 2,
-            "pct_winners": 20.6,
-            "pct_unchanged": 79.4,
-            "pct_losers": 0.0
+            "pct_supported": 19.0,
+            "pct_unsupported": 81.0
           },
           {
             "quintile": 3,
-            "pct_winners": 12.0,
-            "pct_unchanged": 88.0,
-            "pct_losers": 0.0
+            "pct_supported": 11.4,
+            "pct_unsupported": 88.6
           },
           {
             "quintile": 4,
-            "pct_winners": 2.9,
-            "pct_unchanged": 97.1,
-            "pct_losers": 0.0
+            "pct_supported": 2.9,
+            "pct_unsupported": 97.1
           },
           {
             "quintile": 5,
-            "pct_winners": 1.2,
-            "pct_unchanged": 98.8,
-            "pct_losers": 0.0
+            "pct_supported": 1.2,
+            "pct_unsupported": 98.8
           }
         ]
       },
       "elec_vat_cut": {
         "name": "Electricity VAT cut (extended)",
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 1.51,
         "fiscal_cost_bn": 1.51,
+        "household_protection_bn": 1.51,
+        "residual_impact_bn": 35.46,
         "avg_benefit_per_hh": 51,
         "targeting_bottom40": 33.9,
         "fp_rate_before_pct": 11.0,
@@ -2559,42 +2547,41 @@
             "benefit_share_pct": 24.8
           }
         ],
-        "winners_losers": [
+        "support_shares": [
           {
             "quintile": 1,
-            "pct_winners": 81.7,
-            "pct_unchanged": 18.3,
-            "pct_losers": 0.0
+            "pct_supported": 81.7,
+            "pct_unsupported": 18.3
           },
           {
             "quintile": 2,
-            "pct_winners": 84.0,
-            "pct_unchanged": 16.0,
-            "pct_losers": 0.0
+            "pct_supported": 84.0,
+            "pct_unsupported": 16.0
           },
           {
             "quintile": 3,
-            "pct_winners": 80.0,
-            "pct_unchanged": 20.0,
-            "pct_losers": 0.0
+            "pct_supported": 80.0,
+            "pct_unsupported": 20.0
           },
           {
             "quintile": 4,
-            "pct_winners": 82.8,
-            "pct_unchanged": 17.2,
-            "pct_losers": 0.0
+            "pct_supported": 82.8,
+            "pct_unsupported": 17.2
           },
           {
             "quintile": 5,
-            "pct_winners": 76.3,
-            "pct_unchanged": 23.7,
-            "pct_losers": 0.0
+            "pct_supported": 76.3,
+            "pct_unsupported": 23.7
           }
         ]
       },
       "accelerated_uprating": {
         "name": "Accelerated benefit uprating",
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 1.19,
         "fiscal_cost_bn": 1.19,
+        "household_protection_bn": 1.19,
+        "residual_impact_bn": 35.78,
         "avg_benefit_per_hh": 40,
         "targeting_bottom40": 58.5,
         "fp_rate_before_pct": 11.0,
@@ -2637,42 +2624,41 @@
             "benefit_share_pct": 5.1
           }
         ],
-        "winners_losers": [
+        "support_shares": [
           {
             "quintile": 1,
-            "pct_winners": 51.5,
-            "pct_unchanged": 48.5,
-            "pct_losers": 0.0
+            "pct_supported": 51.5,
+            "pct_unsupported": 48.5
           },
           {
             "quintile": 2,
-            "pct_winners": 52.4,
-            "pct_unchanged": 47.6,
-            "pct_losers": 0.0
+            "pct_supported": 52.4,
+            "pct_unsupported": 47.6
           },
           {
             "quintile": 3,
-            "pct_winners": 45.2,
-            "pct_unchanged": 54.8,
-            "pct_losers": 0.0
+            "pct_supported": 45.2,
+            "pct_unsupported": 54.8
           },
           {
             "quintile": 4,
-            "pct_winners": 39.0,
-            "pct_unchanged": 61.0,
-            "pct_losers": 0.0
+            "pct_supported": 39.0,
+            "pct_unsupported": 61.0
           },
           {
             "quintile": 5,
-            "pct_winners": 21.0,
-            "pct_unchanged": 79.0,
-            "pct_losers": 0.0
+            "pct_supported": 21.0,
+            "pct_unsupported": 79.0
           }
         ]
       },
       "social_tariff": {
         "name": "Social tariff",
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 1.2,
         "fiscal_cost_bn": 1.2,
+        "household_protection_bn": 1.2,
+        "residual_impact_bn": 35.77,
         "avg_benefit_per_hh": 41,
         "targeting_bottom40": 76.4,
         "fp_rate_before_pct": 11.0,
@@ -2715,114 +2701,108 @@
             "benefit_share_pct": 13.3
           }
         ],
-        "winners_losers": [
+        "support_shares": [
           {
             "quintile": 1,
-            "pct_winners": 57.2,
-            "pct_unchanged": 42.8,
-            "pct_losers": 0.0
+            "pct_supported": 57.2,
+            "pct_unsupported": 42.8
           },
           {
             "quintile": 2,
-            "pct_winners": 14.0,
-            "pct_unchanged": 86.0,
-            "pct_losers": 0.0
+            "pct_supported": 14.0,
+            "pct_unsupported": 86.0
           },
           {
             "quintile": 3,
-            "pct_winners": 6.9,
-            "pct_unchanged": 93.1,
-            "pct_losers": 0.0
+            "pct_supported": 6.9,
+            "pct_unsupported": 93.1
           },
           {
             "quintile": 4,
-            "pct_winners": 2.3,
-            "pct_unchanged": 97.7,
-            "pct_losers": 0.0
+            "pct_supported": 2.3,
+            "pct_unsupported": 97.7
           },
           {
             "quintile": 5,
-            "pct_winners": 2.1,
-            "pct_unchanged": 97.9,
-            "pct_losers": 0.0
+            "pct_supported": 2.1,
+            "pct_unsupported": 97.9
           }
         ]
       },
       "combined": {
         "name": "Combined package",
-        "fiscal_cost_bn": 41.45,
-        "avg_benefit_per_hh": 1219,
-        "targeting_bottom40": 36.8,
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 40.35,
+        "fiscal_cost_bn": 40.35,
+        "household_protection_bn": 31.7,
+        "residual_impact_bn": 5.28,
+        "avg_benefit_per_hh": 1072,
+        "targeting_bottom40": 35.0,
         "fp_rate_before_pct": 11.0,
         "fp_rate_after_pct": 6.6,
-        "n_lifted_from_poverty": 1227694,
+        "n_lifted_from_poverty": 1061293,
         "by_quintile": [
           {
             "quintile": 1,
-            "mean_benefit": 1039,
-            "mean_residual_impact": 28,
-            "mean_benefit_pct_income": 10.0,
-            "benefit_share_pct": 18.0
+            "mean_benefit": 859,
+            "mean_residual_impact": 24,
+            "mean_benefit_pct_income": 7.8,
+            "benefit_share_pct": 16.9
           },
           {
             "quintile": 2,
-            "mean_benefit": 1001,
-            "mean_residual_impact": 60,
-            "mean_benefit_pct_income": 2.7,
-            "benefit_share_pct": 17.5
+            "mean_benefit": 1046,
+            "mean_residual_impact": 84,
+            "mean_benefit_pct_income": 2.8,
+            "benefit_share_pct": 18.1
           },
           {
             "quintile": 3,
-            "mean_benefit": 1087,
-            "mean_residual_impact": 92,
+            "mean_benefit": 1105,
+            "mean_residual_impact": 121,
             "mean_benefit_pct_income": 2.4,
-            "benefit_share_pct": 20.6
+            "benefit_share_pct": 20.7
           },
           {
             "quintile": 4,
-            "mean_benefit": 1239,
-            "mean_residual_impact": 213,
+            "mean_benefit": 1221,
+            "mean_residual_impact": 258,
             "mean_benefit_pct_income": 2.0,
-            "benefit_share_pct": 22.0
+            "benefit_share_pct": 21.5
           },
           {
             "quintile": 5,
-            "mean_benefit": 1185,
-            "mean_residual_impact": 342,
+            "mean_benefit": 1141,
+            "mean_residual_impact": 396,
             "mean_benefit_pct_income": 1.2,
-            "benefit_share_pct": 23.9
+            "benefit_share_pct": 22.8
           }
         ],
-        "winners_losers": [
+        "support_shares": [
           {
             "quintile": 1,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
           },
           {
             "quintile": 2,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
           },
           {
             "quintile": 3,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
           },
           {
             "quintile": 4,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
           },
           {
             "quintile": 5,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
           }
         ]
       }
@@ -2830,7 +2810,11 @@
     "severe_shock": {
       "epg": {
         "name": "Energy Price Guarantee",
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 31.5,
         "fiscal_cost_bn": 31.5,
+        "household_protection_bn": 31.5,
+        "residual_impact_bn": 37.52,
         "avg_benefit_per_hh": 1065,
         "targeting_bottom40": 33.9,
         "fp_rate_before_pct": 16.0,
@@ -2873,42 +2857,41 @@
             "benefit_share_pct": 24.9
           }
         ],
-        "winners_losers": [
+        "support_shares": [
           {
             "quintile": 1,
-            "pct_winners": 98.7,
-            "pct_unchanged": 1.3,
-            "pct_losers": 0.0
+            "pct_supported": 98.7,
+            "pct_unsupported": 1.3
           },
           {
             "quintile": 2,
-            "pct_winners": 98.8,
-            "pct_unchanged": 1.2,
-            "pct_losers": 0.0
+            "pct_supported": 98.8,
+            "pct_unsupported": 1.2
           },
           {
             "quintile": 3,
-            "pct_winners": 98.0,
-            "pct_unchanged": 2.0,
-            "pct_losers": 0.0
+            "pct_supported": 98.0,
+            "pct_unsupported": 2.0
           },
           {
             "quintile": 4,
-            "pct_winners": 98.1,
-            "pct_unchanged": 1.9,
-            "pct_losers": 0.0
+            "pct_supported": 98.1,
+            "pct_unsupported": 1.9
           },
           {
             "quintile": 5,
-            "pct_winners": 95.9,
-            "pct_unchanged": 4.1,
-            "pct_losers": 0.0
+            "pct_supported": 95.9,
+            "pct_unsupported": 4.1
           }
         ]
       },
       "flat_rebate": {
         "name": "Flat energy rebate",
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 11.83,
         "fiscal_cost_bn": 11.83,
+        "household_protection_bn": 11.83,
+        "residual_impact_bn": 57.33,
         "avg_benefit_per_hh": 400,
         "targeting_bottom40": 39.6,
         "fp_rate_before_pct": 16.0,
@@ -2951,42 +2934,41 @@
             "benefit_share_pct": 21.4
           }
         ],
-        "winners_losers": [
+        "support_shares": [
           {
             "quintile": 1,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
           },
           {
             "quintile": 2,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
           },
           {
             "quintile": 3,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
           },
           {
             "quintile": 4,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
           },
           {
             "quintile": 5,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
           }
         ]
       },
       "ct_rebate": {
         "name": "Council tax rebate",
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 6.63,
         "fiscal_cost_bn": 6.63,
+        "household_protection_bn": 6.63,
+        "residual_impact_bn": 62.43,
         "avg_benefit_per_hh": 224,
         "targeting_bottom40": 44.1,
         "fp_rate_before_pct": 16.0,
@@ -3029,42 +3011,41 @@
             "benefit_share_pct": 16.7
           }
         ],
-        "winners_losers": [
+        "support_shares": [
           {
             "quintile": 1,
-            "pct_winners": 83.5,
-            "pct_unchanged": 16.5,
-            "pct_losers": 0.0
+            "pct_supported": 83.5,
+            "pct_unsupported": 16.5
           },
           {
             "quintile": 2,
-            "pct_winners": 83.0,
-            "pct_unchanged": 17.0,
-            "pct_losers": 0.0
+            "pct_supported": 83.0,
+            "pct_unsupported": 17.0
           },
           {
             "quintile": 3,
-            "pct_winners": 80.0,
-            "pct_unchanged": 20.0,
-            "pct_losers": 0.0
+            "pct_supported": 80.0,
+            "pct_unsupported": 20.0
           },
           {
             "quintile": 4,
-            "pct_winners": 70.1,
-            "pct_unchanged": 29.9,
-            "pct_losers": 0.0
+            "pct_supported": 70.1,
+            "pct_unsupported": 29.9
           },
           {
             "quintile": 5,
-            "pct_winners": 58.3,
-            "pct_unchanged": 41.7,
-            "pct_losers": 0.0
+            "pct_supported": 58.3,
+            "pct_unsupported": 41.7
           }
         ]
       },
       "uc_uplift": {
         "name": "UC uplift",
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 2.34,
         "fiscal_cost_bn": 2.34,
+        "household_protection_bn": 2.34,
+        "residual_impact_bn": 66.92,
         "avg_benefit_per_hh": 79,
         "targeting_bottom40": 75.2,
         "fp_rate_before_pct": 16.0,
@@ -3107,198 +3088,195 @@
             "benefit_share_pct": 2.0
           }
         ],
-        "winners_losers": [
+        "support_shares": [
           {
             "quintile": 1,
-            "pct_winners": 16.1,
-            "pct_unchanged": 83.9,
-            "pct_losers": 0.0
+            "pct_supported": 16.1,
+            "pct_unsupported": 83.9
           },
           {
             "quintile": 2,
-            "pct_winners": 12.6,
-            "pct_unchanged": 87.4,
-            "pct_losers": 0.0
+            "pct_supported": 12.6,
+            "pct_unsupported": 87.4
           },
           {
             "quintile": 3,
-            "pct_winners": 6.8,
-            "pct_unchanged": 93.2,
-            "pct_losers": 0.0
+            "pct_supported": 6.8,
+            "pct_unsupported": 93.2
           },
           {
             "quintile": 4,
-            "pct_winners": 2.0,
-            "pct_unchanged": 98.0,
-            "pct_losers": 0.0
+            "pct_supported": 2.0,
+            "pct_unsupported": 98.0
           },
           {
             "quintile": 5,
-            "pct_winners": 0.7,
-            "pct_unchanged": 99.3,
-            "pct_losers": 0.0
+            "pct_supported": 0.7,
+            "pct_unsupported": 99.3
           }
         ]
       },
       "fuel_duty_cut": {
         "name": "Fuel duty cut extension",
-        "fiscal_cost_bn": 1.78,
-        "avg_benefit_per_hh": 60,
-        "targeting_bottom40": 31.4,
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 1.18,
+        "fiscal_cost_bn": 1.18,
+        "household_protection_bn": 1.18,
+        "residual_impact_bn": 67.84,
+        "avg_benefit_per_hh": 40,
+        "targeting_bottom40": 30.3,
         "fp_rate_before_pct": 16.0,
         "fp_rate_after_pct": 16.0,
-        "n_lifted_from_poverty": 28101,
+        "n_lifted_from_poverty": 78002,
         "by_quintile": [
           {
             "quintile": 1,
-            "mean_benefit": 33,
-            "mean_residual_impact": 1535,
-            "mean_benefit_pct_income": 0.2,
-            "benefit_share_pct": 11.6
+            "mean_benefit": 30,
+            "mean_residual_impact": 1630,
+            "mean_benefit_pct_income": 0.5,
+            "benefit_share_pct": 15.8
           },
           {
             "quintile": 2,
-            "mean_benefit": 49,
-            "mean_residual_impact": 1941,
+            "mean_benefit": 31,
+            "mean_residual_impact": 2082,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 15.1
+            "benefit_share_pct": 14.4
           },
           {
             "quintile": 3,
-            "mean_benefit": 60,
-            "mean_residual_impact": 2140,
+            "mean_benefit": 37,
+            "mean_residual_impact": 2250,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 19.9
+            "benefit_share_pct": 18.4
           },
           {
             "quintile": 4,
-            "mean_benefit": 76,
-            "mean_residual_impact": 2634,
+            "mean_benefit": 55,
+            "mean_residual_impact": 2704,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 24.0
+            "benefit_share_pct": 25.8
           },
           {
             "quintile": 5,
-            "mean_benefit": 83,
-            "mean_residual_impact": 2757,
-            "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 29.4
+            "mean_benefit": 48,
+            "mean_residual_impact": 2809,
+            "mean_benefit_pct_income": 0.0,
+            "benefit_share_pct": 25.5
           }
         ],
-        "winners_losers": [
+        "support_shares": [
           {
             "quintile": 1,
-            "pct_winners": 67.3,
-            "pct_unchanged": 32.7,
-            "pct_losers": 0.0
+            "pct_supported": 37.7,
+            "pct_unsupported": 62.3
           },
           {
             "quintile": 2,
-            "pct_winners": 72.2,
-            "pct_unchanged": 27.8,
-            "pct_losers": 0.0
+            "pct_supported": 41.9,
+            "pct_unsupported": 58.1
           },
           {
             "quintile": 3,
-            "pct_winners": 80.5,
-            "pct_unchanged": 19.5,
-            "pct_losers": 0.0
+            "pct_supported": 44.1,
+            "pct_unsupported": 55.9
           },
           {
             "quintile": 4,
-            "pct_winners": 87.7,
-            "pct_unchanged": 12.3,
-            "pct_losers": 0.0
+            "pct_supported": 49.7,
+            "pct_unsupported": 50.3
           },
           {
             "quintile": 5,
-            "pct_winners": 79.5,
-            "pct_unchanged": 20.5,
-            "pct_losers": 0.0
+            "pct_supported": 42.4,
+            "pct_unsupported": 57.6
           }
         ]
       },
       "means_tested": {
         "name": "Means-tested cost-of-living payment",
-        "fiscal_cost_bn": 2.38,
-        "avg_benefit_per_hh": 80,
-        "targeting_bottom40": 74.0,
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 2.23,
+        "fiscal_cost_bn": 2.23,
+        "household_protection_bn": 2.23,
+        "residual_impact_bn": 66.86,
+        "avg_benefit_per_hh": 75,
+        "targeting_bottom40": 73.3,
         "fp_rate_before_pct": 16.0,
         "fp_rate_after_pct": 15.8,
-        "n_lifted_from_poverty": 179109,
+        "n_lifted_from_poverty": 115988,
         "by_quintile": [
           {
             "quintile": 1,
-            "mean_benefit": 165,
-            "mean_residual_impact": 1428,
-            "mean_benefit_pct_income": 1.0,
+            "mean_benefit": 154,
+            "mean_residual_impact": 1515,
+            "mean_benefit_pct_income": 0.9,
             "benefit_share_pct": 43.1
           },
           {
             "quintile": 2,
-            "mean_benefit": 134,
-            "mean_residual_impact": 1865,
+            "mean_benefit": 123,
+            "mean_residual_impact": 1991,
             "mean_benefit_pct_income": 0.4,
-            "benefit_share_pct": 30.8
+            "benefit_share_pct": 30.3
           },
           {
             "quintile": 3,
-            "mean_benefit": 78,
-            "mean_residual_impact": 2130,
+            "mean_benefit": 74,
+            "mean_residual_impact": 2212,
             "mean_benefit_pct_income": 0.2,
-            "benefit_share_pct": 19.5
+            "benefit_share_pct": 19.8
           },
           {
             "quintile": 4,
             "mean_benefit": 19,
             "mean_residual_impact": 2694,
             "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 4.4
+            "benefit_share_pct": 4.7
           },
           {
             "quintile": 5,
             "mean_benefit": 8,
             "mean_residual_impact": 2832,
             "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 2.1
+            "benefit_share_pct": 2.2
           }
         ],
-        "winners_losers": [
+        "support_shares": [
           {
             "quintile": 1,
-            "pct_winners": 25.4,
-            "pct_unchanged": 74.6,
-            "pct_losers": 0.0
+            "pct_supported": 23.8,
+            "pct_unsupported": 76.2
           },
           {
             "quintile": 2,
-            "pct_winners": 20.6,
-            "pct_unchanged": 79.4,
-            "pct_losers": 0.0
+            "pct_supported": 19.0,
+            "pct_unsupported": 81.0
           },
           {
             "quintile": 3,
-            "pct_winners": 12.0,
-            "pct_unchanged": 88.0,
-            "pct_losers": 0.0
+            "pct_supported": 11.4,
+            "pct_unsupported": 88.6
           },
           {
             "quintile": 4,
-            "pct_winners": 2.9,
-            "pct_unchanged": 97.1,
-            "pct_losers": 0.0
+            "pct_supported": 2.9,
+            "pct_unsupported": 97.1
           },
           {
             "quintile": 5,
-            "pct_winners": 1.2,
-            "pct_unchanged": 98.8,
-            "pct_losers": 0.0
+            "pct_supported": 1.2,
+            "pct_unsupported": 98.8
           }
         ]
       },
       "elec_vat_cut": {
         "name": "Electricity VAT cut (extended)",
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 1.98,
         "fiscal_cost_bn": 1.98,
+        "household_protection_bn": 1.98,
+        "residual_impact_bn": 67.04,
         "avg_benefit_per_hh": 67,
         "targeting_bottom40": 33.9,
         "fp_rate_before_pct": 16.0,
@@ -3341,42 +3319,41 @@
             "benefit_share_pct": 24.8
           }
         ],
-        "winners_losers": [
+        "support_shares": [
           {
             "quintile": 1,
-            "pct_winners": 81.8,
-            "pct_unchanged": 18.2,
-            "pct_losers": 0.0
+            "pct_supported": 81.8,
+            "pct_unsupported": 18.2
           },
           {
             "quintile": 2,
-            "pct_winners": 84.2,
-            "pct_unchanged": 15.8,
-            "pct_losers": 0.0
+            "pct_supported": 84.2,
+            "pct_unsupported": 15.8
           },
           {
             "quintile": 3,
-            "pct_winners": 80.3,
-            "pct_unchanged": 19.7,
-            "pct_losers": 0.0
+            "pct_supported": 80.3,
+            "pct_unsupported": 19.7
           },
           {
             "quintile": 4,
-            "pct_winners": 83.0,
-            "pct_unchanged": 17.0,
-            "pct_losers": 0.0
+            "pct_supported": 83.0,
+            "pct_unsupported": 17.0
           },
           {
             "quintile": 5,
-            "pct_winners": 76.4,
-            "pct_unchanged": 23.6,
-            "pct_losers": 0.0
+            "pct_supported": 76.4,
+            "pct_unsupported": 23.6
           }
         ]
       },
       "accelerated_uprating": {
         "name": "Accelerated benefit uprating",
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 2.14,
         "fiscal_cost_bn": 2.14,
+        "household_protection_bn": 2.14,
+        "residual_impact_bn": 66.89,
         "avg_benefit_per_hh": 72,
         "targeting_bottom40": 58.5,
         "fp_rate_before_pct": 16.0,
@@ -3419,42 +3396,41 @@
             "benefit_share_pct": 5.1
           }
         ],
-        "winners_losers": [
+        "support_shares": [
           {
             "quintile": 1,
-            "pct_winners": 51.5,
-            "pct_unchanged": 48.5,
-            "pct_losers": 0.0
+            "pct_supported": 51.5,
+            "pct_unsupported": 48.5
           },
           {
             "quintile": 2,
-            "pct_winners": 52.4,
-            "pct_unchanged": 47.6,
-            "pct_losers": 0.0
+            "pct_supported": 52.4,
+            "pct_unsupported": 47.6
           },
           {
             "quintile": 3,
-            "pct_winners": 45.2,
-            "pct_unchanged": 54.8,
-            "pct_losers": 0.0
+            "pct_supported": 45.2,
+            "pct_unsupported": 54.8
           },
           {
             "quintile": 4,
-            "pct_winners": 39.0,
-            "pct_unchanged": 61.0,
-            "pct_losers": 0.0
+            "pct_supported": 39.0,
+            "pct_unsupported": 61.0
           },
           {
             "quintile": 5,
-            "pct_winners": 21.0,
-            "pct_unchanged": 79.0,
-            "pct_losers": 0.0
+            "pct_supported": 21.0,
+            "pct_unsupported": 79.0
           }
         ]
       },
       "social_tariff": {
         "name": "Social tariff",
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 2.4,
         "fiscal_cost_bn": 2.4,
+        "household_protection_bn": 2.4,
+        "residual_impact_bn": 66.63,
         "avg_benefit_per_hh": 81,
         "targeting_bottom40": 76.4,
         "fp_rate_before_pct": 16.0,
@@ -3497,114 +3473,108 @@
             "benefit_share_pct": 13.3
           }
         ],
-        "winners_losers": [
+        "support_shares": [
           {
             "quintile": 1,
-            "pct_winners": 57.3,
-            "pct_unchanged": 42.7,
-            "pct_losers": 0.0
+            "pct_supported": 57.3,
+            "pct_unsupported": 42.7
           },
           {
             "quintile": 2,
-            "pct_winners": 14.0,
-            "pct_unchanged": 86.0,
-            "pct_losers": 0.0
+            "pct_supported": 14.0,
+            "pct_unsupported": 86.0
           },
           {
             "quintile": 3,
-            "pct_winners": 6.9,
-            "pct_unchanged": 93.1,
-            "pct_losers": 0.0
+            "pct_supported": 6.9,
+            "pct_unsupported": 93.1
           },
           {
             "quintile": 4,
-            "pct_winners": 2.3,
-            "pct_unchanged": 97.7,
-            "pct_losers": 0.0
+            "pct_supported": 2.3,
+            "pct_unsupported": 97.7
           },
           {
             "quintile": 5,
-            "pct_winners": 2.1,
-            "pct_unchanged": 97.9,
-            "pct_losers": 0.0
+            "pct_supported": 2.1,
+            "pct_unsupported": 97.9
           }
         ]
       },
       "combined": {
         "name": "Combined package",
-        "fiscal_cost_bn": 60.59,
-        "avg_benefit_per_hh": 1943,
-        "targeting_bottom40": 37.8,
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 59.02,
+        "fiscal_cost_bn": 59.02,
+        "household_protection_bn": 52.22,
+        "residual_impact_bn": 16.8,
+        "avg_benefit_per_hh": 1766,
+        "targeting_bottom40": 36.2,
         "fp_rate_before_pct": 16.0,
-        "fp_rate_after_pct": 6.5,
-        "n_lifted_from_poverty": 2095975,
+        "fp_rate_after_pct": 6.6,
+        "n_lifted_from_poverty": 1878742,
         "by_quintile": [
           {
             "quintile": 1,
-            "mean_benefit": 1748,
-            "mean_residual_impact": 237,
-            "mean_benefit_pct_income": 16.9,
-            "benefit_share_pct": 18.9
-          },
-          {
-            "quintile": 2,
-            "mean_benefit": 1697,
-            "mean_residual_impact": 293,
-            "mean_benefit_pct_income": 4.7,
+            "mean_benefit": 1499,
+            "mean_residual_impact": 161,
+            "mean_benefit_pct_income": 14.4,
             "benefit_share_pct": 17.9
           },
           {
+            "quintile": 2,
+            "mean_benefit": 1749,
+            "mean_residual_impact": 364,
+            "mean_benefit_pct_income": 4.8,
+            "benefit_share_pct": 18.4
+          },
+          {
             "quintile": 3,
-            "mean_benefit": 1753,
-            "mean_residual_impact": 447,
+            "mean_benefit": 1765,
+            "mean_residual_impact": 521,
             "mean_benefit_pct_income": 3.9,
-            "benefit_share_pct": 20.0
+            "benefit_share_pct": 20.1
           },
           {
             "quintile": 4,
-            "mean_benefit": 1993,
-            "mean_residual_impact": 718,
+            "mean_benefit": 1959,
+            "mean_residual_impact": 800,
             "mean_benefit_pct_income": 3.2,
-            "benefit_share_pct": 21.4
+            "benefit_share_pct": 20.9
           },
           {
             "quintile": 5,
-            "mean_benefit": 1933,
-            "mean_residual_impact": 907,
-            "mean_benefit_pct_income": 2.0,
-            "benefit_share_pct": 23.5
+            "mean_benefit": 1872,
+            "mean_residual_impact": 984,
+            "mean_benefit_pct_income": 1.9,
+            "benefit_share_pct": 22.7
           }
         ],
-        "winners_losers": [
+        "support_shares": [
           {
             "quintile": 1,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
           },
           {
             "quintile": 2,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
           },
           {
             "quintile": 3,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
           },
           {
             "quintile": 4,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
           },
           {
             "quintile": 5,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
-            "pct_losers": 0.0
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
           }
         ]
       }
@@ -3906,6 +3876,23 @@
         "household_net_income"
       ]
     },
-    "poverty_threshold_basis": "anchored to the baseline distribution"
+    "poverty_threshold_basis": "anchored to the baseline distribution",
+    "policy_cost_basis": "Every policy cost is a gross modelled household transfer, not an Exchequer costing. Reported separately: gross_outlay_bn (what government pays out, unclipped), household_protection_bn (what reaches households, capped at each household's shock) and residual_impact_bn (what the household still bears). None of them include tax and benefit interactions, take-up, behavioural responses, administrative costs, supplier contracts or financing",
+    "fuel_duty_coverage": "The fuel duty figure covers household road-fuel volumes only (5p/litre on each household's modelled petrol and diesel litres). An Exchequer estimate would cover all liable road fuel, including business and freight use, and the associated VAT effect, so it would be substantially larger",
+    "means_tested_eligibility": {
+      "basis": "receipt of a benefit that qualified for the 2022 Cost of Living Payment",
+      "qualifying_benefits": [
+        "universal_credit",
+        "jsa_income",
+        "esa_income",
+        "income_support",
+        "working_tax_credit",
+        "child_tax_credit",
+        "pension_credit"
+      ],
+      "source_url": "https://www.gov.uk/government/publications/cost-of-living-support/cost-of-living-support-factsheet-26-may-2022",
+      "not_modelled": "the 2022 scheme's qualifying assessment window and its two instalments; take-up is assumed complete"
+    },
+    "winners_and_losers": "Not reported. Support is non-negative and residual impact is floored at zero, so a household made worse off by a policy is impossible by construction; support_shares reports the share receiving support instead"
   }
 }
