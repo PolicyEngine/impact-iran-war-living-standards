@@ -79,7 +79,10 @@ def test_combined_outlay_is_unclipped_and_at_least_the_clipped_benefit(synthetic
     policies = compute_policies(synthetic_data, "central_shock", impacts)
     outlay = policies["_combined_outlay"]
     assert np.all(outlay >= policies["combined"] - 1e-9)
-    assert outlay == pytest.approx(sum(policies[k] for k in COMBINED_KEYS))
+    # Not the independent sum: the package is computed jointly, so the
+    # electricity VAT relief applies to the EPG-capped bill. See
+    # tests/test_policy_incidence.py.
+    assert outlay == pytest.approx(sum(policies["_combined_components"].values()))
 
 
 def test_policy_effects_route_energy_subsidies_and_cash_separately(synthetic_data):

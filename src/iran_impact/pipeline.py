@@ -217,15 +217,31 @@ def _build_uc_recipients(sim, year=YEAR):
     return uc_amount > 0, uc_amount
 
 
+# Qualifying benefits for the 2022 Cost of Living Payment, per the government
+# factsheet: Universal Credit, income-based JSA, income-related ESA, Income
+# Support, Working Tax Credit, Child Tax Credit and Pension Credit. Housing
+# Benefit alone did NOT qualify, and the pipeline previously included it while
+# omitting the two tax credits and the income-related ESA and JSA (#14).
+# Source: https://www.gov.uk/government/publications/cost-of-living-support/cost-of-living-support-factsheet-26-may-2022
+MEANS_TESTED_QUALIFYING_BENEFITS = [
+    "universal_credit",
+    "jsa_income",
+    "esa_income",
+    "income_support",
+    "working_tax_credit",
+    "child_tax_credit",
+    "pension_credit",
+]
+
+
 def _build_means_tested_receipt(sim, year=YEAR):
-    """Household receives any means-tested benefit (UC, Pension Credit,
-    income-related legacy benefits) — the eligibility basis used for the 2022
-    Cost of Living Payments."""
+    """Household receives a benefit that qualified for the 2022 Cost of
+    Living Payment."""
     hh_id_hh = _vals(sim, "household_id", year)
     hh_id_bu = _vals(sim, "household_id", year, map_to="benunit")
 
     hh_mt = defaultdict(float)
-    for var in ["universal_credit", "pension_credit", "income_support", "housing_benefit"]:
+    for var in MEANS_TESTED_QUALIFYING_BENEFITS:
         values = _vals(sim, var, year)
         for i, hid in enumerate(hh_id_bu):
             hh_mt[hid] += float(values[i])
@@ -327,6 +343,10 @@ def run_baseline(year=YEAR):
     # ONS Table A6 is published by gross household income decile, so the
     # spending figures are applied on that grouping — not on the equivalised
     # HBAI net-income decile the distributional tables are reported by.
+    # Actual modelled road-fuel volumes, so the fuel-duty saving is
+    # pence-per-litre times litres rather than a scaled spending proxy (#14).
+    fuel_litres = _vals(sim, "petrol_litres", year) + _vals(sim, "diesel_litres", year)
+
     gross_income = _vals(sim, "household_gross_income", year)
     gross_decile = _weighted_decile(gross_income, weights)
     owns_vehicle = _vals(sim, "owns_vehicle", year).astype(bool)
@@ -361,6 +381,7 @@ def run_baseline(year=YEAR):
         "gross_income": gross_income,
         "gross_decile": gross_decile,
         "owns_vehicle": owns_vehicle,
+        "fuel_litres": np.where(owns_vehicle, fuel_litres, 0.0),
         "fuel_cost": fuel_cost,
         "food_cost": food_cost,
     }
@@ -475,11 +496,14 @@ def compute_policies(data, scenario_key, scenario_impacts):
     uc_annual = UC_UPLIFT_WEEKLY * WEEKS_PER_YEAR
     policies["uc_uplift"] = np.where(is_uc, uc_annual, 0.0)
 
-    # Policy E: Fuel duty cut extension – 5p/litre × avg 1200 litres/year,
-    # scaled by each household's imputed fuel spending so non-driving and
-    # low-mileage households do not receive the flat average saving.
-    mean_saving = FUEL_DUTY_CUT_PENCE / PENCE_PER_POUND * MEAN_ANNUAL_LITRES
-    policies["fuel_duty_cut"] = mean_saving * data["fuel_cost"] / BASE_FUEL_SPEND
+    # Policy E: Fuel duty cut extension – 5p/litre on each household's own
+    # modelled road-fuel volume. Previously a flat average saving scaled by
+    # imputed spending, which gave every household a benefit including
+    # non-drivers, and whose 1,200-litre average did not match the microdata
+    # (#14). Households with no vehicle have zero litres and so no saving.
+    policies["fuel_duty_cut"] = (
+        FUEL_DUTY_CUT_PENCE / PENCE_PER_POUND * data["fuel_litres"]
+    )
 
     # Policy F: Means-tested payment – £650 to households receiving a
     # means-tested benefit (the 2022 Cost of Living Payment eligibility basis)
@@ -499,18 +523,61 @@ def compute_policies(data, scenario_key, scenario_impacts):
     social_tariff_benefit = scenario_impacts["energy_shock"] * SOCIAL_TARIFF_DISCOUNT
     policies["social_tariff"] = np.where(social_tariff_eligible, social_tariff_benefit, 0.0)
 
-    # Policy I: Combined – all policies together (excluding social tariff).
-    # The household benefit is capped at the size of the shock (a household
-    # cannot be made better off than pre-shock for impact accounting), but the
-    # UNCLIPPED sum is retained separately: government outlay does not shrink
-    # when a household is over-compensated, so fiscal cost must use it.
-    combined = np.zeros(n, dtype=float)
-    for key in COMBINED_KEYS:
-        combined = combined + policies[key]
-    policies["combined"] = np.clip(combined, 0, scenario_impacts["net_impact"])
-    policies["_combined_outlay"] = combined
+    # Policy I: Combined – the measures applied together rather than summed
+    # independently. Order matters because the measures interact: the EPG caps
+    # the energy increase first, so the electricity VAT relief applies to the
+    # already-capped bill rather than the full shocked one, which is how the
+    # independent sum over-counted it (#14).
+    joint = compute_combined_package(data, scenario_key, scenario_impacts, policies)
+    policies["combined"] = joint["household_protection"]
+    policies["_combined_outlay"] = joint["gross_outlay"]
+    policies["_combined_components"] = joint["components"]
 
     return policies
+
+
+def compute_combined_package(data, scenario_key, scenario_impacts, policies):
+    """Apply the package's measures jointly, respecting their interactions.
+
+    Returns the gross outlay (what government spends, which does not shrink
+    when a household is over-compensated), the household protection (what
+    reaches the household, capped at the size of its shock) and the
+    per-measure amounts after interaction.
+
+    Summing the measures independently double-counted the overlap between the
+    Energy Price Guarantee and the electricity VAT relief, because the relief
+    was computed on the pre-EPG shocked bill (#14).
+    """
+    params = SCENARIOS[scenario_key]
+    cap_increase_pct = params["cap_increase_pct"] / 100
+    electricity = data["electricity"]
+
+    components = {}
+
+    # 1. The EPG caps the energy bill increase, so it acts before anything
+    #    that depends on the bill.
+    components["energy_price_guarantee"] = policies["energy_price_guarantee"]
+    capped_increase_pct = min(cap_increase_pct, EPG_CAP_PCT)
+
+    # 2. Electricity VAT relief then applies to the capped electricity bill.
+    components["elec_vat_cut"] = (
+        electricity * (1 + capped_increase_pct) * ELEC_VAT_SAVING_RATE
+    )
+
+    # 3. The remaining measures do not interact with the energy bill.
+    for key in COMBINED_KEYS:
+        if key not in components:
+            components[key] = policies[key]
+
+    gross_outlay = sum(components.values(), np.zeros_like(electricity))
+    household_protection = np.clip(
+        gross_outlay, 0, scenario_impacts["net_impact"]
+    )
+    return {
+        "components": components,
+        "gross_outlay": gross_outlay,
+        "household_protection": household_protection,
+    }
 
 
 def compute_policy_effects(data, scenario_key, scenario_impacts):
@@ -523,6 +590,7 @@ def compute_policy_effects(data, scenario_key, scenario_impacts):
     """
     policies = compute_policies(data, scenario_key, scenario_impacts)
     combined_outlay = policies.pop("_combined_outlay")
+    combined_components = policies.pop("_combined_components")
     zeros = np.zeros_like(scenario_impacts["net_impact"])
     effects = {}
     for key, benefit in policies.items():
@@ -549,12 +617,18 @@ def compute_policy_effects(data, scenario_key, scenario_impacts):
         effects[key]["income_addition"] = policies[key]
 
     effects["combined"]["fiscal_outlay"] = combined_outlay
+    # Use the post-interaction component amounts, so the package's energy and
+    # income routing matches the outlay it reports (#14).
     effects["combined"]["energy_reduction"] = (
-        effects["energy_price_guarantee"]["energy_reduction"]
-        + effects["elec_vat_cut"]["energy_reduction"]
+        combined_components["energy_price_guarantee"]
+        + combined_components["elec_vat_cut"]
     )
     effects["combined"]["income_addition"] = sum(
-        (effects[key]["income_addition"] for key in COMBINED_KEYS),
+        (
+            combined_components[key]
+            for key in COMBINED_KEYS
+            if key not in {"energy_price_guarantee", "elec_vat_cut"}
+        ),
         zeros.copy(),
     )
     return effects
@@ -791,14 +865,12 @@ def _eval_policy(data, impacts, policy_name, effect):
     total_benefit = weighted_sum(benefit, weights)
     quintile = data["quintile"]
     by_quintile = []
-    winners_losers = []
+    support_shares = []
     change_vs_no_policy = net - residual
     is_winner = (change_vs_no_policy > WINNERS_LOSERS_THRESHOLD).astype(float)
-    is_loser = (change_vs_no_policy < -WINNERS_LOSERS_THRESHOLD).astype(float)
     for q in range(1, 6):
         mask = quintile == q
-        pct_winners = weighted_mean(is_winner, weights, mask) * 100
-        pct_losers = weighted_mean(is_loser, weights, mask) * 100
+        pct_supported = weighted_mean(is_winner, weights, mask) * 100
         by_quintile.append({
             "quintile": q,
             "mean_benefit": round(weighted_mean(benefit, weights, mask)),
@@ -810,16 +882,33 @@ def _eval_policy(data, impacts, policy_name, effect):
                 weighted_sum(benefit, weights, mask) / total_benefit * 100, 1
             ),
         })
-        winners_losers.append({
+        # No "losers" category: support is non-negative and the residual
+        # impact is floored at zero, so a household made worse off by a
+        # policy is impossible by construction. Reporting a zero-loser share
+        # would present a model identity as a finding (#14).
+        support_shares.append({
             "quintile": q,
-            "pct_winners": round(pct_winners, 1),
-            "pct_unchanged": round(100 - pct_winners - pct_losers, 1),
-            "pct_losers": round(pct_losers, 1),
+            "pct_supported": round(pct_supported, 1),
+            "pct_unsupported": round(100 - pct_supported, 1),
         })
 
     return {
         "name": policy_name,
+        # A gross modelled household transfer, NOT an Exchequer costing: it
+        # omits tax and benefit interactions, take-up, behavioural responses,
+        # administrative costs, non-household fuel use, supplier contracts and
+        # financing (#14).
+        "cost_basis": (
+            "gross modelled household transfer, before tax and benefit "
+            "interactions, take-up, behavioural response, administration, "
+            "non-household use and financing"
+        ),
+        "gross_outlay_bn": round(weighted_sum(fiscal_outlay, weights) / 1e9, 2),
+        # Retained under the original key for existing references; it is the
+        # same figure as gross_outlay_bn and is not an Exchequer cost.
         "fiscal_cost_bn": round(weighted_sum(fiscal_outlay, weights) / 1e9, 2),
+        "household_protection_bn": round(weighted_sum(benefit, weights) / 1e9, 2),
+        "residual_impact_bn": round(weighted_sum(residual, weights) / 1e9, 2),
         "avg_benefit_per_hh": round(weighted_mean(benefit, weights)),
         "targeting_bottom40": round(
             weighted_sum(benefit, weights, quintile <= 2) / total_benefit * 100,
@@ -831,7 +920,7 @@ def _eval_policy(data, impacts, policy_name, effect):
             weighted_sum(lifted_out.astype(float), person_weights)
         ),
         "by_quintile": by_quintile,
-        "winners_losers": winners_losers,
+        "support_shares": support_shares,
     }
 
 
@@ -1146,6 +1235,45 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
                 "affordability_and_shares_of_income": ["household_net_income"],
             },
             "poverty_threshold_basis": "anchored to the baseline distribution",
+            "policy_cost_basis": (
+                "Every policy cost is a gross modelled household transfer, not "
+                "an Exchequer costing. Reported separately: gross_outlay_bn "
+                "(what government pays out, unclipped), "
+                "household_protection_bn (what reaches households, capped at "
+                "each household's shock) and residual_impact_bn (what the "
+                "household still bears). None of them include tax and benefit "
+                "interactions, take-up, behavioural responses, administrative "
+                "costs, supplier contracts or financing"
+            ),
+            "fuel_duty_coverage": (
+                "The fuel duty figure covers household road-fuel volumes only "
+                "(5p/litre on each household's modelled petrol and diesel "
+                "litres). An Exchequer estimate would cover all liable road "
+                "fuel, including business and freight use, and the associated "
+                "VAT effect, so it would be substantially larger"
+            ),
+            "means_tested_eligibility": {
+                "basis": (
+                    "receipt of a benefit that qualified for the 2022 Cost of "
+                    "Living Payment"
+                ),
+                "qualifying_benefits": MEANS_TESTED_QUALIFYING_BENEFITS,
+                "source_url": (
+                    "https://www.gov.uk/government/publications/"
+                    "cost-of-living-support/"
+                    "cost-of-living-support-factsheet-26-may-2022"
+                ),
+                "not_modelled": (
+                    "the 2022 scheme's qualifying assessment window and its "
+                    "two instalments; take-up is assumed complete"
+                ),
+            },
+            "winners_and_losers": (
+                "Not reported. Support is non-negative and residual impact is "
+                "floored at zero, so a household made worse off by a policy is "
+                "impossible by construction; support_shares reports the share "
+                "receiving support instead"
+            ),
         },
     }
 
