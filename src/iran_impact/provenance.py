@@ -31,6 +31,11 @@ TRACKED_PACKAGES = [
 # committed results file stale; CI compares these hashes to the working tree.
 HASHED_SOURCES = ["config.py", "pipeline.py", "provenance.py"]
 
+# Repository files that define the *environment* the calculation runs in. A
+# dependency change can move a result without touching any calculation
+# source, so these are hashed too and included in the staleness check.
+HASHED_REPO_FILES = ["pyproject.toml", "requirements.lock"]
+
 # Bundle fields worth recording. `runtime_dataset_source` is deliberately
 # excluded: it is a machine-local cache path, so including it would make the
 # output differ between machines that ran identical models on identical data.
@@ -79,15 +84,16 @@ def _package_versions():
     return versions
 
 
+def _sha256(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest() if path.exists() else None
+
+
 def source_hashes():
-    """SHA-256 of each source file that defines the calculation."""
+    """SHA-256 of the calculation sources and the environment definition."""
     here = Path(__file__).resolve().parent
-    hashes = {}
-    for name in HASHED_SOURCES:
-        path = here / name
-        hashes[name] = (
-            hashlib.sha256(path.read_bytes()).hexdigest() if path.exists() else None
-        )
+    repo = here.parents[1]
+    hashes = {name: _sha256(here / name) for name in HASHED_SOURCES}
+    hashes.update({name: _sha256(repo / name) for name in HASHED_REPO_FILES})
     return hashes
 
 

@@ -3,10 +3,19 @@
 from iran_impact import provenance
 
 
-def test_source_hashes_cover_every_calculation_file():
+def test_source_hashes_cover_the_calculation_and_the_environment():
+    """A dependency change can move a result without touching a calculation
+    file, so the environment definition is hashed too."""
     hashes = provenance.source_hashes()
-    assert set(hashes) == set(provenance.HASHED_SOURCES)
+    assert set(hashes) == set(provenance.HASHED_SOURCES) | set(
+        provenance.HASHED_REPO_FILES
+    )
     assert all(value and len(value) == 64 for value in hashes.values())
+
+
+def test_the_lockfile_is_part_of_the_staleness_signal():
+    assert "requirements.lock" in provenance.source_hashes()
+    assert "pyproject.toml" in provenance.source_hashes()
 
 
 def test_build_provenance_records_packages_and_hashes():

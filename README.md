@@ -64,7 +64,7 @@ dashboard/              # Next.js interactive dashboard
 # Install the Python package. The `uk` extra pulls policyengine[uk]==5.0.1,
 # which brings the UK country package the pipeline needs. Installing plain
 # `policyengine` is not enough — the managed-simulation import fails.
-pip install -e ".[uk,dev]"
+pip install -e ".[uk,dev]"          # or: uv pip sync requirements.lock
 
 # Authenticate for the managed microdata (see Data access below)
 export HF_TOKEN=...            # or: hf auth login
@@ -108,10 +108,19 @@ release bundle (model version, dataset, data build ID and artifact hash), and
 SHA-256 hashes of the source files that define the calculation.
 
 Two runs of the same revision against the same certified data build produce
-identical output apart from the run timestamp and git revision. CI compares the
-recorded source hashes against the working tree, so a change to `config.py` or
-`pipeline.py` that lands without a regenerated results file fails the build.
-Regenerate with `iran-impact-build --sync-dashboard`.
+identical output apart from the run timestamp and git revision.
+
+`requirements.lock` pins the complete Python environment, including the
+`policyengine-uk` version the release bundle certifies. Install it with
+`uv pip sync requirements.lock` for a byte-identical regeneration; CI checks
+that the lock still matches `pyproject.toml`.
+
+CI also compares the source hashes recorded in the committed output against the
+working tree. A change to `config.py`, `pipeline.py`, `provenance.py`,
+`pyproject.toml` or `requirements.lock` that lands without a regenerated
+results file fails the build — a dependency change can move a number without
+touching any calculation source. Regenerate with
+`iran-impact-build --sync-dashboard`.
 
 ## Data sources
 

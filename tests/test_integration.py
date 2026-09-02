@@ -25,13 +25,55 @@ EXPECTED_MEAN_NET_INCOME = 61_924
 EXPECTED_MEAN_ENERGY_SPEND = 1_331
 
 
+HF_CACHE_DATASET = "datasets--policyengine--populace-uk-private"
+
+
+def _managed_data_available():
+    """Whether this environment can reach the private managed dataset.
+
+    Checked before running, rather than by catching every exception from the
+    run: a genuine model, schema or calculation regression in an authorized
+    environment must fail, not report itself as skipped.
+    """
+    try:
+        import policyengine  # noqa: F401
+        from policyengine.tax_benefit_models.uk import (  # noqa: F401
+            managed_microsimulation,
+        )
+    except ImportError:
+        return False, "policyengine[uk] is not installed"
+
+    import os
+    from pathlib import Path
+
+    if os.environ.get("HF_TOKEN") or os.environ.get("HUGGING_FACE_HUB_TOKEN"):
+        return True, ""
+    try:
+        from huggingface_hub import get_token
+
+        if get_token():
+            return True, ""
+    except ImportError:
+        pass
+    # No token, but an already-downloaded snapshot works offline.
+    cache = Path.home() / ".cache" / "huggingface" / "hub" / HF_CACHE_DATASET
+    if cache.exists():
+        return True, ""
+    return False, (
+        "no Hugging Face token and no cached populace-uk-private snapshot"
+    )
+
+
 def _baseline():
+    """Run the baseline, skipping only where the data is genuinely absent."""
+    available, reason = _managed_data_available()
+    if not available:
+        pytest.skip(f"managed dataset unavailable: {reason}")
+
     from iran_impact.pipeline import run_baseline
 
-    try:
-        return run_baseline(year=config.YEAR)
-    except Exception as exc:  # pragma: no cover - environment dependent
-        pytest.skip(f"managed dataset unavailable: {type(exc).__name__}: {exc}")
+    # Deliberately not wrapped: any failure from here is a real regression.
+    return run_baseline(year=config.YEAR)
 
 
 @pytest.fixture(scope="module")
