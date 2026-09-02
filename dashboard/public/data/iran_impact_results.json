@@ -2,8 +2,8 @@
   "year": 2027,
   "current_energy_cap": 1663,
   "provenance": {
-    "generated_at": "2026-09-02T10:03:21+00:00",
-    "git_revision": "90351916cfa44b1e41eac0a247953028978633aa",
+    "generated_at": "2026-09-02T10:21:56+00:00",
+    "git_revision": "e32e074255390e30f647a8c26b466b0a358f850c",
     "git_dirty": false,
     "packages": {
       "policyengine": "5.0.1",
@@ -13,8 +13,8 @@
       "microdf-python": "1.3.0"
     },
     "source_hashes": {
-      "config.py": "b583762850ea84afb32c3214fce9745738854513a7ff3f11d838d0876b9c04c4",
-      "pipeline.py": "637bc70f1fa6bfeb91409ec861fb6ae88092d4b2867217ac1fe6f88ff77dfed2",
+      "config.py": "5793cd8bfd265464194fb756cc31d84bb188f9d883b63d6d3f8d61841f0633e8",
+      "pipeline.py": "ac77d32d30d4f30b46aa8c68dee65643b78f28a8bc02dbe16c60a689aa176e7d",
       "provenance.py": "dea9cad3cd2adf7f3e223749ead96669c66bd082a6ffe82ba15f4a994bab9749"
     },
     "release_bundle": {
@@ -3604,6 +3604,229 @@
     "base_fuel_spend": 1029.6,
     "base_food_spend": 3666.0,
     "fuel_poverty_threshold": 0.1,
+    "registry": {
+      "low_shock": {
+        "narrative": "Conflict de-escalates from the August 2026 position: Brent settles near $85/bbl, pump prices around 157p petrol and 187p diesel",
+        "parameters": {
+          "cap_increase_pct": {
+            "value": 15,
+            "definition": "Percentage increase in household domestic gas and electricity expenditure relative to the pre-conflict early-2026 baseline",
+            "unit": "per cent",
+            "geography": "United Kingdom",
+            "applies_to": "each household's own baseline gas + electricity expenditure",
+            "lag": "none \u2014 applied as a full-year 2027-28 amount",
+            "source_url": "https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-july-and-30-september-2026",
+            "source_date": "2026-07-01",
+            "reference_period": "1 July - 30 September 2026 cap period",
+            "derivation": "Set to the observed +13.5% July 2026 cap rise, rounded up to 15% to span Cornwall Insight's ~\u00a31,700 Q4 2026 forecast. Judgement anchored to the outturn, not a calculation from it",
+            "uncertainty_range": [
+              13,
+              20
+            ]
+          },
+          "fuel_pct": {
+            "value": 20,
+            "definition": "Percentage increase in the pump price of petrol and diesel relative to the pre-conflict early-2026 baseline",
+            "unit": "per cent",
+            "geography": "United Kingdom",
+            "applies_to": "modelled household transport-fuel expenditure (ONS Table A6)",
+            "lag": "none \u2014 applied as a full-year 2027-28 amount",
+            "source_url": "https://commonslibrary.parliament.uk/research-briefings/cbp-10601/",
+            "source_date": "2026-08-04",
+            "reference_period": "August 2026 spot prices",
+            "derivation": "Observed pump prices are roughly 20% above Autumn Budget 2025 levels. Set to the observed change",
+            "uncertainty_range": [
+              15,
+              25
+            ]
+          },
+          "food_increase_pct": {
+            "value": 2.0,
+            "definition": "Percentage increase in food and non-alcoholic drink prices from higher energy input costs",
+            "unit": "per cent",
+            "geography": "United Kingdom",
+            "applies_to": "modelled household food expenditure (ONS Table A6)",
+            "lag": "none \u2014 applied as a full-year 2027-28 amount",
+            "source_url": "https://commonslibrary.parliament.uk/research-briefings/cbp-10601/",
+            "source_date": "2026-08-04",
+            "reference_period": "2027-28",
+            "derivation": "Judgement: food price response to a de-escalating energy shock, no published scenario for this figure",
+            "uncertainty_range": [
+              1.0,
+              3.0
+            ]
+          },
+          "cpi_increase_pp": {
+            "value": 1.0,
+            "definition": "Addition to UK CPI inflation, used only to size the real-terms erosion of CPI-linked benefits before the next April uprating",
+            "unit": "percentage points",
+            "geography": "United Kingdom",
+            "applies_to": "CPI-linked benefit income, excluding the state pension",
+            "lag": "none \u2014 applied as a full-year 2027-28 amount",
+            "source_url": "https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/june-2026",
+            "source_date": "2026-06-01",
+            "reference_period": "2026-27",
+            "derivation": "Bank of England June 2026 projection of CPI near 3% against about 2% pre-conflict, i.e. roughly +1pp",
+            "uncertainty_range": [
+              0.5,
+              1.5
+            ]
+          }
+        }
+      },
+      "central_shock": {
+        "narrative": "Sustained Strait of Hormuz constraint: Goldman Sachs scenario of Brent averaging above $100/bbl through 2026",
+        "parameters": {
+          "cap_increase_pct": {
+            "value": 45,
+            "definition": "Percentage increase in household domestic gas and electricity expenditure relative to the pre-conflict early-2026 baseline",
+            "unit": "per cent",
+            "geography": "United Kingdom",
+            "applies_to": "each household's own baseline gas + electricity expenditure",
+            "lag": "none \u2014 applied as a full-year 2027-28 amount",
+            "source_url": "https://oilprice.com/Latest-Energy-News/World-News/Goldman-Another-Month-of-Hormuz-Closure-Means-Over-100-Brent-Throughout-2026.html",
+            "source_date": "2026-07-01",
+            "reference_period": "2026 calendar year",
+            "derivation": "Judgement: wholesale gas response to Brent above $100/bbl, translated to a retail bill increase. The oil-to-retail pass-through coefficient and lag are not published in the source and are not derived here",
+            "uncertainty_range": [
+              30,
+              60
+            ]
+          },
+          "fuel_pct": {
+            "value": 45,
+            "definition": "Percentage increase in the pump price of petrol and diesel relative to the pre-conflict early-2026 baseline",
+            "unit": "per cent",
+            "geography": "United Kingdom",
+            "applies_to": "modelled household transport-fuel expenditure (ONS Table A6)",
+            "lag": "none \u2014 applied as a full-year 2027-28 amount",
+            "source_url": "https://commonslibrary.parliament.uk/research-briefings/cbp-10601/",
+            "source_date": "2026-07-01",
+            "reference_period": "2026 calendar year",
+            "derivation": "Oil-to-pump pass-through per Commons Library CBP-10601 applied to the Goldman >$100/bbl case, as a judgement",
+            "uncertainty_range": [
+              30,
+              60
+            ]
+          },
+          "food_increase_pct": {
+            "value": 4.0,
+            "definition": "Percentage increase in food and non-alcoholic drink prices from higher energy input costs",
+            "unit": "per cent",
+            "geography": "United Kingdom",
+            "applies_to": "modelled household food expenditure (ONS Table A6)",
+            "lag": "none \u2014 applied as a full-year 2027-28 amount",
+            "source_url": "https://commonslibrary.parliament.uk/research-briefings/cbp-10601/",
+            "source_date": "2026-07-01",
+            "reference_period": "2027-28",
+            "derivation": "Judgement: food price response to sustained higher energy input costs, no published scenario for this figure",
+            "uncertainty_range": [
+              2.5,
+              5.5
+            ]
+          },
+          "cpi_increase_pp": {
+            "value": 2.5,
+            "definition": "Addition to UK CPI inflation, used only to size the real-terms erosion of CPI-linked benefits before the next April uprating",
+            "unit": "percentage points",
+            "geography": "United Kingdom",
+            "applies_to": "CPI-linked benefit income, excluding the state pension",
+            "lag": "none \u2014 applied as a full-year 2027-28 amount",
+            "source_url": "https://niesr.ac.uk/blog/possible-effects-uk-inflation-2026-us-iran-conflict",
+            "source_date": "2026-06-01",
+            "reference_period": "2026-27",
+            "derivation": "NIESR central case of about 4% CPI against about 2% pre-conflict, taken at the middle of its +1pp to +3pp range",
+            "uncertainty_range": [
+              1.0,
+              3.0
+            ]
+          }
+        }
+      },
+      "severe_shock": {
+        "narrative": "Extended full closure or prolonged war: Goldman extreme-adverse case and the Oxford Economics escalation scenario",
+        "parameters": {
+          "cap_increase_pct": {
+            "value": 90,
+            "definition": "Percentage increase in household domestic gas and electricity expenditure relative to the pre-conflict early-2026 baseline",
+            "unit": "per cent",
+            "geography": "United Kingdom",
+            "applies_to": "each household's own baseline gas + electricity expenditure",
+            "lag": "none \u2014 applied as a full-year 2027-28 amount",
+            "source_url": "https://www.oxfordeconomics.com/resource/iran-war-scenarios-the-oil-price-that-breaks-parts-of-the-economy/",
+            "source_date": "2026-06-01",
+            "reference_period": "two-month $140/bbl case",
+            "derivation": "Judgement: retail bill response under the Oxford Economics escalation case and Goldman extreme-adverse Brent of $115-120. Not derived from a published cap projection",
+            "uncertainty_range": [
+              60,
+              120
+            ]
+          },
+          "fuel_pct": {
+            "value": 80,
+            "definition": "Percentage increase in the pump price of petrol and diesel relative to the pre-conflict early-2026 baseline",
+            "unit": "per cent",
+            "geography": "United Kingdom",
+            "applies_to": "modelled household transport-fuel expenditure (ONS Table A6)",
+            "lag": "none \u2014 applied as a full-year 2027-28 amount",
+            "source_url": "https://www.oxfordeconomics.com/resource/iran-war-scenarios-the-oil-price-that-breaks-parts-of-the-economy/",
+            "source_date": "2026-06-01",
+            "reference_period": "two-month $140/bbl case",
+            "derivation": "Oil-to-pump pass-through applied to Brent of $140/bbl, as a judgement",
+            "uncertainty_range": [
+              60,
+              110
+            ]
+          },
+          "food_increase_pct": {
+            "value": 6.5,
+            "definition": "Percentage increase in food and non-alcoholic drink prices from higher energy input costs",
+            "unit": "per cent",
+            "geography": "United Kingdom",
+            "applies_to": "modelled household food expenditure (ONS Table A6)",
+            "lag": "none \u2014 applied as a full-year 2027-28 amount",
+            "source_url": "https://www.oxfordeconomics.com/resource/iran-war-scenarios-the-oil-price-that-breaks-parts-of-the-economy/",
+            "source_date": "2026-06-01",
+            "reference_period": "2027-28",
+            "derivation": "Judgement: food price response under a global recession scenario, no published figure for UK food prices",
+            "uncertainty_range": [
+              4.0,
+              9.0
+            ]
+          },
+          "cpi_increase_pp": {
+            "value": 4.5,
+            "definition": "Addition to UK CPI inflation, used only to size the real-terms erosion of CPI-linked benefits before the next April uprating",
+            "unit": "percentage points",
+            "geography": "United Kingdom",
+            "applies_to": "CPI-linked benefit income, excluding the state pension",
+            "lag": "none \u2014 applied as a full-year 2027-28 amount",
+            "source_url": "https://www.oxfordeconomics.com/resource/iran-war-scenarios-the-oil-price-that-breaks-parts-of-the-economy/",
+            "source_date": "2026-06-01",
+            "reference_period": "two-month $140/bbl case",
+            "derivation": "The source reports a 5.8% peak in WORLD CPI, roughly 3pp above its baseline. Set to 4.5pp for UK CPI as a judgement reflecting the UK's higher energy import share. The source does not publish a UK figure, and does not report the 7.7% this file previously attributed to it",
+            "uncertainty_range": [
+              3.0,
+              6.0
+            ]
+          }
+        }
+      }
+    },
+    "uprating_lag": {
+      "definition": "Fraction of a full year's CPI addition applied to CPI-linked benefit income, representing the average real-terms erosion between a mid-year shock and the next April uprating",
+      "unit": "fraction of the annual CPI addition",
+      "geography": "United Kingdom",
+      "source_url": "https://commonslibrary.parliament.uk/research-briefings/cbp-10403/",
+      "source_date": "2026-01-01",
+      "reference_period": "April 2027 uprating (normally set by September 2026 CPI)",
+      "derivation": "Expected value across a shock arriving at a uniformly distributed point in the year, given a maximum 12-month lag: 0.5. Applied uniformly rather than benefit by benefit",
+      "counterfactual": "Benefits are assumed NOT to be compensated for the shock until the following April. The channel-4 amount is the real-income loss under that assumption. It is added to the energy, fuel and food costs, which double-counts the same price shock unless the comparison is against immediate and full compensation \u2014 a known limitation, see METHOD_LIMITATIONS",
+      "uncertainty_range": [
+        0.0,
+        1.0
+      ]
+    },
     "spending_inputs": {
       "source": {
         "table": "A6 - detailed household expenditure by gross income decile group, UK",
@@ -3645,7 +3868,18 @@
     }
   },
   "metadata": {
-    "cap_basis": "Ofgem default tariff cap \u00a31,663/yr, Jul-Sep 2026, new TDCV basis (\u2248\u00a31,862 on the pre-July 2026 basis)",
+    "scenario_type": "annual stress test",
+    "method_limitations": [
+      "Scenario type: annual stress test, not a forecast. Every change is applied as a full-year 2027-28 amount, including where the cited source describes a 2026 disruption lasting a few months. No time path, quarterly or monthly profile, or shock duration is modelled.",
+      "Energy prices: the model multiplies each household's baseline gas and electricity expenditure by the scenario percentage. It does not model unit rates or standing charges, the gas/electricity split, region, payment method, quarterly cap periods, or fixed-tariff coverage \u2014 about 40% of accounts were on fixed tariffs for the July 2026 cap, and the cap does not set their prices. CURRENT_ENERGY_CAP is reported as context and does not enter the calculation.",
+      "Pass-through: the oil-to-wholesale-to-retail coefficients and lags implied by the scenario percentages are judgements anchored to the cited sources, not equations derived from them. See PARAMETER_REGISTRY for the derivation of each figure.",
+      "Benefit uprating: a single expected-lag factor is applied to a broad set of CPI-linked benefit income, rather than modelling each benefit's own uprating rule and April 2027 timing against the price path. Adding the resulting amount to the price shocks double-counts unless the counterfactual is immediate, full compensation.",
+      "Uncertainty: the ranges in PARAMETER_REGISTRY describe the spread of the price assumptions. They do not include the Living Costs and Food Survey's sampling uncertainty, which Table A6 does not publish."
+    ],
+    "cap_basis": "Reported for context only and NOT used in the calculation: Ofgem default tariff cap \u00a31,663/yr, Jul-Sep 2026, new TDCV basis (\u2248\u00a31,862 on the pre-July 2026 basis); the Oct-Dec 2026 cap is \u00a31,723. The energy channel multiplies each household's own baseline gas and electricity expenditure by the scenario percentage and never references a cap level, unit rate, standing charge, tariff type or cap period. About 40% of accounts were on fixed tariffs for the July 2026 cap, whose prices the cap does not set",
+    "october_2026_energy_cap": 1723,
+    "fixed_tariff_account_share": 0.4,
+    "timing_basis": "All changes are applied as full-year 2027-28 amounts. The cited scenarios describe 2026 disruptions, some lasting a few months; no time path or duration is modelled",
     "fuel_poverty_definition": "Indicative ratio: modelled domestic energy spend above 10% of household_net_income \u2014 not the official LILEE metric and not comparable with official fuel poverty statistics. Households with non-positive income and a positive energy bill count as fuel poor; see baseline.non_positive_income_households for how many rest on that rule",
     "poverty_definition": "Baseline: people below 60% of the person-weighted median of equiv_hbai_household_net_income (HBAI BHC relative poverty). Post-shock: people below that same baseline line once modelled energy, fuel, food and uprating-lag costs are netted off HBAI income \u2014 a consumption-adjusted resource measure against an anchored threshold, not official HBAI poverty. The line is not recalculated on the post-shock distribution",
     "income_variables": {
