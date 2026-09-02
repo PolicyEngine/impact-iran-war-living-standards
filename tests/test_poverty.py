@@ -139,3 +139,18 @@ def test_mean_impact_pct_intersects_the_supplied_mask():
     weights = np.ones(3)
     mask = np.array([True, True, False])
     assert _mean_impact_pct(net, income, weights, mask) == pytest.approx(10.0)
+
+
+def test_energy_share_excludes_undefined_denominators(synthetic_data):
+    """Baseline energy shares must use the same positive-income mask as every
+    other share-of-income statistic (#11 review A1)."""
+    from iran_impact.pipeline import _positive_income, _safe_div, weighted_mean
+
+    data = dict(synthetic_data)
+    data["income"] = np.where(data["decile"] == 1, 0.0, data["income"])
+    share = _safe_div(data["energy"], data["income"])
+    defined = _positive_income(data["income"])
+    with_mask = weighted_mean(share, data["weights"], defined)
+    without_mask = weighted_mean(share, data["weights"])
+    # Including a zero for the undefined household drags the mean down.
+    assert with_mask > without_mask

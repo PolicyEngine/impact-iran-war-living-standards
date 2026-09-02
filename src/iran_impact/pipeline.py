@@ -859,7 +859,11 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
     data = run_baseline(year=year)
     weights = data["weights"]
 
+    # Energy spend as a share of income, over households where that share is
+    # defined. Households with non-positive income entered as 0% before,
+    # pulling the reported shares down (#11 review A1).
     energy_share = _safe_div(data["energy"], data["income"])
+    income_defined = _positive_income(data["income"])
     baseline_fuel_poor = _fuel_poverty_flags(data["energy"], data["income"])
 
     results = {
@@ -914,7 +918,12 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
                         weighted_mean(data["income"], weights, data["quintile"] == q)
                     ),
                     "energy_share_pct": round(
-                        weighted_mean(energy_share, weights, data["quintile"] == q) * 100,
+                        weighted_mean(
+                            energy_share,
+                            weights,
+                            (data["quintile"] == q) & income_defined,
+                        )
+                        * 100,
                         1,
                     ),
                     "fp_rate_pct": round(
