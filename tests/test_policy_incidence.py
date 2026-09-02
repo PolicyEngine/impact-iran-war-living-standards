@@ -131,15 +131,77 @@ def test_package_routing_matches_its_reported_outlay(synthetic_data, impacts):
 # ── Cost accounting ───────────────────────────────────────────────────────
 
 
-def test_the_three_cost_concepts_are_reported_separately(synthetic_data, impacts):
+def _all_policies(synthetic_data, impacts):
     effects = compute_policy_effects(synthetic_data, "central_shock", impacts)
-    result = _eval_policy(
-        synthetic_data, impacts, "Combined package", effects["combined"]
-    )
-    for field in ["gross_outlay_bn", "household_protection_bn", "residual_impact_bn"]:
-        assert field in result
-    # Outlay is unclipped, so it cannot be below what reaches households.
-    assert result["gross_outlay_bn"] >= result["household_protection_bn"]
+    return [
+        (name, _eval_policy(synthetic_data, impacts, name, effect))
+        for name, effect in effects.items()
+    ]
+
+
+def test_the_three_cost_concepts_are_reported_separately(synthetic_data, impacts):
+    for name, result in _all_policies(synthetic_data, impacts):
+        for field in [
+            "gross_outlay_bn",
+            "household_protection_bn",
+            "residual_impact_bn",
+        ]:
+            assert field in result, name
+
+
+def test_outlay_is_never_below_protection_for_any_policy(synthetic_data, impacts):
+    """Outlay is unclipped, so it cannot be below what it protects (#14)."""
+    for name, result in _all_policies(synthetic_data, impacts):
+        assert result["gross_outlay_bn"] >= result["household_protection_bn"], name
+
+
+def test_the_accounting_closes_for_every_policy(synthetic_data, impacts):
+    """Protection was uncapped for standalone policies, so protection +
+    residual exceeded the shock (#14 review C1)."""
+    total_shock_bn = (
+        impacts["net_impact"] * synthetic_data["weights"]
+    ).sum() / 1e9
+    for name, result in _all_policies(synthetic_data, impacts):
+        assert (
+            result["household_protection_bn"] + result["residual_impact_bn"]
+            == pytest.approx(total_shock_bn, abs=0.01)
+        ), name
+
+
+def test_protection_never_exceeds_the_shock_for_any_policy(synthetic_data, impacts):
+    total_shock_bn = (
+        impacts["net_impact"] * synthetic_data["weights"]
+    ).sum() / 1e9
+    for name, result in _all_policies(synthetic_data, impacts):
+        assert result["household_protection_bn"] <= total_shock_bn + 1e-9, name
+
+
+def test_over_compensation_shows_up_as_outlay_above_protection(synthetic_data):
+    """Where a payment exceeds a household's shock the payment does not
+    shrink, so outlay must exceed protection.
+
+    Uses a household whose shock is smaller than the flat rebate.
+    """
+    small = dict(synthetic_data)
+    small["energy"] = np.full_like(small["energy"], 100.0)
+    small["fuel_cost"] = np.zeros_like(small["fuel_cost"])
+    small["food_cost"] = np.zeros_like(small["food_cost"])
+    impacts = compute_scenario(small, "low_shock")
+    assert np.all(impacts["net_impact"] < config.FLAT_REBATE)
+
+    effects = compute_policy_effects(small, "low_shock", impacts)
+    weights = small["weights"]
+    outlay = effects["flat_rebate"]["fiscal_outlay"]
+    protection = np.minimum(effects["flat_rebate"]["benefit"], impacts["net_impact"])
+    assert (outlay * weights).sum() > (protection * weights).sum()
+
+
+def test_spending_shares_use_the_spending_numerator(synthetic_data, impacts):
+    """Issue #14: distributional shares must share a definition with the
+    reported aggregate."""
+    for name, result in _all_policies(synthetic_data, impacts):
+        shares = [row["benefit_share_pct"] for row in result["by_quintile"]]
+        assert sum(shares) == pytest.approx(100, abs=0.5), name
 
 
 def test_cost_is_labelled_as_a_household_transfer_not_an_exchequer_cost(
@@ -152,21 +214,6 @@ def test_cost_is_labelled_as_a_household_transfer_not_an_exchequer_cost(
     assert "gross modelled household transfer" in result["cost_basis"]
     for omission in ["take-up", "behavioural", "interactions"]:
         assert omission in result["cost_basis"]
-
-
-def test_protection_plus_residual_equals_the_shock(synthetic_data, impacts):
-    """The household accounting must close."""
-    effects = compute_policy_effects(synthetic_data, "central_shock", impacts)
-    result = _eval_policy(
-        synthetic_data, impacts, "Combined package", effects["combined"]
-    )
-    total_shock_bn = (
-        (impacts["net_impact"] * synthetic_data["weights"]).sum() / 1e9
-    )
-    assert (
-        result["household_protection_bn"] + result["residual_impact_bn"]
-        == pytest.approx(total_shock_bn, abs=0.01)
-    )
 
 
 # ── The winners/losers identity ───────────────────────────────────────────

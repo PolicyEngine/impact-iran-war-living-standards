@@ -102,11 +102,24 @@ def test_committed_headlines_match_the_reviewed_values(results):
     assert baseline["households_with_no_transport_fuel_spend"] == 6_702_935
 
     central = results["scenarios"]["central_shock"]["summary"]
-    assert central["mean_net_impact"] == 1_250
-    assert central["total_impact_bn"] == 37.0
-    assert central["n_newly_below_anchored_line"] == 1_089_992
+    assert central["mean_net_impact"] == 1_210
+    assert central["total_impact_bn"] == 35.8
+    assert central["n_newly_below_anchored_line"] == 1_004_293
 
     package = results["policy_responses"]["central_shock"]["combined"]
     assert package["gross_outlay_bn"] == 40.35
-    assert package["household_protection_bn"] == 31.70
-    assert package["residual_impact_bn"] == 5.28
+    assert package["household_protection_bn"] == 30.78
+    assert package["residual_impact_bn"] == 5.00
+
+
+def test_the_policy_accounting_closes_in_the_committed_output(results):
+    """Protection plus residual must equal the shock for every policy, in
+    every scenario (#14 review C1)."""
+    for scenario in config.SCENARIOS:
+        shock = results["scenarios"][scenario]["summary"]["total_impact_bn"]
+        for name, policy in results["policy_responses"][scenario].items():
+            closed = (
+                policy["household_protection_bn"] + policy["residual_impact_bn"]
+            )
+            assert closed == pytest.approx(shock, abs=0.05), f"{scenario}/{name}"
+            assert policy["gross_outlay_bn"] >= policy["household_protection_bn"]

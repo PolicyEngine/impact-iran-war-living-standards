@@ -845,11 +845,20 @@ def _eval_policy(data, impacts, policy_name, effect):
     baseline_energy = data["energy"]
     net = impacts["net_impact"]
     shocked_energy = _shocked_energy(data, impacts)
+    # Two numerators, deliberately distinct:
+    #   outlay     — what government pays out, uncapped. A household can be
+    #                over-compensated and the payment does not shrink.
+    #   protection — how much of the household's own shock is actually
+    #                offset, capped at that shock.
+    # Only the combined package was capped before, so standalone policies
+    # reported protection above the shock and their protection + residual did
+    # not close to the shock (#14 review C1).
+    outlay = effect["fiscal_outlay"]
     benefit = effect["benefit"]
-    fiscal_outlay = effect["fiscal_outlay"]
     energy_reduction = effect["energy_reduction"]
     income_addition = effect["income_addition"]
-    residual = np.maximum(net - benefit, 0)
+    protection = np.minimum(benefit, net)
+    residual = net - protection
     fp_energy = np.maximum(shocked_energy - energy_reduction, baseline_energy)
     fp_income = income + income_addition
     fp_after = _fuel_poverty_flags(fp_energy, fp_income)
@@ -862,7 +871,9 @@ def _eval_policy(data, impacts, policy_name, effect):
     below_with_policy = _below_anchored_line(data, residual, poverty_line)
     lifted_out = below_without_policy & ~below_with_policy
 
-    total_benefit = weighted_sum(benefit, weights)
+    # Spending shares use the spending numerator, so the quintile shares and
+    # the reported aggregate share a definition (#14).
+    total_outlay = weighted_sum(outlay, weights)
     quintile = data["quintile"]
     by_quintile = []
     support_shares = []
@@ -873,13 +884,15 @@ def _eval_policy(data, impacts, policy_name, effect):
         pct_supported = weighted_mean(is_winner, weights, mask) * 100
         by_quintile.append({
             "quintile": q,
-            "mean_benefit": round(weighted_mean(benefit, weights, mask)),
+            # Household-facing figures use protection...
+            "mean_benefit": round(weighted_mean(protection, weights, mask)),
             "mean_residual_impact": round(weighted_mean(residual, weights, mask)),
             "mean_benefit_pct_income": round(
-                _mean_impact_pct(benefit, income, weights, mask), 1
+                _mean_impact_pct(protection, income, weights, mask), 1
             ),
+            # ...while the spending share uses outlay, matching the aggregate.
             "benefit_share_pct": round(
-                weighted_sum(benefit, weights, mask) / total_benefit * 100, 1
+                weighted_sum(outlay, weights, mask) / total_outlay * 100, 1
             ),
         })
         # No "losers" category: support is non-negative and the residual
@@ -903,15 +916,18 @@ def _eval_policy(data, impacts, policy_name, effect):
             "interactions, take-up, behavioural response, administration, "
             "non-household use and financing"
         ),
-        "gross_outlay_bn": round(weighted_sum(fiscal_outlay, weights) / 1e9, 2),
+        "gross_outlay_bn": round(weighted_sum(outlay, weights) / 1e9, 2),
         # Retained under the original key for existing references; it is the
         # same figure as gross_outlay_bn and is not an Exchequer cost.
-        "fiscal_cost_bn": round(weighted_sum(fiscal_outlay, weights) / 1e9, 2),
-        "household_protection_bn": round(weighted_sum(benefit, weights) / 1e9, 2),
+        "fiscal_cost_bn": round(weighted_sum(outlay, weights) / 1e9, 2),
+        "household_protection_bn": round(
+            weighted_sum(protection, weights) / 1e9, 2
+        ),
         "residual_impact_bn": round(weighted_sum(residual, weights) / 1e9, 2),
-        "avg_benefit_per_hh": round(weighted_mean(benefit, weights)),
+        "avg_benefit_per_hh": round(weighted_mean(protection, weights)),
+        # Share of spending, so it uses the same numerator as gross_outlay_bn.
         "targeting_bottom40": round(
-            weighted_sum(benefit, weights, quintile <= 2) / total_benefit * 100,
+            weighted_sum(outlay, weights, quintile <= 2) / total_outlay * 100,
             1,
         ),
         "fp_rate_before_pct": round(weighted_mean(fp_before.astype(float), weights) * 100, 1),
@@ -1239,9 +1255,15 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
                 "Every policy cost is a gross modelled household transfer, not "
                 "an Exchequer costing. Reported separately: gross_outlay_bn "
                 "(what government pays out, unclipped), "
-                "household_protection_bn (what reaches households, capped at "
-                "each household's shock) and residual_impact_bn (what the "
-                "household still bears). None of them include tax and benefit "
+                "household_protection_bn (how much of the household's own "
+                "shock is offset, capped at that shock) and "
+                "residual_impact_bn (what the household still bears). "
+                "Protection plus residual equals the shock for every policy. "
+                "Spending shares — targeting_bottom40 and "
+                "by_quintile.benefit_share_pct — use the outlay numerator, "
+                "matching gross_outlay_bn; household-facing figures — "
+                "avg_benefit_per_hh and by_quintile.mean_benefit — use "
+                "protection. None of these include tax and benefit "
                 "interactions, take-up, behavioural responses, administrative "
                 "costs, supplier contracts or financing"
             ),
