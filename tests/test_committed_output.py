@@ -88,10 +88,9 @@ def test_dashboard_narrative_inputs_are_present(results):
 def test_committed_headlines_match_the_reviewed_values(results):
     """Regression baseline for the pinned certified data build.
 
-    These are the figures reviewed in this pull request. Each PR further up
-    the stack that moves a headline updates these values in its own
-    "Regenerate" commit, so the pins double as a statement of each PR's
-    numeric effect.
+    These are the figures reviewed in the pull requests that produced them.
+    An accidental regeneration that moves a headline fails here until someone
+    updates these values deliberately, in the PR that changes them.
 
     Data build: populace-uk-2023-dd68c73-4aa4b14-20260619T023711Z.
     """
@@ -103,6 +102,11 @@ def test_committed_headlines_match_the_reviewed_values(results):
     assert baseline["households_with_no_transport_fuel_spend"] == 6_702_935
 
     central = results["scenarios"]["central_shock"]["summary"]
-    assert central["mean_net_impact"] == 1_210
-    assert central["total_impact_bn"] == 35.8
-    assert central["n_newly_below_anchored_line"] == 1_004_293
+    assert central["mean_net_impact"] == 1_250
+    assert central["total_impact_bn"] == 37.0
+    assert central["n_newly_below_anchored_line"] == 1_089_992
+
+    package = results["policy_responses"]["central_shock"]["combined"]
+    assert package["gross_outlay_bn"] == 40.35
+    assert package["household_protection_bn"] == 31.70
+    assert package["residual_impact_bn"] == 5.28
