@@ -34,8 +34,10 @@ jobs:
       # lock's hash is part of the committed output's staleness signal.
       - name: Check lock matches pyproject
         run: |
-          uv pip compile pyproject.toml --extra uk --extra dev             --python-version 3.13 -o /tmp/requirements.lock --quiet
-          diff -u requirements.lock /tmp/requirements.lock
+          uv pip compile pyproject.toml --extra uk --extra dev --python-version 3.13 -o /tmp/requirements.lock --quiet
+          # Compare pins only: uv's header records the output path it was
+          # given, which differs between the committed file and this check.
+          diff -u <(grep -v '^#' requirements.lock) <(grep -v '^#' /tmp/requirements.lock)
 
   dashboard:
     name: Dashboard lint and build
