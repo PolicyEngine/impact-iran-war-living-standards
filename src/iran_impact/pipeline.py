@@ -136,11 +136,18 @@ def _allocate_to_vehicle_owners(spend, decile, owns_vehicle, weights):
         owners = in_group & owns_vehicle
         group_weight = weights[in_group].sum()
         owner_weight = weights[owners].sum()
-        if owner_weight <= 0 or group_weight <= 0:
-            # No owners in this group: leave the mean spread across it rather
-            # than discarding the decile's spending entirely.
-            allocated[in_group] = spend[in_group]
+        if group_weight <= 0:
             continue
+        if owner_weight <= 0:
+            # Silently spreading the decile's spending back across every
+            # household would restore exactly the construction this function
+            # exists to remove, so fail instead. Every decile has vehicle
+            # owners on the certified data build (#12 review S1).
+            raise ValueError(
+                f"decile {group} has no vehicle-owning households, so its "
+                "transport-fuel spending cannot be allocated without "
+                "assigning spending to non-owners"
+            )
         allocated[owners] = spend[owners] * group_weight / owner_weight
     return allocated
 

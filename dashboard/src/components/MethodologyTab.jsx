@@ -134,8 +134,11 @@ export default function MethodologyTab({ data }) {
             <strong className="text-slate-800">Food prices:</strong>{" "}
             Energy is a major input cost in food production, processing, and distribution.
             We apply scenario-specific annual food price increases of 2.0%, 4.0%, and
-            6.5% to average food spending of &pound;5,000/yr (<a href="https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/expenditure/bulletins/familyspendingintheuk/april2023tomarch2024" target="_blank" rel="noreferrer" className="underline">ONS</a>; DEFRA Family Food),
-            scaled by decile following Engel&apos;s Law. As with fuel, these are
+            6.5% to food spending from <a href="https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/expenditure/bulletins/familyspendingintheuk/april2023tomarch2024" target="_blank" rel="noreferrer" className="underline">ONS Family Spending</a> Table A6
+            (FYE 2024): &pound;70.50/wk (&pound;3,666/yr) at the UK mean, ranging from
+            &pound;38.10/wk in the lowest gross-income decile to &pound;100.90/wk in the
+            highest &mdash; the published decile gradient rather than an assumed one. As
+            with fuel, these are
             decile-level spending estimates rather than household-level microdata. The
             high scenario is anchored to IGD&apos;s severe 2026 food-inflation warning
             reported in March 2026.
@@ -270,7 +273,7 @@ export default function MethodologyTab({ data }) {
           <ul className="mt-4 list-disc pl-5 text-sm leading-7 text-slate-600 space-y-1">
             <li>Direct energy bill increases from wholesale price rises (household-level microdata from PolicyEngine)</li>
             <li>Fuel cost increases from higher oil prices (decile-average spending estimates from ONS)</li>
-            <li>Second-round food price inflation from energy input costs (decile-average spending estimates from ONS/DEFRA)</li>
+            <li>Second-round food price inflation from energy input costs (ONS Family Spending Table A6 spending by gross-income decile)</li>
             <li>Real-value loss of means-tested benefits between uprating dates (household-level benefit data from PolicyEngine)</li>
             <li>Distributional analysis by income quintile, country, tenure, and household type</li>
             <li>Fuel poverty impact using the indicative 10%-of-income ratio</li>

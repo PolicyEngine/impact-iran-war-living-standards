@@ -166,10 +166,13 @@ def test_allocation_is_computed_within_each_decile():
     assert allocated[2] == pytest.approx(900.0)
 
 
-def test_a_decile_with_no_owners_keeps_its_spending():
-    """Rather than discarding that decile's expenditure entirely."""
-    spend = np.full(2, 500.0)
-    allocated = _allocate_to_vehicle_owners(
-        spend, np.ones(2, dtype=int), np.array([False, False]), np.ones(2)
-    )
-    assert allocated == pytest.approx(spend)
+def test_a_decile_with_no_owners_is_an_error():
+    """Spreading its spending back over every household would restore the
+    construction this allocation exists to remove (#12 review S1)."""
+    with pytest.raises(ValueError, match="no vehicle-owning households"):
+        _allocate_to_vehicle_owners(
+            np.full(2, 500.0),
+            np.ones(2, dtype=int),
+            np.array([False, False]),
+            np.ones(2),
+        )

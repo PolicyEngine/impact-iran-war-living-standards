@@ -2,9 +2,9 @@
   "year": 2027,
   "current_energy_cap": 1663,
   "provenance": {
-    "generated_at": "2026-09-02T10:16:19+00:00",
-    "git_revision": "556ca511c302674b03e32d9ad2534da92d291cde",
-    "git_dirty": false,
+    "generated_at": "2026-09-02T11:29:57+00:00",
+    "git_revision": "fd6e90f0ad731f280abeed67c70a6643bdfd91cb",
+    "git_dirty": true,
     "packages": {
       "policyengine": "5.0.1",
       "policyengine-uk": "2.89.2",
@@ -14,11 +14,13 @@
     },
     "source_hashes": {
       "config.py": "d8b13b7bec16f119779ae57b66974387719de4cd0a7ff5d12567996300debb72",
-      "pipeline.py": "34cbc69c4cb879255b3dcd9c32e6c72c9ddda18c87bd351c75856159ac9c95bf",
-      "provenance.py": "dea9cad3cd2adf7f3e223749ead96669c66bd082a6ffe82ba15f4a994bab9749"
+      "pipeline.py": "1f81b9885d80c0a57f2d091b499b558ca3e4a04df83acec0bc9669987eac4c60",
+      "provenance.py": "956bcc99b7f9c3f796082ae19edf451310fe6e14ea93deda16bc665455d75541",
+      "pyproject.toml": "32bea2356cf51d4274827d38867963b7a28085338b19c5334ff37aefdb8cd863",
+      "requirements.lock": "16e390c27392135057dd0bae6c7689b764448337fc38018ef43b85c5b10904f4"
     },
     "input_hashes": {
-      "src/iran_impact/inputs/ons_family_spending_a6_fye2024.csv": "263f7fd709978545ddf28c04fa211efc88d18e3096c5f213272add67fb1873e6"
+      "src/iran_impact/inputs/ons_family_spending_a6_fye2024.csv": "cdf1e912c273813700a2b2108bbae57bcbdbc2a4a17d9ec176fb43b34d02bf7a"
     },
     "release_bundle": {
       "bundle_id": "uk-5.0.1",
@@ -54,7 +56,7 @@
         "quintile": 1,
         "mean_energy_spend": 1059,
         "mean_net_income": 23517,
-        "energy_share_pct": 11.4,
+        "energy_share_pct": 11.6,
         "fp_rate_pct": 16.1
       },
       {
@@ -3610,7 +3612,7 @@
         "bulletin_url": "https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/expenditure/bulletins/familyspendingintheuk/april2023tomarch2024",
         "workbook_url": "https://www.ons.gov.uk/file?uri=%2Fpeoplepopulationandcommunity%2Fpersonalandhouseholdfinances%2Fexpenditure%2Fdatasets%2Ffamilyspendingworkbook1detailedexpenditureandtrends%2Ffye2024%2Fworkbook1detailedexpenditureandtrends.xlsx",
         "workbook_sha256": "476a54e600c28cde22b778df48ce66d6b3906a5112b49bc4811ec46b47145f62",
-        "csv_sha256": "263f7fd709978545ddf28c04fa211efc88d18e3096c5f213272add67fb1873e6"
+        "csv_sha256": "cdf1e912c273813700a2b2108bbae57bcbdbc2a4a17d9ec176fb43b34d02bf7a"
       },
       "transport_fuel_annual_gbp_by_gross_decile": {
         "1": 384.8,

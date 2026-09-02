@@ -134,7 +134,11 @@ def main():
             f"# Workbook SHA-256: {digest}\n"
             "# Regenerate with: python scripts/extract_ons_a6.py\n"
         )
-        writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
+        # Unix line endings, so `git diff --check` does not report every data
+        # row as trailing whitespace (#12 review S2).
+        writer = csv.DictWriter(
+            handle, fieldnames=list(rows[0]), lineterminator="\n"
+        )
         writer.writeheader()
         writer.writerows(rows)
     print(f"wrote {len(rows)} rows to {OUTPUT}")
