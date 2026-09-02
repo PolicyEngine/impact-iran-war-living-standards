@@ -27,6 +27,10 @@ def synthetic_data():
         "electricity": np.full(n, 400.0),
         "income": decile * 10_000.0,
         "equiv_income": decile * 10_000.0,
+        # HBAI income sits slightly below total net income, as it does in the
+        # data: poverty is measured on it, affordability on the total.
+        "hbai_income": decile * 9_000.0,
+        "equiv_hbai_income": decile * 9_000.0,
         "people": np.full(n, 2.0),
         "weights": np.full(n, 1_000.0),
         "decile": decile,

@@ -201,9 +201,13 @@ export default function MethodologyTab({ data }) {
                 <td className="font-medium">Fuel poverty indicator</td>
                 <td>10% of income</td>
                 <td className="text-xs text-slate-500">
-                  Boardman (1991) 10%-of-income ratio, computed on net income.
-                  Indicative only — this is <strong>not</strong> England&apos;s official
-                  LILEE metric and is not comparable with official fuel poverty statistics.
+                  Boardman (1991) 10%-of-income ratio, computed on
+                  <code> household_net_income</code>. Indicative only &mdash; this is
+                  <strong> not</strong> England&apos;s official LILEE metric and is not
+                  comparable with official fuel poverty statistics. Households with
+                  non-positive income and a positive energy bill are counted as fuel
+                  poor, and are excluded from statistics expressed as a share of income;
+                  the results file reports how many households that affects.
                 </td>
               </tr>
               <tr>
@@ -228,11 +232,18 @@ export default function MethodologyTab({ data }) {
               </tr>
               <tr>
                 <td className="font-medium">Poverty measure</td>
-                <td>60% median equivalised income</td>
+                <td>60% median equivalised HBAI income (BHC), anchored</td>
                 <td className="text-xs text-slate-500">
-                  People (not households) below 60% of median equivalised household net
-                  income, before housing costs, holding the poverty line at its baseline
-                  level. Consumption-cost shocks are converted to equivalent income losses.
+                  The baseline rate is people (not households) below 60% of the
+                  person-weighted median of <code>equiv_hbai_household_net_income</code>
+                  &mdash; HBAI before-housing-costs relative poverty, comparable in
+                  definition with official statistics. The post-shock figure counts people
+                  below that <strong>same baseline line</strong> once modelled energy,
+                  fuel, food and uprating-lag costs are netted off HBAI income. Because
+                  consumption costs are deducted and the line is not recalculated, that
+                  figure is a consumption-adjusted resource measure against an
+                  <strong> anchored</strong> threshold &mdash; not official HBAI poverty,
+                  and not a contemporaneous relative measure.
                 </td>
               </tr>
             </tbody>
