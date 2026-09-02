@@ -1,6 +1,6 @@
 # Impact of the Middle East War on UK Living Standards
 
-Microsimulation-based analysis of how energy price rises from the ongoing Middle East conflict (active since late February 2026, with recurrent Strait of Hormuz disruption) affect UK households in 2027-28 — modelling impacts through energy bills, fuel costs, food inflation, and benefit uprating lag across 29.6 million weighted households using [policyengine.py](https://github.com/PolicyEngine/policyengine.py) 5.0.1.
+Microsimulation-based analysis of how energy price rises from the ongoing Middle East conflict (active since late February 2026, with recurrent Strait of Hormuz disruption) affect UK households in 2027-28 — modelling impacts through energy bills, fuel costs and food inflation across 29.6 million weighted households using [policyengine.py](https://github.com/PolicyEngine/policyengine.py) 5.0.1.
 
 **[Live Dashboard](https://uk-energy-shock-impact.vercel.app)**
 
@@ -16,14 +16,15 @@ Calibrated to conditions as of August 2026 (Ofgem Q3 2026 cap £1,663 on the new
 
 ## How it works
 
-The pipeline applies price increases through four transmission channels and computes household-level impacts for the 2027-28 tax year:
+The pipeline applies price increases through three transmission channels and computes household-level impacts for the 2027-28 tax year:
 
 1. **Energy** — Higher domestic bills via energy price cap increase
 2. **Fuel** — Petrol/diesel price increase
 3. **Food** — Food price inflation from energy input costs
-4. **Benefit uprating lag** — CPI-linked benefits (state pension excluded: triple lock) erode in real terms until the next April uprating; an expected-lag factor of 0.5 is applied
 
-Poverty is measured as people below 60% of median equivalised household net income (BHC). Fuel poverty uses the indicative 10%-of-income ratio (not the official LILEE metric). Results are broken down by income decile, region, country, tenure type, and household composition.
+Plus a separately reported **uprating compensation shortfall** — CPI-linked benefits (state pension excluded: triple lock) are uprated each April from the previous September's CPI, so no offset arrives during the shock year. This is reported as the compensation an immediate uprating would deliver, and is *not* added to the cost channels: the household's loss is the price rise itself, and adding an uprating term on top would count the same shock twice. It is what the accelerated-uprating policy pays.
+
+Poverty is measured as people below 60% of the person-weighted median of equivalised HBAI household net income (BHC); the post-shock figure holds that baseline line fixed and nets modelled costs off income, so it is an anchored, consumption-adjusted measure rather than official HBAI poverty. Fuel poverty uses the indicative 10%-of-income ratio (not the official LILEE metric). Results are broken down by income decile, region, country, tenure type, and household composition.
 
 ## Policy responses evaluated
 

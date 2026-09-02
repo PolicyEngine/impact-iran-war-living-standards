@@ -36,7 +36,7 @@ const CHANNEL_LABELS = {
   energy: "Energy",
   fuel: "Fuel",
   food: "Food",
-  benefit_uprating_lag: "Benefit uprating lag",
+  benefit_uprating_shortfall: "Uprating compensation shortfall",
 };
 
 function CustomTooltip({ active, payload, label, formatter }) {
@@ -115,7 +115,7 @@ const CHANNEL_STACK = [
   { key: "energy", label: "Energy", color: channelColors.energy },
   { key: "fuel", label: "Fuel", color: channelColors.fuel },
   { key: "food", label: "Food", color: channelColors.food },
-  { key: "benefit_uprating_lag", label: "Benefit uprating lag", color: channelColors.benefit_uprating_lag },
+
 ];
 
 const DIST_VIEWS = [
@@ -195,15 +195,16 @@ function ExampleHousehold({ data, scenario }) {
   const energy = energyBill * (params.cap_increase_pct / 100);
   const fuel = fuelSpend * (params.fuel_pct / 100);
   const food = foodSpend * (params.food_increase_pct / 100);
-  const uprating = benefitIncome * (params.cpi_increase_pp / 100) * 0.5;
-  const total = energy + fuel + food + uprating;
+  // The uprating shortfall is what an immediate uprating would pay, not a
+  // fourth cost — adding it would count the same price shock twice.
+  const upratingShortfall = benefitIncome * (params.cpi_increase_pp / 100) * 0.5;
+  const total = energy + fuel + food;
   const pctIncome = income > 0 ? (total / income) * 100 : null;
 
   const rows = [
     { label: "Higher energy bills", value: energy, color: channelColors.energy },
     { label: "Higher fuel costs", value: fuel, color: channelColors.fuel },
     { label: "Higher food prices", value: food, color: channelColors.food },
-    { label: "Benefit uprating lag", value: uprating, color: channelColors.benefit_uprating_lag },
   ];
   const maxRow = Math.max(...rows.map((r) => r.value), 1);
 
@@ -263,6 +264,16 @@ function ExampleHousehold({ data, scenario }) {
             {pctIncome != null ? (
               <div className="mt-2 text-sm" style={{ color: colors.primary[800] }}>
                 {pctIncome.toFixed(1)}% of your net income
+              </div>
+            ) : null}
+            {upratingShortfall > 0 ? (
+              <div className="mt-4 border-t pt-3 text-xs leading-5" style={{ borderColor: colors.primary[200], color: colors.primary[800] }}>
+                An immediate benefit uprating would offset about{" "}
+                <strong>{formatCurrency(upratingShortfall)}</strong> of this. The
+                scheduled April uprating is set from the previous September&apos;s CPI,
+                so it does not arrive during the year &mdash; which is why the cost
+                above is the full price rise rather than the price rise plus a
+                separate uprating loss.
               </div>
             ) : null}
           </div>
@@ -581,7 +592,7 @@ export default function ScenariosTab({ data }) {
       <div className="border-t border-slate-200 pt-10">
         <SectionHeading
           title="Cost breakdown by transmission channel"
-          description="How the average household cost in 2027-28 splits across the four routes the shock reaches households: energy bills (via the Ofgem cap), fuel at the pump, food prices (energy is a major input cost), and the real-value loss on CPI-linked benefits until the next uprating — a loss that only affects benefit-recipient households."
+          description="How the average household cost in 2027-28 splits across the three routes the shock reaches households: energy bills, fuel at the pump, and food prices (energy is a major input cost). The uprating compensation shortfall is reported separately rather than as a fourth cost: because the scheduled April uprating is set from the previous September's CPI, no offset arrives during the year, so the household's loss is the price rise itself. That shortfall is the size of the compensation an immediate uprating would deliver, and is what the accelerated-uprating policy pays."
         />
       </div>
 

@@ -319,17 +319,19 @@ UPRATING_LAG_REGISTRY = {
     "source_date": "2026-01-01",
     "reference_period": "April 2027 uprating (normally set by September 2026 CPI)",
     "derivation": (
-        "Expected value across a shock arriving at a uniformly distributed "
-        "point in the year, given a maximum 12-month lag: 0.5. Applied "
-        "uniformly rather than benefit by benefit"
+        "Expected fraction of the year an accelerated uprating would cover, "
+        "for a shock arriving at a uniformly distributed point in it: 0.5. "
+        "Applied uniformly rather than benefit by benefit"
     ),
     "counterfactual": (
-        "Benefits are assumed NOT to be compensated for the shock until the "
-        "following April. The channel-4 amount is the real-income loss under "
-        "that assumption. It is added to the energy, fuel and food costs, "
-        "which double-counts the same price shock unless the comparison is "
-        "against immediate and full compensation — a known limitation, see "
-        "METHOD_LIMITATIONS"
+        "The scheduled April uprating is set from the previous September's "
+        "CPI, so it does not reflect a shock arriving after that and no "
+        "offset reaches households during the stress-test year. The "
+        "household's loss is the price rise itself, which the energy, fuel "
+        "and food channels already measure in full. This amount is therefore "
+        "NOT added to them — doing so counted the same price shock twice. It "
+        "measures the compensation an immediate uprating would deliver, and "
+        "is what the accelerated-uprating policy pays"
     ),
     "uncertainty_range": [0.0, 1.0],
 }
@@ -352,11 +354,12 @@ METHOD_LIMITATIONS = [
     "implied by the scenario percentages are judgements anchored to the cited "
     "sources, not equations derived from them. See PARAMETER_REGISTRY for the "
     "derivation of each figure.",
-    "Benefit uprating: a single expected-lag factor is applied to a broad set "
-    "of CPI-linked benefit income, rather than modelling each benefit's own "
-    "uprating rule and April 2027 timing against the price path. Adding the "
-    "resulting amount to the price shocks double-counts unless the "
-    "counterfactual is immediate, full compensation.",
+    "Benefit uprating: a single expected-coverage factor is applied to a broad "
+    "set of CPI-linked benefit income, rather than modelling each benefit's "
+    "own uprating rule and April 2027 timing against the price path. The "
+    "amount is reported as the compensation an immediate uprating would "
+    "deliver and is not counted as a cost, so the household loss is the price "
+    "rise alone.",
     "Uncertainty: the ranges in PARAMETER_REGISTRY describe the spread of the "
     "price assumptions. They do not include the Living Costs and Food Survey's "
     "sampling uncertainty, which Table A6 does not publish.",
@@ -391,10 +394,16 @@ FOOD_DECILE_FACTORS = FOOD_SPEND.decile_factors
 # mean still matches A6 while non-owners spend nothing.
 ALLOCATE_FUEL_TO_VEHICLE_OWNERS = True
 
-# Benefit uprating lag: CPI-linked benefits are uprated each April using the
-# previous September's CPI. For a shock arriving mid-year, the average period
-# of un-indexed erosion across the year is roughly half the maximum 12-month
-# lag, so we apply an expected-value factor of 0.5 rather than the maximum.
+# Benefit uprating: CPI-linked benefits are uprated each April using the
+# previous September's CPI, so a shock arriving after that September is not
+# reflected in the scheduled uprating and no offset arrives during the year.
+#
+# The household's loss is therefore the price rise itself, which the three
+# cost channels already measure. This factor does NOT add a fourth cost — it
+# sizes the compensation that an immediate uprating would deliver, which is
+# what the accelerated-uprating policy provides. Applying it as an
+# expected-value factor of 0.5 reflects an accelerated uprating covering, on
+# average, half of the year.
 # The April 2026 uprating (+3.8%, Sept 2025 CPI; UC standard allowance +2.3%
 # extra under the Universal Credit Act 2025) predates the conflict shock.
 # Source: https://commonslibrary.parliament.uk/research-briefings/cbp-10403/

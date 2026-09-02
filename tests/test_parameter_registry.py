@@ -86,9 +86,10 @@ def test_uprating_lag_registry_states_its_counterfactual():
     registry = config.UPRATING_LAG_REGISTRY
     assert registry["definition"] and registry["derivation"]
     assert registry["source_url"].startswith("https://")
-    # The double-count risk must be stated, not left implicit.
-    assert "double-count" in registry["counterfactual"]
-    assert "immediate" in registry["counterfactual"]
+    # The counterfactual must say the amount is not counted as a cost.
+    assert "NOT added" in registry["counterfactual"]
+    assert "twice" in registry["counterfactual"]
+    assert "immediate uprating" in registry["counterfactual"]
 
 
 def test_scenario_type_is_declared_as_a_stress_test():

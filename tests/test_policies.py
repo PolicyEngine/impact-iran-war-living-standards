@@ -40,11 +40,11 @@ def test_means_tested_payment_follows_benefit_receipt(policies, synthetic_data):
     assert np.all(policies["means_tested_payment"][~recipients] == 0)
 
 
-def test_accelerated_uprating_exactly_offsets_the_lag(synthetic_data):
+def test_accelerated_uprating_exactly_offsets_the_shortfall(synthetic_data):
     impacts = compute_scenario(synthetic_data, "central_shock")
     policies = compute_policies(synthetic_data, "central_shock", impacts)
     assert policies["accelerated_uprating"] == pytest.approx(
-        impacts["benefit_uprating_lag"]
+        impacts["benefit_uprating_shortfall"]
     )
 
 

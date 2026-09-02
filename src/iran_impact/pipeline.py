@@ -395,22 +395,32 @@ def compute_scenario(data, scenario_key):
     # Channel 3: Food pass-through
     food_shock = food_cost * food_increase_pct
 
-    # Channel 4: Benefit uprating lag — CPI-linked benefits are uprated each
-    # April using the previous September's CPI, so their real value erodes
-    # between the shock arriving and the next uprating. We apply the shock-period
-    # CPI adder to CPI-linked benefit income (state pension excluded — triple
-    # lock) scaled by an expected-lag factor of 0.5, representing the average
-    # erosion over the year rather than the 12-month maximum.
-    benefit_uprating_lag = benefit_income * cpi_increase_pp * UPRATING_LAG_FACTOR
+    # Uprating shortfall — NOT a cost channel, and deliberately not added to
+    # the net impact.
+    #
+    # The three channels above are the household's extra spending. Nominal
+    # benefit income does not rise in response, because CPI-linked benefits
+    # are uprated each April from the previous September's CPI, so the
+    # scheduled uprating does not reflect a shock arriving after that. The
+    # household's loss is therefore the price rise itself.
+    #
+    # Adding an uprating term on top counted the same price shock twice: the
+    # loss is the absence of an offset, not a second cost (#13 review C1).
+    # What the term measures is the size of the compensation that immediate
+    # uprating would have delivered — which is exactly what the accelerated
+    # uprating policy provides, so it is reported here and used there.
+    benefit_uprating_shortfall = (
+        benefit_income * cpi_increase_pp * UPRATING_LAG_FACTOR
+    )
 
     # Net impact (all positive = cost to household)
-    net_impact = energy_shock + fuel_shock + food_shock + benefit_uprating_lag
+    net_impact = energy_shock + fuel_shock + food_shock
 
     return {
         "energy_shock": energy_shock,
         "fuel_shock": fuel_shock,
         "food_shock": food_shock,
-        "benefit_uprating_lag": benefit_uprating_lag,
+        "benefit_uprating_shortfall": benefit_uprating_shortfall,
         "net_impact": net_impact,
     }
 
@@ -482,7 +492,7 @@ def compute_policies(data, scenario_key, scenario_impacts):
     policies["elec_vat_cut"] = data["electricity"] * (1 + cap_increase_pct) * ELEC_VAT_SAVING_RATE
 
     # Policy G: Accelerated uprating – eliminates benefit uprating lag loss
-    policies["accelerated_uprating"] = scenario_impacts["benefit_uprating_lag"].copy()
+    policies["accelerated_uprating"] = scenario_impacts["benefit_uprating_shortfall"].copy()
 
     # Policy H: Social tariff – 50% discount on energy shock for low-income/UC households
     social_tariff_eligible = is_uc | (income < SOCIAL_TARIFF_INCOME_THRESHOLD)
@@ -618,8 +628,10 @@ def _by_quintile(data, impacts, shocked_fuel_poor):
             "energy": round(weighted_mean(impacts["energy_shock"], weights, mask)),
             "fuel": round(weighted_mean(impacts["fuel_shock"], weights, mask)),
             "food": round(weighted_mean(impacts["food_shock"], weights, mask)),
-            "benefit_uprating_lag": round(
-                weighted_mean(impacts["benefit_uprating_lag"], weights, mask)
+            "benefit_uprating_shortfall": round(
+                weighted_mean(
+                    impacts["benefit_uprating_shortfall"], weights, mask
+                )
             ),
             "fp_rate_pct": round(
                 weighted_mean(shocked_fuel_poor.astype(float), weights, mask) * 100,
@@ -648,8 +660,10 @@ def _grouped_impacts(data, impacts, group_key, label_key, shocked_fuel_poor):
             "energy": round(weighted_mean(impacts["energy_shock"], weights, mask)),
             "fuel": round(weighted_mean(impacts["fuel_shock"], weights, mask)),
             "food": round(weighted_mean(impacts["food_shock"], weights, mask)),
-            "benefit_uprating_lag": round(
-                weighted_mean(impacts["benefit_uprating_lag"], weights, mask)
+            "benefit_uprating_shortfall": round(
+                weighted_mean(
+                    impacts["benefit_uprating_shortfall"], weights, mask
+                )
             ),
             "fp_rate_pct": round(
                 weighted_mean(shocked_fuel_poor.astype(float), weights, mask) * 100,
@@ -684,13 +698,22 @@ def _fp_by_tenure(data, baseline_fuel_poor, shocked_fuel_poor):
 
 
 def _channel_decomposition(data, impacts):
+    """Mean cost by channel. The three cost channels sum to the net impact.
+
+    The uprating shortfall is reported alongside them but is not one of them:
+    it is the compensation immediate uprating would have delivered, not an
+    additional cost (#13 review C1).
+    """
     weights = data["weights"]
     return {
         "energy_shock": round(weighted_mean(impacts["energy_shock"], weights)),
         "fuel_shock": round(weighted_mean(impacts["fuel_shock"], weights)),
         "food_shock": round(weighted_mean(impacts["food_shock"], weights)),
-        "benefit_uprating_lag": round(weighted_mean(impacts["benefit_uprating_lag"], weights)),
         "net_impact": round(weighted_mean(impacts["net_impact"], weights)),
+        "benefit_uprating_shortfall": round(
+            weighted_mean(impacts["benefit_uprating_shortfall"], weights)
+        ),
+        "cost_channels": ["energy_shock", "fuel_shock", "food_shock"],
     }
 
 
@@ -842,10 +865,7 @@ def _scenario_output(data, scenario_key):
     impacts = compute_scenario(data, scenario_key)
     net = impacts["net_impact"]
     gross = (
-        impacts["energy_shock"]
-        + impacts["fuel_shock"]
-        + impacts["food_shock"]
-        + impacts["benefit_uprating_lag"]
+        impacts["energy_shock"] + impacts["fuel_shock"] + impacts["food_shock"]
     )
     baseline_energy = data["energy"]
     shocked_energy = _shocked_energy(data, impacts)

@@ -68,6 +68,17 @@ def test_every_scenario_reports_the_headline_metrics(results):
             assert isinstance(summary[field], (int, float))
 
 
+def test_the_uprating_shortfall_is_reported_but_not_summed(results):
+    """The three cost channels must sum to the net impact (#13 review C1)."""
+    for key in config.SCENARIOS:
+        channels = results["scenarios"][key]["channel_decomposition"]
+        assert channels["cost_channels"] == ["energy_shock", "fuel_shock", "food_shock"]
+        assert channels["benefit_uprating_shortfall"] > 0
+        total = sum(channels[name] for name in channels["cost_channels"])
+        # Rounded to whole pounds per channel, so allow a pound of slack.
+        assert abs(total - channels["net_impact"]) <= 1
+
+
 def test_dashboard_narrative_inputs_are_present(results):
     """The dashboard derives its comparison note from these two fields."""
     assert results["baseline"]["mean_household_size"] > 1
@@ -92,6 +103,6 @@ def test_committed_headlines_match_the_reviewed_values(results):
     assert baseline["households_with_no_transport_fuel_spend"] == 6_702_935
 
     central = results["scenarios"]["central_shock"]["summary"]
-    assert central["mean_net_impact"] == 1_250
-    assert central["total_impact_bn"] == 37.0
-    assert central["n_newly_below_anchored_line"] == 1_089_992
+    assert central["mean_net_impact"] == 1_210
+    assert central["total_impact_bn"] == 35.8
+    assert central["n_newly_below_anchored_line"] == 1_004_293
