@@ -2,8 +2,8 @@
   "year": 2027,
   "current_energy_cap": 1663,
   "provenance": {
-    "generated_at": "2026-09-02T11:26:08+00:00",
-    "git_revision": "de813cd4af32ce9c44da5b42f482334fee839c3d",
+    "generated_at": "2026-09-02T10:03:21+00:00",
+    "git_revision": "90351916cfa44b1e41eac0a247953028978633aa",
     "git_dirty": false,
     "packages": {
       "policyengine": "5.0.1",
@@ -14,10 +14,8 @@
     },
     "source_hashes": {
       "config.py": "b583762850ea84afb32c3214fce9745738854513a7ff3f11d838d0876b9c04c4",
-      "pipeline.py": "a7bcf28f3201f385a97e3422e8084d5249a60d0831a7f413d2727052b1add241",
-      "provenance.py": "956bcc99b7f9c3f796082ae19edf451310fe6e14ea93deda16bc665455d75541",
-      "pyproject.toml": "39e6910362ea16a0836b3d64dfed1a4766d20fdac41c5116d1470d8bcb73b6c3",
-      "requirements.lock": "edb6c4555bb846dd439abf7342b54e3ff0e0f266da8990381d15689385e84462"
+      "pipeline.py": "637bc70f1fa6bfeb91409ec861fb6ae88092d4b2867217ac1fe6f88ff77dfed2",
+      "provenance.py": "dea9cad3cd2adf7f3e223749ead96669c66bd082a6ffe82ba15f4a994bab9749"
     },
     "input_hashes": {},
     "release_bundle": {
@@ -41,15 +39,17 @@
     "mean_energy_spend": 1331,
     "mean_net_income": 61924,
     "total_energy_spend_bn": 39.4,
-    "fuel_poverty_rate_pct": 5.8,
-    "fuel_poor_households": 1710790,
+    "fuel_poverty_rate_pct": 6.4,
+    "fuel_poor_households": 1896869,
+    "non_positive_income_households": 188777,
+    "poverty_rate_baseline_pct": 19.91,
     "by_quintile": [
       {
         "quintile": 1,
         "mean_energy_spend": 1059,
         "mean_net_income": 23517,
         "energy_share_pct": 11.4,
-        "fp_rate_pct": 14.7
+        "fp_rate_pct": 16.1
       },
       {
         "quintile": 2,
@@ -63,21 +63,21 @@
         "mean_energy_spend": 1276,
         "mean_net_income": 51180,
         "energy_share_pct": 2.9,
-        "fp_rate_pct": 3.7
+        "fp_rate_pct": 3.8
       },
       {
         "quintile": 4,
         "mean_energy_spend": 1545,
         "mean_net_income": 70218,
         "energy_share_pct": 2.5,
-        "fp_rate_pct": 4.5
+        "fp_rate_pct": 4.6
       },
       {
         "quintile": 5,
         "mean_energy_spend": 1547,
         "mean_net_income": 119684,
         "energy_share_pct": 1.5,
-        "fp_rate_pct": 0.6
+        "fp_rate_pct": 1.9
       }
     ]
   },
@@ -94,21 +94,24 @@
         "mean_net_impact": 578,
         "mean_net_impact_pct": 1.7,
         "total_impact_bn": 17.1,
-        "fp_rate_baseline_pct": 5.8,
-        "fp_rate_shocked_pct": 6.9,
+        "fp_rate_baseline_pct": 6.4,
+        "fp_rate_shocked_pct": 7.5,
         "fp_extra_households": 323714,
-        "n_pushed_into_poverty": 423751
+        "poverty_rate_baseline_pct": 19.91,
+        "below_anchored_line_shocked_pct": 20.6,
+        "n_newly_below_anchored_line": 480317,
+        "n_pushed_into_poverty": 480317
       },
       "by_quintile": [
         {
           "quintile": 1,
           "mean_impact": 426,
-          "mean_impact_pct": 4.0,
+          "mean_impact_pct": 4.1,
           "energy": 159,
           "fuel": 182,
           "food": 65,
           "benefit_uprating_lag": 21,
-          "fp_rate_pct": 16.9
+          "fp_rate_pct": 18.3
         },
         {
           "quintile": 2,
@@ -118,7 +121,7 @@
           "fuel": 234,
           "food": 80,
           "benefit_uprating_lag": 27,
-          "fp_rate_pct": 6.4
+          "fp_rate_pct": 6.5
         },
         {
           "quintile": 3,
@@ -128,7 +131,7 @@
           "fuel": 260,
           "food": 100,
           "benefit_uprating_lag": 19,
-          "fp_rate_pct": 4.8
+          "fp_rate_pct": 4.9
         },
         {
           "quintile": 4,
@@ -138,7 +141,7 @@
           "fuel": 299,
           "food": 120,
           "benefit_uprating_lag": 11,
-          "fp_rate_pct": 5.1
+          "fp_rate_pct": 5.2
         },
         {
           "quintile": 5,
@@ -148,7 +151,7 @@
           "fuel": 325,
           "food": 145,
           "benefit_uprating_lag": 4,
-          "fp_rate_pct": 0.9
+          "fp_rate_pct": 2.2
         }
       ],
       "by_region": [
@@ -160,7 +163,7 @@
           "fuel": 258,
           "food": 101,
           "benefit_uprating_lag": 14,
-          "fp_rate_pct": 8.2
+          "fp_rate_pct": 8.9
         },
         {
           "region": "EAST_OF_ENGLAND",
@@ -170,7 +173,7 @@
           "fuel": 252,
           "food": 98,
           "benefit_uprating_lag": 13,
-          "fp_rate_pct": 5.7
+          "fp_rate_pct": 6.5
         },
         {
           "region": "LONDON",
@@ -180,7 +183,7 @@
           "fuel": 271,
           "food": 110,
           "benefit_uprating_lag": 17,
-          "fp_rate_pct": 6.4
+          "fp_rate_pct": 6.8
         },
         {
           "region": "NORTHERN_IRELAND",
@@ -195,12 +198,12 @@
         {
           "region": "NORTH_EAST",
           "mean_impact": 647,
-          "mean_impact_pct": 3.9,
+          "mean_impact_pct": 4.2,
           "energy": 270,
           "fuel": 257,
           "food": 101,
           "benefit_uprating_lag": 18,
-          "fp_rate_pct": 8.1
+          "fp_rate_pct": 15.4
         },
         {
           "region": "NORTH_WEST",
@@ -210,7 +213,7 @@
           "fuel": 251,
           "food": 96,
           "benefit_uprating_lag": 20,
-          "fp_rate_pct": 10.0
+          "fp_rate_pct": 10.2
         },
         {
           "region": "SCOTLAND",
@@ -220,7 +223,7 @@
           "fuel": 256,
           "food": 99,
           "benefit_uprating_lag": 15,
-          "fp_rate_pct": 8.5
+          "fp_rate_pct": 8.7
         },
         {
           "region": "SOUTH_EAST",
@@ -230,7 +233,7 @@
           "fuel": 269,
           "food": 108,
           "benefit_uprating_lag": 12,
-          "fp_rate_pct": 3.1
+          "fp_rate_pct": 3.2
         },
         {
           "region": "SOUTH_WEST",
@@ -240,17 +243,17 @@
           "fuel": 266,
           "food": 106,
           "benefit_uprating_lag": 14,
-          "fp_rate_pct": 5.1
+          "fp_rate_pct": 5.3
         },
         {
           "region": "WALES",
           "mean_impact": 639,
-          "mean_impact_pct": 1.4,
+          "mean_impact_pct": 1.5,
           "energy": 257,
           "fuel": 260,
           "food": 101,
           "benefit_uprating_lag": 21,
-          "fp_rate_pct": 8.9
+          "fp_rate_pct": 9.0
         },
         {
           "region": "WEST_MIDLANDS",
@@ -260,7 +263,7 @@
           "fuel": 256,
           "food": 100,
           "benefit_uprating_lag": 17,
-          "fp_rate_pct": 7.7
+          "fp_rate_pct": 8.0
         },
         {
           "region": "YORKSHIRE",
@@ -270,7 +273,7 @@
           "fuel": 256,
           "food": 99,
           "benefit_uprating_lag": 16,
-          "fp_rate_pct": 8.8
+          "fp_rate_pct": 9.3
         }
       ],
       "by_tenure": [
@@ -282,7 +285,7 @@
           "fuel": 260,
           "food": 103,
           "benefit_uprating_lag": 6,
-          "fp_rate_pct": 7.5
+          "fp_rate_pct": 7.7
         },
         {
           "tenure": "OWNED_WITH_MORTGAGE",
@@ -292,7 +295,7 @@
           "fuel": 279,
           "food": 113,
           "benefit_uprating_lag": 9,
-          "fp_rate_pct": 4.0
+          "fp_rate_pct": 4.5
         },
         {
           "tenure": "RENT_FROM_COUNCIL",
@@ -302,7 +305,7 @@
           "fuel": 228,
           "food": 83,
           "benefit_uprating_lag": 47,
-          "fp_rate_pct": 9.6
+          "fp_rate_pct": 10.1
         },
         {
           "tenure": "RENT_FROM_HA",
@@ -312,7 +315,7 @@
           "fuel": 228,
           "food": 84,
           "benefit_uprating_lag": 49,
-          "fp_rate_pct": 9.1
+          "fp_rate_pct": 9.5
         },
         {
           "tenure": "RENT_PRIVATELY",
@@ -322,7 +325,7 @@
           "fuel": 258,
           "food": 102,
           "benefit_uprating_lag": 19,
-          "fp_rate_pct": 8.1
+          "fp_rate_pct": 9.9
         }
       ],
       "by_country": [
@@ -334,7 +337,7 @@
           "fuel": 261,
           "food": 103,
           "benefit_uprating_lag": 16,
-          "fp_rate_pct": 6.7
+          "fp_rate_pct": 7.4
         },
         {
           "country": "NORTHERN_IRELAND",
@@ -354,17 +357,17 @@
           "fuel": 256,
           "food": 99,
           "benefit_uprating_lag": 15,
-          "fp_rate_pct": 8.5
+          "fp_rate_pct": 8.7
         },
         {
           "country": "WALES",
           "mean_impact": 639,
-          "mean_impact_pct": 1.4,
+          "mean_impact_pct": 1.5,
           "energy": 257,
           "fuel": 260,
           "food": 101,
           "benefit_uprating_lag": 21,
-          "fp_rate_pct": 8.9
+          "fp_rate_pct": 9.0
         }
       ],
       "by_hh_type": [
@@ -376,7 +379,7 @@
           "fuel": 286,
           "food": 118,
           "benefit_uprating_lag": 6,
-          "fp_rate_pct": 5.9
+          "fp_rate_pct": 8.0
         },
         {
           "hh_type": "COUPLE_PENSIONER",
@@ -386,7 +389,7 @@
           "fuel": 266,
           "food": 105,
           "benefit_uprating_lag": 8,
-          "fp_rate_pct": 5.8
+          "fp_rate_pct": 5.9
         },
         {
           "hh_type": "COUPLE_WITH_CHILDREN",
@@ -396,7 +399,7 @@
           "fuel": 261,
           "food": 103,
           "benefit_uprating_lag": 22,
-          "fp_rate_pct": 4.6
+          "fp_rate_pct": 4.8
         },
         {
           "hh_type": "LONE_PARENT",
@@ -406,7 +409,7 @@
           "fuel": 225,
           "food": 82,
           "benefit_uprating_lag": 60,
-          "fp_rate_pct": 10.7
+          "fp_rate_pct": 11.0
         },
         {
           "hh_type": "SINGLE_PENSIONER",
@@ -416,7 +419,7 @@
           "fuel": 241,
           "food": 92,
           "benefit_uprating_lag": 13,
-          "fp_rate_pct": 9.2
+          "fp_rate_pct": 9.3
         },
         {
           "hh_type": "SINGLE_WORKING_AGE",
@@ -426,34 +429,34 @@
           "fuel": 255,
           "food": 101,
           "benefit_uprating_lag": 18,
-          "fp_rate_pct": 10.4
+          "fp_rate_pct": 11.8
         }
       ],
       "fp_by_tenure": [
         {
           "tenure": "OWNED_OUTRIGHT",
-          "baseline_fp_pct": 6.1,
-          "shocked_fp_pct": 7.5
+          "baseline_fp_pct": 6.3,
+          "shocked_fp_pct": 7.7
         },
         {
           "tenure": "OWNED_WITH_MORTGAGE",
-          "baseline_fp_pct": 3.3,
-          "shocked_fp_pct": 4.0
+          "baseline_fp_pct": 3.7,
+          "shocked_fp_pct": 4.5
         },
         {
           "tenure": "RENT_FROM_COUNCIL",
-          "baseline_fp_pct": 8.3,
-          "shocked_fp_pct": 9.6
+          "baseline_fp_pct": 8.8,
+          "shocked_fp_pct": 10.1
         },
         {
           "tenure": "RENT_FROM_HA",
-          "baseline_fp_pct": 8.1,
-          "shocked_fp_pct": 9.1
+          "baseline_fp_pct": 8.4,
+          "shocked_fp_pct": 9.5
         },
         {
           "tenure": "RENT_PRIVATELY",
-          "baseline_fp_pct": 7.1,
-          "shocked_fp_pct": 8.1
+          "baseline_fp_pct": 8.9,
+          "shocked_fp_pct": 9.9
         }
       ],
       "channel_decomposition": {
@@ -474,23 +477,26 @@
       "summary": {
         "mean_gross_impact": 1429,
         "mean_net_impact": 1429,
-        "mean_net_impact_pct": 4.3,
+        "mean_net_impact_pct": 4.4,
         "total_impact_bn": 42.3,
-        "fp_rate_baseline_pct": 5.8,
-        "fp_rate_shocked_pct": 10.3,
+        "fp_rate_baseline_pct": 6.4,
+        "fp_rate_shocked_pct": 11.0,
         "fp_extra_households": 1346860,
-        "n_pushed_into_poverty": 986615
+        "poverty_rate_baseline_pct": 19.91,
+        "below_anchored_line_shocked_pct": 21.68,
+        "n_newly_below_anchored_line": 1243917,
+        "n_pushed_into_poverty": 1243917
       },
       "by_quintile": [
         {
           "quintile": 1,
           "mean_impact": 1067,
-          "mean_impact_pct": 10.1,
+          "mean_impact_pct": 10.3,
           "energy": 476,
           "fuel": 409,
           "food": 130,
           "benefit_uprating_lag": 52,
-          "fp_rate_pct": 24.2
+          "fp_rate_pct": 25.6
         },
         {
           "quintile": 2,
@@ -510,7 +516,7 @@
           "fuel": 585,
           "food": 200,
           "benefit_uprating_lag": 48,
-          "fp_rate_pct": 7.4
+          "fp_rate_pct": 7.5
         },
         {
           "quintile": 4,
@@ -520,7 +526,7 @@
           "fuel": 673,
           "food": 240,
           "benefit_uprating_lag": 26,
-          "fp_rate_pct": 6.9
+          "fp_rate_pct": 7.1
         },
         {
           "quintile": 5,
@@ -530,29 +536,29 @@
           "fuel": 731,
           "food": 290,
           "benefit_uprating_lag": 10,
-          "fp_rate_pct": 2.4
+          "fp_rate_pct": 3.7
         }
       ],
       "by_region": [
         {
           "region": "EAST_MIDLANDS",
           "mean_impact": 1518,
-          "mean_impact_pct": 4.0,
+          "mean_impact_pct": 4.1,
           "energy": 701,
           "fuel": 581,
           "food": 202,
           "benefit_uprating_lag": 34,
-          "fp_rate_pct": 12.3
+          "fp_rate_pct": 13.0
         },
         {
           "region": "EAST_OF_ENGLAND",
           "mean_impact": 1399,
-          "mean_impact_pct": 4.5,
+          "mean_impact_pct": 4.6,
           "energy": 602,
           "fuel": 567,
           "food": 196,
           "benefit_uprating_lag": 33,
-          "fp_rate_pct": 8.5
+          "fp_rate_pct": 9.4
         },
         {
           "region": "LONDON",
@@ -562,7 +568,7 @@
           "fuel": 610,
           "food": 220,
           "benefit_uprating_lag": 43,
-          "fp_rate_pct": 8.7
+          "fp_rate_pct": 9.1
         },
         {
           "region": "NORTHERN_IRELAND",
@@ -577,12 +583,12 @@
         {
           "region": "NORTH_EAST",
           "mean_impact": 1637,
-          "mean_impact_pct": 10.4,
+          "mean_impact_pct": 11.2,
           "energy": 811,
           "fuel": 578,
           "food": 202,
           "benefit_uprating_lag": 45,
-          "fp_rate_pct": 10.5
+          "fp_rate_pct": 17.8
         },
         {
           "region": "NORTH_WEST",
@@ -592,7 +598,7 @@
           "fuel": 564,
           "food": 193,
           "benefit_uprating_lag": 51,
-          "fp_rate_pct": 14.3
+          "fp_rate_pct": 14.5
         },
         {
           "region": "SCOTLAND",
@@ -602,7 +608,7 @@
           "fuel": 576,
           "food": 197,
           "benefit_uprating_lag": 39,
-          "fp_rate_pct": 12.6
+          "fp_rate_pct": 12.8
         },
         {
           "region": "SOUTH_EAST",
@@ -612,17 +618,17 @@
           "fuel": 605,
           "food": 216,
           "benefit_uprating_lag": 31,
-          "fp_rate_pct": 6.4
+          "fp_rate_pct": 6.5
         },
         {
           "region": "SOUTH_WEST",
           "mean_impact": 1385,
-          "mean_impact_pct": 3.6,
+          "mean_impact_pct": 3.7,
           "energy": 540,
           "fuel": 599,
           "food": 211,
           "benefit_uprating_lag": 35,
-          "fp_rate_pct": 7.2
+          "fp_rate_pct": 7.4
         },
         {
           "region": "WALES",
@@ -632,7 +638,7 @@
           "fuel": 585,
           "food": 203,
           "benefit_uprating_lag": 53,
-          "fp_rate_pct": 11.2
+          "fp_rate_pct": 11.3
         },
         {
           "region": "WEST_MIDLANDS",
@@ -642,7 +648,7 @@
           "fuel": 576,
           "food": 199,
           "benefit_uprating_lag": 44,
-          "fp_rate_pct": 12.5
+          "fp_rate_pct": 12.8
         },
         {
           "region": "YORKSHIRE",
@@ -652,7 +658,7 @@
           "fuel": 576,
           "food": 198,
           "benefit_uprating_lag": 39,
-          "fp_rate_pct": 14.4
+          "fp_rate_pct": 14.8
         }
       ],
       "by_tenure": [
@@ -664,7 +670,7 @@
           "fuel": 586,
           "food": 205,
           "benefit_uprating_lag": 15,
-          "fp_rate_pct": 12.0
+          "fp_rate_pct": 12.2
         },
         {
           "tenure": "OWNED_WITH_MORTGAGE",
@@ -674,7 +680,7 @@
           "fuel": 627,
           "food": 225,
           "benefit_uprating_lag": 22,
-          "fp_rate_pct": 6.7
+          "fp_rate_pct": 7.2
         },
         {
           "tenure": "RENT_FROM_COUNCIL",
@@ -684,7 +690,7 @@
           "fuel": 512,
           "food": 167,
           "benefit_uprating_lag": 117,
-          "fp_rate_pct": 13.7
+          "fp_rate_pct": 14.2
         },
         {
           "tenure": "RENT_FROM_HA",
@@ -694,29 +700,29 @@
           "fuel": 512,
           "food": 167,
           "benefit_uprating_lag": 121,
-          "fp_rate_pct": 13.6
+          "fp_rate_pct": 14.0
         },
         {
           "tenure": "RENT_PRIVATELY",
           "mean_impact": 1409,
-          "mean_impact_pct": 4.9,
+          "mean_impact_pct": 5.0,
           "energy": 578,
           "fuel": 580,
           "food": 203,
           "benefit_uprating_lag": 47,
-          "fp_rate_pct": 10.1
+          "fp_rate_pct": 11.9
         }
       ],
       "by_country": [
         {
           "country": "ENGLAND",
           "mean_impact": 1416,
-          "mean_impact_pct": 4.4,
+          "mean_impact_pct": 4.5,
           "energy": 585,
           "fuel": 586,
           "food": 206,
           "benefit_uprating_lag": 39,
-          "fp_rate_pct": 10.2
+          "fp_rate_pct": 10.9
         },
         {
           "country": "NORTHERN_IRELAND",
@@ -736,7 +742,7 @@
           "fuel": 576,
           "food": 197,
           "benefit_uprating_lag": 39,
-          "fp_rate_pct": 12.6
+          "fp_rate_pct": 12.8
         },
         {
           "country": "WALES",
@@ -746,7 +752,7 @@
           "fuel": 585,
           "food": 203,
           "benefit_uprating_lag": 53,
-          "fp_rate_pct": 11.2
+          "fp_rate_pct": 11.3
         }
       ],
       "by_hh_type": [
@@ -758,7 +764,7 @@
           "fuel": 644,
           "food": 236,
           "benefit_uprating_lag": 15,
-          "fp_rate_pct": 7.6
+          "fp_rate_pct": 9.8
         },
         {
           "hh_type": "COUPLE_PENSIONER",
@@ -768,7 +774,7 @@
           "fuel": 598,
           "food": 209,
           "benefit_uprating_lag": 19,
-          "fp_rate_pct": 9.8
+          "fp_rate_pct": 10.0
         },
         {
           "hh_type": "COUPLE_WITH_CHILDREN",
@@ -778,7 +784,7 @@
           "fuel": 588,
           "food": 205,
           "benefit_uprating_lag": 56,
-          "fp_rate_pct": 7.6
+          "fp_rate_pct": 7.7
         },
         {
           "hh_type": "LONE_PARENT",
@@ -788,7 +794,7 @@
           "fuel": 505,
           "food": 165,
           "benefit_uprating_lag": 149,
-          "fp_rate_pct": 13.4
+          "fp_rate_pct": 13.7
         },
         {
           "hh_type": "SINGLE_PENSIONER",
@@ -798,44 +804,44 @@
           "fuel": 542,
           "food": 183,
           "benefit_uprating_lag": 32,
-          "fp_rate_pct": 13.0
+          "fp_rate_pct": 13.1
         },
         {
           "hh_type": "SINGLE_WORKING_AGE",
           "mean_impact": 1254,
-          "mean_impact_pct": 9.5,
+          "mean_impact_pct": 9.6,
           "energy": 435,
           "fuel": 574,
           "food": 201,
           "benefit_uprating_lag": 44,
-          "fp_rate_pct": 16.0
+          "fp_rate_pct": 17.4
         }
       ],
       "fp_by_tenure": [
         {
           "tenure": "OWNED_OUTRIGHT",
-          "baseline_fp_pct": 6.1,
-          "shocked_fp_pct": 12.0
+          "baseline_fp_pct": 6.3,
+          "shocked_fp_pct": 12.2
         },
         {
           "tenure": "OWNED_WITH_MORTGAGE",
-          "baseline_fp_pct": 3.3,
-          "shocked_fp_pct": 6.7
+          "baseline_fp_pct": 3.7,
+          "shocked_fp_pct": 7.2
         },
         {
           "tenure": "RENT_FROM_COUNCIL",
-          "baseline_fp_pct": 8.3,
-          "shocked_fp_pct": 13.7
+          "baseline_fp_pct": 8.8,
+          "shocked_fp_pct": 14.2
         },
         {
           "tenure": "RENT_FROM_HA",
-          "baseline_fp_pct": 8.1,
-          "shocked_fp_pct": 13.6
+          "baseline_fp_pct": 8.4,
+          "shocked_fp_pct": 14.0
         },
         {
           "tenure": "RENT_PRIVATELY",
-          "baseline_fp_pct": 7.1,
-          "shocked_fp_pct": 10.1
+          "baseline_fp_pct": 8.9,
+          "shocked_fp_pct": 11.9
         }
       ],
       "channel_decomposition": {
@@ -858,21 +864,24 @@
         "mean_net_impact": 2643,
         "mean_net_impact_pct": 8.1,
         "total_impact_bn": 78.2,
-        "fp_rate_baseline_pct": 5.8,
-        "fp_rate_shocked_pct": 15.3,
+        "fp_rate_baseline_pct": 6.4,
+        "fp_rate_shocked_pct": 16.0,
         "fp_extra_households": 2823879,
-        "n_pushed_into_poverty": 2083810
+        "poverty_rate_baseline_pct": 19.91,
+        "below_anchored_line_shocked_pct": 23.45,
+        "n_newly_below_anchored_line": 2485429,
+        "n_pushed_into_poverty": 2485429
       },
       "by_quintile": [
         {
           "quintile": 1,
           "mean_impact": 1985,
-          "mean_impact_pct": 19.0,
+          "mean_impact_pct": 19.3,
           "energy": 953,
           "fuel": 728,
           "food": 211,
           "benefit_uprating_lag": 93,
-          "fp_rate_pct": 34.3
+          "fp_rate_pct": 35.7
         },
         {
           "quintile": 2,
@@ -882,7 +891,7 @@
           "fuel": 936,
           "food": 260,
           "benefit_uprating_lag": 123,
-          "fp_rate_pct": 15.5
+          "fp_rate_pct": 15.6
         },
         {
           "quintile": 3,
@@ -892,7 +901,7 @@
           "fuel": 1040,
           "food": 325,
           "benefit_uprating_lag": 86,
-          "fp_rate_pct": 11.0
+          "fp_rate_pct": 11.2
         },
         {
           "quintile": 4,
@@ -902,17 +911,17 @@
           "fuel": 1196,
           "food": 390,
           "benefit_uprating_lag": 48,
-          "fp_rate_pct": 10.7
+          "fp_rate_pct": 10.8
         },
         {
           "quintile": 5,
           "mean_impact": 3181,
-          "mean_impact_pct": 3.2,
+          "mean_impact_pct": 3.3,
           "energy": 1392,
           "fuel": 1300,
           "food": 471,
           "benefit_uprating_lag": 17,
-          "fp_rate_pct": 4.7
+          "fp_rate_pct": 5.9
         }
       ],
       "by_region": [
@@ -924,57 +933,57 @@
           "fuel": 1032,
           "food": 328,
           "benefit_uprating_lag": 61,
-          "fp_rate_pct": 16.6
+          "fp_rate_pct": 17.3
         },
         {
           "region": "EAST_OF_ENGLAND",
           "mean_impact": 2591,
-          "mean_impact_pct": 8.5,
+          "mean_impact_pct": 8.6,
           "energy": 1205,
           "fuel": 1009,
           "food": 318,
           "benefit_uprating_lag": 59,
-          "fp_rate_pct": 15.0
+          "fp_rate_pct": 15.9
         },
         {
           "region": "LONDON",
           "mean_impact": 2483,
-          "mean_impact_pct": 9.3,
+          "mean_impact_pct": 9.4,
           "energy": 962,
           "fuel": 1085,
           "food": 358,
           "benefit_uprating_lag": 78,
-          "fp_rate_pct": 14.3
+          "fp_rate_pct": 14.8
         },
         {
           "region": "NORTHERN_IRELAND",
           "mean_impact": 2476,
-          "mean_impact_pct": 5.6,
+          "mean_impact_pct": 5.7,
           "energy": 1076,
           "fuel": 987,
           "food": 305,
           "benefit_uprating_lag": 108,
-          "fp_rate_pct": 13.9
+          "fp_rate_pct": 14.0
         },
         {
           "region": "NORTH_EAST",
           "mean_impact": 3060,
-          "mean_impact_pct": 19.9,
+          "mean_impact_pct": 21.5,
           "energy": 1622,
           "fuel": 1028,
           "food": 329,
           "benefit_uprating_lag": 81,
-          "fp_rate_pct": 14.6
+          "fp_rate_pct": 21.9
         },
         {
           "region": "NORTH_WEST",
           "mean_impact": 2633,
-          "mean_impact_pct": 9.1,
+          "mean_impact_pct": 9.2,
           "energy": 1226,
           "fuel": 1002,
           "food": 313,
           "benefit_uprating_lag": 91,
-          "fp_rate_pct": 19.6
+          "fp_rate_pct": 19.8
         },
         {
           "region": "SCOTLAND",
@@ -984,7 +993,7 @@
           "fuel": 1023,
           "food": 321,
           "benefit_uprating_lag": 69,
-          "fp_rate_pct": 16.3
+          "fp_rate_pct": 16.4
         },
         {
           "region": "SOUTH_EAST",
@@ -994,7 +1003,7 @@
           "fuel": 1075,
           "food": 351,
           "benefit_uprating_lag": 56,
-          "fp_rate_pct": 11.1
+          "fp_rate_pct": 11.2
         },
         {
           "region": "SOUTH_WEST",
@@ -1004,7 +1013,7 @@
           "fuel": 1064,
           "food": 343,
           "benefit_uprating_lag": 64,
-          "fp_rate_pct": 12.3
+          "fp_rate_pct": 12.6
         },
         {
           "region": "WALES",
@@ -1014,27 +1023,27 @@
           "fuel": 1040,
           "food": 329,
           "benefit_uprating_lag": 96,
-          "fp_rate_pct": 15.3
+          "fp_rate_pct": 15.4
         },
         {
           "region": "WEST_MIDLANDS",
           "mean_impact": 2743,
-          "mean_impact_pct": 7.1,
+          "mean_impact_pct": 7.2,
           "energy": 1317,
           "fuel": 1024,
           "food": 324,
           "benefit_uprating_lag": 78,
-          "fp_rate_pct": 17.0
+          "fp_rate_pct": 17.4
         },
         {
           "region": "YORKSHIRE",
           "mean_impact": 2717,
-          "mean_impact_pct": 7.0,
+          "mean_impact_pct": 7.1,
           "energy": 1301,
           "fuel": 1024,
           "food": 323,
           "benefit_uprating_lag": 70,
-          "fp_rate_pct": 19.2
+          "fp_rate_pct": 19.6
         }
       ],
       "by_tenure": [
@@ -1046,7 +1055,7 @@
           "fuel": 1042,
           "food": 334,
           "benefit_uprating_lag": 27,
-          "fp_rate_pct": 18.6
+          "fp_rate_pct": 18.9
         },
         {
           "tenure": "OWNED_WITH_MORTGAGE",
@@ -1056,17 +1065,17 @@
           "fuel": 1114,
           "food": 366,
           "benefit_uprating_lag": 39,
-          "fp_rate_pct": 10.0
+          "fp_rate_pct": 10.4
         },
         {
           "tenure": "RENT_FROM_COUNCIL",
           "mean_impact": 2436,
-          "mean_impact_pct": 10.0,
+          "mean_impact_pct": 10.1,
           "energy": 1044,
           "fuel": 910,
           "food": 271,
           "benefit_uprating_lag": 211,
-          "fp_rate_pct": 20.8
+          "fp_rate_pct": 21.4
         },
         {
           "tenure": "RENT_FROM_HA",
@@ -1076,17 +1085,17 @@
           "fuel": 910,
           "food": 272,
           "benefit_uprating_lag": 219,
-          "fp_rate_pct": 19.1
+          "fp_rate_pct": 19.5
         },
         {
           "tenure": "RENT_PRIVATELY",
           "mean_impact": 2603,
-          "mean_impact_pct": 9.0,
+          "mean_impact_pct": 9.2,
           "energy": 1157,
           "fuel": 1031,
           "food": 330,
           "benefit_uprating_lag": 84,
-          "fp_rate_pct": 13.9
+          "fp_rate_pct": 15.7
         }
       ],
       "by_country": [
@@ -1098,17 +1107,17 @@
           "fuel": 1043,
           "food": 334,
           "benefit_uprating_lag": 71,
-          "fp_rate_pct": 15.3
+          "fp_rate_pct": 16.0
         },
         {
           "country": "NORTHERN_IRELAND",
           "mean_impact": 2476,
-          "mean_impact_pct": 5.6,
+          "mean_impact_pct": 5.7,
           "energy": 1076,
           "fuel": 987,
           "food": 305,
           "benefit_uprating_lag": 108,
-          "fp_rate_pct": 13.9
+          "fp_rate_pct": 14.0
         },
         {
           "country": "SCOTLAND",
@@ -1118,7 +1127,7 @@
           "fuel": 1023,
           "food": 321,
           "benefit_uprating_lag": 69,
-          "fp_rate_pct": 16.3
+          "fp_rate_pct": 16.4
         },
         {
           "country": "WALES",
@@ -1128,19 +1137,19 @@
           "fuel": 1040,
           "food": 329,
           "benefit_uprating_lag": 96,
-          "fp_rate_pct": 15.3
+          "fp_rate_pct": 15.4
         }
       ],
       "by_hh_type": [
         {
           "hh_type": "COUPLE_NO_CHILDREN",
           "mean_impact": 2915,
-          "mean_impact_pct": 5.5,
+          "mean_impact_pct": 5.6,
           "energy": 1360,
           "fuel": 1144,
           "food": 384,
           "benefit_uprating_lag": 26,
-          "fp_rate_pct": 10.4
+          "fp_rate_pct": 12.5
         },
         {
           "hh_type": "COUPLE_PENSIONER",
@@ -1150,7 +1159,7 @@
           "fuel": 1063,
           "food": 340,
           "benefit_uprating_lag": 34,
-          "fp_rate_pct": 14.9
+          "fp_rate_pct": 15.0
         },
         {
           "hh_type": "COUPLE_WITH_CHILDREN",
@@ -1160,17 +1169,17 @@
           "fuel": 1045,
           "food": 334,
           "benefit_uprating_lag": 100,
-          "fp_rate_pct": 10.4
+          "fp_rate_pct": 10.6
         },
         {
           "hh_type": "LONE_PARENT",
           "mean_impact": 2450,
-          "mean_impact_pct": 9.1,
+          "mean_impact_pct": 9.2,
           "energy": 1015,
           "fuel": 898,
           "food": 268,
           "benefit_uprating_lag": 269,
-          "fp_rate_pct": 19.3
+          "fp_rate_pct": 19.6
         },
         {
           "hh_type": "SINGLE_PENSIONER",
@@ -1180,44 +1189,44 @@
           "fuel": 964,
           "food": 298,
           "benefit_uprating_lag": 58,
-          "fp_rate_pct": 22.8
+          "fp_rate_pct": 22.9
         },
         {
           "hh_type": "SINGLE_WORKING_AGE",
           "mean_impact": 2296,
-          "mean_impact_pct": 17.6,
+          "mean_impact_pct": 17.8,
           "energy": 869,
           "fuel": 1020,
           "food": 327,
           "benefit_uprating_lag": 80,
-          "fp_rate_pct": 23.0
+          "fp_rate_pct": 24.4
         }
       ],
       "fp_by_tenure": [
         {
           "tenure": "OWNED_OUTRIGHT",
-          "baseline_fp_pct": 6.1,
-          "shocked_fp_pct": 18.6
+          "baseline_fp_pct": 6.3,
+          "shocked_fp_pct": 18.9
         },
         {
           "tenure": "OWNED_WITH_MORTGAGE",
-          "baseline_fp_pct": 3.3,
-          "shocked_fp_pct": 10.0
+          "baseline_fp_pct": 3.7,
+          "shocked_fp_pct": 10.4
         },
         {
           "tenure": "RENT_FROM_COUNCIL",
-          "baseline_fp_pct": 8.3,
-          "shocked_fp_pct": 20.8
+          "baseline_fp_pct": 8.8,
+          "shocked_fp_pct": 21.4
         },
         {
           "tenure": "RENT_FROM_HA",
-          "baseline_fp_pct": 8.1,
-          "shocked_fp_pct": 19.1
+          "baseline_fp_pct": 8.4,
+          "shocked_fp_pct": 19.5
         },
         {
           "tenure": "RENT_PRIVATELY",
-          "baseline_fp_pct": 7.1,
-          "shocked_fp_pct": 13.9
+          "baseline_fp_pct": 8.9,
+          "shocked_fp_pct": 15.7
         }
       ],
       "channel_decomposition": {
@@ -1236,9 +1245,9 @@
         "fiscal_cost_bn": 1.97,
         "avg_benefit_per_hh": 67,
         "targeting_bottom40": 33.9,
-        "fp_rate_before_pct": 6.9,
-        "fp_rate_after_pct": 6.5,
-        "n_lifted_from_poverty": 53839,
+        "fp_rate_before_pct": 7.5,
+        "fp_rate_after_pct": 7.1,
+        "n_lifted_from_poverty": 62645,
         "by_quintile": [
           {
             "quintile": 1,
@@ -1314,15 +1323,15 @@
         "fiscal_cost_bn": 11.83,
         "avg_benefit_per_hh": 400,
         "targeting_bottom40": 39.6,
-        "fp_rate_before_pct": 6.9,
-        "fp_rate_after_pct": 6.8,
-        "n_lifted_from_poverty": 335352,
+        "fp_rate_before_pct": 7.5,
+        "fp_rate_after_pct": 7.4,
+        "n_lifted_from_poverty": 411184,
         "by_quintile": [
           {
             "quintile": 1,
             "mean_benefit": 400,
             "mean_residual_impact": 63,
-            "mean_benefit_pct_income": 3.5,
+            "mean_benefit_pct_income": 3.6,
             "benefit_share_pct": 21.1
           },
           {
@@ -1392,9 +1401,9 @@
         "fiscal_cost_bn": 6.63,
         "avg_benefit_per_hh": 224,
         "targeting_bottom40": 44.1,
-        "fp_rate_before_pct": 6.9,
-        "fp_rate_after_pct": 6.8,
-        "n_lifted_from_poverty": 255362,
+        "fp_rate_before_pct": 7.5,
+        "fp_rate_after_pct": 7.4,
+        "n_lifted_from_poverty": 320527,
         "by_quintile": [
           {
             "quintile": 1,
@@ -1470,9 +1479,9 @@
         "fiscal_cost_bn": 2.34,
         "avg_benefit_per_hh": 79,
         "targeting_bottom40": 75.2,
-        "fp_rate_before_pct": 6.9,
-        "fp_rate_after_pct": 6.9,
-        "n_lifted_from_poverty": 89061,
+        "fp_rate_before_pct": 7.5,
+        "fp_rate_after_pct": 7.5,
+        "n_lifted_from_poverty": 62004,
         "by_quintile": [
           {
             "quintile": 1,
@@ -1548,9 +1557,9 @@
         "fiscal_cost_bn": 1.78,
         "avg_benefit_per_hh": 60,
         "targeting_bottom40": 31.4,
-        "fp_rate_before_pct": 6.9,
-        "fp_rate_after_pct": 6.9,
-        "n_lifted_from_poverty": 39478,
+        "fp_rate_before_pct": 7.5,
+        "fp_rate_after_pct": 7.5,
+        "n_lifted_from_poverty": 48769,
         "by_quintile": [
           {
             "quintile": 1,
@@ -1626,9 +1635,9 @@
         "fiscal_cost_bn": 2.38,
         "avg_benefit_per_hh": 80,
         "targeting_bottom40": 74.0,
-        "fp_rate_before_pct": 6.9,
-        "fp_rate_after_pct": 6.9,
-        "n_lifted_from_poverty": 152766,
+        "fp_rate_before_pct": 7.5,
+        "fp_rate_after_pct": 7.5,
+        "n_lifted_from_poverty": 77034,
         "by_quintile": [
           {
             "quintile": 1,
@@ -1704,9 +1713,9 @@
         "fiscal_cost_bn": 1.2,
         "avg_benefit_per_hh": 41,
         "targeting_bottom40": 33.9,
-        "fp_rate_before_pct": 6.9,
-        "fp_rate_after_pct": 6.7,
-        "n_lifted_from_poverty": 16204,
+        "fp_rate_before_pct": 7.5,
+        "fp_rate_after_pct": 7.3,
+        "n_lifted_from_poverty": 45916,
         "by_quintile": [
           {
             "quintile": 1,
@@ -1782,9 +1791,9 @@
         "fiscal_cost_bn": 0.48,
         "avg_benefit_per_hh": 16,
         "targeting_bottom40": 58.5,
-        "fp_rate_before_pct": 6.9,
-        "fp_rate_after_pct": 6.9,
-        "n_lifted_from_poverty": 44828,
+        "fp_rate_before_pct": 7.5,
+        "fp_rate_after_pct": 7.5,
+        "n_lifted_from_poverty": 17639,
         "by_quintile": [
           {
             "quintile": 1,
@@ -1860,9 +1869,9 @@
         "fiscal_cost_bn": 0.4,
         "avg_benefit_per_hh": 14,
         "targeting_bottom40": 76.4,
-        "fp_rate_before_pct": 6.9,
-        "fp_rate_after_pct": 6.7,
-        "n_lifted_from_poverty": 16589,
+        "fp_rate_before_pct": 7.5,
+        "fp_rate_after_pct": 7.3,
+        "n_lifted_from_poverty": 20990,
         "by_quintile": [
           {
             "quintile": 1,
@@ -1938,9 +1947,9 @@
         "fiscal_cost_bn": 28.61,
         "avg_benefit_per_hh": 558,
         "targeting_bottom40": 33.4,
-        "fp_rate_before_pct": 6.9,
-        "fp_rate_after_pct": 6.1,
-        "n_lifted_from_poverty": 423119,
+        "fp_rate_before_pct": 7.5,
+        "fp_rate_after_pct": 6.6,
+        "n_lifted_from_poverty": 479981,
         "by_quintile": [
           {
             "quintile": 1,
@@ -2018,9 +2027,9 @@
         "fiscal_cost_bn": 13.78,
         "avg_benefit_per_hh": 466,
         "targeting_bottom40": 33.9,
-        "fp_rate_before_pct": 10.3,
-        "fp_rate_after_pct": 6.5,
-        "n_lifted_from_poverty": 322459,
+        "fp_rate_before_pct": 11.0,
+        "fp_rate_after_pct": 7.1,
+        "n_lifted_from_poverty": 476624,
         "by_quintile": [
           {
             "quintile": 1,
@@ -2096,15 +2105,15 @@
         "fiscal_cost_bn": 11.83,
         "avg_benefit_per_hh": 400,
         "targeting_bottom40": 39.6,
-        "fp_rate_before_pct": 10.3,
-        "fp_rate_after_pct": 10.2,
-        "n_lifted_from_poverty": 286751,
+        "fp_rate_before_pct": 11.0,
+        "fp_rate_after_pct": 10.7,
+        "n_lifted_from_poverty": 361537,
         "by_quintile": [
           {
             "quintile": 1,
             "mean_benefit": 400,
             "mean_residual_impact": 667,
-            "mean_benefit_pct_income": 3.5,
+            "mean_benefit_pct_income": 3.6,
             "benefit_share_pct": 21.1
           },
           {
@@ -2174,9 +2183,9 @@
         "fiscal_cost_bn": 6.63,
         "avg_benefit_per_hh": 224,
         "targeting_bottom40": 44.1,
-        "fp_rate_before_pct": 10.3,
-        "fp_rate_after_pct": 10.2,
-        "n_lifted_from_poverty": 197611,
+        "fp_rate_before_pct": 11.0,
+        "fp_rate_after_pct": 10.8,
+        "n_lifted_from_poverty": 229340,
         "by_quintile": [
           {
             "quintile": 1,
@@ -2252,9 +2261,9 @@
         "fiscal_cost_bn": 2.34,
         "avg_benefit_per_hh": 79,
         "targeting_bottom40": 75.2,
-        "fp_rate_before_pct": 10.3,
-        "fp_rate_after_pct": 10.3,
-        "n_lifted_from_poverty": 115522,
+        "fp_rate_before_pct": 11.0,
+        "fp_rate_after_pct": 10.9,
+        "n_lifted_from_poverty": 198501,
         "by_quintile": [
           {
             "quintile": 1,
@@ -2330,9 +2339,9 @@
         "fiscal_cost_bn": 1.78,
         "avg_benefit_per_hh": 60,
         "targeting_bottom40": 31.4,
-        "fp_rate_before_pct": 10.3,
-        "fp_rate_after_pct": 10.3,
-        "n_lifted_from_poverty": 18996,
+        "fp_rate_before_pct": 11.0,
+        "fp_rate_after_pct": 11.0,
+        "n_lifted_from_poverty": 43202,
         "by_quintile": [
           {
             "quintile": 1,
@@ -2408,9 +2417,9 @@
         "fiscal_cost_bn": 2.38,
         "avg_benefit_per_hh": 80,
         "targeting_bottom40": 74.0,
-        "fp_rate_before_pct": 10.3,
-        "fp_rate_after_pct": 10.3,
-        "n_lifted_from_poverty": 173052,
+        "fp_rate_before_pct": 11.0,
+        "fp_rate_after_pct": 10.9,
+        "n_lifted_from_poverty": 145848,
         "by_quintile": [
           {
             "quintile": 1,
@@ -2486,9 +2495,9 @@
         "fiscal_cost_bn": 1.51,
         "avg_benefit_per_hh": 51,
         "targeting_bottom40": 33.9,
-        "fp_rate_before_pct": 10.3,
-        "fp_rate_after_pct": 9.9,
-        "n_lifted_from_poverty": 22810,
+        "fp_rate_before_pct": 11.0,
+        "fp_rate_after_pct": 10.5,
+        "n_lifted_from_poverty": 29791,
         "by_quintile": [
           {
             "quintile": 1,
@@ -2564,9 +2573,9 @@
         "fiscal_cost_bn": 1.19,
         "avg_benefit_per_hh": 40,
         "targeting_bottom40": 58.5,
-        "fp_rate_before_pct": 10.3,
-        "fp_rate_after_pct": 10.3,
-        "n_lifted_from_poverty": 32282,
+        "fp_rate_before_pct": 11.0,
+        "fp_rate_after_pct": 10.9,
+        "n_lifted_from_poverty": 73275,
         "by_quintile": [
           {
             "quintile": 1,
@@ -2642,9 +2651,9 @@
         "fiscal_cost_bn": 1.2,
         "avg_benefit_per_hh": 41,
         "targeting_bottom40": 76.4,
-        "fp_rate_before_pct": 10.3,
-        "fp_rate_after_pct": 9.6,
-        "n_lifted_from_poverty": 49434,
+        "fp_rate_before_pct": 11.0,
+        "fp_rate_after_pct": 10.2,
+        "n_lifted_from_poverty": 66248,
         "by_quintile": [
           {
             "quintile": 1,
@@ -2720,15 +2729,15 @@
         "fiscal_cost_bn": 41.45,
         "avg_benefit_per_hh": 1219,
         "targeting_bottom40": 36.8,
-        "fp_rate_before_pct": 10.3,
-        "fp_rate_after_pct": 6.0,
-        "n_lifted_from_poverty": 970899,
+        "fp_rate_before_pct": 11.0,
+        "fp_rate_after_pct": 6.6,
+        "n_lifted_from_poverty": 1227694,
         "by_quintile": [
           {
             "quintile": 1,
             "mean_benefit": 1039,
             "mean_residual_impact": 28,
-            "mean_benefit_pct_income": 9.8,
+            "mean_benefit_pct_income": 10.0,
             "benefit_share_pct": 18.0
           },
           {
@@ -2800,15 +2809,15 @@
         "fiscal_cost_bn": 31.5,
         "avg_benefit_per_hh": 1065,
         "targeting_bottom40": 33.9,
-        "fp_rate_before_pct": 15.3,
-        "fp_rate_after_pct": 6.5,
-        "n_lifted_from_poverty": 1020197,
+        "fp_rate_before_pct": 16.0,
+        "fp_rate_after_pct": 7.1,
+        "n_lifted_from_poverty": 1047190,
         "by_quintile": [
           {
             "quintile": 1,
             "mean_benefit": 847,
             "mean_residual_impact": 1138,
-            "mean_benefit_pct_income": 9.1,
+            "mean_benefit_pct_income": 9.2,
             "benefit_share_pct": 16.7
           },
           {
@@ -2878,15 +2887,15 @@
         "fiscal_cost_bn": 11.83,
         "avg_benefit_per_hh": 400,
         "targeting_bottom40": 39.6,
-        "fp_rate_before_pct": 15.3,
-        "fp_rate_after_pct": 14.8,
-        "n_lifted_from_poverty": 496021,
+        "fp_rate_before_pct": 16.0,
+        "fp_rate_after_pct": 15.4,
+        "n_lifted_from_poverty": 494491,
         "by_quintile": [
           {
             "quintile": 1,
             "mean_benefit": 400,
             "mean_residual_impact": 1585,
-            "mean_benefit_pct_income": 3.5,
+            "mean_benefit_pct_income": 3.6,
             "benefit_share_pct": 21.1
           },
           {
@@ -2956,9 +2965,9 @@
         "fiscal_cost_bn": 6.63,
         "avg_benefit_per_hh": 224,
         "targeting_bottom40": 44.1,
-        "fp_rate_before_pct": 15.3,
-        "fp_rate_after_pct": 15.1,
-        "n_lifted_from_poverty": 248898,
+        "fp_rate_before_pct": 16.0,
+        "fp_rate_after_pct": 15.7,
+        "n_lifted_from_poverty": 286696,
         "by_quintile": [
           {
             "quintile": 1,
@@ -3034,9 +3043,9 @@
         "fiscal_cost_bn": 2.34,
         "avg_benefit_per_hh": 79,
         "targeting_bottom40": 75.2,
-        "fp_rate_before_pct": 15.3,
-        "fp_rate_after_pct": 15.2,
-        "n_lifted_from_poverty": 220266,
+        "fp_rate_before_pct": 16.0,
+        "fp_rate_after_pct": 15.8,
+        "n_lifted_from_poverty": 225519,
         "by_quintile": [
           {
             "quintile": 1,
@@ -3112,9 +3121,9 @@
         "fiscal_cost_bn": 1.78,
         "avg_benefit_per_hh": 60,
         "targeting_bottom40": 31.4,
-        "fp_rate_before_pct": 15.3,
-        "fp_rate_after_pct": 15.3,
-        "n_lifted_from_poverty": 24522,
+        "fp_rate_before_pct": 16.0,
+        "fp_rate_after_pct": 16.0,
+        "n_lifted_from_poverty": 28101,
         "by_quintile": [
           {
             "quintile": 1,
@@ -3190,9 +3199,9 @@
         "fiscal_cost_bn": 2.38,
         "avg_benefit_per_hh": 80,
         "targeting_bottom40": 74.0,
-        "fp_rate_before_pct": 15.3,
-        "fp_rate_after_pct": 15.2,
-        "n_lifted_from_poverty": 219349,
+        "fp_rate_before_pct": 16.0,
+        "fp_rate_after_pct": 15.8,
+        "n_lifted_from_poverty": 179109,
         "by_quintile": [
           {
             "quintile": 1,
@@ -3268,9 +3277,9 @@
         "fiscal_cost_bn": 1.98,
         "avg_benefit_per_hh": 67,
         "targeting_bottom40": 33.9,
-        "fp_rate_before_pct": 15.3,
-        "fp_rate_after_pct": 14.9,
-        "n_lifted_from_poverty": 48632,
+        "fp_rate_before_pct": 16.0,
+        "fp_rate_after_pct": 15.5,
+        "n_lifted_from_poverty": 108264,
         "by_quintile": [
           {
             "quintile": 1,
@@ -3346,9 +3355,9 @@
         "fiscal_cost_bn": 2.14,
         "avg_benefit_per_hh": 72,
         "targeting_bottom40": 58.5,
-        "fp_rate_before_pct": 15.3,
-        "fp_rate_after_pct": 15.2,
-        "n_lifted_from_poverty": 207985,
+        "fp_rate_before_pct": 16.0,
+        "fp_rate_after_pct": 15.9,
+        "n_lifted_from_poverty": 174220,
         "by_quintile": [
           {
             "quintile": 1,
@@ -3424,9 +3433,9 @@
         "fiscal_cost_bn": 2.4,
         "avg_benefit_per_hh": 81,
         "targeting_bottom40": 76.4,
-        "fp_rate_before_pct": 15.3,
-        "fp_rate_after_pct": 14.0,
-        "n_lifted_from_poverty": 82202,
+        "fp_rate_before_pct": 16.0,
+        "fp_rate_after_pct": 14.6,
+        "n_lifted_from_poverty": 53736,
         "by_quintile": [
           {
             "quintile": 1,
@@ -3502,15 +3511,15 @@
         "fiscal_cost_bn": 60.59,
         "avg_benefit_per_hh": 1943,
         "targeting_bottom40": 37.8,
-        "fp_rate_before_pct": 15.3,
-        "fp_rate_after_pct": 5.9,
-        "n_lifted_from_poverty": 1860773,
+        "fp_rate_before_pct": 16.0,
+        "fp_rate_after_pct": 6.5,
+        "n_lifted_from_poverty": 2095975,
         "by_quintile": [
           {
             "quintile": 1,
             "mean_benefit": 1748,
             "mean_residual_impact": 237,
-            "mean_benefit_pct_income": 16.6,
+            "mean_benefit_pct_income": 16.9,
             "benefit_share_pct": 18.9
           },
           {
@@ -3589,7 +3598,17 @@
   },
   "metadata": {
     "cap_basis": "Ofgem default tariff cap \u00a31,663/yr, Jul-Sep 2026, new TDCV basis (\u2248\u00a31,862 on the pre-July 2026 basis)",
-    "fuel_poverty_definition": "Indicative 10%-of-net-income energy spend ratio \u2014 not the official LILEE metric; not comparable with official statistics",
-    "poverty_definition": "People below 60% of median equivalised household net income (BHC), person-weighted"
+    "fuel_poverty_definition": "Indicative ratio: modelled domestic energy spend above 10% of household_net_income \u2014 not the official LILEE metric and not comparable with official fuel poverty statistics. Households with non-positive income and a positive energy bill count as fuel poor; see baseline.non_positive_income_households for how many rest on that rule",
+    "poverty_definition": "Baseline: people below 60% of the person-weighted median of equiv_hbai_household_net_income (HBAI BHC relative poverty). Post-shock: people below that same baseline line once modelled energy, fuel, food and uprating-lag costs are netted off HBAI income \u2014 a consumption-adjusted resource measure against an anchored threshold, not official HBAI poverty. The line is not recalculated on the post-shock distribution",
+    "income_variables": {
+      "poverty": [
+        "hbai_household_net_income",
+        "equiv_hbai_household_net_income"
+      ],
+      "affordability_and_shares_of_income": [
+        "household_net_income"
+      ]
+    },
+    "poverty_threshold_basis": "anchored to the baseline distribution"
   }
 }
