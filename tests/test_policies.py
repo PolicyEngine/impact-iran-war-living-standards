@@ -57,11 +57,14 @@ def test_epg_caps_the_energy_increase(synthetic_data):
     assert policies["energy_price_guarantee"] == pytest.approx(expected)
 
 
-def test_epg_pays_nothing_when_the_shock_is_below_the_cap(synthetic_data):
-    """low_shock is +15%, above the 10% cap; a sub-cap shock must pay zero."""
-    impacts = compute_scenario(synthetic_data, "low_shock")
-    policies = compute_policies(synthetic_data, "low_shock", impacts)
-    assert np.all(policies["energy_price_guarantee"] >= 0)
+def test_epg_pays_nothing_when_the_shock_is_below_the_cap(synthetic_data, monkeypatch):
+    """Every configured scenario exceeds the 10% cap, so build one that does not."""
+    sub_cap = dict(config.SCENARIOS["low_shock"])
+    sub_cap["cap_increase_pct"] = config.EPG_CAP_PCT * 100 / 2  # +5%, below the cap
+    monkeypatch.setitem(config.SCENARIOS, "sub_cap_shock", sub_cap)
+    impacts = compute_scenario(synthetic_data, "sub_cap_shock")
+    policies = compute_policies(synthetic_data, "sub_cap_shock", impacts)
+    assert np.all(policies["energy_price_guarantee"] == 0)
 
 
 def test_combined_household_benefit_is_clipped_to_the_shock(synthetic_data):

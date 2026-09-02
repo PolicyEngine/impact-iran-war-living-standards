@@ -100,13 +100,23 @@ def _weighted_decile(values, weights):
     the same grouping (#12).
     """
     order = np.argsort(values, kind="stable")
-    cumulative = np.cumsum(weights[order])
+    sorted_values = values[order]
+    sorted_weights = weights[order]
+    cumulative = np.cumsum(sorted_weights)
     total = cumulative[-1]
-    # Position of each household at the midpoint of its own weight, so a
-    # single very heavily weighted household cannot straddle a boundary.
-    midpoints = (cumulative - weights[order] / 2) / total
+
+    # Households on the same income must land in the same group: splitting a
+    # tie across a decile boundary would give identical households different
+    # A6 spending factors on nothing but input order. Ties are common at the
+    # bottom of the gross-income distribution, so each distinct income is
+    # placed by the midpoint of its whole tie group's weight.
+    group_end = np.searchsorted(sorted_values, sorted_values, side="right") - 1
+    group_start = np.searchsorted(sorted_values, sorted_values, side="left")
+    weight_below_group = np.where(group_start > 0, cumulative[group_start - 1], 0.0)
+    midpoints = (weight_below_group + cumulative[group_end]) / 2 / total
+
     decile_of_sorted = np.clip((midpoints * 10).astype(int) + 1, 1, 10)
-    decile = np.empty_like(decile_of_sorted)
+    decile = np.empty(len(values), dtype=int)
     decile[order] = decile_of_sorted
     return decile
 

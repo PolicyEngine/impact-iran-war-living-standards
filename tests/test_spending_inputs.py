@@ -102,6 +102,25 @@ def test_weighted_decile_orders_by_value():
     assert decile[1] < decile[0] < decile[2]
 
 
+def test_tied_incomes_land_in_the_same_decile():
+    """Identical households must not be split by input order.
+
+    Ties are common at the bottom of the gross-income distribution, where
+    splitting them would hand identical households different A6 factors.
+    """
+    decile = _weighted_decile(np.array([5.0, 5.0, 5.0, 5.0]), np.ones(4))
+    assert len(set(decile)) == 1
+
+
+def test_a_large_tie_group_is_placed_by_its_own_midpoint():
+    values = np.concatenate([np.zeros(20), np.arange(1.0, 81.0)])
+    decile = _weighted_decile(values, np.ones(100))
+    # The 20 zero-income households span the first two tenths, so they sit
+    # together at the midpoint of that block rather than straddling it.
+    assert len(set(decile[:20])) == 1
+    assert decile[:20][0] == 2
+
+
 def test_weighted_decile_respects_weights():
     """Weight, not row count, determines the group boundaries."""
     values = np.array([1.0, 2.0, 3.0])
