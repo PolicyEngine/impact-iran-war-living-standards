@@ -2,9 +2,9 @@
   "year": 2027,
   "current_energy_cap": 1663,
   "provenance": {
-    "generated_at": "2026-09-02T11:27:51+00:00",
-    "git_revision": "6e32e15a1705e5baf48a22347136431c9d0e4427",
-    "git_dirty": true,
+    "generated_at": "2026-09-02T10:03:21+00:00",
+    "git_revision": "90351916cfa44b1e41eac0a247953028978633aa",
+    "git_dirty": false,
     "packages": {
       "policyengine": "5.0.1",
       "policyengine-uk": "2.89.2",
@@ -14,10 +14,8 @@
     },
     "source_hashes": {
       "config.py": "b583762850ea84afb32c3214fce9745738854513a7ff3f11d838d0876b9c04c4",
-      "pipeline.py": "1def1486862d78cd37b37ad117456708eb369205618aa56ec72d6c8459c4ea52",
-      "provenance.py": "956bcc99b7f9c3f796082ae19edf451310fe6e14ea93deda16bc665455d75541",
-      "pyproject.toml": "39e6910362ea16a0836b3d64dfed1a4766d20fdac41c5116d1470d8bcb73b6c3",
-      "requirements.lock": "edb6c4555bb846dd439abf7342b54e3ff0e0f266da8990381d15689385e84462"
+      "pipeline.py": "637bc70f1fa6bfeb91409ec861fb6ae88092d4b2867217ac1fe6f88ff77dfed2",
+      "provenance.py": "dea9cad3cd2adf7f3e223749ead96669c66bd082a6ffe82ba15f4a994bab9749"
     },
     "input_hashes": {},
     "release_bundle": {
@@ -50,7 +48,7 @@
         "quintile": 1,
         "mean_energy_spend": 1059,
         "mean_net_income": 23517,
-        "energy_share_pct": 11.6,
+        "energy_share_pct": 11.4,
         "fp_rate_pct": 16.1
       },
       {
