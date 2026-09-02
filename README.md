@@ -1,6 +1,6 @@
 # Impact of the Middle East War on UK Living Standards
 
-Microsimulation-based analysis of how energy price rises from the ongoing Middle East conflict (active since late February 2026, with recurrent Strait of Hormuz disruption) affect UK households in 2027-28 — modelling impacts through energy bills, fuel costs, food inflation, and benefit uprating lag across ~32 million households using [policyengine.py](https://github.com/PolicyEngine/policyengine.py) 5.0.1.
+Microsimulation-based analysis of how energy price rises from the ongoing Middle East conflict (active since late February 2026, with recurrent Strait of Hormuz disruption) affect UK households in 2027-28 — modelling impacts through energy bills, fuel costs, food inflation, and benefit uprating lag across 29.6 million weighted households using [policyengine.py](https://github.com/PolicyEngine/policyengine.py) 5.0.1.
 
 **[Live Dashboard](https://uk-energy-shock-impact.vercel.app)**
 
@@ -49,7 +49,9 @@ src/iran_impact/        # Python microsimulation pipeline
   config.py             # Scenario parameters and constants
   pipeline.py           # Core engine (baseline, shocks, policy responses)
   cli.py                # CLI entry point
+  provenance.py         # Run provenance: revision, versions, bundle, hashes
 run_pipeline.py         # Runs pipeline, writes JSON output
+tests/                  # Unit tests (synthetic) and integration tests (managed data)
 dashboard/              # Next.js interactive dashboard
   src/components/       # React components (scenarios, policy, methodology tabs)
   src/lib/              # Data helpers, formatters, chart utils
@@ -59,21 +61,67 @@ dashboard/              # Next.js interactive dashboard
 ## Quick start
 
 ```bash
-# Install Python package
-pip install -e ".[uk]"
+# Install the Python package. The `uk` extra pulls policyengine[uk]==5.0.1,
+# which brings the UK country package the pipeline needs. Installing plain
+# `policyengine` is not enough — the managed-simulation import fails.
+pip install -e ".[uk,dev]"
 
-# Run analysis pipeline
-python run_pipeline.py
+# Authenticate for the managed microdata (see Data access below)
+export HF_TOKEN=...            # or: hf auth login
+
+# Run the analysis pipeline and refresh the dashboard's copy of the results
+iran-impact-build --sync-dashboard
 
 # Launch dashboard
-cd dashboard && npm install && npm run dev
+cd dashboard && bun install && bun run dev
 ```
+
+Run the unit tests with `pytest`. They use synthetic households and need no
+data access. The end-to-end checks in `tests/test_integration.py` require the
+managed dataset and skip themselves without it — run them locally before
+pushing any change to the calculation.
+
+## Data access
+
+The pipeline runs against policyengine.py's **managed** UK microsimulation, so
+the model version and data build are certified by the release bundle rather
+than chosen by this repository. The current bundle resolves to:
+
+| | |
+|---|---|
+| Bundle | `uk-5.0.1` |
+| Model | `policyengine-uk` 2.89.2 (certified by the bundle — do not pin separately) |
+| Dataset | `populace_uk_2023` |
+| Data build | `populace-uk-2023-dd68c73-4aa4b14-20260619T023711Z` |
+
+The microdata lives in the private Hugging Face dataset
+`policyengine/populace-uk-private`. Running the pipeline requires a Hugging
+Face token from an account with access to it, supplied either through
+`HF_TOKEN` in the environment or by `hf auth login`. Without it the
+`managed_microsimulation()` call fails when it tries to fetch the dataset.
+
+## Reproducibility
+
+Every generated results file carries a `provenance` block recording the git
+revision, the versions of every package that can move a number, the certified
+release bundle (model version, dataset, data build ID and artifact hash), and
+SHA-256 hashes of the source files that define the calculation.
+
+Two runs of the same revision against the same certified data build produce
+identical output apart from the run timestamp and git revision. CI compares the
+recorded source hashes against the working tree, so a change to `config.py` or
+`pipeline.py` that lands without a regenerated results file fails the build.
+Regenerate with `iran-impact-build --sync-dashboard`.
 
 ## Data sources
 
-- [policyengine.py](https://github.com/PolicyEngine/policyengine.py) 5.0.1 managed UK microsimulation (Enhanced FRS 2023–24)
+- [policyengine.py](https://github.com/PolicyEngine/policyengine.py) 5.0.1 managed UK microsimulation (`populace_uk_2023`; see Data access)
 - ONS Consumer Price Index weights
 - Ofgem energy price cap data
 - OBR fiscal forecasts
 
 Built with [PolicyEngine](https://policyengine.org).
+
+## License
+
+[AGPL-3.0](LICENSE), matching the PolicyEngine model packages this project builds on.

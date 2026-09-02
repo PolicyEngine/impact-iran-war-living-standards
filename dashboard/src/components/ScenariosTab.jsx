@@ -469,7 +469,8 @@ export default function ScenariosTab({ data }) {
     const central = scen("central_shock");
     const severe = scen("severe_shock");
     const nHH = data?.baseline?.n_households_m;
-    if (!low || !central || !severe || !nHH) return [];
+    const meanHHSize = data?.baseline?.mean_household_size;
+    if (!low || !central || !severe || !nHH || !meanHHSize) return [];
     return [
       {
         metric: "Extra energy bill per household per year",
@@ -487,7 +488,7 @@ export default function ScenariosTab({ data }) {
           { label: "NIESR: 200,000 additional UK households", url: "https://www.gbnews.com/money/iran-war-british-households-poverty-cost-of-living" },
         ],
         ours: `${formatCount(low.summary.n_pushed_into_poverty)} people (low) to ${formatCount(central.summary.n_pushed_into_poverty)} people (central)`,
-        note: "NIESR counts households; we count people, so our low scenario (~386k people ≈ ~170k households) is close to NIESR's estimate.",
+        note: `NIESR counts households; we count people, so our low scenario (${formatCount(low.summary.n_pushed_into_poverty)} people \u2248 ${formatCount(Math.round(low.summary.n_pushed_into_poverty / meanHHSize))} households) is close to NIESR's estimate.`,
       },
       {
         metric: "Conflict impact on CPI inflation",
