@@ -2,8 +2,8 @@
   "year": 2027,
   "current_energy_cap": 1663,
   "provenance": {
-    "generated_at": "2026-09-02T10:03:21+00:00",
-    "git_revision": "90351916cfa44b1e41eac0a247953028978633aa",
+    "generated_at": "2026-09-02T10:21:56+00:00",
+    "git_revision": "e32e074255390e30f647a8c26b466b0a358f850c",
     "git_dirty": false,
     "packages": {
       "policyengine": "5.0.1",
@@ -13,8 +13,8 @@
       "microdf-python": "1.3.0"
     },
     "source_hashes": {
-      "config.py": "b583762850ea84afb32c3214fce9745738854513a7ff3f11d838d0876b9c04c4",
-      "pipeline.py": "637bc70f1fa6bfeb91409ec861fb6ae88092d4b2867217ac1fe6f88ff77dfed2",
+      "config.py": "5793cd8bfd265464194fb756cc31d84bb188f9d883b63d6d3f8d61841f0633e8",
+      "pipeline.py": "ac77d32d30d4f30b46aa8c68dee65643b78f28a8bc02dbe16c60a689aa176e7d",
       "provenance.py": "dea9cad3cd2adf7f3e223749ead96669c66bd082a6ffe82ba15f4a994bab9749"
     },
     "release_bundle": {
@@ -3835,8 +3835,8 @@
       "source_url": "https://commonslibrary.parliament.uk/research-briefings/cbp-10403/",
       "source_date": "2026-01-01",
       "reference_period": "April 2027 uprating (normally set by September 2026 CPI)",
-      "derivation": "Expected fraction of the year an accelerated uprating would cover, for a shock arriving at a uniformly distributed point in it: 0.5. Applied uniformly rather than benefit by benefit",
-      "counterfactual": "The scheduled April uprating is set from the previous September's CPI, so it does not reflect a shock arriving after that and no offset reaches households during the stress-test year. The household's loss is the price rise itself, which the energy, fuel and food channels already measure in full. This amount is therefore NOT added to them \u2014 doing so counted the same price shock twice. It measures the compensation an immediate uprating would deliver, and is what the accelerated-uprating policy pays",
+      "derivation": "Expected value across a shock arriving at a uniformly distributed point in the year, given a maximum 12-month lag: 0.5. Applied uniformly rather than benefit by benefit",
+      "counterfactual": "Benefits are assumed NOT to be compensated for the shock until the following April. The channel-4 amount is the real-income loss under that assumption. It is added to the energy, fuel and food costs, which double-counts the same price shock unless the comparison is against immediate and full compensation \u2014 a known limitation, see METHOD_LIMITATIONS",
       "uncertainty_range": [
         0.0,
         1.0
@@ -3883,7 +3883,18 @@
     }
   },
   "metadata": {
-    "cap_basis": "Ofgem default tariff cap \u00a31,663/yr, Jul-Sep 2026, new TDCV basis (\u2248\u00a31,862 on the pre-July 2026 basis)",
+    "scenario_type": "annual stress test",
+    "method_limitations": [
+      "Scenario type: annual stress test, not a forecast. Every change is applied as a full-year 2027-28 amount, including where the cited source describes a 2026 disruption lasting a few months. No time path, quarterly or monthly profile, or shock duration is modelled.",
+      "Energy prices: the model multiplies each household's baseline gas and electricity expenditure by the scenario percentage. It does not model unit rates or standing charges, the gas/electricity split, region, payment method, quarterly cap periods, or fixed-tariff coverage \u2014 about 40% of accounts were on fixed tariffs for the July 2026 cap, and the cap does not set their prices. CURRENT_ENERGY_CAP is reported as context and does not enter the calculation.",
+      "Pass-through: the oil-to-wholesale-to-retail coefficients and lags implied by the scenario percentages are judgements anchored to the cited sources, not equations derived from them. See PARAMETER_REGISTRY for the derivation of each figure.",
+      "Benefit uprating: a single expected-lag factor is applied to a broad set of CPI-linked benefit income, rather than modelling each benefit's own uprating rule and April 2027 timing against the price path. Adding the resulting amount to the price shocks double-counts unless the counterfactual is immediate, full compensation.",
+      "Uncertainty: the ranges in PARAMETER_REGISTRY describe the spread of the price assumptions. They do not include the Living Costs and Food Survey's sampling uncertainty, which Table A6 does not publish."
+    ],
+    "cap_basis": "Reported for context only and NOT used in the calculation: Ofgem default tariff cap \u00a31,663/yr, Jul-Sep 2026, new TDCV basis (\u2248\u00a31,862 on the pre-July 2026 basis); the Oct-Dec 2026 cap is \u00a31,723. The energy channel multiplies each household's own baseline gas and electricity expenditure by the scenario percentage and never references a cap level, unit rate, standing charge, tariff type or cap period. About 40% of accounts were on fixed tariffs for the July 2026 cap, whose prices the cap does not set",
+    "october_2026_energy_cap": 1723,
+    "fixed_tariff_account_share": 0.4,
+    "timing_basis": "All changes are applied as full-year 2027-28 amounts. The cited scenarios describe 2026 disruptions, some lasting a few months; no time path or duration is modelled",
     "fuel_poverty_definition": "Indicative ratio: modelled domestic energy spend above 10% of household_net_income \u2014 not the official LILEE metric and not comparable with official fuel poverty statistics. Households with non-positive income and a positive energy bill count as fuel poor; see baseline.non_positive_income_households for how many rest on that rule",
     "poverty_definition": "Baseline: people below 60% of the person-weighted median of equiv_hbai_household_net_income (HBAI BHC relative poverty). Post-shock: people below that same baseline line once modelled energy, fuel, food and uprating-lag costs are netted off HBAI income \u2014 a consumption-adjusted resource measure against an anchored threshold, not official HBAI poverty. The line is not recalculated on the post-shock distribution",
     "income_variables": {
