@@ -2,8 +2,8 @@
   "year": 2027,
   "current_energy_cap": 1663,
   "provenance": {
-    "generated_at": "2026-09-02T10:03:21+00:00",
-    "git_revision": "90351916cfa44b1e41eac0a247953028978633aa",
+    "generated_at": "2026-09-02T10:11:15+00:00",
+    "git_revision": "b9073b7362fa0b9dd749b7f18d23c97b2ad40f72",
     "git_dirty": false,
     "packages": {
       "policyengine": "5.0.1",
@@ -13,11 +13,13 @@
       "microdf-python": "1.3.0"
     },
     "source_hashes": {
-      "config.py": "b583762850ea84afb32c3214fce9745738854513a7ff3f11d838d0876b9c04c4",
-      "pipeline.py": "637bc70f1fa6bfeb91409ec861fb6ae88092d4b2867217ac1fe6f88ff77dfed2",
+      "config.py": "d8b13b7bec16f119779ae57b66974387719de4cd0a7ff5d12567996300debb72",
+      "pipeline.py": "4e199c0a49bfd299b2d61ec13b8b1aaa6c8f67ac62102d7b365768d1561c8b42",
       "provenance.py": "dea9cad3cd2adf7f3e223749ead96669c66bd082a6ffe82ba15f4a994bab9749"
     },
-    "input_hashes": {},
+    "input_hashes": {
+      "src/iran_impact/inputs/ons_family_spending_a6_fye2024.csv": "263f7fd709978545ddf28c04fa211efc88d18e3096c5f213272add67fb1873e6"
+    },
     "release_bundle": {
       "bundle_id": "uk-5.0.1",
       "policyengine_version": "5.0.1",
@@ -41,6 +43,10 @@
     "total_energy_spend_bn": 39.4,
     "fuel_poverty_rate_pct": 6.4,
     "fuel_poor_households": 1896869,
+    "mean_transport_fuel_spend": 1031,
+    "mean_food_spend": 3668,
+    "vehicle_owning_share_pct": 77.3,
+    "households_with_no_transport_fuel_spend": 6702935,
     "non_positive_income_households": 188777,
     "poverty_rate_baseline_pct": 19.91,
     "by_quintile": [
@@ -90,66 +96,66 @@
         "food_increase_pct": 2.0
       },
       "summary": {
-        "mean_gross_impact": 578,
-        "mean_net_impact": 578,
-        "mean_net_impact_pct": 1.7,
-        "total_impact_bn": 17.1,
+        "mean_gross_impact": 495,
+        "mean_net_impact": 495,
+        "mean_net_impact_pct": 1.4,
+        "total_impact_bn": 14.7,
         "fp_rate_baseline_pct": 6.4,
         "fp_rate_shocked_pct": 7.5,
         "fp_extra_households": 323714,
         "poverty_rate_baseline_pct": 19.91,
-        "below_anchored_line_shocked_pct": 20.6,
-        "n_newly_below_anchored_line": 480317,
-        "n_pushed_into_poverty": 480317
+        "below_anchored_line_shocked_pct": 20.43,
+        "n_newly_below_anchored_line": 363587,
+        "n_pushed_into_poverty": 363587
       },
       "by_quintile": [
         {
           "quintile": 1,
-          "mean_impact": 426,
-          "mean_impact_pct": 4.1,
+          "mean_impact": 342,
+          "mean_impact_pct": 3.0,
           "energy": 159,
-          "fuel": 182,
-          "food": 65,
+          "fuel": 113,
+          "food": 50,
           "benefit_uprating_lag": 21,
           "fp_rate_pct": 18.3
         },
         {
           "quintile": 2,
-          "mean_impact": 526,
-          "mean_impact_pct": 1.5,
+          "mean_impact": 444,
+          "mean_impact_pct": 1.2,
           "energy": 185,
-          "fuel": 234,
-          "food": 80,
+          "fuel": 167,
+          "food": 64,
           "benefit_uprating_lag": 27,
           "fp_rate_pct": 6.5
         },
         {
           "quintile": 3,
-          "mean_impact": 571,
-          "mean_impact_pct": 1.3,
+          "mean_impact": 486,
+          "mean_impact_pct": 1.0,
           "energy": 191,
-          "fuel": 260,
-          "food": 100,
+          "fuel": 204,
+          "food": 72,
           "benefit_uprating_lag": 19,
           "fp_rate_pct": 4.9
         },
         {
           "quintile": 4,
-          "mean_impact": 661,
-          "mean_impact_pct": 1.1,
+          "mean_impact": 588,
+          "mean_impact_pct": 0.9,
           "energy": 232,
-          "fuel": 299,
-          "food": 120,
+          "fuel": 262,
+          "food": 83,
           "benefit_uprating_lag": 11,
           "fp_rate_pct": 5.2
         },
         {
           "quintile": 5,
-          "mean_impact": 706,
-          "mean_impact_pct": 0.7,
+          "mean_impact": 617,
+          "mean_impact_pct": 0.6,
           "energy": 232,
-          "fuel": 325,
-          "food": 145,
+          "fuel": 285,
+          "food": 97,
           "benefit_uprating_lag": 4,
           "fp_rate_pct": 2.2
         }
@@ -157,121 +163,121 @@
       "by_region": [
         {
           "region": "EAST_MIDLANDS",
-          "mean_impact": 606,
-          "mean_impact_pct": 1.6,
+          "mean_impact": 549,
+          "mean_impact_pct": 1.3,
           "energy": 234,
-          "fuel": 258,
-          "food": 101,
+          "fuel": 229,
+          "food": 73,
           "benefit_uprating_lag": 14,
           "fp_rate_pct": 8.9
         },
         {
           "region": "EAST_OF_ENGLAND",
-          "mean_impact": 564,
-          "mean_impact_pct": 1.8,
+          "mean_impact": 483,
+          "mean_impact_pct": 1.5,
           "energy": 201,
-          "fuel": 252,
-          "food": 98,
+          "fuel": 198,
+          "food": 71,
           "benefit_uprating_lag": 13,
           "fp_rate_pct": 6.5
         },
         {
           "region": "LONDON",
-          "mean_impact": 559,
-          "mean_impact_pct": 2.1,
+          "mean_impact": 417,
+          "mean_impact_pct": 1.2,
           "energy": 160,
-          "fuel": 271,
-          "food": 110,
+          "fuel": 163,
+          "food": 76,
           "benefit_uprating_lag": 17,
           "fp_rate_pct": 6.8
         },
         {
           "region": "NORTHERN_IRELAND",
-          "mean_impact": 544,
-          "mean_impact_pct": 1.2,
+          "mean_impact": 428,
+          "mean_impact_pct": 0.9,
           "energy": 179,
-          "fuel": 247,
-          "food": 94,
+          "fuel": 152,
+          "food": 72,
           "benefit_uprating_lag": 24,
           "fp_rate_pct": 5.7
         },
         {
           "region": "NORTH_EAST",
-          "mean_impact": 647,
-          "mean_impact_pct": 4.2,
+          "mean_impact": 584,
+          "mean_impact_pct": 3.7,
           "energy": 270,
-          "fuel": 257,
-          "food": 101,
+          "fuel": 223,
+          "food": 73,
           "benefit_uprating_lag": 18,
           "fp_rate_pct": 15.4
         },
         {
           "region": "NORTH_WEST",
-          "mean_impact": 572,
-          "mean_impact_pct": 1.9,
+          "mean_impact": 486,
+          "mean_impact_pct": 1.6,
           "energy": 204,
-          "fuel": 251,
-          "food": 96,
+          "fuel": 194,
+          "food": 68,
           "benefit_uprating_lag": 20,
           "fp_rate_pct": 10.2
         },
         {
           "region": "SCOTLAND",
-          "mean_impact": 614,
-          "mean_impact_pct": 1.4,
+          "mean_impact": 574,
+          "mean_impact_pct": 1.2,
           "energy": 244,
-          "fuel": 256,
-          "food": 99,
+          "fuel": 237,
+          "food": 78,
           "benefit_uprating_lag": 15,
           "fp_rate_pct": 8.7
         },
         {
           "region": "SOUTH_EAST",
-          "mean_impact": 549,
-          "mean_impact_pct": 1.3,
+          "mean_impact": 464,
+          "mean_impact_pct": 1.0,
           "energy": 159,
-          "fuel": 269,
-          "food": 108,
+          "fuel": 217,
+          "food": 76,
           "benefit_uprating_lag": 12,
           "fp_rate_pct": 3.2
         },
         {
           "region": "SOUTH_WEST",
-          "mean_impact": 566,
-          "mean_impact_pct": 1.5,
+          "mean_impact": 489,
+          "mean_impact_pct": 1.2,
           "energy": 180,
-          "fuel": 266,
-          "food": 106,
+          "fuel": 221,
+          "food": 74,
           "benefit_uprating_lag": 14,
           "fp_rate_pct": 5.3
         },
         {
           "region": "WALES",
-          "mean_impact": 639,
-          "mean_impact_pct": 1.5,
+          "mean_impact": 601,
+          "mean_impact_pct": 1.3,
           "energy": 257,
-          "fuel": 260,
-          "food": 101,
+          "fuel": 245,
+          "food": 78,
           "benefit_uprating_lag": 21,
           "fp_rate_pct": 9.0
         },
         {
           "region": "WEST_MIDLANDS",
-          "mean_impact": 593,
-          "mean_impact_pct": 1.5,
+          "mean_impact": 530,
+          "mean_impact_pct": 1.3,
           "energy": 220,
-          "fuel": 256,
-          "food": 100,
+          "fuel": 221,
+          "food": 72,
           "benefit_uprating_lag": 17,
           "fp_rate_pct": 8.0
         },
         {
           "region": "YORKSHIRE",
-          "mean_impact": 588,
-          "mean_impact_pct": 1.5,
+          "mean_impact": 510,
+          "mean_impact_pct": 1.2,
           "energy": 217,
-          "fuel": 256,
-          "food": 99,
+          "fuel": 206,
+          "food": 71,
           "benefit_uprating_lag": 16,
           "fp_rate_pct": 9.3
         }
@@ -279,51 +285,51 @@
       "by_tenure": [
         {
           "tenure": "OWNED_OUTRIGHT",
-          "mean_impact": 582,
-          "mean_impact_pct": 1.6,
+          "mean_impact": 505,
+          "mean_impact_pct": 1.3,
           "energy": 213,
-          "fuel": 260,
-          "food": 103,
+          "fuel": 215,
+          "food": 72,
           "benefit_uprating_lag": 6,
           "fp_rate_pct": 7.7
         },
         {
           "tenure": "OWNED_WITH_MORTGAGE",
-          "mean_impact": 606,
-          "mean_impact_pct": 1.1,
+          "mean_impact": 558,
+          "mean_impact_pct": 0.9,
           "energy": 206,
-          "fuel": 279,
-          "food": 113,
+          "fuel": 259,
+          "food": 84,
           "benefit_uprating_lag": 9,
           "fp_rate_pct": 4.5
         },
         {
           "tenure": "RENT_FROM_COUNCIL",
-          "mean_impact": 532,
-          "mean_impact_pct": 2.1,
+          "mean_impact": 412,
+          "mean_impact_pct": 1.6,
           "energy": 174,
-          "fuel": 228,
-          "food": 83,
+          "fuel": 131,
+          "food": 60,
           "benefit_uprating_lag": 47,
           "fp_rate_pct": 10.1
         },
         {
           "tenure": "RENT_FROM_HA",
-          "mean_impact": 524,
-          "mean_impact_pct": 3.3,
+          "mean_impact": 406,
+          "mean_impact_pct": 2.6,
           "energy": 164,
-          "fuel": 228,
-          "food": 84,
+          "fuel": 134,
+          "food": 59,
           "benefit_uprating_lag": 49,
           "fp_rate_pct": 9.5
         },
         {
           "tenure": "RENT_PRIVATELY",
-          "mean_impact": 571,
-          "mean_impact_pct": 2.0,
+          "mean_impact": 455,
+          "mean_impact_pct": 1.3,
           "energy": 193,
-          "fuel": 258,
-          "food": 102,
+          "fuel": 171,
+          "food": 72,
           "benefit_uprating_lag": 19,
           "fp_rate_pct": 9.9
         }
@@ -331,41 +337,41 @@
       "by_country": [
         {
           "country": "ENGLAND",
-          "mean_impact": 574,
-          "mean_impact_pct": 1.8,
+          "mean_impact": 488,
+          "mean_impact_pct": 1.4,
           "energy": 195,
-          "fuel": 261,
-          "food": 103,
+          "fuel": 204,
+          "food": 73,
           "benefit_uprating_lag": 16,
           "fp_rate_pct": 7.4
         },
         {
           "country": "NORTHERN_IRELAND",
-          "mean_impact": 544,
-          "mean_impact_pct": 1.2,
+          "mean_impact": 428,
+          "mean_impact_pct": 0.9,
           "energy": 179,
-          "fuel": 247,
-          "food": 94,
+          "fuel": 152,
+          "food": 72,
           "benefit_uprating_lag": 24,
           "fp_rate_pct": 5.7
         },
         {
           "country": "SCOTLAND",
-          "mean_impact": 614,
-          "mean_impact_pct": 1.4,
+          "mean_impact": 574,
+          "mean_impact_pct": 1.2,
           "energy": 244,
-          "fuel": 256,
-          "food": 99,
+          "fuel": 237,
+          "food": 78,
           "benefit_uprating_lag": 15,
           "fp_rate_pct": 8.7
         },
         {
           "country": "WALES",
-          "mean_impact": 639,
-          "mean_impact_pct": 1.5,
+          "mean_impact": 601,
+          "mean_impact_pct": 1.3,
           "energy": 257,
-          "fuel": 260,
-          "food": 101,
+          "fuel": 245,
+          "food": 78,
           "benefit_uprating_lag": 21,
           "fp_rate_pct": 9.0
         }
@@ -373,61 +379,61 @@
       "by_hh_type": [
         {
           "hh_type": "COUPLE_NO_CHILDREN",
-          "mean_impact": 637,
-          "mean_impact_pct": 1.2,
+          "mean_impact": 570,
+          "mean_impact_pct": 1.1,
           "energy": 227,
-          "fuel": 286,
-          "food": 118,
+          "fuel": 255,
+          "food": 82,
           "benefit_uprating_lag": 6,
           "fp_rate_pct": 8.0
         },
         {
           "hh_type": "COUPLE_PENSIONER",
-          "mean_impact": 610,
-          "mean_impact_pct": 1.2,
+          "mean_impact": 544,
+          "mean_impact_pct": 1.0,
           "energy": 232,
-          "fuel": 266,
-          "food": 105,
+          "fuel": 229,
+          "food": 75,
           "benefit_uprating_lag": 8,
           "fp_rate_pct": 5.9
         },
         {
           "hh_type": "COUPLE_WITH_CHILDREN",
-          "mean_impact": 591,
-          "mean_impact_pct": 1.0,
+          "mean_impact": 556,
+          "mean_impact_pct": 0.9,
           "energy": 205,
-          "fuel": 261,
-          "food": 103,
+          "fuel": 246,
+          "food": 83,
           "benefit_uprating_lag": 22,
           "fp_rate_pct": 4.8
         },
         {
           "hh_type": "LONE_PARENT",
-          "mean_impact": 536,
-          "mean_impact_pct": 2.0,
+          "mean_impact": 429,
+          "mean_impact_pct": 1.6,
           "energy": 169,
-          "fuel": 225,
-          "food": 82,
+          "fuel": 139,
+          "food": 61,
           "benefit_uprating_lag": 60,
           "fp_rate_pct": 11.0
         },
         {
           "hh_type": "SINGLE_PENSIONER",
-          "mean_impact": 509,
-          "mean_impact_pct": 2.2,
+          "mean_impact": 352,
+          "mean_impact_pct": 1.6,
           "energy": 163,
-          "fuel": 241,
-          "food": 92,
+          "fuel": 119,
+          "food": 56,
           "benefit_uprating_lag": 13,
           "fp_rate_pct": 9.3
         },
         {
           "hh_type": "SINGLE_WORKING_AGE",
-          "mean_impact": 518,
-          "mean_impact_pct": 3.8,
+          "mean_impact": 358,
+          "mean_impact_pct": 2.6,
           "energy": 145,
-          "fuel": 255,
-          "food": 101,
+          "fuel": 134,
+          "food": 62,
           "benefit_uprating_lag": 18,
           "fp_rate_pct": 11.8
         }
@@ -461,10 +467,10 @@
       ],
       "channel_decomposition": {
         "energy_shock": 200,
-        "fuel_shock": 260,
-        "food_shock": 102,
+        "fuel_shock": 206,
+        "food_shock": 73,
         "benefit_uprating_lag": 16,
-        "net_impact": 578
+        "net_impact": 495
       }
     },
     "central_shock": {
@@ -475,66 +481,66 @@
         "food_increase_pct": 4.0
       },
       "summary": {
-        "mean_gross_impact": 1429,
-        "mean_net_impact": 1429,
-        "mean_net_impact_pct": 4.4,
-        "total_impact_bn": 42.3,
+        "mean_gross_impact": 1250,
+        "mean_net_impact": 1250,
+        "mean_net_impact_pct": 3.5,
+        "total_impact_bn": 37.0,
         "fp_rate_baseline_pct": 6.4,
         "fp_rate_shocked_pct": 11.0,
         "fp_extra_households": 1346860,
         "poverty_rate_baseline_pct": 19.91,
-        "below_anchored_line_shocked_pct": 21.68,
-        "n_newly_below_anchored_line": 1243917,
-        "n_pushed_into_poverty": 1243917
+        "below_anchored_line_shocked_pct": 21.47,
+        "n_newly_below_anchored_line": 1089992,
+        "n_pushed_into_poverty": 1089992
       },
       "by_quintile": [
         {
           "quintile": 1,
-          "mean_impact": 1067,
-          "mean_impact_pct": 10.3,
+          "mean_impact": 882,
+          "mean_impact_pct": 7.9,
           "energy": 476,
-          "fuel": 409,
-          "food": 130,
+          "fuel": 254,
+          "food": 100,
           "benefit_uprating_lag": 52,
           "fp_rate_pct": 25.6
         },
         {
           "quintile": 2,
-          "mean_impact": 1310,
-          "mean_impact_pct": 3.7,
+          "mean_impact": 1128,
+          "mean_impact_pct": 3.0,
           "energy": 555,
-          "fuel": 526,
-          "food": 160,
+          "fuel": 376,
+          "food": 129,
           "benefit_uprating_lag": 68,
           "fp_rate_pct": 10.4
         },
         {
           "quintile": 3,
-          "mean_impact": 1407,
-          "mean_impact_pct": 3.1,
+          "mean_impact": 1225,
+          "mean_impact_pct": 2.6,
           "energy": 574,
-          "fuel": 585,
-          "food": 200,
+          "fuel": 459,
+          "food": 144,
           "benefit_uprating_lag": 48,
           "fp_rate_pct": 7.5
         },
         {
           "quintile": 4,
-          "mean_impact": 1634,
-          "mean_impact_pct": 2.6,
+          "mean_impact": 1478,
+          "mean_impact_pct": 2.3,
           "energy": 695,
-          "fuel": 673,
-          "food": 240,
+          "fuel": 590,
+          "food": 167,
           "benefit_uprating_lag": 26,
           "fp_rate_pct": 7.1
         },
         {
           "quintile": 5,
-          "mean_impact": 1727,
-          "mean_impact_pct": 1.8,
+          "mean_impact": 1539,
+          "mean_impact_pct": 1.5,
           "energy": 696,
-          "fuel": 731,
-          "food": 290,
+          "fuel": 640,
+          "food": 193,
           "benefit_uprating_lag": 10,
           "fp_rate_pct": 3.7
         }
@@ -542,121 +548,121 @@
       "by_region": [
         {
           "region": "EAST_MIDLANDS",
-          "mean_impact": 1518,
-          "mean_impact_pct": 4.1,
+          "mean_impact": 1396,
+          "mean_impact_pct": 3.4,
           "energy": 701,
-          "fuel": 581,
-          "food": 202,
+          "fuel": 514,
+          "food": 146,
           "benefit_uprating_lag": 34,
           "fp_rate_pct": 13.0
         },
         {
           "region": "EAST_OF_ENGLAND",
-          "mean_impact": 1399,
-          "mean_impact_pct": 4.6,
+          "mean_impact": 1224,
+          "mean_impact_pct": 3.8,
           "energy": 602,
-          "fuel": 567,
-          "food": 196,
+          "fuel": 447,
+          "food": 142,
           "benefit_uprating_lag": 33,
           "fp_rate_pct": 9.4
         },
         {
           "region": "LONDON",
-          "mean_impact": 1355,
-          "mean_impact_pct": 5.1,
+          "mean_impact": 1043,
+          "mean_impact_pct": 3.2,
           "energy": 481,
-          "fuel": 610,
-          "food": 220,
+          "fuel": 366,
+          "food": 153,
           "benefit_uprating_lag": 43,
           "fp_rate_pct": 9.1
         },
         {
           "region": "NORTHERN_IRELAND",
-          "mean_impact": 1341,
-          "mean_impact_pct": 3.0,
+          "mean_impact": 1085,
+          "mean_impact_pct": 2.4,
           "energy": 538,
-          "fuel": 555,
-          "food": 187,
+          "fuel": 342,
+          "food": 145,
           "benefit_uprating_lag": 60,
           "fp_rate_pct": 8.7
         },
         {
           "region": "NORTH_EAST",
-          "mean_impact": 1637,
-          "mean_impact_pct": 11.2,
+          "mean_impact": 1502,
+          "mean_impact_pct": 10.1,
           "energy": 811,
-          "fuel": 578,
-          "food": 202,
+          "fuel": 501,
+          "food": 146,
           "benefit_uprating_lag": 45,
           "fp_rate_pct": 17.8
         },
         {
           "region": "NORTH_WEST",
-          "mean_impact": 1420,
-          "mean_impact_pct": 4.9,
+          "mean_impact": 1235,
+          "mean_impact_pct": 4.1,
           "energy": 613,
-          "fuel": 564,
-          "food": 193,
+          "fuel": 435,
+          "food": 136,
           "benefit_uprating_lag": 51,
           "fp_rate_pct": 14.5
         },
         {
           "region": "SCOTLAND",
-          "mean_impact": 1545,
-          "mean_impact_pct": 3.5,
+          "mean_impact": 1460,
+          "mean_impact_pct": 3.1,
           "energy": 733,
-          "fuel": 576,
-          "food": 197,
+          "fuel": 533,
+          "food": 155,
           "benefit_uprating_lag": 39,
           "fp_rate_pct": 12.8
         },
         {
           "region": "SOUTH_EAST",
-          "mean_impact": 1330,
-          "mean_impact_pct": 3.2,
+          "mean_impact": 1148,
+          "mean_impact_pct": 2.6,
           "energy": 478,
-          "fuel": 605,
-          "food": 216,
+          "fuel": 487,
+          "food": 151,
           "benefit_uprating_lag": 31,
           "fp_rate_pct": 6.5
         },
         {
           "region": "SOUTH_WEST",
-          "mean_impact": 1385,
-          "mean_impact_pct": 3.7,
+          "mean_impact": 1221,
+          "mean_impact_pct": 3.1,
           "energy": 540,
-          "fuel": 599,
-          "food": 211,
+          "fuel": 498,
+          "food": 148,
           "benefit_uprating_lag": 35,
           "fp_rate_pct": 7.4
         },
         {
           "region": "WALES",
-          "mean_impact": 1612,
-          "mean_impact_pct": 3.7,
+          "mean_impact": 1531,
+          "mean_impact_pct": 3.3,
           "energy": 771,
-          "fuel": 585,
-          "food": 203,
+          "fuel": 551,
+          "food": 156,
           "benefit_uprating_lag": 53,
           "fp_rate_pct": 11.3
         },
         {
           "region": "WEST_MIDLANDS",
-          "mean_impact": 1477,
-          "mean_impact_pct": 3.8,
+          "mean_impact": 1344,
+          "mean_impact_pct": 3.3,
           "energy": 659,
-          "fuel": 576,
-          "food": 199,
+          "fuel": 497,
+          "food": 145,
           "benefit_uprating_lag": 44,
           "fp_rate_pct": 12.8
         },
         {
           "region": "YORKSHIRE",
-          "mean_impact": 1464,
-          "mean_impact_pct": 3.8,
+          "mean_impact": 1296,
+          "mean_impact_pct": 3.1,
           "energy": 650,
-          "fuel": 576,
-          "food": 198,
+          "fuel": 464,
+          "food": 142,
           "benefit_uprating_lag": 39,
           "fp_rate_pct": 14.8
         }
@@ -664,51 +670,51 @@
       "by_tenure": [
         {
           "tenure": "OWNED_OUTRIGHT",
-          "mean_impact": 1444,
-          "mean_impact_pct": 4.1,
+          "mean_impact": 1280,
+          "mean_impact_pct": 3.4,
           "energy": 638,
-          "fuel": 586,
-          "food": 205,
+          "fuel": 483,
+          "food": 144,
           "benefit_uprating_lag": 15,
           "fp_rate_pct": 12.2
         },
         {
           "tenure": "OWNED_WITH_MORTGAGE",
-          "mean_impact": 1492,
-          "mean_impact_pct": 2.7,
+          "mean_impact": 1391,
+          "mean_impact_pct": 2.4,
           "energy": 618,
-          "fuel": 627,
-          "food": 225,
+          "fuel": 584,
+          "food": 167,
           "benefit_uprating_lag": 22,
           "fp_rate_pct": 7.2
         },
         {
           "tenure": "RENT_FROM_COUNCIL",
-          "mean_impact": 1318,
-          "mean_impact_pct": 5.4,
+          "mean_impact": 1054,
+          "mean_impact_pct": 4.3,
           "energy": 522,
-          "fuel": 512,
-          "food": 167,
+          "fuel": 296,
+          "food": 119,
           "benefit_uprating_lag": 117,
           "fp_rate_pct": 14.2
         },
         {
           "tenure": "RENT_FROM_HA",
-          "mean_impact": 1294,
-          "mean_impact_pct": 8.5,
+          "mean_impact": 1034,
+          "mean_impact_pct": 7.1,
           "energy": 493,
-          "fuel": 512,
-          "food": 167,
+          "fuel": 302,
+          "food": 118,
           "benefit_uprating_lag": 121,
           "fp_rate_pct": 14.0
         },
         {
           "tenure": "RENT_PRIVATELY",
-          "mean_impact": 1409,
-          "mean_impact_pct": 5.0,
+          "mean_impact": 1154,
+          "mean_impact_pct": 3.4,
           "energy": 578,
-          "fuel": 580,
-          "food": 203,
+          "fuel": 385,
+          "food": 144,
           "benefit_uprating_lag": 47,
           "fp_rate_pct": 11.9
         }
@@ -716,41 +722,41 @@
       "by_country": [
         {
           "country": "ENGLAND",
-          "mean_impact": 1416,
-          "mean_impact_pct": 4.5,
+          "mean_impact": 1229,
+          "mean_impact_pct": 3.6,
           "energy": 585,
-          "fuel": 586,
-          "food": 206,
+          "fuel": 459,
+          "food": 146,
           "benefit_uprating_lag": 39,
           "fp_rate_pct": 10.9
         },
         {
           "country": "NORTHERN_IRELAND",
-          "mean_impact": 1341,
-          "mean_impact_pct": 3.0,
+          "mean_impact": 1085,
+          "mean_impact_pct": 2.4,
           "energy": 538,
-          "fuel": 555,
-          "food": 187,
+          "fuel": 342,
+          "food": 145,
           "benefit_uprating_lag": 60,
           "fp_rate_pct": 8.7
         },
         {
           "country": "SCOTLAND",
-          "mean_impact": 1545,
-          "mean_impact_pct": 3.5,
+          "mean_impact": 1460,
+          "mean_impact_pct": 3.1,
           "energy": 733,
-          "fuel": 576,
-          "food": 197,
+          "fuel": 533,
+          "food": 155,
           "benefit_uprating_lag": 39,
           "fp_rate_pct": 12.8
         },
         {
           "country": "WALES",
-          "mean_impact": 1612,
-          "mean_impact_pct": 3.7,
+          "mean_impact": 1531,
+          "mean_impact_pct": 3.3,
           "energy": 771,
-          "fuel": 585,
-          "food": 203,
+          "fuel": 551,
+          "food": 156,
           "benefit_uprating_lag": 53,
           "fp_rate_pct": 11.3
         }
@@ -758,61 +764,61 @@
       "by_hh_type": [
         {
           "hh_type": "COUPLE_NO_CHILDREN",
-          "mean_impact": 1575,
-          "mean_impact_pct": 3.0,
+          "mean_impact": 1433,
+          "mean_impact_pct": 2.7,
           "energy": 680,
-          "fuel": 644,
-          "food": 236,
+          "fuel": 574,
+          "food": 164,
           "benefit_uprating_lag": 15,
           "fp_rate_pct": 9.8
         },
         {
           "hh_type": "COUPLE_PENSIONER",
-          "mean_impact": 1523,
-          "mean_impact_pct": 3.0,
+          "mean_impact": 1382,
+          "mean_impact_pct": 2.7,
           "energy": 697,
-          "fuel": 598,
-          "food": 209,
+          "fuel": 516,
+          "food": 150,
           "benefit_uprating_lag": 19,
           "fp_rate_pct": 10.0
         },
         {
           "hh_type": "COUPLE_WITH_CHILDREN",
-          "mean_impact": 1464,
-          "mean_impact_pct": 2.5,
+          "mean_impact": 1390,
+          "mean_impact_pct": 2.4,
           "energy": 615,
-          "fuel": 588,
-          "food": 205,
+          "fuel": 554,
+          "food": 165,
           "benefit_uprating_lag": 56,
           "fp_rate_pct": 7.7
         },
         {
           "hh_type": "LONE_PARENT",
-          "mean_impact": 1327,
-          "mean_impact_pct": 4.9,
+          "mean_impact": 1092,
+          "mean_impact_pct": 4.0,
           "energy": 508,
-          "fuel": 505,
-          "food": 165,
+          "fuel": 314,
+          "food": 121,
           "benefit_uprating_lag": 149,
           "fp_rate_pct": 13.7
         },
         {
           "hh_type": "SINGLE_PENSIONER",
-          "mean_impact": 1248,
-          "mean_impact_pct": 5.5,
+          "mean_impact": 903,
+          "mean_impact_pct": 4.1,
           "energy": 490,
-          "fuel": 542,
-          "food": 183,
+          "fuel": 269,
+          "food": 112,
           "benefit_uprating_lag": 32,
           "fp_rate_pct": 13.1
         },
         {
           "hh_type": "SINGLE_WORKING_AGE",
-          "mean_impact": 1254,
-          "mean_impact_pct": 9.6,
+          "mean_impact": 904,
+          "mean_impact_pct": 6.7,
           "energy": 435,
-          "fuel": 574,
-          "food": 201,
+          "fuel": 301,
+          "food": 124,
           "benefit_uprating_lag": 44,
           "fp_rate_pct": 17.4
         }
@@ -846,10 +852,10 @@
       ],
       "channel_decomposition": {
         "energy_shock": 599,
-        "fuel_shock": 585,
-        "food_shock": 205,
+        "fuel_shock": 464,
+        "food_shock": 147,
         "benefit_uprating_lag": 40,
-        "net_impact": 1429
+        "net_impact": 1250
       }
     },
     "severe_shock": {
@@ -860,66 +866,66 @@
         "food_increase_pct": 6.5
       },
       "summary": {
-        "mean_gross_impact": 2643,
-        "mean_net_impact": 2643,
-        "mean_net_impact_pct": 8.1,
-        "total_impact_bn": 78.2,
+        "mean_gross_impact": 2334,
+        "mean_net_impact": 2334,
+        "mean_net_impact_pct": 6.6,
+        "total_impact_bn": 69.0,
         "fp_rate_baseline_pct": 6.4,
         "fp_rate_shocked_pct": 16.0,
         "fp_extra_households": 2823879,
         "poverty_rate_baseline_pct": 19.91,
-        "below_anchored_line_shocked_pct": 23.45,
-        "n_newly_below_anchored_line": 2485429,
-        "n_pushed_into_poverty": 2485429
+        "below_anchored_line_shocked_pct": 22.88,
+        "n_newly_below_anchored_line": 2083913,
+        "n_pushed_into_poverty": 2083913
       },
       "by_quintile": [
         {
           "quintile": 1,
-          "mean_impact": 1985,
-          "mean_impact_pct": 19.3,
+          "mean_impact": 1660,
+          "mean_impact_pct": 15.1,
           "energy": 953,
-          "fuel": 728,
-          "food": 211,
+          "fuel": 452,
+          "food": 162,
           "benefit_uprating_lag": 93,
           "fp_rate_pct": 35.7
         },
         {
           "quintile": 2,
-          "mean_impact": 2429,
-          "mean_impact_pct": 6.9,
+          "mean_impact": 2111,
+          "mean_impact_pct": 5.6,
           "energy": 1110,
-          "fuel": 936,
-          "food": 260,
+          "fuel": 668,
+          "food": 209,
           "benefit_uprating_lag": 123,
           "fp_rate_pct": 15.6
         },
         {
           "quintile": 3,
-          "mean_impact": 2600,
-          "mean_impact_pct": 5.8,
+          "mean_impact": 2284,
+          "mean_impact_pct": 4.9,
           "energy": 1149,
-          "fuel": 1040,
-          "food": 325,
+          "fuel": 816,
+          "food": 234,
           "benefit_uprating_lag": 86,
           "fp_rate_pct": 11.2
         },
         {
           "quintile": 4,
-          "mean_impact": 3024,
-          "mean_impact_pct": 4.9,
+          "mean_impact": 2757,
+          "mean_impact_pct": 4.3,
           "energy": 1390,
-          "fuel": 1196,
-          "food": 390,
+          "fuel": 1049,
+          "food": 271,
           "benefit_uprating_lag": 48,
           "fp_rate_pct": 10.8
         },
         {
           "quintile": 5,
-          "mean_impact": 3181,
-          "mean_impact_pct": 3.3,
+          "mean_impact": 2862,
+          "mean_impact_pct": 2.9,
           "energy": 1392,
-          "fuel": 1300,
-          "food": 471,
+          "fuel": 1138,
+          "food": 314,
           "benefit_uprating_lag": 17,
           "fp_rate_pct": 5.9
         }
@@ -927,121 +933,121 @@
       "by_region": [
         {
           "region": "EAST_MIDLANDS",
-          "mean_impact": 2824,
-          "mean_impact_pct": 7.5,
+          "mean_impact": 2615,
+          "mean_impact_pct": 6.3,
           "energy": 1402,
-          "fuel": 1032,
-          "food": 328,
+          "fuel": 914,
+          "food": 237,
           "benefit_uprating_lag": 61,
           "fp_rate_pct": 17.3
         },
         {
           "region": "EAST_OF_ENGLAND",
-          "mean_impact": 2591,
-          "mean_impact_pct": 8.6,
+          "mean_impact": 2288,
+          "mean_impact_pct": 7.3,
           "energy": 1205,
-          "fuel": 1009,
-          "food": 318,
+          "fuel": 794,
+          "food": 230,
           "benefit_uprating_lag": 59,
           "fp_rate_pct": 15.9
         },
         {
           "region": "LONDON",
-          "mean_impact": 2483,
-          "mean_impact_pct": 9.4,
+          "mean_impact": 1939,
+          "mean_impact_pct": 6.0,
           "energy": 962,
-          "fuel": 1085,
-          "food": 358,
+          "fuel": 651,
+          "food": 248,
           "benefit_uprating_lag": 78,
           "fp_rate_pct": 14.8
         },
         {
           "region": "NORTHERN_IRELAND",
-          "mean_impact": 2476,
-          "mean_impact_pct": 5.7,
+          "mean_impact": 2027,
+          "mean_impact_pct": 4.5,
           "energy": 1076,
-          "fuel": 987,
-          "food": 305,
+          "fuel": 609,
+          "food": 235,
           "benefit_uprating_lag": 108,
           "fp_rate_pct": 14.0
         },
         {
           "region": "NORTH_EAST",
-          "mean_impact": 3060,
-          "mean_impact_pct": 21.5,
+          "mean_impact": 2830,
+          "mean_impact_pct": 19.6,
           "energy": 1622,
-          "fuel": 1028,
-          "food": 329,
+          "fuel": 891,
+          "food": 236,
           "benefit_uprating_lag": 81,
           "fp_rate_pct": 21.9
         },
         {
           "region": "NORTH_WEST",
-          "mean_impact": 2633,
-          "mean_impact_pct": 9.2,
+          "mean_impact": 2312,
+          "mean_impact_pct": 7.7,
           "energy": 1226,
-          "fuel": 1002,
-          "food": 313,
+          "fuel": 774,
+          "food": 221,
           "benefit_uprating_lag": 91,
           "fp_rate_pct": 19.8
         },
         {
           "region": "SCOTLAND",
-          "mean_impact": 2879,
-          "mean_impact_pct": 6.5,
+          "mean_impact": 2735,
+          "mean_impact_pct": 5.8,
           "energy": 1466,
-          "fuel": 1023,
-          "food": 321,
+          "fuel": 948,
+          "food": 253,
           "benefit_uprating_lag": 69,
           "fp_rate_pct": 16.4
         },
         {
           "region": "SOUTH_EAST",
-          "mean_impact": 2439,
-          "mean_impact_pct": 5.9,
+          "mean_impact": 2125,
+          "mean_impact_pct": 4.8,
           "energy": 957,
-          "fuel": 1075,
-          "food": 351,
+          "fuel": 867,
+          "food": 246,
           "benefit_uprating_lag": 56,
           "fp_rate_pct": 11.2
         },
         {
           "region": "SOUTH_WEST",
-          "mean_impact": 2551,
-          "mean_impact_pct": 6.8,
+          "mean_impact": 2269,
+          "mean_impact_pct": 5.7,
           "energy": 1080,
-          "fuel": 1064,
-          "food": 343,
+          "fuel": 885,
+          "food": 241,
           "benefit_uprating_lag": 64,
           "fp_rate_pct": 12.6
         },
         {
           "region": "WALES",
-          "mean_impact": 3006,
-          "mean_impact_pct": 6.8,
+          "mean_impact": 2871,
+          "mean_impact_pct": 6.1,
           "energy": 1541,
-          "fuel": 1040,
-          "food": 329,
+          "fuel": 980,
+          "food": 254,
           "benefit_uprating_lag": 96,
           "fp_rate_pct": 15.4
         },
         {
           "region": "WEST_MIDLANDS",
-          "mean_impact": 2743,
-          "mean_impact_pct": 7.2,
+          "mean_impact": 2514,
+          "mean_impact_pct": 6.2,
           "energy": 1317,
-          "fuel": 1024,
-          "food": 324,
+          "fuel": 883,
+          "food": 235,
           "benefit_uprating_lag": 78,
           "fp_rate_pct": 17.4
         },
         {
           "region": "YORKSHIRE",
-          "mean_impact": 2717,
-          "mean_impact_pct": 7.1,
+          "mean_impact": 2427,
+          "mean_impact_pct": 5.9,
           "energy": 1301,
-          "fuel": 1024,
-          "food": 323,
+          "fuel": 825,
+          "food": 231,
           "benefit_uprating_lag": 70,
           "fp_rate_pct": 19.6
         }
@@ -1049,51 +1055,51 @@
       "by_tenure": [
         {
           "tenure": "OWNED_OUTRIGHT",
-          "mean_impact": 2678,
-          "mean_impact_pct": 7.7,
+          "mean_impact": 2395,
+          "mean_impact_pct": 6.5,
           "energy": 1276,
-          "fuel": 1042,
-          "food": 334,
+          "fuel": 858,
+          "food": 234,
           "benefit_uprating_lag": 27,
           "fp_rate_pct": 18.9
         },
         {
           "tenure": "OWNED_WITH_MORTGAGE",
-          "mean_impact": 2757,
-          "mean_impact_pct": 4.9,
+          "mean_impact": 2585,
+          "mean_impact_pct": 4.4,
           "energy": 1237,
-          "fuel": 1114,
-          "food": 366,
+          "fuel": 1038,
+          "food": 271,
           "benefit_uprating_lag": 39,
           "fp_rate_pct": 10.4
         },
         {
           "tenure": "RENT_FROM_COUNCIL",
-          "mean_impact": 2436,
-          "mean_impact_pct": 10.1,
+          "mean_impact": 1974,
+          "mean_impact_pct": 8.1,
           "energy": 1044,
-          "fuel": 910,
-          "food": 271,
+          "fuel": 525,
+          "food": 194,
           "benefit_uprating_lag": 211,
           "fp_rate_pct": 21.4
         },
         {
           "tenure": "RENT_FROM_HA",
-          "mean_impact": 2387,
-          "mean_impact_pct": 16.0,
+          "mean_impact": 1933,
+          "mean_impact_pct": 13.6,
           "energy": 986,
-          "fuel": 910,
-          "food": 272,
+          "fuel": 537,
+          "food": 191,
           "benefit_uprating_lag": 219,
           "fp_rate_pct": 19.5
         },
         {
           "tenure": "RENT_PRIVATELY",
-          "mean_impact": 2603,
-          "mean_impact_pct": 9.2,
+          "mean_impact": 2159,
+          "mean_impact_pct": 6.5,
           "energy": 1157,
-          "fuel": 1031,
-          "food": 330,
+          "fuel": 684,
+          "food": 234,
           "benefit_uprating_lag": 84,
           "fp_rate_pct": 15.7
         }
@@ -1101,41 +1107,41 @@
       "by_country": [
         {
           "country": "ENGLAND",
-          "mean_impact": 2617,
-          "mean_impact_pct": 8.3,
+          "mean_impact": 2293,
+          "mean_impact_pct": 6.8,
           "energy": 1170,
-          "fuel": 1043,
-          "food": 334,
+          "fuel": 816,
+          "food": 237,
           "benefit_uprating_lag": 71,
           "fp_rate_pct": 16.0
         },
         {
           "country": "NORTHERN_IRELAND",
-          "mean_impact": 2476,
-          "mean_impact_pct": 5.7,
+          "mean_impact": 2027,
+          "mean_impact_pct": 4.5,
           "energy": 1076,
-          "fuel": 987,
-          "food": 305,
+          "fuel": 609,
+          "food": 235,
           "benefit_uprating_lag": 108,
           "fp_rate_pct": 14.0
         },
         {
           "country": "SCOTLAND",
-          "mean_impact": 2879,
-          "mean_impact_pct": 6.5,
+          "mean_impact": 2735,
+          "mean_impact_pct": 5.8,
           "energy": 1466,
-          "fuel": 1023,
-          "food": 321,
+          "fuel": 948,
+          "food": 253,
           "benefit_uprating_lag": 69,
           "fp_rate_pct": 16.4
         },
         {
           "country": "WALES",
-          "mean_impact": 3006,
-          "mean_impact_pct": 6.8,
+          "mean_impact": 2871,
+          "mean_impact_pct": 6.1,
           "energy": 1541,
-          "fuel": 1040,
-          "food": 329,
+          "fuel": 980,
+          "food": 254,
           "benefit_uprating_lag": 96,
           "fp_rate_pct": 15.4
         }
@@ -1143,61 +1149,61 @@
       "by_hh_type": [
         {
           "hh_type": "COUPLE_NO_CHILDREN",
-          "mean_impact": 2915,
-          "mean_impact_pct": 5.6,
+          "mean_impact": 2674,
+          "mean_impact_pct": 5.0,
           "energy": 1360,
-          "fuel": 1144,
-          "food": 384,
+          "fuel": 1021,
+          "food": 266,
           "benefit_uprating_lag": 26,
           "fp_rate_pct": 12.5
         },
         {
           "hh_type": "COUPLE_PENSIONER",
-          "mean_impact": 2831,
-          "mean_impact_pct": 5.5,
+          "mean_impact": 2589,
+          "mean_impact_pct": 5.0,
           "energy": 1393,
-          "fuel": 1063,
-          "food": 340,
+          "fuel": 917,
+          "food": 244,
           "benefit_uprating_lag": 34,
           "fp_rate_pct": 15.0
         },
         {
           "hh_type": "COUPLE_WITH_CHILDREN",
-          "mean_impact": 2709,
-          "mean_impact_pct": 4.7,
+          "mean_impact": 2583,
+          "mean_impact_pct": 4.4,
           "energy": 1230,
-          "fuel": 1045,
-          "food": 334,
+          "fuel": 984,
+          "food": 269,
           "benefit_uprating_lag": 100,
           "fp_rate_pct": 10.6
         },
         {
           "hh_type": "LONE_PARENT",
-          "mean_impact": 2450,
-          "mean_impact_pct": 9.2,
+          "mean_impact": 2038,
+          "mean_impact_pct": 7.5,
           "energy": 1015,
-          "fuel": 898,
-          "food": 268,
+          "fuel": 558,
+          "food": 197,
           "benefit_uprating_lag": 269,
           "fp_rate_pct": 19.6
         },
         {
           "hh_type": "SINGLE_PENSIONER",
-          "mean_impact": 2300,
-          "mean_impact_pct": 10.2,
+          "mean_impact": 1698,
+          "mean_impact_pct": 7.8,
           "energy": 979,
-          "fuel": 964,
-          "food": 298,
+          "fuel": 478,
+          "food": 183,
           "benefit_uprating_lag": 58,
           "fp_rate_pct": 22.9
         },
         {
           "hh_type": "SINGLE_WORKING_AGE",
-          "mean_impact": 2296,
-          "mean_impact_pct": 17.8,
+          "mean_impact": 1685,
+          "mean_impact_pct": 12.8,
           "energy": 869,
-          "fuel": 1020,
-          "food": 327,
+          "fuel": 535,
+          "food": 201,
           "benefit_uprating_lag": 80,
           "fp_rate_pct": 24.4
         }
@@ -1231,10 +1237,10 @@
       ],
       "channel_decomposition": {
         "energy_shock": 1198,
-        "fuel_shock": 1040,
-        "food_shock": 333,
+        "fuel_shock": 825,
+        "food_shock": 238,
         "benefit_uprating_lag": 72,
-        "net_impact": 2643
+        "net_impact": 2334
       }
     }
   },
@@ -1247,40 +1253,40 @@
         "targeting_bottom40": 33.9,
         "fp_rate_before_pct": 7.5,
         "fp_rate_after_pct": 7.1,
-        "n_lifted_from_poverty": 62645,
+        "n_lifted_from_poverty": 78244,
         "by_quintile": [
           {
             "quintile": 1,
             "mean_benefit": 53,
-            "mean_residual_impact": 373,
+            "mean_residual_impact": 289,
             "mean_benefit_pct_income": 0.6,
             "benefit_share_pct": 16.7
           },
           {
             "quintile": 2,
             "mean_benefit": 62,
-            "mean_residual_impact": 465,
+            "mean_residual_impact": 382,
             "mean_benefit_pct_income": 0.2,
             "benefit_share_pct": 17.2
           },
           {
             "quintile": 3,
             "mean_benefit": 64,
-            "mean_residual_impact": 507,
+            "mean_residual_impact": 423,
             "mean_benefit_pct_income": 0.1,
             "benefit_share_pct": 19.3
           },
           {
             "quintile": 4,
             "mean_benefit": 77,
-            "mean_residual_impact": 584,
+            "mean_residual_impact": 511,
             "mean_benefit_pct_income": 0.1,
             "benefit_share_pct": 21.9
           },
           {
             "quintile": 5,
             "mean_benefit": 77,
-            "mean_residual_impact": 629,
+            "mean_residual_impact": 540,
             "mean_benefit_pct_income": 0.1,
             "benefit_share_pct": 24.9
           }
@@ -1325,40 +1331,40 @@
         "targeting_bottom40": 39.6,
         "fp_rate_before_pct": 7.5,
         "fp_rate_after_pct": 7.4,
-        "n_lifted_from_poverty": 411184,
+        "n_lifted_from_poverty": 290270,
         "by_quintile": [
           {
             "quintile": 1,
             "mean_benefit": 400,
-            "mean_residual_impact": 63,
+            "mean_residual_impact": 57,
             "mean_benefit_pct_income": 3.6,
             "benefit_share_pct": 21.1
           },
           {
             "quintile": 2,
             "mean_benefit": 400,
-            "mean_residual_impact": 133,
+            "mean_residual_impact": 118,
             "mean_benefit_pct_income": 1.1,
             "benefit_share_pct": 18.5
           },
           {
             "quintile": 3,
             "mean_benefit": 400,
-            "mean_residual_impact": 172,
+            "mean_residual_impact": 136,
             "mean_benefit_pct_income": 0.9,
             "benefit_share_pct": 20.1
           },
           {
             "quintile": 4,
             "mean_benefit": 400,
-            "mean_residual_impact": 261,
+            "mean_residual_impact": 220,
             "mean_benefit_pct_income": 0.6,
             "benefit_share_pct": 18.9
           },
           {
             "quintile": 5,
             "mean_benefit": 400,
-            "mean_residual_impact": 306,
+            "mean_residual_impact": 264,
             "mean_benefit_pct_income": 0.4,
             "benefit_share_pct": 21.4
           }
@@ -1403,40 +1409,40 @@
         "targeting_bottom40": 44.1,
         "fp_rate_before_pct": 7.5,
         "fp_rate_after_pct": 7.4,
-        "n_lifted_from_poverty": 320527,
+        "n_lifted_from_poverty": 228407,
         "by_quintile": [
           {
             "quintile": 1,
             "mean_benefit": 250,
-            "mean_residual_impact": 178,
+            "mean_residual_impact": 145,
             "mean_benefit_pct_income": 2.3,
             "benefit_share_pct": 23.5
           },
           {
             "quintile": 2,
             "mean_benefit": 249,
-            "mean_residual_impact": 277,
+            "mean_residual_impact": 228,
             "mean_benefit_pct_income": 0.7,
             "benefit_share_pct": 20.6
           },
           {
             "quintile": 3,
             "mean_benefit": 240,
-            "mean_residual_impact": 331,
+            "mean_residual_impact": 266,
             "mean_benefit_pct_income": 0.5,
             "benefit_share_pct": 21.5
           },
           {
             "quintile": 4,
             "mean_benefit": 210,
-            "mean_residual_impact": 451,
+            "mean_residual_impact": 393,
             "mean_benefit_pct_income": 0.3,
             "benefit_share_pct": 17.7
           },
           {
             "quintile": 5,
             "mean_benefit": 175,
-            "mean_residual_impact": 531,
+            "mean_residual_impact": 462,
             "mean_benefit_pct_income": 0.2,
             "benefit_share_pct": 16.7
           }
@@ -1481,40 +1487,40 @@
         "targeting_bottom40": 75.2,
         "fp_rate_before_pct": 7.5,
         "fp_rate_after_pct": 7.5,
-        "n_lifted_from_poverty": 62004,
+        "n_lifted_from_poverty": 50425,
         "by_quintile": [
           {
             "quintile": 1,
             "mean_benefit": 168,
-            "mean_residual_impact": 361,
+            "mean_residual_impact": 298,
             "mean_benefit_pct_income": 1.0,
             "benefit_share_pct": 44.6
           },
           {
             "quintile": 2,
             "mean_benefit": 131,
-            "mean_residual_impact": 460,
+            "mean_residual_impact": 392,
             "mean_benefit_pct_income": 0.4,
             "benefit_share_pct": 30.6
           },
           {
             "quintile": 3,
             "mean_benefit": 71,
-            "mean_residual_impact": 531,
+            "mean_residual_impact": 459,
             "mean_benefit_pct_income": 0.2,
             "benefit_share_pct": 17.9
           },
           {
             "quintile": 4,
             "mean_benefit": 21,
-            "mean_residual_impact": 648,
+            "mean_residual_impact": 579,
             "mean_benefit_pct_income": 0.0,
             "benefit_share_pct": 4.9
           },
           {
             "quintile": 5,
             "mean_benefit": 7,
-            "mean_residual_impact": 701,
+            "mean_residual_impact": 614,
             "mean_benefit_pct_income": 0.0,
             "benefit_share_pct": 2.0
           }
@@ -1556,76 +1562,76 @@
         "name": "Fuel duty cut extension",
         "fiscal_cost_bn": 1.78,
         "avg_benefit_per_hh": 60,
-        "targeting_bottom40": 31.4,
+        "targeting_bottom40": 26.6,
         "fp_rate_before_pct": 7.5,
         "fp_rate_after_pct": 7.5,
-        "n_lifted_from_poverty": 48769,
+        "n_lifted_from_poverty": 47685,
         "by_quintile": [
           {
             "quintile": 1,
-            "mean_benefit": 42,
-            "mean_residual_impact": 384,
-            "mean_benefit_pct_income": 0.4,
-            "benefit_share_pct": 14.7
+            "mean_benefit": 33,
+            "mean_residual_impact": 309,
+            "mean_benefit_pct_income": 0.2,
+            "benefit_share_pct": 11.5
           },
           {
             "quintile": 2,
-            "mean_benefit": 54,
-            "mean_residual_impact": 472,
-            "mean_benefit_pct_income": 0.2,
-            "benefit_share_pct": 16.7
+            "mean_benefit": 49,
+            "mean_residual_impact": 395,
+            "mean_benefit_pct_income": 0.1,
+            "benefit_share_pct": 15.0
           },
           {
             "quintile": 3,
-            "mean_benefit": 60,
-            "mean_residual_impact": 511,
+            "mean_benefit": 59,
+            "mean_residual_impact": 427,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 20.1
+            "benefit_share_pct": 19.9
           },
           {
             "quintile": 4,
-            "mean_benefit": 69,
-            "mean_residual_impact": 592,
+            "mean_benefit": 76,
+            "mean_residual_impact": 511,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 21.7
+            "benefit_share_pct": 24.0
           },
           {
             "quintile": 5,
-            "mean_benefit": 75,
-            "mean_residual_impact": 631,
+            "mean_benefit": 83,
+            "mean_residual_impact": 534,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 26.8
+            "benefit_share_pct": 29.5
           }
         ],
         "winners_losers": [
           {
             "quintile": 1,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
+            "pct_winners": 67.3,
+            "pct_unchanged": 32.7,
             "pct_losers": 0.0
           },
           {
             "quintile": 2,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
+            "pct_winners": 72.2,
+            "pct_unchanged": 27.8,
             "pct_losers": 0.0
           },
           {
             "quintile": 3,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
+            "pct_winners": 80.5,
+            "pct_unchanged": 19.5,
             "pct_losers": 0.0
           },
           {
             "quintile": 4,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
+            "pct_winners": 87.7,
+            "pct_unchanged": 12.3,
             "pct_losers": 0.0
           },
           {
             "quintile": 5,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
+            "pct_winners": 79.5,
+            "pct_unchanged": 20.5,
             "pct_losers": 0.0
           }
         ]
@@ -1637,40 +1643,40 @@
         "targeting_bottom40": 74.0,
         "fp_rate_before_pct": 7.5,
         "fp_rate_after_pct": 7.5,
-        "n_lifted_from_poverty": 77034,
+        "n_lifted_from_poverty": 58404,
         "by_quintile": [
           {
             "quintile": 1,
             "mean_benefit": 165,
-            "mean_residual_impact": 326,
+            "mean_residual_impact": 276,
             "mean_benefit_pct_income": 1.0,
             "benefit_share_pct": 43.1
           },
           {
             "quintile": 2,
             "mean_benefit": 134,
-            "mean_residual_impact": 421,
+            "mean_residual_impact": 367,
             "mean_benefit_pct_income": 0.4,
             "benefit_share_pct": 30.8
           },
           {
             "quintile": 3,
             "mean_benefit": 78,
-            "mean_residual_impact": 503,
+            "mean_residual_impact": 443,
             "mean_benefit_pct_income": 0.2,
             "benefit_share_pct": 19.5
           },
           {
             "quintile": 4,
             "mean_benefit": 19,
-            "mean_residual_impact": 644,
+            "mean_residual_impact": 576,
             "mean_benefit_pct_income": 0.0,
             "benefit_share_pct": 4.4
           },
           {
             "quintile": 5,
             "mean_benefit": 8,
-            "mean_residual_impact": 698,
+            "mean_residual_impact": 612,
             "mean_benefit_pct_income": 0.0,
             "benefit_share_pct": 2.1
           }
@@ -1715,40 +1721,40 @@
         "targeting_bottom40": 33.9,
         "fp_rate_before_pct": 7.5,
         "fp_rate_after_pct": 7.3,
-        "n_lifted_from_poverty": 45916,
+        "n_lifted_from_poverty": 46095,
         "by_quintile": [
           {
             "quintile": 1,
             "mean_benefit": 32,
-            "mean_residual_impact": 394,
+            "mean_residual_impact": 310,
             "mean_benefit_pct_income": 0.3,
             "benefit_share_pct": 16.7
           },
           {
             "quintile": 2,
             "mean_benefit": 38,
-            "mean_residual_impact": 489,
+            "mean_residual_impact": 406,
             "mean_benefit_pct_income": 0.1,
             "benefit_share_pct": 17.2
           },
           {
             "quintile": 3,
             "mean_benefit": 39,
-            "mean_residual_impact": 532,
+            "mean_residual_impact": 447,
             "mean_benefit_pct_income": 0.1,
             "benefit_share_pct": 19.3
           },
           {
             "quintile": 4,
             "mean_benefit": 47,
-            "mean_residual_impact": 614,
+            "mean_residual_impact": 541,
             "mean_benefit_pct_income": 0.1,
             "benefit_share_pct": 22.0
           },
           {
             "quintile": 5,
             "mean_benefit": 47,
-            "mean_residual_impact": 659,
+            "mean_residual_impact": 570,
             "mean_benefit_pct_income": 0.0,
             "benefit_share_pct": 24.8
           }
@@ -1793,40 +1799,40 @@
         "targeting_bottom40": 58.5,
         "fp_rate_before_pct": 7.5,
         "fp_rate_after_pct": 7.5,
-        "n_lifted_from_poverty": 17639,
+        "n_lifted_from_poverty": 25223,
         "by_quintile": [
           {
             "quintile": 1,
             "mean_benefit": 21,
-            "mean_residual_impact": 406,
+            "mean_residual_impact": 322,
             "mean_benefit_pct_income": 0.1,
             "benefit_share_pct": 27.0
           },
           {
             "quintile": 2,
             "mean_benefit": 27,
-            "mean_residual_impact": 499,
+            "mean_residual_impact": 417,
             "mean_benefit_pct_income": 0.1,
             "benefit_share_pct": 31.5
           },
           {
             "quintile": 3,
             "mean_benefit": 19,
-            "mean_residual_impact": 551,
+            "mean_residual_impact": 467,
             "mean_benefit_pct_income": 0.0,
             "benefit_share_pct": 24.0
           },
           {
             "quintile": 4,
             "mean_benefit": 11,
-            "mean_residual_impact": 651,
+            "mean_residual_impact": 577,
             "mean_benefit_pct_income": 0.0,
             "benefit_share_pct": 12.4
           },
           {
             "quintile": 5,
             "mean_benefit": 4,
-            "mean_residual_impact": 702,
+            "mean_residual_impact": 613,
             "mean_benefit_pct_income": 0.0,
             "benefit_share_pct": 5.1
           }
@@ -1871,40 +1877,40 @@
         "targeting_bottom40": 76.4,
         "fp_rate_before_pct": 7.5,
         "fp_rate_after_pct": 7.3,
-        "n_lifted_from_poverty": 20990,
+        "n_lifted_from_poverty": 11850,
         "by_quintile": [
           {
             "quintile": 1,
             "mean_benefit": 41,
-            "mean_residual_impact": 385,
+            "mean_residual_impact": 301,
             "mean_benefit_pct_income": 0.7,
             "benefit_share_pct": 63.9
           },
           {
             "quintile": 2,
             "mean_benefit": 9,
-            "mean_residual_impact": 517,
+            "mean_residual_impact": 435,
             "mean_benefit_pct_income": 0.0,
             "benefit_share_pct": 12.5
           },
           {
             "quintile": 3,
             "mean_benefit": 5,
-            "mean_residual_impact": 566,
+            "mean_residual_impact": 482,
             "mean_benefit_pct_income": 0.0,
             "benefit_share_pct": 6.7
           },
           {
             "quintile": 4,
             "mean_benefit": 3,
-            "mean_residual_impact": 659,
+            "mean_residual_impact": 585,
             "mean_benefit_pct_income": 0.0,
             "benefit_share_pct": 3.5
           },
           {
             "quintile": 5,
             "mean_benefit": 8,
-            "mean_residual_impact": 697,
+            "mean_residual_impact": 609,
             "mean_benefit_pct_income": 0.0,
             "benefit_share_pct": 13.3
           }
@@ -1945,46 +1951,46 @@
       "combined": {
         "name": "Combined package",
         "fiscal_cost_bn": 28.61,
-        "avg_benefit_per_hh": 558,
-        "targeting_bottom40": 33.4,
+        "avg_benefit_per_hh": 480,
+        "targeting_bottom40": 31.9,
         "fp_rate_before_pct": 7.5,
         "fp_rate_after_pct": 6.6,
-        "n_lifted_from_poverty": 479981,
+        "n_lifted_from_poverty": 363271,
         "by_quintile": [
           {
             "quintile": 1,
-            "mean_benefit": 425,
+            "mean_benefit": 341,
             "mean_residual_impact": 1,
-            "mean_benefit_pct_income": 4.0,
-            "benefit_share_pct": 16.0
+            "mean_benefit_pct_income": 3.0,
+            "benefit_share_pct": 15.0
           },
           {
             "quintile": 2,
-            "mean_benefit": 521,
-            "mean_residual_impact": 5,
-            "mean_benefit_pct_income": 1.5,
-            "benefit_share_pct": 17.3
+            "mean_benefit": 437,
+            "mean_residual_impact": 7,
+            "mean_benefit_pct_income": 1.2,
+            "benefit_share_pct": 16.9
           },
           {
             "quintile": 3,
-            "mean_benefit": 561,
-            "mean_residual_impact": 10,
-            "mean_benefit_pct_income": 1.3,
-            "benefit_share_pct": 20.2
+            "mean_benefit": 479,
+            "mean_residual_impact": 8,
+            "mean_benefit_pct_income": 1.0,
+            "benefit_share_pct": 20.1
           },
           {
             "quintile": 4,
-            "mean_benefit": 631,
-            "mean_residual_impact": 30,
-            "mean_benefit_pct_income": 1.0,
-            "benefit_share_pct": 21.4
+            "mean_benefit": 565,
+            "mean_residual_impact": 22,
+            "mean_benefit_pct_income": 0.9,
+            "benefit_share_pct": 22.3
           },
           {
             "quintile": 5,
-            "mean_benefit": 653,
-            "mean_residual_impact": 53,
-            "mean_benefit_pct_income": 0.7,
-            "benefit_share_pct": 25.0
+            "mean_benefit": 578,
+            "mean_residual_impact": 39,
+            "mean_benefit_pct_income": 0.6,
+            "benefit_share_pct": 25.8
           }
         ],
         "winners_losers": [
@@ -2029,40 +2035,40 @@
         "targeting_bottom40": 33.9,
         "fp_rate_before_pct": 11.0,
         "fp_rate_after_pct": 7.1,
-        "n_lifted_from_poverty": 476624,
+        "n_lifted_from_poverty": 500756,
         "by_quintile": [
           {
             "quintile": 1,
             "mean_benefit": 371,
-            "mean_residual_impact": 697,
+            "mean_residual_impact": 512,
             "mean_benefit_pct_income": 4.0,
             "benefit_share_pct": 16.7
           },
           {
             "quintile": 2,
             "mean_benefit": 432,
-            "mean_residual_impact": 878,
+            "mean_residual_impact": 697,
             "mean_benefit_pct_income": 1.2,
             "benefit_share_pct": 17.2
           },
           {
             "quintile": 3,
             "mean_benefit": 447,
-            "mean_residual_impact": 961,
+            "mean_residual_impact": 778,
             "mean_benefit_pct_income": 1.0,
             "benefit_share_pct": 19.3
           },
           {
             "quintile": 4,
             "mean_benefit": 541,
-            "mean_residual_impact": 1094,
+            "mean_residual_impact": 937,
             "mean_benefit_pct_income": 0.9,
             "benefit_share_pct": 21.9
           },
           {
             "quintile": 5,
             "mean_benefit": 542,
-            "mean_residual_impact": 1186,
+            "mean_residual_impact": 998,
             "mean_benefit_pct_income": 0.5,
             "benefit_share_pct": 24.9
           }
@@ -2107,40 +2113,40 @@
         "targeting_bottom40": 39.6,
         "fp_rate_before_pct": 11.0,
         "fp_rate_after_pct": 10.7,
-        "n_lifted_from_poverty": 361537,
+        "n_lifted_from_poverty": 368579,
         "by_quintile": [
           {
             "quintile": 1,
             "mean_benefit": 400,
-            "mean_residual_impact": 667,
+            "mean_residual_impact": 514,
             "mean_benefit_pct_income": 3.6,
             "benefit_share_pct": 21.1
           },
           {
             "quintile": 2,
             "mean_benefit": 400,
-            "mean_residual_impact": 910,
+            "mean_residual_impact": 749,
             "mean_benefit_pct_income": 1.1,
             "benefit_share_pct": 18.5
           },
           {
             "quintile": 3,
             "mean_benefit": 400,
-            "mean_residual_impact": 1007,
+            "mean_residual_impact": 839,
             "mean_benefit_pct_income": 0.9,
             "benefit_share_pct": 20.1
           },
           {
             "quintile": 4,
             "mean_benefit": 400,
-            "mean_residual_impact": 1234,
+            "mean_residual_impact": 1089,
             "mean_benefit_pct_income": 0.6,
             "benefit_share_pct": 18.9
           },
           {
             "quintile": 5,
             "mean_benefit": 400,
-            "mean_residual_impact": 1327,
+            "mean_residual_impact": 1154,
             "mean_benefit_pct_income": 0.4,
             "benefit_share_pct": 21.4
           }
@@ -2185,40 +2191,40 @@
         "targeting_bottom40": 44.1,
         "fp_rate_before_pct": 11.0,
         "fp_rate_after_pct": 10.8,
-        "n_lifted_from_poverty": 229340,
+        "n_lifted_from_poverty": 237126,
         "by_quintile": [
           {
             "quintile": 1,
             "mean_benefit": 250,
-            "mean_residual_impact": 817,
+            "mean_residual_impact": 643,
             "mean_benefit_pct_income": 2.3,
             "benefit_share_pct": 23.5
           },
           {
             "quintile": 2,
             "mean_benefit": 249,
-            "mean_residual_impact": 1061,
+            "mean_residual_impact": 885,
             "mean_benefit_pct_income": 0.7,
             "benefit_share_pct": 20.6
           },
           {
             "quintile": 3,
             "mean_benefit": 240,
-            "mean_residual_impact": 1167,
+            "mean_residual_impact": 988,
             "mean_benefit_pct_income": 0.5,
             "benefit_share_pct": 21.5
           },
           {
             "quintile": 4,
             "mean_benefit": 210,
-            "mean_residual_impact": 1424,
+            "mean_residual_impact": 1271,
             "mean_benefit_pct_income": 0.3,
             "benefit_share_pct": 17.7
           },
           {
             "quintile": 5,
             "mean_benefit": 175,
-            "mean_residual_impact": 1552,
+            "mean_residual_impact": 1370,
             "mean_benefit_pct_income": 0.2,
             "benefit_share_pct": 16.7
           }
@@ -2263,40 +2269,40 @@
         "targeting_bottom40": 75.2,
         "fp_rate_before_pct": 11.0,
         "fp_rate_after_pct": 10.9,
-        "n_lifted_from_poverty": 198501,
+        "n_lifted_from_poverty": 150162,
         "by_quintile": [
           {
             "quintile": 1,
             "mean_benefit": 168,
-            "mean_residual_impact": 920,
+            "mean_residual_impact": 781,
             "mean_benefit_pct_income": 1.0,
             "benefit_share_pct": 44.6
           },
           {
             "quintile": 2,
             "mean_benefit": 131,
-            "mean_residual_impact": 1182,
+            "mean_residual_impact": 1021,
             "mean_benefit_pct_income": 0.4,
             "benefit_share_pct": 30.6
           },
           {
             "quintile": 3,
             "mean_benefit": 71,
-            "mean_residual_impact": 1337,
+            "mean_residual_impact": 1169,
             "mean_benefit_pct_income": 0.2,
             "benefit_share_pct": 17.9
           },
           {
             "quintile": 4,
             "mean_benefit": 21,
-            "mean_residual_impact": 1614,
+            "mean_residual_impact": 1461,
             "mean_benefit_pct_income": 0.0,
             "benefit_share_pct": 4.9
           },
           {
             "quintile": 5,
             "mean_benefit": 7,
-            "mean_residual_impact": 1720,
+            "mean_residual_impact": 1533,
             "mean_benefit_pct_income": 0.0,
             "benefit_share_pct": 2.0
           }
@@ -2338,76 +2344,76 @@
         "name": "Fuel duty cut extension",
         "fiscal_cost_bn": 1.78,
         "avg_benefit_per_hh": 60,
-        "targeting_bottom40": 31.4,
+        "targeting_bottom40": 26.6,
         "fp_rate_before_pct": 11.0,
         "fp_rate_after_pct": 11.0,
-        "n_lifted_from_poverty": 43202,
+        "n_lifted_from_poverty": 31343,
         "by_quintile": [
           {
             "quintile": 1,
-            "mean_benefit": 42,
-            "mean_residual_impact": 1025,
-            "mean_benefit_pct_income": 0.4,
-            "benefit_share_pct": 14.7
+            "mean_benefit": 33,
+            "mean_residual_impact": 849,
+            "mean_benefit_pct_income": 0.2,
+            "benefit_share_pct": 11.5
           },
           {
             "quintile": 2,
-            "mean_benefit": 54,
-            "mean_residual_impact": 1256,
-            "mean_benefit_pct_income": 0.2,
-            "benefit_share_pct": 16.7
+            "mean_benefit": 49,
+            "mean_residual_impact": 1080,
+            "mean_benefit_pct_income": 0.1,
+            "benefit_share_pct": 15.0
           },
           {
             "quintile": 3,
-            "mean_benefit": 60,
-            "mean_residual_impact": 1347,
+            "mean_benefit": 59,
+            "mean_residual_impact": 1165,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 20.1
+            "benefit_share_pct": 19.9
           },
           {
             "quintile": 4,
-            "mean_benefit": 69,
-            "mean_residual_impact": 1565,
+            "mean_benefit": 76,
+            "mean_residual_impact": 1402,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 21.7
+            "benefit_share_pct": 24.0
           },
           {
             "quintile": 5,
-            "mean_benefit": 75,
-            "mean_residual_impact": 1652,
+            "mean_benefit": 83,
+            "mean_residual_impact": 1456,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 26.8
+            "benefit_share_pct": 29.5
           }
         ],
         "winners_losers": [
           {
             "quintile": 1,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
+            "pct_winners": 67.3,
+            "pct_unchanged": 32.7,
             "pct_losers": 0.0
           },
           {
             "quintile": 2,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
+            "pct_winners": 72.2,
+            "pct_unchanged": 27.8,
             "pct_losers": 0.0
           },
           {
             "quintile": 3,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
+            "pct_winners": 80.5,
+            "pct_unchanged": 19.5,
             "pct_losers": 0.0
           },
           {
             "quintile": 4,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
+            "pct_winners": 87.7,
+            "pct_unchanged": 12.3,
             "pct_losers": 0.0
           },
           {
             "quintile": 5,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
+            "pct_winners": 79.5,
+            "pct_unchanged": 20.5,
             "pct_losers": 0.0
           }
         ]
@@ -2419,40 +2425,40 @@
         "targeting_bottom40": 74.0,
         "fp_rate_before_pct": 11.0,
         "fp_rate_after_pct": 10.9,
-        "n_lifted_from_poverty": 145848,
+        "n_lifted_from_poverty": 116614,
         "by_quintile": [
           {
             "quintile": 1,
             "mean_benefit": 165,
-            "mean_residual_impact": 903,
+            "mean_residual_impact": 755,
             "mean_benefit_pct_income": 1.0,
             "benefit_share_pct": 43.1
           },
           {
             "quintile": 2,
             "mean_benefit": 134,
-            "mean_residual_impact": 1176,
+            "mean_residual_impact": 1008,
             "mean_benefit_pct_income": 0.4,
             "benefit_share_pct": 30.8
           },
           {
             "quintile": 3,
             "mean_benefit": 78,
-            "mean_residual_impact": 1329,
+            "mean_residual_impact": 1154,
             "mean_benefit_pct_income": 0.2,
             "benefit_share_pct": 19.5
           },
           {
             "quintile": 4,
             "mean_benefit": 19,
-            "mean_residual_impact": 1616,
+            "mean_residual_impact": 1461,
             "mean_benefit_pct_income": 0.0,
             "benefit_share_pct": 4.4
           },
           {
             "quintile": 5,
             "mean_benefit": 8,
-            "mean_residual_impact": 1719,
+            "mean_residual_impact": 1532,
             "mean_benefit_pct_income": 0.0,
             "benefit_share_pct": 2.1
           }
@@ -2497,40 +2503,40 @@
         "targeting_bottom40": 33.9,
         "fp_rate_before_pct": 11.0,
         "fp_rate_after_pct": 10.5,
-        "n_lifted_from_poverty": 29791,
+        "n_lifted_from_poverty": 39492,
         "by_quintile": [
           {
             "quintile": 1,
             "mean_benefit": 41,
-            "mean_residual_impact": 1027,
+            "mean_residual_impact": 841,
             "mean_benefit_pct_income": 0.4,
             "benefit_share_pct": 16.7
           },
           {
             "quintile": 2,
             "mean_benefit": 47,
-            "mean_residual_impact": 1263,
+            "mean_residual_impact": 1081,
             "mean_benefit_pct_income": 0.1,
             "benefit_share_pct": 17.2
           },
           {
             "quintile": 3,
             "mean_benefit": 49,
-            "mean_residual_impact": 1358,
+            "mean_residual_impact": 1176,
             "mean_benefit_pct_income": 0.1,
             "benefit_share_pct": 19.3
           },
           {
             "quintile": 4,
             "mean_benefit": 60,
-            "mean_residual_impact": 1575,
+            "mean_residual_impact": 1419,
             "mean_benefit_pct_income": 0.1,
             "benefit_share_pct": 22.0
           },
           {
             "quintile": 5,
             "mean_benefit": 59,
-            "mean_residual_impact": 1668,
+            "mean_residual_impact": 1480,
             "mean_benefit_pct_income": 0.1,
             "benefit_share_pct": 24.8
           }
@@ -2575,40 +2581,40 @@
         "targeting_bottom40": 58.5,
         "fp_rate_before_pct": 11.0,
         "fp_rate_after_pct": 10.9,
-        "n_lifted_from_poverty": 73275,
+        "n_lifted_from_poverty": 85699,
         "by_quintile": [
           {
             "quintile": 1,
             "mean_benefit": 52,
-            "mean_residual_impact": 1016,
+            "mean_residual_impact": 831,
             "mean_benefit_pct_income": 0.2,
             "benefit_share_pct": 27.0
           },
           {
             "quintile": 2,
             "mean_benefit": 68,
-            "mean_residual_impact": 1242,
+            "mean_residual_impact": 1060,
             "mean_benefit_pct_income": 0.2,
             "benefit_share_pct": 31.5
           },
           {
             "quintile": 3,
             "mean_benefit": 48,
-            "mean_residual_impact": 1359,
+            "mean_residual_impact": 1177,
             "mean_benefit_pct_income": 0.1,
             "benefit_share_pct": 24.0
           },
           {
             "quintile": 4,
             "mean_benefit": 26,
-            "mean_residual_impact": 1608,
+            "mean_residual_impact": 1452,
             "mean_benefit_pct_income": 0.0,
             "benefit_share_pct": 12.4
           },
           {
             "quintile": 5,
             "mean_benefit": 10,
-            "mean_residual_impact": 1717,
+            "mean_residual_impact": 1530,
             "mean_benefit_pct_income": 0.0,
             "benefit_share_pct": 5.1
           }
@@ -2653,40 +2659,40 @@
         "targeting_bottom40": 76.4,
         "fp_rate_before_pct": 11.0,
         "fp_rate_after_pct": 10.2,
-        "n_lifted_from_poverty": 66248,
+        "n_lifted_from_poverty": 59850,
         "by_quintile": [
           {
             "quintile": 1,
             "mean_benefit": 123,
-            "mean_residual_impact": 944,
+            "mean_residual_impact": 759,
             "mean_benefit_pct_income": 2.2,
             "benefit_share_pct": 63.9
           },
           {
             "quintile": 2,
             "mean_benefit": 27,
-            "mean_residual_impact": 1283,
+            "mean_residual_impact": 1101,
             "mean_benefit_pct_income": 0.1,
             "benefit_share_pct": 12.5
           },
           {
             "quintile": 3,
             "mean_benefit": 14,
-            "mean_residual_impact": 1394,
+            "mean_residual_impact": 1211,
             "mean_benefit_pct_income": 0.0,
             "benefit_share_pct": 6.7
           },
           {
             "quintile": 4,
             "mean_benefit": 8,
-            "mean_residual_impact": 1627,
+            "mean_residual_impact": 1471,
             "mean_benefit_pct_income": 0.0,
             "benefit_share_pct": 3.5
           },
           {
             "quintile": 5,
             "mean_benefit": 25,
-            "mean_residual_impact": 1702,
+            "mean_residual_impact": 1514,
             "mean_benefit_pct_income": 0.0,
             "benefit_share_pct": 13.3
           }
@@ -2727,46 +2733,46 @@
       "combined": {
         "name": "Combined package",
         "fiscal_cost_bn": 41.45,
-        "avg_benefit_per_hh": 1219,
-        "targeting_bottom40": 36.8,
+        "avg_benefit_per_hh": 1096,
+        "targeting_bottom40": 34.5,
         "fp_rate_before_pct": 11.0,
         "fp_rate_after_pct": 6.6,
-        "n_lifted_from_poverty": 1227694,
+        "n_lifted_from_poverty": 1081568,
         "by_quintile": [
           {
             "quintile": 1,
-            "mean_benefit": 1039,
-            "mean_residual_impact": 28,
-            "mean_benefit_pct_income": 10.0,
-            "benefit_share_pct": 18.0
+            "mean_benefit": 864,
+            "mean_residual_impact": 18,
+            "mean_benefit_pct_income": 7.8,
+            "benefit_share_pct": 16.6
           },
           {
             "quintile": 2,
-            "mean_benefit": 1238,
-            "mean_residual_impact": 72,
-            "mean_benefit_pct_income": 3.5,
-            "benefit_share_pct": 18.8
+            "mean_benefit": 1059,
+            "mean_residual_impact": 69,
+            "mean_benefit_pct_income": 2.9,
+            "benefit_share_pct": 17.9
           },
           {
             "quintile": 3,
-            "mean_benefit": 1253,
-            "mean_residual_impact": 154,
-            "mean_benefit_pct_income": 2.8,
+            "mean_benefit": 1126,
+            "mean_residual_impact": 99,
+            "mean_benefit_pct_income": 2.5,
             "benefit_share_pct": 20.7
           },
           {
             "quintile": 4,
-            "mean_benefit": 1312,
-            "mean_residual_impact": 323,
-            "mean_benefit_pct_income": 2.1,
-            "benefit_share_pct": 20.3
+            "mean_benefit": 1252,
+            "mean_residual_impact": 226,
+            "mean_benefit_pct_income": 2.0,
+            "benefit_share_pct": 21.6
           },
           {
             "quintile": 5,
-            "mean_benefit": 1265,
-            "mean_residual_impact": 462,
-            "mean_benefit_pct_income": 1.3,
-            "benefit_share_pct": 22.2
+            "mean_benefit": 1189,
+            "mean_residual_impact": 351,
+            "mean_benefit_pct_income": 1.2,
+            "benefit_share_pct": 23.2
           }
         ],
         "winners_losers": [
@@ -2811,40 +2817,40 @@
         "targeting_bottom40": 33.9,
         "fp_rate_before_pct": 16.0,
         "fp_rate_after_pct": 7.1,
-        "n_lifted_from_poverty": 1047190,
+        "n_lifted_from_poverty": 989682,
         "by_quintile": [
           {
             "quintile": 1,
             "mean_benefit": 847,
-            "mean_residual_impact": 1138,
+            "mean_residual_impact": 813,
             "mean_benefit_pct_income": 9.2,
             "benefit_share_pct": 16.7
           },
           {
             "quintile": 2,
             "mean_benefit": 987,
-            "mean_residual_impact": 1442,
+            "mean_residual_impact": 1124,
             "mean_benefit_pct_income": 2.8,
             "benefit_share_pct": 17.2
           },
           {
             "quintile": 3,
             "mean_benefit": 1021,
-            "mean_residual_impact": 1579,
+            "mean_residual_impact": 1263,
             "mean_benefit_pct_income": 2.3,
             "benefit_share_pct": 19.3
           },
           {
             "quintile": 4,
             "mean_benefit": 1236,
-            "mean_residual_impact": 1788,
+            "mean_residual_impact": 1522,
             "mean_benefit_pct_income": 2.0,
             "benefit_share_pct": 21.9
           },
           {
             "quintile": 5,
             "mean_benefit": 1238,
-            "mean_residual_impact": 1943,
+            "mean_residual_impact": 1624,
             "mean_benefit_pct_income": 1.2,
             "benefit_share_pct": 24.9
           }
@@ -2889,40 +2895,40 @@
         "targeting_bottom40": 39.6,
         "fp_rate_before_pct": 16.0,
         "fp_rate_after_pct": 15.4,
-        "n_lifted_from_poverty": 494491,
+        "n_lifted_from_poverty": 453551,
         "by_quintile": [
           {
             "quintile": 1,
             "mean_benefit": 400,
-            "mean_residual_impact": 1585,
+            "mean_residual_impact": 1267,
             "mean_benefit_pct_income": 3.6,
             "benefit_share_pct": 21.1
           },
           {
             "quintile": 2,
             "mean_benefit": 400,
-            "mean_residual_impact": 2029,
+            "mean_residual_impact": 1714,
             "mean_benefit_pct_income": 1.1,
             "benefit_share_pct": 18.5
           },
           {
             "quintile": 3,
             "mean_benefit": 400,
-            "mean_residual_impact": 2200,
+            "mean_residual_impact": 1889,
             "mean_benefit_pct_income": 0.9,
             "benefit_share_pct": 20.1
           },
           {
             "quintile": 4,
             "mean_benefit": 400,
-            "mean_residual_impact": 2624,
+            "mean_residual_impact": 2360,
             "mean_benefit_pct_income": 0.6,
             "benefit_share_pct": 18.9
           },
           {
             "quintile": 5,
             "mean_benefit": 400,
-            "mean_residual_impact": 2781,
+            "mean_residual_impact": 2467,
             "mean_benefit_pct_income": 0.4,
             "benefit_share_pct": 21.4
           }
@@ -2967,40 +2973,40 @@
         "targeting_bottom40": 44.1,
         "fp_rate_before_pct": 16.0,
         "fp_rate_after_pct": 15.7,
-        "n_lifted_from_poverty": 286696,
+        "n_lifted_from_poverty": 309575,
         "by_quintile": [
           {
             "quintile": 1,
             "mean_benefit": 250,
-            "mean_residual_impact": 1734,
+            "mean_residual_impact": 1412,
             "mean_benefit_pct_income": 2.3,
             "benefit_share_pct": 23.5
           },
           {
             "quintile": 2,
             "mean_benefit": 249,
-            "mean_residual_impact": 2180,
+            "mean_residual_impact": 1863,
             "mean_benefit_pct_income": 0.7,
             "benefit_share_pct": 20.6
           },
           {
             "quintile": 3,
             "mean_benefit": 240,
-            "mean_residual_impact": 2360,
+            "mean_residual_impact": 2045,
             "mean_benefit_pct_income": 0.5,
             "benefit_share_pct": 21.5
           },
           {
             "quintile": 4,
             "mean_benefit": 210,
-            "mean_residual_impact": 2814,
+            "mean_residual_impact": 2548,
             "mean_benefit_pct_income": 0.3,
             "benefit_share_pct": 17.7
           },
           {
             "quintile": 5,
             "mean_benefit": 175,
-            "mean_residual_impact": 3006,
+            "mean_residual_impact": 2688,
             "mean_benefit_pct_income": 0.2,
             "benefit_share_pct": 16.7
           }
@@ -3045,40 +3051,40 @@
         "targeting_bottom40": 75.2,
         "fp_rate_before_pct": 16.0,
         "fp_rate_after_pct": 15.8,
-        "n_lifted_from_poverty": 225519,
+        "n_lifted_from_poverty": 156149,
         "by_quintile": [
           {
             "quintile": 1,
             "mean_benefit": 168,
-            "mean_residual_impact": 1817,
+            "mean_residual_impact": 1519,
             "mean_benefit_pct_income": 1.0,
             "benefit_share_pct": 44.6
           },
           {
             "quintile": 2,
             "mean_benefit": 131,
-            "mean_residual_impact": 2299,
+            "mean_residual_impact": 1987,
             "mean_benefit_pct_income": 0.4,
             "benefit_share_pct": 30.6
           },
           {
             "quintile": 3,
             "mean_benefit": 71,
-            "mean_residual_impact": 2529,
+            "mean_residual_impact": 2218,
             "mean_benefit_pct_income": 0.2,
             "benefit_share_pct": 17.9
           },
           {
             "quintile": 4,
             "mean_benefit": 21,
-            "mean_residual_impact": 3003,
+            "mean_residual_impact": 2737,
             "mean_benefit_pct_income": 0.0,
             "benefit_share_pct": 4.9
           },
           {
             "quintile": 5,
             "mean_benefit": 7,
-            "mean_residual_impact": 3174,
+            "mean_residual_impact": 2855,
             "mean_benefit_pct_income": 0.0,
             "benefit_share_pct": 2.0
           }
@@ -3120,76 +3126,76 @@
         "name": "Fuel duty cut extension",
         "fiscal_cost_bn": 1.78,
         "avg_benefit_per_hh": 60,
-        "targeting_bottom40": 31.4,
+        "targeting_bottom40": 26.6,
         "fp_rate_before_pct": 16.0,
         "fp_rate_after_pct": 16.0,
-        "n_lifted_from_poverty": 28101,
+        "n_lifted_from_poverty": 13318,
         "by_quintile": [
           {
             "quintile": 1,
-            "mean_benefit": 42,
-            "mean_residual_impact": 1943,
-            "mean_benefit_pct_income": 0.4,
-            "benefit_share_pct": 14.7
+            "mean_benefit": 33,
+            "mean_residual_impact": 1627,
+            "mean_benefit_pct_income": 0.2,
+            "benefit_share_pct": 11.5
           },
           {
             "quintile": 2,
-            "mean_benefit": 54,
-            "mean_residual_impact": 2375,
-            "mean_benefit_pct_income": 0.2,
-            "benefit_share_pct": 16.7
+            "mean_benefit": 49,
+            "mean_residual_impact": 2062,
+            "mean_benefit_pct_income": 0.1,
+            "benefit_share_pct": 15.0
           },
           {
             "quintile": 3,
-            "mean_benefit": 60,
-            "mean_residual_impact": 2540,
+            "mean_benefit": 59,
+            "mean_residual_impact": 2225,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 20.1
+            "benefit_share_pct": 19.9
           },
           {
             "quintile": 4,
-            "mean_benefit": 69,
-            "mean_residual_impact": 2955,
+            "mean_benefit": 76,
+            "mean_residual_impact": 2681,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 21.7
+            "benefit_share_pct": 24.0
           },
           {
             "quintile": 5,
-            "mean_benefit": 75,
-            "mean_residual_impact": 3106,
+            "mean_benefit": 83,
+            "mean_residual_impact": 2779,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 26.8
+            "benefit_share_pct": 29.5
           }
         ],
         "winners_losers": [
           {
             "quintile": 1,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
+            "pct_winners": 67.3,
+            "pct_unchanged": 32.7,
             "pct_losers": 0.0
           },
           {
             "quintile": 2,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
+            "pct_winners": 72.2,
+            "pct_unchanged": 27.8,
             "pct_losers": 0.0
           },
           {
             "quintile": 3,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
+            "pct_winners": 80.5,
+            "pct_unchanged": 19.5,
             "pct_losers": 0.0
           },
           {
             "quintile": 4,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
+            "pct_winners": 87.7,
+            "pct_unchanged": 12.3,
             "pct_losers": 0.0
           },
           {
             "quintile": 5,
-            "pct_winners": 100.0,
-            "pct_unchanged": 0.0,
+            "pct_winners": 79.5,
+            "pct_unchanged": 20.5,
             "pct_losers": 0.0
           }
         ]
@@ -3201,40 +3207,40 @@
         "targeting_bottom40": 74.0,
         "fp_rate_before_pct": 16.0,
         "fp_rate_after_pct": 15.8,
-        "n_lifted_from_poverty": 179109,
+        "n_lifted_from_poverty": 130542,
         "by_quintile": [
           {
             "quintile": 1,
             "mean_benefit": 165,
-            "mean_residual_impact": 1820,
+            "mean_residual_impact": 1504,
             "mean_benefit_pct_income": 1.0,
             "benefit_share_pct": 43.1
           },
           {
             "quintile": 2,
             "mean_benefit": 134,
-            "mean_residual_impact": 2295,
+            "mean_residual_impact": 1979,
             "mean_benefit_pct_income": 0.4,
             "benefit_share_pct": 30.8
           },
           {
             "quintile": 3,
             "mean_benefit": 78,
-            "mean_residual_impact": 2522,
+            "mean_residual_impact": 2207,
             "mean_benefit_pct_income": 0.2,
             "benefit_share_pct": 19.5
           },
           {
             "quintile": 4,
             "mean_benefit": 19,
-            "mean_residual_impact": 3005,
+            "mean_residual_impact": 2739,
             "mean_benefit_pct_income": 0.0,
             "benefit_share_pct": 4.4
           },
           {
             "quintile": 5,
             "mean_benefit": 8,
-            "mean_residual_impact": 3173,
+            "mean_residual_impact": 2854,
             "mean_benefit_pct_income": 0.0,
             "benefit_share_pct": 2.1
           }
@@ -3279,40 +3285,40 @@
         "targeting_bottom40": 33.9,
         "fp_rate_before_pct": 16.0,
         "fp_rate_after_pct": 15.5,
-        "n_lifted_from_poverty": 108264,
+        "n_lifted_from_poverty": 100888,
         "by_quintile": [
           {
             "quintile": 1,
             "mean_benefit": 53,
-            "mean_residual_impact": 1931,
+            "mean_residual_impact": 1607,
             "mean_benefit_pct_income": 0.5,
             "benefit_share_pct": 16.7
           },
           {
             "quintile": 2,
             "mean_benefit": 62,
-            "mean_residual_impact": 2367,
+            "mean_residual_impact": 2049,
             "mean_benefit_pct_income": 0.2,
             "benefit_share_pct": 17.2
           },
           {
             "quintile": 3,
             "mean_benefit": 64,
-            "mean_residual_impact": 2535,
+            "mean_residual_impact": 2220,
             "mean_benefit_pct_income": 0.1,
             "benefit_share_pct": 19.3
           },
           {
             "quintile": 4,
             "mean_benefit": 78,
-            "mean_residual_impact": 2946,
+            "mean_residual_impact": 2679,
             "mean_benefit_pct_income": 0.1,
             "benefit_share_pct": 22.0
           },
           {
             "quintile": 5,
             "mean_benefit": 78,
-            "mean_residual_impact": 3103,
+            "mean_residual_impact": 2784,
             "mean_benefit_pct_income": 0.1,
             "benefit_share_pct": 24.8
           }
@@ -3357,40 +3363,40 @@
         "targeting_bottom40": 58.5,
         "fp_rate_before_pct": 16.0,
         "fp_rate_after_pct": 15.9,
-        "n_lifted_from_poverty": 174220,
+        "n_lifted_from_poverty": 176666,
         "by_quintile": [
           {
             "quintile": 1,
             "mean_benefit": 93,
-            "mean_residual_impact": 1892,
+            "mean_residual_impact": 1567,
             "mean_benefit_pct_income": 0.4,
             "benefit_share_pct": 27.0
           },
           {
             "quintile": 2,
             "mean_benefit": 123,
-            "mean_residual_impact": 2306,
+            "mean_residual_impact": 1988,
             "mean_benefit_pct_income": 0.3,
             "benefit_share_pct": 31.5
           },
           {
             "quintile": 3,
             "mean_benefit": 86,
-            "mean_residual_impact": 2514,
+            "mean_residual_impact": 2198,
             "mean_benefit_pct_income": 0.2,
             "benefit_share_pct": 24.0
           },
           {
             "quintile": 4,
             "mean_benefit": 48,
-            "mean_residual_impact": 2976,
+            "mean_residual_impact": 2710,
             "mean_benefit_pct_income": 0.1,
             "benefit_share_pct": 12.4
           },
           {
             "quintile": 5,
             "mean_benefit": 17,
-            "mean_residual_impact": 3164,
+            "mean_residual_impact": 2845,
             "mean_benefit_pct_income": 0.0,
             "benefit_share_pct": 5.1
           }
@@ -3435,40 +3441,40 @@
         "targeting_bottom40": 76.4,
         "fp_rate_before_pct": 16.0,
         "fp_rate_after_pct": 14.6,
-        "n_lifted_from_poverty": 53736,
+        "n_lifted_from_poverty": 51992,
         "by_quintile": [
           {
             "quintile": 1,
             "mean_benefit": 246,
-            "mean_residual_impact": 1739,
+            "mean_residual_impact": 1414,
             "mean_benefit_pct_income": 4.4,
             "benefit_share_pct": 63.9
           },
           {
             "quintile": 2,
             "mean_benefit": 55,
-            "mean_residual_impact": 2374,
+            "mean_residual_impact": 2056,
             "mean_benefit_pct_income": 0.2,
             "benefit_share_pct": 12.5
           },
           {
             "quintile": 3,
             "mean_benefit": 27,
-            "mean_residual_impact": 2573,
+            "mean_residual_impact": 2257,
             "mean_benefit_pct_income": 0.1,
             "benefit_share_pct": 6.7
           },
           {
             "quintile": 4,
             "mean_benefit": 15,
-            "mean_residual_impact": 3009,
+            "mean_residual_impact": 2742,
             "mean_benefit_pct_income": 0.1,
             "benefit_share_pct": 3.5
           },
           {
             "quintile": 5,
             "mean_benefit": 51,
-            "mean_residual_impact": 3130,
+            "mean_residual_impact": 2811,
             "mean_benefit_pct_income": 0.0,
             "benefit_share_pct": 13.3
           }
@@ -3509,46 +3515,46 @@
       "combined": {
         "name": "Combined package",
         "fiscal_cost_bn": 60.59,
-        "avg_benefit_per_hh": 1943,
-        "targeting_bottom40": 37.8,
+        "avg_benefit_per_hh": 1810,
+        "targeting_bottom40": 35.9,
         "fp_rate_before_pct": 16.0,
         "fp_rate_after_pct": 6.5,
-        "n_lifted_from_poverty": 2095975,
+        "n_lifted_from_poverty": 1896951,
         "by_quintile": [
           {
             "quintile": 1,
-            "mean_benefit": 1748,
-            "mean_residual_impact": 237,
-            "mean_benefit_pct_income": 16.9,
-            "benefit_share_pct": 18.9
+            "mean_benefit": 1518,
+            "mean_residual_impact": 142,
+            "mean_benefit_pct_income": 14.3,
+            "benefit_share_pct": 17.7
           },
           {
             "quintile": 2,
-            "mean_benefit": 1975,
-            "mean_residual_impact": 454,
-            "mean_benefit_pct_income": 5.6,
-            "benefit_share_pct": 18.8
+            "mean_benefit": 1785,
+            "mean_residual_impact": 326,
+            "mean_benefit_pct_income": 4.9,
+            "benefit_share_pct": 18.3
           },
           {
             "quintile": 3,
-            "mean_benefit": 1949,
-            "mean_residual_impact": 651,
-            "mean_benefit_pct_income": 4.4,
-            "benefit_share_pct": 20.2
-          },
-          {
-            "quintile": 4,
-            "mean_benefit": 2064,
-            "mean_residual_impact": 960,
-            "mean_benefit_pct_income": 3.3,
+            "mean_benefit": 1812,
+            "mean_residual_impact": 473,
+            "mean_benefit_pct_income": 4.0,
             "benefit_share_pct": 20.1
           },
           {
+            "quintile": 4,
+            "mean_benefit": 2012,
+            "mean_residual_impact": 746,
+            "mean_benefit_pct_income": 3.2,
+            "benefit_share_pct": 21.0
+          },
+          {
             "quintile": 5,
-            "mean_benefit": 1994,
-            "mean_residual_impact": 1187,
+            "mean_benefit": 1939,
+            "mean_residual_impact": 923,
             "mean_benefit_pct_income": 2.0,
-            "benefit_share_pct": 22.0
+            "benefit_share_pct": 22.9
           }
         ],
         "winners_losers": [
@@ -3592,9 +3598,48 @@
       "central_shock": 4.0,
       "severe_shock": 6.5
     },
-    "base_fuel_spend": 1300,
-    "base_food_spend": 5000,
-    "fuel_poverty_threshold": 0.1
+    "base_fuel_spend": 1029.6,
+    "base_food_spend": 3666.0,
+    "fuel_poverty_threshold": 0.1,
+    "spending_inputs": {
+      "source": {
+        "table": "A6 - detailed household expenditure by gross income decile group, UK",
+        "reference_period": "financial year ending 2024",
+        "units": "mean GBP per week per household, in FYE 2024 prices",
+        "grouping_variable": "gross household income decile (ONS's own grouping for this table)",
+        "bulletin_url": "https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/expenditure/bulletins/familyspendingintheuk/april2023tomarch2024",
+        "workbook_url": "https://www.ons.gov.uk/file?uri=%2Fpeoplepopulationandcommunity%2Fpersonalandhouseholdfinances%2Fexpenditure%2Fdatasets%2Ffamilyspendingworkbook1detailedexpenditureandtrends%2Ffye2024%2Fworkbook1detailedexpenditureandtrends.xlsx",
+        "workbook_sha256": "476a54e600c28cde22b778df48ce66d6b3906a5112b49bc4811ec46b47145f62",
+        "csv_sha256": "263f7fd709978545ddf28c04fa211efc88d18e3096c5f213272add67fb1873e6"
+      },
+      "transport_fuel_annual_gbp_by_gross_decile": {
+        "1": 384.8,
+        "2": 447.2,
+        "3": 650.0,
+        "4": 925.6,
+        "5": 1034.8,
+        "6": 1066.0,
+        "7": 1253.2,
+        "8": 1378.0,
+        "9": 1565.2,
+        "10": 1606.8
+      },
+      "food_annual_gbp_by_gross_decile": {
+        "1": 1981.2,
+        "2": 2511.6,
+        "3": 2964.0,
+        "4": 3250.0,
+        "5": 3567.2,
+        "6": 3707.6,
+        "7": 3988.4,
+        "8": 4612.4,
+        "9": 4846.4,
+        "10": 5246.8
+      },
+      "grouping_applied": "household_gross_income decile, household-weighted",
+      "transport_fuel_allocation": "each gross-income decile's A6 mean spread across that decile's vehicle-owning households only",
+      "uncertainty_treatment": "not quantified: Table A6 publishes no standard errors, so the Living Costs and Food Survey's sampling uncertainty is not carried into these results. Scenario ranges reflect price assumptions only"
+    }
   },
   "metadata": {
     "cap_basis": "Ofgem default tariff cap \u00a31,663/yr, Jul-Sep 2026, new TDCV basis (\u2248\u00a31,862 on the pre-July 2026 basis)",

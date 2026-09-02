@@ -119,11 +119,16 @@ export default function MethodologyTab({ data }) {
           <div>
             <strong className="text-slate-800">Fuel costs:</strong>{" "}
             Oil price increases translate to higher petrol and diesel prices at the pump.
-            Fuel spending is estimated at &pound;1,300/yr on average (<a href="https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/expenditure/bulletins/familyspendingintheuk/april2023tomarch2024" target="_blank" rel="noreferrer" className="underline">ONS Family Spending</a>), scaled
-            by income decile using ONS ad-hoc fuel expenditure tables (70% of average for
-            the lowest deciles to 125% for the highest). These are decile-level averages,
-            not household-level microdata; within-decile variation in fuel spending is not
-            captured.
+            Fuel spending comes from <a href="https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/expenditure/bulletins/familyspendingintheuk/april2023tomarch2024" target="_blank" rel="noreferrer" className="underline">ONS Family Spending</a> Table A6
+            (FYE 2024): &pound;19.80/wk on petrol, diesel and other motor oils at the UK
+            mean, ranging from &pound;7.40/wk in the lowest gross-income decile to
+            &pound;30.90/wk in the highest. A6 groups households by gross household
+            income, so the model applies it on that grouping. Each decile&apos;s mean is
+            spread across that decile&apos;s vehicle-owning households only, so households
+            with no vehicle spend nothing on fuel and receive no fuel-duty benefit. These
+            remain decile-level averages rather than household microdata: within-decile
+            variation among vehicle owners is not captured, and the survey&apos;s sampling
+            uncertainty is not carried into the results.
           </div>
           <div>
             <strong className="text-slate-800">Food prices:</strong>{" "}
@@ -183,18 +188,20 @@ export default function MethodologyTab({ data }) {
               </tr>
               <tr>
                 <td className="font-medium">Average household fuel spending</td>
-                <td>&pound;1,300/yr</td>
+                <td>&pound;1,029.60/yr</td>
                 <td className="text-xs text-slate-500">
-                  ONS (2025), Family Spending FYE 2024. ~&pound;25/wk average.
-                  Lowest decile: &pound;7.10/wk; highest: &pound;31.30/wk.
+                  ONS Family Spending FYE 2024, Table A6, &ldquo;Petrol, diesel and other
+                  motor oils&rdquo;: &pound;19.80/wk at the UK mean. Lowest gross-income
+                  decile &pound;7.40/wk; highest &pound;30.90/wk.
                 </td>
               </tr>
               <tr>
                 <td className="font-medium">Average household food spending</td>
-                <td>&pound;5,000/yr</td>
+                <td>&pound;3,666/yr</td>
                 <td className="text-xs text-slate-500">
-                  ONS (2025), Family Spending FYE 2024. 11.3% of expenditure.
-                  DEFRA (2025), Family Food FYE 2024.
+                  ONS Family Spending FYE 2024, Table A6, &ldquo;Food &amp;
+                  non-alcoholic drinks&rdquo;: &pound;70.50/wk at the UK mean. Lowest
+                  gross-income decile &pound;38.10/wk; highest &pound;100.90/wk.
                 </td>
               </tr>
               <tr>
