@@ -44,11 +44,11 @@ const POLICY_DESCRIPTIONS = {
   },
   fuel_duty_cut: {
     mechanism: "Extends the existing 5p per litre fuel duty cut (currently legislated to expire 31 December 2026) through the shock period.",
-    model: "The model applies an average £60 annual transport-fuel saving, scaled by each household's imputed fuel spending so low-mileage and non-driving households receive less.",
+    model: "The model applies 5p to each household's own modelled petrol and diesel volume, so households with no vehicle receive nothing. The figure covers household road fuel only; an Exchequer estimate would also cover business and freight use and the associated VAT.",
   },
   means_tested: {
-    mechanism: "Pays £650 to households receiving a means-tested benefit (UC, Pension Credit or income-related legacy benefits), mirroring the 2022 Cost of Living Payment.",
-    model: "The model treats this as income support for benefit-recipient households in the selected shock scenario.",
+    mechanism: "Pays £650 to households receiving a benefit that qualified for the 2022 Cost of Living Payment: Universal Credit, income-based JSA, income-related ESA, Income Support, Working Tax Credit, Child Tax Credit or Pension Credit. Housing Benefit alone did not qualify.",
+    model: "The model treats this as income support for qualifying households in the selected shock scenario, assuming complete take-up. The 2022 scheme's qualifying assessment window and its payment in two instalments are not modelled.",
   },
   elec_vat_cut: {
     mechanism: "Extends the electricity VAT cut (5% to 0%) announced in July 2026 — currently legislated for October 2026 to March 2027 — for a full year.",
@@ -64,7 +64,7 @@ const POLICY_DESCRIPTIONS = {
   },
   combined: {
     mechanism: "Applies all policies above together (excluding the social tariff).",
-    model: "Household benefit is capped at the size of the shock, but the fiscal cost reflects the full unclipped government outlay of every component policy.",
+    model: "The measures are applied jointly rather than summed: the Energy Price Guarantee caps the bill increase first, so the electricity VAT relief applies to the already-capped bill. Household protection is capped at the size of the shock, while the gross outlay is unclipped \u2014 government spending does not shrink when a household is over-compensated.",
   },
 };
 
@@ -113,9 +113,9 @@ export default function PolicyTab({ data }) {
     }));
   }, [policy]);
 
-  const winnersLosersData = useMemo(() => {
-    if (!policy?.winners_losers) return [];
-    return policy.winners_losers.map((d) => ({
+  const supportSharesData = useMemo(() => {
+    if (!policy?.support_shares) return [];
+    return policy.support_shares.map((d) => ({
       ...d,
       label: `Q${d.quintile}`,
     }));
@@ -129,7 +129,7 @@ export default function PolicyTab({ data }) {
       return {
         key,
         label: POLICY_LABELS[key] || key,
-        fiscal_cost_bn: p.fiscal_cost_bn,
+        fiscal_cost_bn: p.gross_outlay_bn ?? p.fiscal_cost_bn,
         avg_household_benefit: p.avg_household_benefit,
         fuel_poverty_reduction_pp: p.fuel_poverty_reduction_pp,
         targeting_bottom40: p.targeting_bottom40,
@@ -150,8 +150,11 @@ export default function PolicyTab({ data }) {
         electricity VAT cut and the 5p fuel duty cut, a benefits-targeted winter energy
         payment, and the timing of benefit uprating). The baseline for every comparison is
         the selected shock scenario before any policy response; the reform case is the same
-        scenario with the selected policy applied. Fiscal cost is the full government outlay
-        of the policy in 2027-28; average household benefit is the reduction in annual
+        scenario with the selected policy applied. Gross outlay is the full unclipped
+        government payment in 2027-28 \u2014 a gross modelled household transfer, not an
+        Exchequer costing, since it excludes tax and benefit interactions, take-up,
+        behavioural responses, administration, non-household fuel use and financing;
+        average household benefit is the reduction in annual
         household impact from the energy price shock; fuel poverty reduction compares the
         10%-of-income fuel poverty indicator before and after the policy. Targeting matters
         as much as scale: a policy that spends less but concentrates support on the
@@ -248,13 +251,13 @@ export default function PolicyTab({ data }) {
           <div className="grid gap-4 md:grid-cols-3">
             <div className="metric-card">
               <div className="text-xs font-medium uppercase tracking-[0.08em] text-slate-500">
-                Fiscal cost
+                Gross outlay
               </div>
               <div className="mt-2 text-3xl font-bold tracking-tight text-slate-900">
-                {policy.fiscal_cost_bn != null ? formatBn(policy.fiscal_cost_bn) : "--"}
+                {policy.gross_outlay_bn != null ? formatBn(policy.gross_outlay_bn) : "--"}
               </div>
               <div className="mt-2 text-sm leading-6 text-slate-500">
-                Estimated government cost of applying {policyLabel.toLowerCase()} in the selected shock scenario over 2027-28.
+                Gross modelled household transfer from applying {policyLabel.toLowerCase()} in the selected shock scenario over 2027-28. <strong>Not an Exchequer costing</strong> &mdash; it excludes tax and benefit interactions, take-up, behavioural responses, administration, non-household fuel use and financing.
               </div>
             </div>
             <div className="metric-card">
@@ -328,17 +331,17 @@ export default function PolicyTab({ data }) {
             </div>
 
             <div className="flex h-full flex-col">
-              {winnersLosersData.length > 0 ? (
+              {supportSharesData.length > 0 ? (
                 <div className="section-card flex h-[560px] flex-col">
                   <div className="min-h-[132px]">
                     <SectionHeading
-                      title="Winners and losers"
-                      description={`Share of households better off, unchanged, or worse off when moving from the selected shock scenario before policy to the same scenario with ${policyLabel.toLowerCase()}. A household counts as better or worse off if its annual residual impact changes by more than £1.`}
+                      title="Who receives support"
+                      description={`Share of households whose annual residual impact falls by more than £1 when ${policyLabel.toLowerCase()} is applied to the selected shock scenario. No household can be made worse off: support is non-negative and residual impact is floored at zero, so a "worse off" category would report a model identity rather than a finding.`}
                     />
                   </div>
                   <div className="min-h-0 flex-1 w-full">
                     <ResponsiveContainer width="100%" height="100%">
-                      <ComposedChart data={winnersLosersData}>
+                      <ComposedChart data={supportSharesData}>
                         <CartesianGrid strokeDasharray="3 3" stroke={colors.border.light} />
                         <XAxis dataKey="label" tick={AXIS_STYLE} tickLine={false} />
                         <YAxis
@@ -358,22 +361,16 @@ export default function PolicyTab({ data }) {
                         />
                         <Legend verticalAlign="bottom" height={36} wrapperStyle={{ fontSize: 13 }} />
                         <Bar
-                          dataKey="pct_winners"
-                          name="Better off"
+                          dataKey="pct_supported"
+                          name="Receives support"
                           stackId="shares"
                           fill={colors.primary[800]}
                         />
                         <Bar
-                          dataKey="pct_unchanged"
-                          name="No change"
+                          dataKey="pct_unsupported"
+                          name="No support"
                           stackId="shares"
                           fill={colors.gray[300]}
-                        />
-                        <Bar
-                          dataKey="pct_losers"
-                          name="Worse off"
-                          stackId="shares"
-                          fill="#dc2626"
                         />
                       </ComposedChart>
                     </ResponsiveContainer>
@@ -382,7 +379,7 @@ export default function PolicyTab({ data }) {
                 </div>
               ) : (
                 <div className="section-card flex h-[560px] flex-col">
-                  <p className="text-sm text-slate-500">Winners/losers data not available.</p>
+                  <p className="text-sm text-slate-500">Support-share data not available.</p>
                 </div>
               )}
             </div>

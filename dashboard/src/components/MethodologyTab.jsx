@@ -306,7 +306,7 @@ export default function MethodologyTab({ data }) {
             <li>The compensation an immediate benefit uprating would deliver, reported separately from the cost channels (household-level benefit data from PolicyEngine)</li>
             <li>Distributional analysis by income quintile, country, tenure, and household type</li>
             <li>Fuel poverty impact using the indicative 10%-of-income ratio</li>
-            <li>Ten policy responses with fiscal cost and targeting analysis, including the enacted electricity VAT cut and fuel duty extension, a social tariff, and a combined package</li>
+            <li>Ten policy responses with gross outlay and targeting analysis, including the enacted electricity VAT cut and fuel duty extension, a social tariff, and a combined package. Every cost is a gross modelled household transfer, not an Exchequer costing; the fuel duty figure covers household road-fuel volumes only, where an Exchequer estimate would also cover business and freight use and the associated VAT</li>
           </ul>
         </div>
 

@@ -44,6 +44,10 @@ def synthetic_data():
         "is_means_tested": decile <= 2,
         "ct_band": np.array(["A", "B", "C", "D", "E", "F", "G", "H", "A", "B"]),
         "benefit_income": np.where(decile <= 2, 8_000.0, 0.0),
+        # Only vehicle owners have road-fuel volumes; the top eight deciles
+        # own one, so the bottom two have none.
+        "owns_vehicle": decile > 2,
+        "fuel_litres": np.where(decile > 2, 800.0, 0.0),
         "fuel_cost": np.array(
             [config.BASE_FUEL_SPEND * config.FUEL_DECILE_FACTORS[d] for d in decile]
         ),
