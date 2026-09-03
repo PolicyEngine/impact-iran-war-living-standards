@@ -1,0 +1,29 @@
+# ONS Family Spending in the UK, financial year ending 2024.
+# Table: A6 - detailed household expenditure by gross income decile group, UK
+# Units: mean GBP per week per household, in FYE 2024 prices
+# Grouping variable: gross household income decile (ONS's own grouping for this table)
+# Bulletin: https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/expenditure/bulletins/familyspendingintheuk/april2023tomarch2024
+# Workbook: https://www.ons.gov.uk/file?uri=%2Fpeoplepopulationandcommunity%2Fpersonalandhouseholdfinances%2Fexpenditure%2Fdatasets%2Ffamilyspendingworkbook1detailedexpenditureandtrends%2Ffye2024%2Fworkbook1detailedexpenditureandtrends.xlsx
+# Workbook SHA-256: 476a54e600c28cde22b778df48ce66d6b3906a5112b49bc4811ec46b47145f62
+# Regenerate with: python scripts/extract_ons_a6.py
+commodity,a6_code,a6_description,gross_income_decile,weekly_spend_gbp,all_households_weekly_spend_gbp
+transport_fuel,7.2.2,"Petrol, diesel and other motor oils",1,7.40,19.80
+transport_fuel,7.2.2,"Petrol, diesel and other motor oils",2,8.60,19.80
+transport_fuel,7.2.2,"Petrol, diesel and other motor oils",3,12.50,19.80
+transport_fuel,7.2.2,"Petrol, diesel and other motor oils",4,17.80,19.80
+transport_fuel,7.2.2,"Petrol, diesel and other motor oils",5,19.90,19.80
+transport_fuel,7.2.2,"Petrol, diesel and other motor oils",6,20.50,19.80
+transport_fuel,7.2.2,"Petrol, diesel and other motor oils",7,24.10,19.80
+transport_fuel,7.2.2,"Petrol, diesel and other motor oils",8,26.50,19.80
+transport_fuel,7.2.2,"Petrol, diesel and other motor oils",9,30.10,19.80
+transport_fuel,7.2.2,"Petrol, diesel and other motor oils",10,30.90,19.80
+food_and_non_alcoholic_drinks,1,Food & non-alcoholic drinks,1,38.10,70.50
+food_and_non_alcoholic_drinks,1,Food & non-alcoholic drinks,2,48.30,70.50
+food_and_non_alcoholic_drinks,1,Food & non-alcoholic drinks,3,57.00,70.50
+food_and_non_alcoholic_drinks,1,Food & non-alcoholic drinks,4,62.50,70.50
+food_and_non_alcoholic_drinks,1,Food & non-alcoholic drinks,5,68.60,70.50
+food_and_non_alcoholic_drinks,1,Food & non-alcoholic drinks,6,71.30,70.50
+food_and_non_alcoholic_drinks,1,Food & non-alcoholic drinks,7,76.70,70.50
+food_and_non_alcoholic_drinks,1,Food & non-alcoholic drinks,8,88.70,70.50
+food_and_non_alcoholic_drinks,1,Food & non-alcoholic drinks,9,93.20,70.50
+food_and_non_alcoholic_drinks,1,Food & non-alcoholic drinks,10,100.90,70.50

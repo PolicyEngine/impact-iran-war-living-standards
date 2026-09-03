@@ -35,6 +35,12 @@ from .config import (
     WINNERS_LOSERS_THRESHOLD,
     EPG_CAP_PCT,
     REGION_TO_COUNTRY,
+    ALLOCATE_FUEL_TO_VEHICLE_OWNERS,
+)
+from .inputs import (
+    FOOD_SPEND,
+    TRANSPORT_FUEL_SPEND,
+    source_metadata as spending_source_metadata,
 )
 
 
@@ -82,6 +88,68 @@ def _safe_div(numerator, denominator):
 def _decile_amount(decile, factors, base_amount):
     """Map income deciles onto absolute annual spending assumptions."""
     return np.array([base_amount * factors[int(d)] for d in decile])
+
+
+def _weighted_decile(values, weights):
+    """Household-weighted decile group (1-10) of `values`.
+
+    ONS Table A6 groups households into ten equal-sized groups by gross
+    household income, weighting households equally. Reproducing that grouping
+    is what lets A6's figures be applied to this population; PolicyEngine's
+    `household_income_decile` is built on equivalised net income and is not
+    the same grouping (#12).
+    """
+    order = np.argsort(values, kind="stable")
+    sorted_values = values[order]
+    sorted_weights = weights[order]
+    cumulative = np.cumsum(sorted_weights)
+    total = cumulative[-1]
+
+    # Households on the same income must land in the same group: splitting a
+    # tie across a decile boundary would give identical households different
+    # A6 spending factors on nothing but input order. Ties are common at the
+    # bottom of the gross-income distribution, so each distinct income is
+    # placed by the midpoint of its whole tie group's weight.
+    group_end = np.searchsorted(sorted_values, sorted_values, side="right") - 1
+    group_start = np.searchsorted(sorted_values, sorted_values, side="left")
+    weight_below_group = np.where(group_start > 0, cumulative[group_start - 1], 0.0)
+    midpoints = (weight_below_group + cumulative[group_end]) / 2 / total
+
+    decile_of_sorted = np.clip((midpoints * 10).astype(int) + 1, 1, 10)
+    decile = np.empty(len(values), dtype=int)
+    decile[order] = decile_of_sorted
+    return decile
+
+
+def _allocate_to_vehicle_owners(spend, decile, owns_vehicle, weights):
+    """Concentrate each decile's transport-fuel spending on vehicle owners.
+
+    A6 reports a mean across all households in the decile, including those
+    with no vehicle. Spreading that mean evenly gave every household positive
+    fuel spending, and so a modelled fuel-duty benefit for non-drivers (#12).
+    Dividing by the decile's vehicle-ownership rate holds the decile mean at
+    the A6 figure while giving non-owners zero.
+    """
+    allocated = np.zeros_like(spend, dtype=float)
+    for group in np.unique(decile):
+        in_group = decile == group
+        owners = in_group & owns_vehicle
+        group_weight = weights[in_group].sum()
+        owner_weight = weights[owners].sum()
+        if group_weight <= 0:
+            continue
+        if owner_weight <= 0:
+            # Silently spreading the decile's spending back across every
+            # household would restore exactly the construction this function
+            # exists to remove, so fail instead. Every decile has vehicle
+            # owners on the certified data build (#12 review S1).
+            raise ValueError(
+                f"decile {group} has no vehicle-owning households, so its "
+                "transport-fuel spending cannot be allocated without "
+                "assigning spending to non-owners"
+            )
+        allocated[owners] = spend[owners] * group_weight / owner_weight
+    return allocated
 
 
 # ── 1. Baseline ──────────────────────────────────────────────────────────
@@ -250,8 +318,19 @@ def run_baseline(year=YEAR):
         [REGION_TO_COUNTRY.get(str(r), "UNKNOWN") for r in region]
     )
 
-    fuel_cost = _decile_amount(decile, FUEL_DECILE_FACTORS, BASE_FUEL_SPEND)
-    food_cost = _decile_amount(decile, FOOD_DECILE_FACTORS, BASE_FOOD_SPEND)
+    # ONS Table A6 is published by gross household income decile, so the
+    # spending figures are applied on that grouping — not on the equivalised
+    # HBAI net-income decile the distributional tables are reported by.
+    gross_income = _vals(sim, "household_gross_income", year)
+    gross_decile = _weighted_decile(gross_income, weights)
+    owns_vehicle = _vals(sim, "owns_vehicle", year).astype(bool)
+
+    fuel_cost = _decile_amount(gross_decile, FUEL_DECILE_FACTORS, BASE_FUEL_SPEND)
+    if ALLOCATE_FUEL_TO_VEHICLE_OWNERS:
+        fuel_cost = _allocate_to_vehicle_owners(
+            fuel_cost, gross_decile, owns_vehicle, weights
+        )
+    food_cost = _decile_amount(gross_decile, FOOD_DECILE_FACTORS, BASE_FOOD_SPEND)
 
     return {
         "bundle": bundle,
@@ -273,6 +352,9 @@ def run_baseline(year=YEAR):
         "is_means_tested": is_means_tested,
         "ct_band": ct_band,
         "benefit_income": benefit_income,
+        "gross_income": gross_income,
+        "gross_decile": gross_decile,
+        "owns_vehicle": owns_vehicle,
         "fuel_cost": fuel_cost,
         "food_cost": food_cost,
     }
@@ -869,7 +951,14 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
     results = {
         "year": year,
         "current_energy_cap": CURRENT_ENERGY_CAP,
-        "provenance": build_provenance(bundle=data.get("bundle")),
+        "provenance": build_provenance(
+            bundle=data.get("bundle"),
+            input_hashes={
+                "src/iran_impact/inputs/ons_family_spending_a6_fye2024.csv": (
+                    spending_source_metadata()["csv_sha256"]
+                )
+            },
+        ),
         "baseline": {
             "n_households_m": round(float(weights.sum()) / 1e6, 1),
             # Mean persons per household: lets the dashboard convert a
@@ -895,6 +984,18 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
             # Households whose fuel-poverty status comes from the
             # non-positive-income rule rather than the 10% ratio, and which
             # are excluded from every share-of-income mean (#11).
+            # Assigned spending, for comparison with the A6 means the inputs
+            # come from and with the survey spending in the microdata.
+            "mean_transport_fuel_spend": round(
+                weighted_mean(data["fuel_cost"], weights)
+            ),
+            "mean_food_spend": round(weighted_mean(data["food_cost"], weights)),
+            "vehicle_owning_share_pct": round(
+                weighted_mean(data["owns_vehicle"].astype(float), weights) * 100, 1
+            ),
+            "households_with_no_transport_fuel_spend": round(
+                weighted_sum((data["fuel_cost"] == 0).astype(float), weights)
+            ),
             "non_positive_income_households": round(
                 weighted_sum(
                     _fuel_poverty_excluded(data["income"]).astype(float), weights
@@ -949,6 +1050,26 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
             "base_fuel_spend": BASE_FUEL_SPEND,
             "base_food_spend": BASE_FOOD_SPEND,
             "fuel_poverty_threshold": FUEL_POVERTY_THRESHOLD,
+            "spending_inputs": {
+                "source": spending_source_metadata(),
+                "transport_fuel_annual_gbp_by_gross_decile": (
+                    TRANSPORT_FUEL_SPEND.annual_by_decile
+                ),
+                "food_annual_gbp_by_gross_decile": FOOD_SPEND.annual_by_decile,
+                "grouping_applied": "household_gross_income decile, household-weighted",
+                "transport_fuel_allocation": (
+                    "each gross-income decile's A6 mean spread across that "
+                    "decile's vehicle-owning households only"
+                    if ALLOCATE_FUEL_TO_VEHICLE_OWNERS
+                    else "spread evenly across all households in the decile"
+                ),
+                "uncertainty_treatment": (
+                    "not quantified: Table A6 publishes no standard errors, so "
+                    "the Living Costs and Food Survey's sampling uncertainty is "
+                    "not carried into these results. Scenario ranges reflect "
+                    "price assumptions only"
+                ),
+            },
         },
         "metadata": {
             "cap_basis": (

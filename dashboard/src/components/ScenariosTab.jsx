@@ -185,8 +185,8 @@ function NumberInput({ label, hint, value, onChange }) {
 function ExampleHousehold({ data, scenario }) {
   const [income, setIncome] = useState(35000);
   const [energyBill, setEnergyBill] = useState(1700);
-  const [fuelSpend, setFuelSpend] = useState(1300);
-  const [foodSpend, setFoodSpend] = useState(5000);
+  const [fuelSpend, setFuelSpend] = useState(1030);
+  const [foodSpend, setFoodSpend] = useState(3666);
   const [benefitIncome, setBenefitIncome] = useState(0);
 
   const params = data?.scenarios?.[scenario]?.params;
@@ -226,13 +226,13 @@ function ExampleHousehold({ data, scenario }) {
           />
           <NumberInput
             label="Petrol & diesel / yr"
-            hint={`UK typical ~${formatCurrency(1300)}; 0 if no car`}
+            hint={`UK typical ~${formatCurrency(1030)}; 0 if no car`}
             value={fuelSpend}
             onChange={setFuelSpend}
           />
           <NumberInput
             label="Food spend / yr"
-            hint={`UK typical ~${formatCurrency(5000)}`}
+            hint={`UK typical ~${formatCurrency(3666)}`}
             value={foodSpend}
             onChange={setFoodSpend}
           />

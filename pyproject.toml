@@ -27,6 +27,9 @@ simulation = [
 ]
 dev = [
   "pytest>=8.0",
+  # Only needed to regenerate the ONS input table from the published workbook
+  # (scripts/extract_ons_a6.py); the committed CSV is read with the stdlib.
+  "openpyxl>=3.1",
 ]
 
 [project.scripts]

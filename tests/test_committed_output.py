@@ -89,8 +89,9 @@ def test_committed_headlines_match_the_reviewed_values(results):
     assert baseline["mean_net_income"] == 61_924
     assert baseline["poverty_rate_baseline_pct"] == 19.91
     assert baseline["non_positive_income_households"] == 188_777
+    assert baseline["households_with_no_transport_fuel_spend"] == 6_702_935
 
     central = results["scenarios"]["central_shock"]["summary"]
-    assert central["mean_net_impact"] == 1_429
-    assert central["total_impact_bn"] == 42.3
-    assert central["n_newly_below_anchored_line"] == 1_243_917
+    assert central["mean_net_impact"] == 1_250
+    assert central["total_impact_bn"] == 37.0
+    assert central["n_newly_below_anchored_line"] == 1_089_992

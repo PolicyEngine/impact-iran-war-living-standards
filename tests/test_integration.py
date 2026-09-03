@@ -116,3 +116,35 @@ def test_deciles_are_clipped_into_range(baseline):
     decile = baseline["decile"]
     assert decile.min() >= 1
     assert decile.max() <= 10
+
+
+def test_transport_fuel_spending_is_not_universal(baseline):
+    """The A6 mean must not be assigned to households with no vehicle (#12)."""
+    from iran_impact.pipeline import weighted_mean
+
+    weights = baseline["weights"]
+    fuel_cost = baseline["fuel_cost"]
+    assert (fuel_cost == 0).any(), "every household was assigned fuel spending"
+    owns = baseline["owns_vehicle"]
+    assert not fuel_cost[~owns].any()
+    # Concentrating spending on owners must leave the population mean at A6's.
+    assert weighted_mean(fuel_cost, weights) == pytest.approx(
+        config.BASE_FUEL_SPEND, rel=0.01
+    )
+
+
+def test_food_spending_mean_matches_the_published_table(baseline):
+    from iran_impact.pipeline import weighted_mean
+
+    assert weighted_mean(baseline["food_cost"], baseline["weights"]) == pytest.approx(
+        config.BASE_FOOD_SPEND, rel=0.01
+    )
+
+
+def test_gross_income_deciles_are_ten_equal_weighted_groups(baseline):
+    weights = baseline["weights"]
+    shares = [
+        weights[baseline["gross_decile"] == d].sum() / weights.sum()
+        for d in range(1, 11)
+    ]
+    assert all(share == pytest.approx(0.1, abs=0.005) for share in shares)

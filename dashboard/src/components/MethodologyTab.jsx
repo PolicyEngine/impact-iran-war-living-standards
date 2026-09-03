@@ -119,18 +119,26 @@ export default function MethodologyTab({ data }) {
           <div>
             <strong className="text-slate-800">Fuel costs:</strong>{" "}
             Oil price increases translate to higher petrol and diesel prices at the pump.
-            Fuel spending is estimated at &pound;1,300/yr on average (<a href="https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/expenditure/bulletins/familyspendingintheuk/april2023tomarch2024" target="_blank" rel="noreferrer" className="underline">ONS Family Spending</a>), scaled
-            by income decile using ONS ad-hoc fuel expenditure tables (70% of average for
-            the lowest deciles to 125% for the highest). These are decile-level averages,
-            not household-level microdata; within-decile variation in fuel spending is not
-            captured.
+            Fuel spending comes from <a href="https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/expenditure/bulletins/familyspendingintheuk/april2023tomarch2024" target="_blank" rel="noreferrer" className="underline">ONS Family Spending</a> Table A6
+            (FYE 2024): &pound;19.80/wk on petrol, diesel and other motor oils at the UK
+            mean, ranging from &pound;7.40/wk in the lowest gross-income decile to
+            &pound;30.90/wk in the highest. A6 groups households by gross household
+            income, so the model applies it on that grouping. Each decile&apos;s mean is
+            spread across that decile&apos;s vehicle-owning households only, so households
+            with no vehicle spend nothing on fuel and receive no fuel-duty benefit. These
+            remain decile-level averages rather than household microdata: within-decile
+            variation among vehicle owners is not captured, and the survey&apos;s sampling
+            uncertainty is not carried into the results.
           </div>
           <div>
             <strong className="text-slate-800">Food prices:</strong>{" "}
             Energy is a major input cost in food production, processing, and distribution.
             We apply scenario-specific annual food price increases of 2.0%, 4.0%, and
-            6.5% to average food spending of &pound;5,000/yr (<a href="https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/expenditure/bulletins/familyspendingintheuk/april2023tomarch2024" target="_blank" rel="noreferrer" className="underline">ONS</a>; DEFRA Family Food),
-            scaled by decile following Engel&apos;s Law. As with fuel, these are
+            6.5% to food spending from <a href="https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/expenditure/bulletins/familyspendingintheuk/april2023tomarch2024" target="_blank" rel="noreferrer" className="underline">ONS Family Spending</a> Table A6
+            (FYE 2024): &pound;70.50/wk (&pound;3,666/yr) at the UK mean, ranging from
+            &pound;38.10/wk in the lowest gross-income decile to &pound;100.90/wk in the
+            highest &mdash; the published decile gradient rather than an assumed one. As
+            with fuel, these are
             decile-level spending estimates rather than household-level microdata. The
             high scenario is anchored to IGD&apos;s severe 2026 food-inflation warning
             reported in March 2026.
@@ -183,18 +191,20 @@ export default function MethodologyTab({ data }) {
               </tr>
               <tr>
                 <td className="font-medium">Average household fuel spending</td>
-                <td>&pound;1,300/yr</td>
+                <td>&pound;1,029.60/yr</td>
                 <td className="text-xs text-slate-500">
-                  ONS (2025), Family Spending FYE 2024. ~&pound;25/wk average.
-                  Lowest decile: &pound;7.10/wk; highest: &pound;31.30/wk.
+                  ONS Family Spending FYE 2024, Table A6, &ldquo;Petrol, diesel and other
+                  motor oils&rdquo;: &pound;19.80/wk at the UK mean. Lowest gross-income
+                  decile &pound;7.40/wk; highest &pound;30.90/wk.
                 </td>
               </tr>
               <tr>
                 <td className="font-medium">Average household food spending</td>
-                <td>&pound;5,000/yr</td>
+                <td>&pound;3,666/yr</td>
                 <td className="text-xs text-slate-500">
-                  ONS (2025), Family Spending FYE 2024. 11.3% of expenditure.
-                  DEFRA (2025), Family Food FYE 2024.
+                  ONS Family Spending FYE 2024, Table A6, &ldquo;Food &amp;
+                  non-alcoholic drinks&rdquo;: &pound;70.50/wk at the UK mean. Lowest
+                  gross-income decile &pound;38.10/wk; highest &pound;100.90/wk.
                 </td>
               </tr>
               <tr>
@@ -263,7 +273,7 @@ export default function MethodologyTab({ data }) {
           <ul className="mt-4 list-disc pl-5 text-sm leading-7 text-slate-600 space-y-1">
             <li>Direct energy bill increases from wholesale price rises (household-level microdata from PolicyEngine)</li>
             <li>Fuel cost increases from higher oil prices (decile-average spending estimates from ONS)</li>
-            <li>Second-round food price inflation from energy input costs (decile-average spending estimates from ONS/DEFRA)</li>
+            <li>Second-round food price inflation from energy input costs (ONS Family Spending Table A6 spending by gross-income decile)</li>
             <li>Real-value loss of means-tested benefits between uprating dates (household-level benefit data from PolicyEngine)</li>
             <li>Distributional analysis by income quintile, country, tenure, and household type</li>
             <li>Fuel poverty impact using the indicative 10%-of-income ratio</li>

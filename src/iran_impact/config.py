@@ -5,6 +5,8 @@ Middle East conflict (US/Israel-Iran war from late February 2026, with recurrent
 Strait of Hormuz disruption). Sources are cited inline.
 """
 
+from .inputs import FOOD_SPEND, TRANSPORT_FUEL_SPEND
+
 YEAR = 2027  # 2027-28 tax year — the year the Autumn Budget 2026 decisions apply to
 
 # Ofgem default tariff cap, 1 Jul-30 Sep 2026, typical dual-fuel direct-debit
@@ -53,38 +55,32 @@ SCENARIOS = {
     },
 }
 
-# Household spending assumptions by income decile. Base amounts approximate
-# ONS Living Costs and Food Survey FYE 2024 (Family Spending, Table A6):
-# transport fuels ~£25/wk (~£1,300/yr) and food & non-alcoholic drinks
-# ~£95/wk (~£4,900/yr) at the all-household mean, with decile gradients
-# approximating the LCF distribution. A future improvement is direct
-# LCF-based imputation onto the FRS microdata.
-BASE_FUEL_SPEND = 1_300
-BASE_FOOD_SPEND = 5_000
-FUEL_DECILE_FACTORS = {
-    1: 0.70,
-    2: 0.70,
-    3: 0.90,
-    4: 0.90,
-    5: 1.00,
-    6: 1.00,
-    7: 1.15,
-    8: 1.15,
-    9: 1.25,
-    10: 1.25,
-}
-FOOD_DECILE_FACTORS = {
-    1: 0.65,
-    2: 0.65,
-    3: 0.80,
-    4: 0.80,
-    5: 1.00,
-    6: 1.00,
-    7: 1.20,
-    8: 1.20,
-    9: 1.45,
-    10: 1.45,
-}
+# Household spending inputs, read from the committed ONS Family Spending
+# Table A6 extract rather than hand-set here. See `inputs.py` and
+# `scripts/extract_ons_a6.py`; the CSV records the workbook URL, reference
+# period, units, grouping variable and workbook hash.
+#
+# A6 reports UK means of £19.80/week on petrol, diesel and other motor oils
+# (£1,029.60/year) and £70.50/week on food and non-alcoholic drinks
+# (£3,666/year). Earlier versions of this file attributed £1,300 and £5,000 to
+# the same table (#12).
+#
+# A6 groups households by GROSS household income decile, so the model groups
+# them the same way — see `household_gross_income_decile` in the pipeline. It
+# does not reuse the equivalised HBAI net-income decile that the
+# distributional breakdowns are reported on; the two are not interchangeable.
+BASE_FUEL_SPEND = TRANSPORT_FUEL_SPEND.annual_mean
+BASE_FOOD_SPEND = FOOD_SPEND.annual_mean
+FUEL_DECILE_FACTORS = TRANSPORT_FUEL_SPEND.decile_factors
+FOOD_DECILE_FACTORS = FOOD_SPEND.decile_factors
+
+# Transport fuel goes only to households that own a vehicle. Constant spending
+# within a decile previously gave every household positive fuel expenditure,
+# including households with no vehicle, which in turn gave every household a
+# modelled fuel-duty benefit (#12, #14). Each decile's spending is instead
+# spread across that decile's vehicle-owning households only, so the decile
+# mean still matches A6 while non-owners spend nothing.
+ALLOCATE_FUEL_TO_VEHICLE_OWNERS = True
 
 # Benefit uprating lag: CPI-linked benefits are uprated each April using the
 # previous September's CPI. For a shock arriving mid-year, the average period

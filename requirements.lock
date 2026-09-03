@@ -31,6 +31,8 @@ diskcache==5.6.3
     # via policyengine
 dpath==2.2.0
     # via policyengine-core
+et-xmlfile==2.0.0
+    # via openpyxl
 executing==2.2.1
     # via stack-data
 filelock==3.32.5
@@ -136,6 +138,8 @@ numpy==2.5.2
     #   pandas
     #   policyengine-core
     #   tables
+openpyxl==3.1.5
+    # via energy-price-shock-impact (pyproject.toml)
 packaging==26.3
     # via
     #   huggingface-hub
