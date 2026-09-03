@@ -447,29 +447,6 @@ def compute_scenario(data, scenario_key):
 
 # ── 3. Policy responses ─────────────────────────────────────────────────
 
-# How each measure reaches a household, for fuel-poverty accounting:
-#
-#   ENERGY_BILL_KEYS  — reduce the domestic energy bill, so they lower the
-#                       numerator of the energy-to-income ratio.
-#   CASH_TRANSFER_KEYS — raise income, so they raise the denominator.
-#
-# A fuel-duty cut is in neither: it reduces road-fuel costs, which are not
-# domestic energy and are not income. Routing it as income would raise the
-# affordability denominator and understate fuel poverty (#14 review C2).
-# Both the standalone effects and the combined package read these lists, so
-# the two cannot diverge — which is how the combined package came to treat
-# fuel-duty savings as income while the standalone policy did not.
-ENERGY_BILL_KEYS = ["energy_price_guarantee", "elec_vat_cut"]
-CASH_TRANSFER_KEYS = [
-    "flat_rebate",
-    "ct_rebate",
-    "uc_uplift",
-    "means_tested_payment",
-    "accelerated_uprating",
-]
-# Reduces a non-domestic cost: neither an energy-bill reduction nor income.
-OTHER_COST_REDUCTION_KEYS = ["fuel_duty_cut"]
-
 COMBINED_KEYS = [
     "energy_price_guarantee",
     "flat_rebate",
@@ -603,46 +580,25 @@ def compute_combined_package(data, scenario_key, scenario_impacts, policies):
 
 
 def compute_policy_effects(data, scenario_key, scenario_impacts):
-    """Compute fiscal benefits and fuel-poverty accounting components.
+    """Per-policy household benefit and gross outlay.
 
-    Domestic energy subsidies reduce the numerator in the fuel-poverty ratio.
-    Cash transfers raise the affordability denominator. Fuel-duty cuts reduce
-    total living-standard pressure but do not directly affect domestic energy
-    affordability, so they do neither — see the routing lists above.
+    The two differ only for the combined package: its outlay is the unclipped
+    sum of its components, because government spending does not shrink when a
+    household is over-compensated (#14).
 
-    The combined package routes its components through the same lists as the
-    standalone policies, so a measure cannot be treated as income in one and
-    not the other.
+    Measures used to be routed additionally by how they reach a household —
+    reducing the energy bill, or raising income — because the fuel-poverty
+    ratio needed that split. That indicator has been withdrawn (#22), so the
+    routing went with it.
     """
     policies = compute_policies(data, scenario_key, scenario_impacts)
     combined_outlay = policies.pop("_combined_outlay")
-    combined_components = policies.pop("_combined_components")
-    zeros = np.zeros_like(scenario_impacts["net_impact"])
-    effects = {}
-    for key, benefit in policies.items():
-        effects[key] = {
-            "benefit": benefit,
-            "fiscal_outlay": benefit,
-            "energy_reduction": zeros.copy(),
-            "income_addition": zeros.copy(),
-        }
-
-    # The social tariff is not in the combined package but reduces energy
-    # bills the same way the package's energy measures do.
-    for key in ENERGY_BILL_KEYS + ["social_tariff"]:
-        effects[key]["energy_reduction"] = policies[key]
-    for key in CASH_TRANSFER_KEYS:
-        effects[key]["income_addition"] = policies[key]
-
+    policies.pop("_combined_components")
+    effects = {
+        key: {"benefit": benefit, "fiscal_outlay": benefit}
+        for key, benefit in policies.items()
+    }
     effects["combined"]["fiscal_outlay"] = combined_outlay
-    # Use the post-interaction component amounts, so the package's energy and
-    # income routing matches the outlay it reports (#14).
-    effects["combined"]["energy_reduction"] = sum(
-        (combined_components[key] for key in ENERGY_BILL_KEYS), zeros.copy()
-    )
-    effects["combined"]["income_addition"] = sum(
-        (combined_components[key] for key in CASH_TRANSFER_KEYS), zeros.copy()
-    )
     return effects
 
 
@@ -680,11 +636,6 @@ def _non_positive_income(income):
     than silently folded into them (#11).
     """
     return ~_positive_income(income)
-
-
-def _shocked_energy(data, impacts):
-    """Energy bill after shock, before policy."""
-    return data["energy"] + impacts["energy_shock"]
 
 
 def _by_quintile(data, impacts):
@@ -810,9 +761,7 @@ def _baseline_in_poverty(data, poverty_line):
 def _eval_policy(data, impacts, policy_name, effect):
     weights = data["weights"]
     income = data["income"]
-    baseline_energy = data["energy"]
     net = impacts["net_impact"]
-    shocked_energy = _shocked_energy(data, impacts)
     # Two numerators, deliberately distinct:
     #   outlay     — what government pays out, uncapped. A household can be
     #                over-compensated and the payment does not shrink.
@@ -823,8 +772,6 @@ def _eval_policy(data, impacts, policy_name, effect):
     # not close to the shock (#14 review C1).
     outlay = effect["fiscal_outlay"]
     benefit = effect["benefit"]
-    energy_reduction = effect["energy_reduction"]
-    income_addition = effect["income_addition"]
     protection = np.minimum(benefit, net)
     residual = net - protection
     # Poverty: people (not households) below 60% of median equivalised income
@@ -933,8 +880,6 @@ def _scenario_output(data, scenario_key):
     gross = (
         impacts["energy_shock"] + impacts["fuel_shock"] + impacts["food_shock"]
     )
-    baseline_energy = data["energy"]
-    shocked_energy = _shocked_energy(data, impacts)
     # People (not households) pushed below 60% of median equivalised income
     person_weights = weights * data["people"]
     poverty_line = _poverty_line(data)
