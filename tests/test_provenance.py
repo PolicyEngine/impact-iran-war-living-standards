@@ -33,14 +33,14 @@ def test_build_provenance_without_a_bundle_reports_no_bundle():
 
 def test_build_provenance_keeps_only_portable_bundle_fields():
     bundle = {
-        "bundle_id": "uk-5.0.1",
-        "certified_data_build_id": "populace-uk-2023-test",
+        "bundle_id": "uk-5.3.0",
+        "certified_data_build_id": "test-data-build",
         # A machine-local cache path must not reach the output.
         "runtime_dataset_source": "/home/someone/.cache/x.h5",
     }
     recorded = provenance.build_provenance(bundle=bundle)["release_bundle"]
-    assert recorded["bundle_id"] == "uk-5.0.1"
-    assert recorded["certified_data_build_id"] == "populace-uk-2023-test"
+    assert recorded["bundle_id"] == "uk-5.3.0"
+    assert recorded["certified_data_build_id"] == "test-data-build"
     assert "runtime_dataset_source" not in recorded
 
 

@@ -6,26 +6,32 @@ calculation:
 
     pytest tests/test_integration.py
 
-The pinned values are the reproduced results recorded in the September 2026
-model-validation audit (issue #16).
+The pinned values are the results for the certified data build named below.
 """
 
 import pytest
 
 from iran_impact import config
 
-CERTIFIED_DATA_BUILD = "populace-uk-2023-dd68c73-4aa4b14-20260619T023711Z"
-CERTIFIED_MODEL_VERSION = "2.89.2"
+CERTIFIED_DATA_BUILD = "policyengine-uk-data-1.56.16"
+CERTIFIED_MODEL_VERSION = "2.90.2"
 
-# Reproduced audit figures. Tolerances are tight because the same code against
+# Baseline figures for the certified build above (policyengine 5.3.0,
+# enhanced_frs_2024_25). Tolerances are tight because the same code against
 # the same certified build is deterministic; they exist only to absorb the
 # rounding applied on output.
-EXPECTED_HOUSEHOLDS_M = 29.6
-EXPECTED_MEAN_NET_INCOME = 61_924
-EXPECTED_MEAN_ENERGY_SPEND = 1_331
+#
+# The September 2026 audit's reproduced figures (29.6m households, £61,924
+# mean net income, £1,331 mean energy spend) belong to the superseded
+# populace_uk_2023 build and no longer apply.
+EXPECTED_HOUSEHOLDS_M = 31.6
+EXPECTED_MEAN_NET_INCOME = 57_103
+EXPECTED_MEAN_ENERGY_SPEND = 1_584
 
 
-HF_CACHE_DATASET = "datasets--policyengine--populace-uk-private"
+# Local cache directory for the gated repository the certified dataset lives
+# in, so an offline run with an existing snapshot is not skipped.
+HF_CACHE_DATASET = "models--policyengine--policyengine-uk-data-private"
 
 
 def _managed_data_available():
@@ -60,7 +66,8 @@ def _managed_data_available():
     if cache.exists():
         return True, ""
     return False, (
-        "no Hugging Face token and no cached populace-uk-private snapshot"
+        "no Hugging Face token and no cached policyengine-uk-data-private "
+        "snapshot"
     )
 
 
