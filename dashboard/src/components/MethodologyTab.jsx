@@ -24,7 +24,7 @@ export default function MethodologyTab({ data }) {
           paths for the conflict (de-escalation, sustained disruption, prolonged war),
           each transmitted to households through four channels: higher energy bills,
           increased fuel costs, food price inflation, and the real-value loss from
-          delayed benefit uprating. The analysis covers the 2027-28 tax year. The model
+          benefit uprating timing. The analysis covers the 2027-28 tax year. The model
           is built on{" "}
           <a href="https://policyengine.org" target="_blank" rel="noreferrer" className="underline">PolicyEngine UK</a>{" "}
           microsimulation using the Enhanced Family Resources Survey, covering approximately
@@ -43,6 +43,16 @@ export default function MethodologyTab({ data }) {
         <h3 className="mt-2 text-lg font-semibold text-slate-900">
           Scenario assumptions
         </h3>
+        <p className="mt-4 rounded-lg bg-amber-50 p-4 text-sm leading-7 text-slate-700">
+          <strong>These are stress tests, not forecasts.</strong> Each scenario applies a
+          set of price assumptions as full-year 2027&ndash;28 amounts, including where the
+          cited source describes a 2026 disruption lasting a few months. No time path,
+          quarterly profile or shock duration is modelled. The pass-through coefficients
+          and lags implied by the percentages below are judgements anchored to the cited
+          sources rather than equations derived from them; the results file records the
+          definition, source, reference period, derivation and range of every parameter
+          under <code>parameters.registry</code>.
+        </p>
         <p className="mt-4 text-sm leading-7 text-slate-600">
           Each scenario represents a forward path for the conflict from the August 2026
           position. The low scenario tracks the observed price path assuming
@@ -51,7 +61,10 @@ export default function MethodologyTab({ data }) {
           <a href="https://oilprice.com/Latest-Energy-News/World-News/Goldman-Another-Month-of-Hormuz-Closure-Means-Over-100-Brent-Throughout-2026.html" target="_blank" rel="noreferrer" className="underline">Goldman Sachs&apos; extended Strait of Hormuz closure case</a>{" "}
           (Brent above $100/bbl through 2026). The high scenario reflects
           Goldman&apos;s extreme-adverse case (Brent above $115-120) and{" "}
-          <a href="https://www.oxfordeconomics.com/resource/iran-war-scenarios-the-oil-price-that-breaks-parts-of-the-economy/" target="_blank" rel="noreferrer" className="underline">Oxford Economics&apos; prolonged-war scenario</a>.
+          <a href="https://www.oxfordeconomics.com/resource/iran-war-scenarios-the-oil-price-that-breaks-parts-of-the-economy/" target="_blank" rel="noreferrer" className="underline">Oxford Economics&apos; escalation scenario</a>,
+          which reports a 5.8% peak in <em>world</em> CPI under its two-month $140/bbl
+          case; the +4.5pp UK CPI assumption is a judgement above that, not a figure the
+          source publishes.
           CPI transmission draws on{" "}
           <a href="https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/june-2026" target="_blank" rel="noreferrer" className="underline">Bank of England June 2026 projections</a>{" "}
           and the{" "}
@@ -110,11 +123,16 @@ export default function MethodologyTab({ data }) {
             <strong className="text-slate-800">Energy bills:</strong>{" "}
             Higher wholesale gas prices feed through to the{" "}
             <a href="https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-july-and-30-september-2026" target="_blank" rel="noreferrer" className="underline">Ofgem price cap</a>{" "}
-            (model baseline: &pound;{currentEnergyCap.toLocaleString("en-GB")}/yr,
-            the July&ndash;September 2026 cap on Ofgem&apos;s new typical-consumption basis,
-            equivalent to ~&pound;1,862 on the pre-July basis). We model the pass-through from wholesale to
-            retail energy prices using historical cap-setting methodology, applying the
-            increase to household gas and electricity bills proportionally.
+            (&pound;{currentEnergyCap.toLocaleString("en-GB")}/yr for
+            July&ndash;September 2026 on Ofgem&apos;s new typical-consumption basis,
+            equivalent to ~&pound;1,862 on the pre-July basis; &pound;1,723 for
+            October&ndash;December 2026). The scenario percentage is applied to each
+            household&apos;s <strong>own baseline gas and electricity expenditure</strong>
+            in the microdata &mdash; the cap figures above are context and do not enter
+            the calculation. The model does not represent unit rates, standing charges,
+            the gas/electricity split, region, payment method, quarterly cap periods or
+            fixed-tariff coverage; about 40% of accounts were on fixed tariffs for the
+            July 2026 cap, whose prices the cap does not set.
           </div>
           <div>
             <strong className="text-slate-800">Fuel costs:</strong>{" "}
@@ -144,20 +162,28 @@ export default function MethodologyTab({ data }) {
             reported in March 2026.
           </div>
           <div>
-            <strong className="text-slate-800">Benefit uprating lag:</strong>{" "}
+            <strong className="text-slate-800">Benefit uprating &mdash; a shortfall, not a fourth cost:</strong>{" "}
             CPI-linked benefits are uprated each April using the previous September&apos;s
-            CPI — a lag of up to 18 months. Between uprating dates, higher prices reduce
-            the real value of benefit payments. During the 2022 energy crisis, this
-            mechanism eroded benefit real value by approximately 5% (&pound;12bn total),
-            with April 2022 uprating at 3.1% against 9% actual inflation (<a href="https://ifs.org.uk/news/many-benefit-recipients-will-be-worse-until-april-2025-because-failure-payments-keep" target="_blank" rel="noreferrer" className="underline">IFS</a>;{" "}
-            <a href="https://commonslibrary.parliament.uk/research-briefings/cbp-10403/" target="_blank" rel="noreferrer" className="underline">Commons Library CBP-10403</a>). The model estimates the annual real loss as:
-            CPI-linked benefit income &times; CPI increase &times; 0.5, where the 0.5
-            factor is the expected fraction of the year a mid-year shock goes un-indexed
-            (rather than the 12-month maximum). The state pension is excluded because it
-            is uprated by the triple lock (+4.8% via earnings in April 2026), not CPI.
-            For the 2027-28 year, the April 2027 uprating is set from September 2026
-            CPI, so the channel captures conflict inflation running ahead of that
-            indexation point while the shock is sustained.
+            CPI. For 2027-28 the April 2027 uprating is set from September 2026 CPI, so
+            it does not reflect a conflict shock arriving after that: no offsetting
+            income increase reaches households during the year. The household&apos;s loss
+            is therefore the price rise itself, which the three channels above already
+            measure in full.
+            <br /><br />
+            The model reports a separate <strong>uprating compensation shortfall</strong>
+            &mdash; CPI-linked benefit income &times; CPI increase &times; 0.5, with the
+            state pension excluded because it is uprated by the triple lock rather than
+            CPI &mdash; but does <strong>not</strong> add it to the cost channels. Doing
+            so would count the same price shock twice: the lack of indexation is why no
+            offset arrives, not a second cost on top of the prices. What the shortfall
+            measures is the size of the compensation an immediate uprating would deliver,
+            and it is exactly what the accelerated-uprating policy pays.
+            The 0.5 factor is the expected fraction of the year such an uprating would
+            cover for a shock arriving at an arbitrary point in it. During the 2022
+            energy crisis the equivalent indexation gap eroded benefit real value by
+            about 5% (&pound;12bn), with April 2022 uprating at 3.1% against 9% actual
+            inflation (<a href="https://ifs.org.uk/news/many-benefit-recipients-will-be-worse-until-april-2025-because-failure-payments-keep" target="_blank" rel="noreferrer" className="underline">IFS</a>;{" "}
+            <a href="https://commonslibrary.parliament.uk/research-briefings/cbp-10403/" target="_blank" rel="noreferrer" className="underline">Commons Library CBP-10403</a>).
           </div>
         </div>
       </div>
@@ -221,23 +247,26 @@ export default function MethodologyTab({ data }) {
                 </td>
               </tr>
               <tr>
-                <td className="font-medium">Benefit uprating lag</td>
-                <td>Expected 6 months (factor 0.5)</td>
+                <td className="font-medium">Uprating compensation shortfall</td>
+                <td>Expected 6 months&apos; coverage (factor 0.5)</td>
                 <td className="text-xs text-slate-500">
-                  Benefits uprated each April by prior September CPI (up to 18 months
-                  lag at the extreme); the model applies the expected-value erosion for
-                  a mid-year shock. State pension excluded (triple lock). IFS (2022);
-                  Commons Library CBP-10403.
+                  Benefits uprated each April by prior September CPI, so no offset
+                  arrives during the shock year. Reported as the compensation an
+                  immediate uprating would deliver and <strong>not</strong> counted as a
+                  cost. State pension excluded (triple lock). IFS (2022); Commons
+                  Library CBP-10403.
                 </td>
               </tr>
               <tr>
-                <td className="font-medium">Energy price cap (Q3 2026)</td>
+                <td className="font-medium">Energy price cap (context only)</td>
                 <td>&pound;{currentEnergyCap.toLocaleString("en-GB")}/yr</td>
                 <td className="text-xs text-slate-500">
                   Ofgem, 1 July&ndash;30 September 2026, typical dual-fuel direct debit
                   household on the new typical-consumption basis (revised 1 July 2026;
-                  ~&pound;1,862 on the old basis). Cornwall Insight forecasts
-                  ~&pound;1,700 for Q4 2026 after the electricity VAT removal.
+                  ~&pound;1,862 on the old basis). The October&ndash;December 2026 cap is
+                  &pound;1,723. <strong>Not used in the calculation</strong> &mdash; the
+                  scenario percentage is applied to each household&apos;s own baseline
+                  gas and electricity expenditure.
                 </td>
               </tr>
               <tr>
@@ -249,7 +278,7 @@ export default function MethodologyTab({ data }) {
                   &mdash; HBAI before-housing-costs relative poverty, comparable in
                   definition with official statistics. The post-shock figure counts people
                   below that <strong>same baseline line</strong> once modelled energy,
-                  fuel, food and uprating-lag costs are netted off HBAI income. Because
+                  fuel and food costs are netted off HBAI income. Because
                   consumption costs are deducted and the line is not recalculated, that
                   figure is a consumption-adjusted resource measure against an
                   <strong> anchored</strong> threshold &mdash; not official HBAI poverty,
@@ -274,7 +303,7 @@ export default function MethodologyTab({ data }) {
             <li>Direct energy bill increases from wholesale price rises (household-level microdata from PolicyEngine)</li>
             <li>Fuel cost increases from higher oil prices (decile-average spending estimates from ONS)</li>
             <li>Second-round food price inflation from energy input costs (ONS Family Spending Table A6 spending by gross-income decile)</li>
-            <li>Real-value loss of means-tested benefits between uprating dates (household-level benefit data from PolicyEngine)</li>
+            <li>The compensation an immediate benefit uprating would deliver, reported separately from the cost channels (household-level benefit data from PolicyEngine)</li>
             <li>Distributional analysis by income quintile, country, tenure, and household type</li>
             <li>Fuel poverty impact using the indicative 10%-of-income ratio</li>
             <li>Ten policy responses with fiscal cost and targeting analysis, including the enacted electricity VAT cut and fuel duty extension, a social tariff, and a combined package</li>

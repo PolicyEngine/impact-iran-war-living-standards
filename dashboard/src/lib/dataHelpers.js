@@ -61,7 +61,7 @@ export function getChannelDecomposition(data, scenarioKey) {
     energy: raw.energy_shock,
     fuel: raw.fuel_shock,
     food: raw.food_shock,
-    benefit_uprating_lag: raw.benefit_uprating_lag,
+    benefit_uprating_shortfall: raw.benefit_uprating_shortfall,
   };
 }
 

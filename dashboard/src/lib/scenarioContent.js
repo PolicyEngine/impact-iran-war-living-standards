@@ -15,7 +15,7 @@ export const SCENARIO_CONTENT = {
     shortLabel: "High",
     selectorLabel: "High (+90% energy, +80% fuel, +4.5pp CPI)",
     description:
-      "A prolonged war with extended Strait of Hormuz closure — the tail risk: Brent above $115-120 (Goldman extreme-adverse; Oxford Economics sees a global recession). Energy cap +90% — comparable to the 2022 gas crisis — fuel +80%, food +6.5%, CPI +4.5pp, sustained for 12 months.",
+      "A prolonged war with extended Strait of Hormuz closure — the tail risk: Brent above $115-120 (Goldman extreme-adverse; Oxford Economics' escalation case, which reports a 5.8% peak in world CPI and a global recession). Energy cap +90% — comparable to the 2022 gas crisis — fuel +80%, food +6.5%, CPI +4.5pp, sustained for 12 months.",
   },
 };
 
