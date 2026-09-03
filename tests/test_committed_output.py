@@ -62,8 +62,7 @@ def test_every_scenario_reports_the_headline_metrics(results):
             "mean_net_impact",
             "total_impact_bn",
             "n_pushed_into_poverty",
-            "fp_rate_baseline_pct",
-            "fp_rate_shocked_pct",
+            "mean_net_impact_pct",
         ]:
             assert isinstance(summary[field], (int, float))
 
@@ -101,7 +100,6 @@ def test_committed_headlines_match_the_reviewed_values(results):
     assert baseline["poverty_rate_baseline_pct"] == 18.97
     assert baseline["non_positive_income_households"] == 217_920
     assert baseline["households_with_no_transport_fuel_spend"] == 7_197_973
-    assert baseline["fuel_poverty_rate_pct"] == 10.5
 
     central = results["scenarios"]["central_shock"]["summary"]
     assert central["mean_net_impact"] == 1_324
@@ -125,3 +123,12 @@ def test_the_policy_accounting_closes_in_the_committed_output(results):
             )
             assert closed == pytest.approx(shock, abs=0.05), f"{scenario}/{name}"
             assert policy["gross_outlay_bn"] >= policy["household_protection_bn"]
+
+
+def test_no_fuel_poverty_figures_remain(results):
+    """The indicator was removed because its level invited comparison with
+    official statistics it is not comparable to (#22)."""
+    text = json.dumps(results)
+    for token in ["fuel_poverty_rate", "fuel_poor_households", "fp_rate", "fp_by_tenure"]:
+        assert token not in text, f"{token} still present in the committed output"
+    assert "Not reported" in results["metadata"]["fuel_poverty"]

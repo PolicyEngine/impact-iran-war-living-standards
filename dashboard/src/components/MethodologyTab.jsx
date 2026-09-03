@@ -30,7 +30,7 @@ export default function MethodologyTab({ data }) {
           microsimulation using the Enhanced Family Resources Survey, covering approximately
           {householdCount ? ` ${householdCount.toFixed(1)} million ` : " "}
           UK households. Ten policy responses are evaluated for their fiscal
-          cost, distributional impact, and fuel poverty reduction — including the
+          cost and distributional impact — including the
           decisions facing the government at the Autumn Budget on 28 October 2026.
         </p>
       </div>
@@ -234,19 +234,6 @@ export default function MethodologyTab({ data }) {
                 </td>
               </tr>
               <tr>
-                <td className="font-medium">Fuel poverty indicator</td>
-                <td>10% of income</td>
-                <td className="text-xs text-slate-500">
-                  Boardman (1991) 10%-of-income ratio, computed on
-                  <code> household_net_income</code>. Indicative only &mdash; this is
-                  <strong> not</strong> England&apos;s official LILEE metric and is not
-                  comparable with official fuel poverty statistics. Households with
-                  non-positive income and a positive energy bill are counted as fuel
-                  poor, and are excluded from statistics expressed as a share of income;
-                  the results file reports how many households that affects.
-                </td>
-              </tr>
-              <tr>
                 <td className="font-medium">Uprating compensation shortfall</td>
                 <td>Expected 6 months&apos; coverage (factor 0.5)</td>
                 <td className="text-xs text-slate-500">
@@ -305,7 +292,6 @@ export default function MethodologyTab({ data }) {
             <li>Second-round food price inflation from energy input costs (ONS Family Spending Table A6 spending by gross-income decile)</li>
             <li>The compensation an immediate benefit uprating would deliver, reported separately from the cost channels (household-level benefit data from PolicyEngine)</li>
             <li>Distributional analysis by income quintile, country, tenure, and household type</li>
-            <li>Fuel poverty impact using the indicative 10%-of-income ratio</li>
             <li>Ten policy responses with gross outlay and targeting analysis, including the enacted electricity VAT cut and fuel duty extension, a social tariff, and a combined package. Every cost is a gross modelled household transfer, not an Exchequer costing; the fuel duty figure covers household road-fuel volumes only, where an Exchequer estimate would also cover business and freight use and the associated VAT</li>
           </ul>
         </div>

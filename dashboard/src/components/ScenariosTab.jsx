@@ -17,7 +17,6 @@ import SectionHeading from "./SectionHeading";
 import {
   getScenario,
   getQuintileBreakdown,
-  getFuelPoverty,
   getCountryBreakdown,
   getTenureBreakdown,
   getChannelDecomposition,
@@ -464,7 +463,6 @@ export default function ScenariosTab({ data }) {
 
   const scenarioData = getScenario(data, scenario);
   const quintileData = getQuintileBreakdown(data, scenario);
-  const fuelPoverty = getFuelPoverty(data, scenario);
   const countryData = getCountryBreakdown(data, scenario);
   const tenureData = getTenureBreakdown(data, scenario);
   const channels = getChannelDecomposition(data, scenario);
@@ -550,19 +548,6 @@ export default function ScenariosTab({ data }) {
           </div>
           <div className="mt-1 text-sm text-slate-500">
             Additional cost per household in 2027-28 under {scenarioLabel.toLowerCase()}
-          </div>
-        </div>
-        <div className="metric-card">
-          <div className="text-xs font-medium uppercase tracking-[0.08em] text-slate-500">
-            Fuel poverty increase
-          </div>
-          <div className="mt-2 text-3xl font-bold tracking-tight" style={{ color: colors.primary[800] }}>
-            {fuelPoverty?.increase_pp != null
-              ? `+${fuelPoverty.increase_pp.toFixed(1)}pp`
-              : "--"}
-          </div>
-          <div className="mt-1 text-sm text-slate-500">
-            Percentage point increase in the 10%-of-income fuel poverty indicator in 2027-28
           </div>
         </div>
         <div className="metric-card">
