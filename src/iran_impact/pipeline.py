@@ -9,6 +9,7 @@ import numpy as np
 from collections import defaultdict
 from microdf import MicroSeries
 
+from .provenance import build_provenance
 from .config import (
     YEAR,
     CURRENT_ENERGY_CAP,
@@ -211,6 +212,9 @@ def run_baseline(year=YEAR):
     from policyengine.tax_benefit_models.uk import managed_microsimulation
 
     sim = managed_microsimulation()
+    # policyengine.py's certification record for this run: the model version
+    # and data build it pins are what provenance reports.
+    bundle = getattr(sim, "policyengine_bundle", None)
 
     electricity = _vals(sim, "electricity_consumption", year)
     energy = electricity + _vals(sim, "gas_consumption", year)
@@ -239,6 +243,7 @@ def run_baseline(year=YEAR):
     food_cost = _decile_amount(decile, FOOD_DECILE_FACTORS, BASE_FOOD_SPEND)
 
     return {
+        "bundle": bundle,
         "energy": energy,
         "electricity": electricity,
         "income": income,
@@ -767,8 +772,16 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
     results = {
         "year": year,
         "current_energy_cap": CURRENT_ENERGY_CAP,
+        "provenance": build_provenance(bundle=data.get("bundle")),
         "baseline": {
             "n_households_m": round(float(weights.sum()) / 1e6, 1),
+            # Mean persons per household: lets the dashboard convert a
+            # people-based poverty count into a household-based one for
+            # comparison with sources that count households, instead of
+            # hard-coding the conversion in JSX.
+            "mean_household_size": round(
+                weighted_mean(data["people"], weights), 2
+            ),
             "mean_energy_spend": round(weighted_mean(data["energy"], weights)),
             "mean_net_income": round(weighted_mean(data["income"], weights)),
             "total_energy_spend_bn": round(

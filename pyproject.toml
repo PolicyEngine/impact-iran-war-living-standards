@@ -15,15 +15,22 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+# policyengine.py is the only modelling dependency: the `uk` extra pulls the
+# UK country package that `policyengine.tax_benefit_models.uk` needs, and the
+# release bundle certifies the matching policyengine-uk version. Do not pin
+# policyengine-uk directly — the bundle owns that choice.
 uk = [
-  "policyengine==5.0.1",
+  "policyengine[uk]==5.0.1",
 ]
 simulation = [
-  "policyengine==5.0.1",
+  "policyengine[uk]==5.0.1",
 ]
 dev = [
   "pytest>=8.0",
 ]
+
+[project.scripts]
+iran-impact-build = "iran_impact.cli:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/iran_impact"]
