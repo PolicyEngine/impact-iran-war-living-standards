@@ -29,58 +29,33 @@ EXPECTED_MEAN_NET_INCOME = 57_103
 EXPECTED_MEAN_ENERGY_SPEND = 1_584
 
 
-# Local cache directory for the gated repository the certified dataset lives
-# in, so an offline run with an existing snapshot is not skipped.
-HF_CACHE_DATASET = "models--policyengine--policyengine-uk-data-private"
+def _baseline():
+    """Run the baseline, skipping only where the dataset is genuinely absent.
 
+    Availability is not guessed at. Enumerating token environment variables
+    or looking for a Hugging Face cache directory both get this wrong:
+    policyengine.py accepts several token names, and it only reuses a
+    SHA-verified artifact at its own materialization target, so a populated
+    hub cache does not mean the run can proceed.
 
-def _managed_data_available():
-    """Whether this environment can reach the private managed dataset.
-
-    Checked before running, rather than by catching every exception from the
-    run: a genuine model, schema or calculation regression in an authorized
-    environment must fail, not report itself as skipped.
+    Instead the materializer decides. Only its own
+    DatasetMaterializationError counts as "no data"; every other failure —
+    model, schema or calculation — propagates as a test failure, which is the
+    point of these tests.
     """
     try:
-        import policyengine  # noqa: F401
-        from policyengine.tax_benefit_models.uk import (  # noqa: F401
-            managed_microsimulation,
+        from policyengine.provenance.dataset_materialization import (
+            DatasetMaterializationError,
         )
     except ImportError:
-        return False, "policyengine[uk] is not installed"
-
-    import os
-    from pathlib import Path
-
-    if os.environ.get("HF_TOKEN") or os.environ.get("HUGGING_FACE_HUB_TOKEN"):
-        return True, ""
-    try:
-        from huggingface_hub import get_token
-
-        if get_token():
-            return True, ""
-    except ImportError:
-        pass
-    # No token, but an already-downloaded snapshot works offline.
-    cache = Path.home() / ".cache" / "huggingface" / "hub" / HF_CACHE_DATASET
-    if cache.exists():
-        return True, ""
-    return False, (
-        "no Hugging Face token and no cached policyengine-uk-data-private "
-        "snapshot"
-    )
-
-
-def _baseline():
-    """Run the baseline, skipping only where the data is genuinely absent."""
-    available, reason = _managed_data_available()
-    if not available:
-        pytest.skip(f"managed dataset unavailable: {reason}")
+        pytest.skip("policyengine[uk] is not installed")
 
     from iran_impact.pipeline import run_baseline
 
-    # Deliberately not wrapped: any failure from here is a real regression.
-    return run_baseline(year=config.YEAR)
+    try:
+        return run_baseline(year=config.YEAR)
+    except DatasetMaterializationError as exc:
+        pytest.skip(f"certified dataset unavailable: {exc}")
 
 
 @pytest.fixture(scope="module")

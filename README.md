@@ -104,9 +104,14 @@ The microdata lives in the Hugging Face repository
 `policyengine/policyengine-uk-data-private`, which is **gated**: access is
 granted per account rather than being public. Running the pipeline requires a
 token from an account that has been granted access, supplied either through
-`HUGGING_FACE_TOKEN` / `HF_TOKEN` in the environment or by `hf auth login`.
-Without it the `managed_microsimulation()` call fails when it tries to fetch
-the dataset.
+`HUGGING_FACE_TOKEN`, `HF_TOKEN` or `HUGGINGFACE_HUB_TOKEN` in the
+environment, or by `hf auth login`. Without it the
+`managed_microsimulation()` call fails when it tries to fetch the dataset.
+
+A populated Hugging Face hub cache is not sufficient on its own:
+policyengine.py reuses only a SHA-verified artifact at its own
+materialization target (`./data/enhanced_frs_2024_25.h5` relative to the
+working directory), and otherwise downloads it.
 
 Do not pin `policyengine-uk` or the dataset directly. policyengine.py's
 release bundle selects both, and pinning them here could contradict it — the
