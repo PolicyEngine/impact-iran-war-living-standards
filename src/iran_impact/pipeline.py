@@ -19,7 +19,6 @@ from .config import (
     FUEL_DECILE_FACTORS,
     FOOD_DECILE_FACTORS,
     UPRATING_LAG_FACTOR,
-    FUEL_POVERTY_THRESHOLD,
     FLAT_REBATE,
     CT_REBATE,
     UC_UPLIFT_WEEKLY,
@@ -448,29 +447,6 @@ def compute_scenario(data, scenario_key):
 
 # ── 3. Policy responses ─────────────────────────────────────────────────
 
-# How each measure reaches a household, for fuel-poverty accounting:
-#
-#   ENERGY_BILL_KEYS  — reduce the domestic energy bill, so they lower the
-#                       numerator of the energy-to-income ratio.
-#   CASH_TRANSFER_KEYS — raise income, so they raise the denominator.
-#
-# A fuel-duty cut is in neither: it reduces road-fuel costs, which are not
-# domestic energy and are not income. Routing it as income would raise the
-# affordability denominator and understate fuel poverty (#14 review C2).
-# Both the standalone effects and the combined package read these lists, so
-# the two cannot diverge — which is how the combined package came to treat
-# fuel-duty savings as income while the standalone policy did not.
-ENERGY_BILL_KEYS = ["energy_price_guarantee", "elec_vat_cut"]
-CASH_TRANSFER_KEYS = [
-    "flat_rebate",
-    "ct_rebate",
-    "uc_uplift",
-    "means_tested_payment",
-    "accelerated_uprating",
-]
-# Reduces a non-domestic cost: neither an energy-bill reduction nor income.
-OTHER_COST_REDUCTION_KEYS = ["fuel_duty_cut"]
-
 COMBINED_KEYS = [
     "energy_price_guarantee",
     "flat_rebate",
@@ -604,46 +580,25 @@ def compute_combined_package(data, scenario_key, scenario_impacts, policies):
 
 
 def compute_policy_effects(data, scenario_key, scenario_impacts):
-    """Compute fiscal benefits and fuel-poverty accounting components.
+    """Per-policy household benefit and gross outlay.
 
-    Domestic energy subsidies reduce the numerator in the fuel-poverty ratio.
-    Cash transfers raise the affordability denominator. Fuel-duty cuts reduce
-    total living-standard pressure but do not directly affect domestic energy
-    affordability, so they do neither — see the routing lists above.
+    The two differ only for the combined package: its outlay is the unclipped
+    sum of its components, because government spending does not shrink when a
+    household is over-compensated (#14).
 
-    The combined package routes its components through the same lists as the
-    standalone policies, so a measure cannot be treated as income in one and
-    not the other.
+    Measures used to be routed additionally by how they reach a household —
+    reducing the energy bill, or raising income — because the fuel-poverty
+    ratio needed that split. That indicator has been withdrawn (#22), so the
+    routing went with it.
     """
     policies = compute_policies(data, scenario_key, scenario_impacts)
     combined_outlay = policies.pop("_combined_outlay")
-    combined_components = policies.pop("_combined_components")
-    zeros = np.zeros_like(scenario_impacts["net_impact"])
-    effects = {}
-    for key, benefit in policies.items():
-        effects[key] = {
-            "benefit": benefit,
-            "fiscal_outlay": benefit,
-            "energy_reduction": zeros.copy(),
-            "income_addition": zeros.copy(),
-        }
-
-    # The social tariff is not in the combined package but reduces energy
-    # bills the same way the package's energy measures do.
-    for key in ENERGY_BILL_KEYS + ["social_tariff"]:
-        effects[key]["energy_reduction"] = policies[key]
-    for key in CASH_TRANSFER_KEYS:
-        effects[key]["income_addition"] = policies[key]
-
+    policies.pop("_combined_components")
+    effects = {
+        key: {"benefit": benefit, "fiscal_outlay": benefit}
+        for key, benefit in policies.items()
+    }
     effects["combined"]["fiscal_outlay"] = combined_outlay
-    # Use the post-interaction component amounts, so the package's energy and
-    # income routing matches the outlay it reports (#14).
-    effects["combined"]["energy_reduction"] = sum(
-        (combined_components[key] for key in ENERGY_BILL_KEYS), zeros.copy()
-    )
-    effects["combined"]["income_addition"] = sum(
-        (combined_components[key] for key in CASH_TRANSFER_KEYS), zeros.copy()
-    )
     return effects
 
 
@@ -674,33 +629,16 @@ def _positive_income(income):
     return income > 0
 
 
-def _fuel_poverty_flags(energy, income):
-    """Energy spend above 10% of net income.
+def _non_positive_income(income):
+    """Households for which any share-of-income statistic is undefined.
 
-    Households with non-positive income cannot spend a defined share of it.
-    `_safe_div` returns 0 for them, which previously classified every such
-    household as *not* fuel poor — 188,777 weighted households on the
-    certified data build (#11). A household with no positive income and a
-    positive energy bill cannot afford it by any reading, so it counts as
-    fuel poor. `_fuel_poverty_excluded` reports how many that is.
+    Reported so the number excluded from those statistics is visible rather
+    than silently folded into them (#11).
     """
-    ratio_above = _safe_div(energy, income) > FUEL_POVERTY_THRESHOLD
-    unaffordable = (~_positive_income(income)) & (energy > 0)
-    return ratio_above | unaffordable
-
-
-def _fuel_poverty_excluded(income):
-    """Households whose fuel-poverty status rests on the non-positive-income
-    rule rather than on the 10% ratio."""
     return ~_positive_income(income)
 
 
-def _shocked_energy(data, impacts):
-    """Energy bill after shock, before policy."""
-    return data["energy"] + impacts["energy_shock"]
-
-
-def _by_quintile(data, impacts, shocked_fuel_poor):
+def _by_quintile(data, impacts):
     weights = data["weights"]
     quintile = data["quintile"]
     income = data["income"]
@@ -720,15 +658,11 @@ def _by_quintile(data, impacts, shocked_fuel_poor):
                     impacts["benefit_uprating_shortfall"], weights, mask
                 )
             ),
-            "fp_rate_pct": round(
-                weighted_mean(shocked_fuel_poor.astype(float), weights, mask) * 100,
-                1,
-            ),
         })
     return rows
 
 
-def _grouped_impacts(data, impacts, group_key, label_key, shocked_fuel_poor):
+def _grouped_impacts(data, impacts, group_key, label_key):
     weights = data["weights"]
     income = data["income"]
     net = impacts["net_impact"]
@@ -751,34 +685,6 @@ def _grouped_impacts(data, impacts, group_key, label_key, shocked_fuel_poor):
                 weighted_mean(
                     impacts["benefit_uprating_shortfall"], weights, mask
                 )
-            ),
-            "fp_rate_pct": round(
-                weighted_mean(shocked_fuel_poor.astype(float), weights, mask) * 100,
-                1,
-            ),
-        })
-    return rows
-
-
-def _fp_by_tenure(data, baseline_fuel_poor, shocked_fuel_poor):
-    weights = data["weights"]
-    rows = []
-    for tenure in sorted(np.unique(data["tenure"])):
-        tenure_str = str(tenure)
-        if not tenure_str or tenure_str == "None":
-            continue
-        mask = data["tenure"] == tenure
-        if not np.any(mask):
-            continue
-        rows.append({
-            "tenure": tenure_str,
-            "baseline_fp_pct": round(
-                weighted_mean(baseline_fuel_poor.astype(float), weights, mask) * 100,
-                1,
-            ),
-            "shocked_fp_pct": round(
-                weighted_mean(shocked_fuel_poor.astype(float), weights, mask) * 100,
-                1,
             ),
         })
     return rows
@@ -855,9 +761,7 @@ def _baseline_in_poverty(data, poverty_line):
 def _eval_policy(data, impacts, policy_name, effect):
     weights = data["weights"]
     income = data["income"]
-    baseline_energy = data["energy"]
     net = impacts["net_impact"]
-    shocked_energy = _shocked_energy(data, impacts)
     # Two numerators, deliberately distinct:
     #   outlay     — what government pays out, uncapped. A household can be
     #                over-compensated and the payment does not shrink.
@@ -868,15 +772,8 @@ def _eval_policy(data, impacts, policy_name, effect):
     # not close to the shock (#14 review C1).
     outlay = effect["fiscal_outlay"]
     benefit = effect["benefit"]
-    energy_reduction = effect["energy_reduction"]
-    income_addition = effect["income_addition"]
     protection = np.minimum(benefit, net)
     residual = net - protection
-    fp_energy = np.maximum(shocked_energy - energy_reduction, baseline_energy)
-    fp_income = income + income_addition
-    fp_after = _fuel_poverty_flags(fp_energy, fp_income)
-    fp_before = _fuel_poverty_flags(shocked_energy, income)
-
     # Poverty: people (not households) below 60% of median equivalised income
     person_weights = weights * data["people"]
     poverty_line = _poverty_line(data)
@@ -943,8 +840,6 @@ def _eval_policy(data, impacts, policy_name, effect):
             weighted_sum(outlay, weights, quintile <= 2) / total_outlay * 100,
             1,
         ),
-        "fp_rate_before_pct": round(weighted_mean(fp_before.astype(float), weights) * 100, 1),
-        "fp_rate_after_pct": round(weighted_mean(fp_after.astype(float), weights) * 100, 1),
         "n_lifted_from_poverty": round(
             weighted_sum(lifted_out.astype(float), person_weights)
         ),
@@ -985,10 +880,6 @@ def _scenario_output(data, scenario_key):
     gross = (
         impacts["energy_shock"] + impacts["fuel_shock"] + impacts["food_shock"]
     )
-    baseline_energy = data["energy"]
-    shocked_energy = _shocked_energy(data, impacts)
-    baseline_fuel_poor = _fuel_poverty_flags(baseline_energy, income)
-    shocked_fuel_poor = _fuel_poverty_flags(shocked_energy, income)
     # People (not households) pushed below 60% of median equivalised income
     person_weights = weights * data["people"]
     poverty_line = _poverty_line(data)
@@ -1001,18 +892,6 @@ def _scenario_output(data, scenario_key):
         "mean_net_impact": round(weighted_mean(net, weights)),
         "mean_net_impact_pct": round(_mean_impact_pct(net, income, weights), 1),
         "total_impact_bn": round(weighted_sum(net, weights) / 1e9, 1),
-        "fp_rate_baseline_pct": round(
-            weighted_mean(baseline_fuel_poor.astype(float), weights) * 100,
-            1,
-        ),
-        "fp_rate_shocked_pct": round(
-            weighted_mean(shocked_fuel_poor.astype(float), weights) * 100,
-            1,
-        ),
-        "fp_extra_households": round(
-            weighted_sum(shocked_fuel_poor.astype(float), weights)
-            - weighted_sum(baseline_fuel_poor.astype(float), weights)
-        ),
         # Baseline HBAI BHC relative poverty, comparable in definition with
         # official statistics.
         "poverty_rate_baseline_pct": round(
@@ -1039,21 +918,18 @@ def _scenario_output(data, scenario_key):
     return {
         "params": SCENARIOS[scenario_key],
         "summary": summary,
-        "by_quintile": _by_quintile(data, impacts, shocked_fuel_poor),
+        "by_quintile": _by_quintile(data, impacts),
         "by_region": _grouped_impacts(
-            data, impacts, "region", "region", shocked_fuel_poor
+            data, impacts, "region", "region"
         ),
         "by_tenure": _grouped_impacts(
-            data, impacts, "tenure", "tenure", shocked_fuel_poor
+            data, impacts, "tenure", "tenure"
         ),
         "by_country": _grouped_impacts(
-            data, impacts, "country", "country", shocked_fuel_poor
+            data, impacts, "country", "country"
         ),
         "by_hh_type": _grouped_impacts(
-            data, impacts, "hh_type", "hh_type", shocked_fuel_poor
-        ),
-        "fp_by_tenure": _fp_by_tenure(
-            data, baseline_fuel_poor, shocked_fuel_poor
+            data, impacts, "hh_type", "hh_type"
         ),
         "channel_decomposition": _channel_decomposition(data, impacts),
     }, _policy_responses(data, scenario_key, impacts)
@@ -1090,7 +966,6 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
     # pulling the reported shares down (#11 review A1).
     energy_share = _safe_div(data["energy"], data["income"])
     income_defined = _positive_income(data["income"])
-    baseline_fuel_poor = _fuel_poverty_flags(data["energy"], data["income"])
 
     results = {
         "year": year,
@@ -1118,16 +993,6 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
                 weighted_sum(data["energy"], weights) / 1e9,
                 1,
             ),
-            "fuel_poverty_rate_pct": round(
-                weighted_mean(baseline_fuel_poor.astype(float), weights) * 100,
-                1,
-            ),
-            "fuel_poor_households": round(
-                weighted_sum(baseline_fuel_poor.astype(float), weights)
-            ),
-            # Households whose fuel-poverty status comes from the
-            # non-positive-income rule rather than the 10% ratio, and which
-            # are excluded from every share-of-income mean (#11).
             # Assigned spending, for comparison with the A6 means the inputs
             # come from and with the survey spending in the microdata.
             "mean_transport_fuel_spend": round(
@@ -1140,9 +1005,11 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
             "households_with_no_transport_fuel_spend": round(
                 weighted_sum((data["fuel_cost"] == 0).astype(float), weights)
             ),
+            # Households excluded from every share-of-income statistic
+            # because the ratio is undefined for them (#11).
             "non_positive_income_households": round(
                 weighted_sum(
-                    _fuel_poverty_excluded(data["income"]).astype(float), weights
+                    _non_positive_income(data["income"]).astype(float), weights
                 )
             ),
             "poverty_rate_baseline_pct": round(
@@ -1171,15 +1038,6 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
                         * 100,
                         1,
                     ),
-                    "fp_rate_pct": round(
-                        weighted_mean(
-                            baseline_fuel_poor.astype(float),
-                            weights,
-                            data["quintile"] == q,
-                        )
-                        * 100,
-                        1,
-                    ),
                 }
                 for q in range(1, 6)
             ],
@@ -1193,7 +1051,6 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
             },
             "base_fuel_spend": BASE_FUEL_SPEND,
             "base_food_spend": BASE_FOOD_SPEND,
-            "fuel_poverty_threshold": FUEL_POVERTY_THRESHOLD,
             "registry": PARAMETER_REGISTRY,
             "uprating_lag": UPRATING_LAG_REGISTRY,
             "spending_inputs": {
@@ -1239,19 +1096,22 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
                 "cited scenarios describe 2026 disruptions, some lasting a few "
                 "months; no time path or duration is modelled"
             ),
-            "fuel_poverty_definition": (
-                "Indicative ratio: modelled domestic energy spend above 10% of "
-                "household_net_income — not the official LILEE metric and not "
-                "comparable with official fuel poverty statistics. Households "
-                "with non-positive income and a positive energy bill count as "
-                "fuel poor; see baseline.non_positive_income_households for "
-                "how many rest on that rule"
+            "fuel_poverty": (
+                "Not reported. The study previously published an indicative "
+                "10%-of-income energy-spend ratio. It was not comparable with "
+                "any official figure — England's LILEE measure combines a "
+                "low-income test with an energy-efficiency test, and DESNZ's "
+                "own 10% indicator uses after-housing-costs income and "
+                "modelled required rather than actual energy costs — so the "
+                "level invited a false comparison while adding nothing the "
+                "energy channel of the impact results does not already show. "
+                "See issue #22 for the comparison that led to removing it"
             ),
             "poverty_definition": (
                 "Baseline: people below 60% of the person-weighted median of "
                 "equiv_hbai_household_net_income (HBAI BHC relative poverty). "
                 "Post-shock: people below that same baseline line once modelled "
-                "energy, fuel, food and uprating-lag costs are netted off HBAI "
+                "energy, fuel and food costs are netted off HBAI "
                 "income — a consumption-adjusted resource measure against an "
                 "anchored threshold, not official HBAI poverty. The line is not "
                 "recalculated on the post-shock distribution"

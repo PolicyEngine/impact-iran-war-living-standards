@@ -409,12 +409,6 @@ ALLOCATE_FUEL_TO_VEHICLE_OWNERS = True
 # Source: https://commonslibrary.parliament.uk/research-briefings/cbp-10403/
 UPRATING_LAG_FACTOR = 0.5
 
-# Fuel poverty indicator: the simple 10%-of-net-income energy-spend ratio.
-# NOTE: this is NOT England's official LILEE metric — results are indicative
-# and not comparable with official fuel poverty statistics; the dashboard
-# labels it accordingly.
-FUEL_POVERTY_THRESHOLD = 0.10
-
 # Structural constants
 WEEKS_PER_YEAR = 52
 MONTHS_PER_YEAR = 12

@@ -37,21 +37,6 @@ export function getQuintileBreakdown(data, scenarioKey) {
 }
 
 /**
- * Fuel poverty — components expect baseline_rate, shocked_rate, increase_pp.
- */
-export function getFuelPoverty(data, scenarioKey) {
-  const sc = data?.scenarios?.[scenarioKey];
-  if (!sc) return null;
-  const s = sc.summary || {};
-  return {
-    baseline_rate: s.fp_rate_baseline_pct,
-    shocked_rate: s.fp_rate_shocked_pct,
-    increase_pp: (s.fp_rate_shocked_pct || 0) - (s.fp_rate_baseline_pct || 0),
-    extra_households: s.fp_extra_households,
-  };
-}
-
-/**
  * Channel decomposition — keyed by clean channel name (energy, fuel, food, etc.)
  */
 export function getChannelDecomposition(data, scenarioKey) {
@@ -169,13 +154,9 @@ export function getPolicyComparison(data, scenarioKey) {
 
   const transform = (p) => {
     if (!p) return null;
-    const fpBefore = p.fp_rate_before_pct || 0;
-    const fpAfter = p.fp_rate_after_pct || 0;
-
     return {
       ...p,
       avg_household_benefit: p.avg_benefit_per_hh,
-      fuel_poverty_reduction_pp: fpBefore - fpAfter,
       targeting_bottom40: p.targeting_bottom40,
     };
   };

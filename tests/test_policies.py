@@ -85,12 +85,3 @@ def test_combined_outlay_is_unclipped_and_at_least_the_clipped_benefit(synthetic
     assert outlay == pytest.approx(sum(policies["_combined_components"].values()))
 
 
-def test_policy_effects_route_energy_subsidies_and_cash_separately(synthetic_data):
-    impacts = compute_scenario(synthetic_data, "central_shock")
-    effects = compute_policy_effects(synthetic_data, "central_shock", impacts)
-    # An energy subsidy lowers the bill, not the income denominator.
-    assert np.all(effects["energy_price_guarantee"]["income_addition"] == 0)
-    assert np.any(effects["energy_price_guarantee"]["energy_reduction"] > 0)
-    # A cash transfer does the opposite.
-    assert np.all(effects["flat_rebate"]["energy_reduction"] == 0)
-    assert np.any(effects["flat_rebate"]["income_addition"] > 0)

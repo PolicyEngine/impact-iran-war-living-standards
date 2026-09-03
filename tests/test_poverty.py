@@ -8,8 +8,7 @@ from iran_impact.pipeline import (
     _baseline_in_poverty,
     _below_anchored_line,
     _equiv_after_cost,
-    _fuel_poverty_excluded,
-    _fuel_poverty_flags,
+    _non_positive_income,
     _mean_impact_pct,
     _poverty_line,
     compute_scenario,
@@ -84,37 +83,14 @@ def test_equiv_after_cost_leaves_non_positive_income_untouched(synthetic_data):
     assert _equiv_after_cost(data, cost) == pytest.approx(data["equiv_hbai_income"])
 
 
-# ── Fuel poverty: zero and negative incomes ──────────────────────────────
+# ── Undefined share-of-income denominators ───────────────────────────────
 
 
-def test_fuel_poverty_flags_the_ten_percent_ratio():
-    energy = np.array([500.0, 1_500.0])
-    income = np.array([10_000.0, 10_000.0])
-    assert list(_fuel_poverty_flags(energy, income)) == [False, True]
-
-
-def test_ratio_exactly_at_the_threshold_is_not_fuel_poor():
-    """The test is strictly above 10%."""
-    energy = np.array([1_000.0])
-    income = np.array([1_000.0 / config.FUEL_POVERTY_THRESHOLD])
-    assert not _fuel_poverty_flags(energy, income)[0]
-
-
-@pytest.mark.parametrize("income", [0.0, -5_000.0])
-def test_non_positive_income_with_an_energy_bill_is_fuel_poor(income):
-    """Previously these were classified as not fuel poor (#11)."""
-    assert _fuel_poverty_flags(np.array([1_200.0]), np.array([income]))[0]
-
-
-@pytest.mark.parametrize("income", [0.0, -5_000.0])
-def test_non_positive_income_without_an_energy_bill_is_not_fuel_poor(income):
-    assert not _fuel_poverty_flags(np.array([0.0]), np.array([income]))[0]
-
-
-def test_excluded_households_are_countable():
-    """The count must be reportable, not silently folded into the rate."""
+def test_non_positive_incomes_are_countable():
+    """They are excluded from every share-of-income statistic, so the number
+    excluded has to be reportable rather than silently folded in (#11)."""
     income = np.array([10_000.0, 0.0, -1.0])
-    assert list(_fuel_poverty_excluded(income)) == [False, True, True]
+    assert list(_non_positive_income(income)) == [False, True, True]
 
 
 # ── Shares of income with undefined denominators ─────────────────────────

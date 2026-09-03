@@ -28,7 +28,7 @@ const AXIS_STYLE = {
 const POLICY_DESCRIPTIONS = {
   epg: {
     mechanism: "Caps the domestic energy-bill increase at 10% of each household's pre-shock energy bill — a stylised version of the 2022 Energy Price Guarantee, which froze the unit-price level rather than the percentage increase. Ministers have ruled out repeating universal 2022-scale support, favouring targeted help, so this is modelled as the ruled-out benchmark the targeted options are judged against.",
-    model: "The model treats this as a direct reduction in the household energy bill, so it can reduce both residual household impact and fuel poverty.",
+    model: "The model treats this as a direct reduction in the household energy bill, so it reduces residual household impact.",
   },
   flat_rebate: {
     mechanism: "Pays every household a flat £400 energy rebate.",
@@ -52,7 +52,7 @@ const POLICY_DESCRIPTIONS = {
   },
   elec_vat_cut: {
     mechanism: "Extends the electricity VAT cut (5% to 0%) announced in July 2026 — currently legislated for October 2026 to March 2027 — for a full year.",
-    model: "The model removes the 5% VAT component from each household's post-shock electricity bill, directly reducing energy costs and fuel poverty.",
+    model: "The model removes the 5% VAT component from each household's post-shock electricity bill, directly reducing energy costs.",
   },
   accelerated_uprating: {
     mechanism: "Updates benefit levels immediately for the shock-driven inflation increase instead of waiting for the usual uprating cycle.",
@@ -60,7 +60,7 @@ const POLICY_DESCRIPTIONS = {
   },
   social_tariff: {
     mechanism: "Offers a discounted energy tariff to low-income and vulnerable households, halving the energy price shock for those on Universal Credit or with household income below \u00A320,000.",
-    model: "The model applies a 50% reduction in the energy price shock for eligible households. This directly reduces both residual household impact and fuel poverty, and is the most progressive policy option modelled.",
+    model: "The model applies a 50% reduction in the energy price shock for eligible households. This directly reduces residual household impact and is the most progressive policy option modelled.",
   },
   combined: {
     mechanism: "Applies all policies above together (excluding the social tariff).",
@@ -131,7 +131,6 @@ export default function PolicyTab({ data }) {
         label: POLICY_LABELS[key] || key,
         fiscal_cost_bn: p.gross_outlay_bn ?? p.fiscal_cost_bn,
         avg_household_benefit: p.avg_household_benefit,
-        fuel_poverty_reduction_pp: p.fuel_poverty_reduction_pp,
         targeting_bottom40: p.targeting_bottom40,
         color: policyColors[key] || colors.gray[400],
       };
@@ -155,8 +154,7 @@ export default function PolicyTab({ data }) {
         Exchequer costing, since it excludes tax and benefit interactions, take-up,
         behavioural responses, administration, non-household fuel use and financing;
         average household benefit is the reduction in annual
-        household impact from the energy price shock; fuel poverty reduction compares the
-        10%-of-income fuel poverty indicator before and after the policy. Targeting matters
+        household impact from the energy price shock. Targeting matters
         as much as scale: a policy that spends less but concentrates support on the
         lowest-income households can protect them better per pound than a larger universal
         scheme.
@@ -271,19 +269,6 @@ export default function PolicyTab({ data }) {
               </div>
               <div className="mt-2 text-sm leading-6 text-slate-500">
                 Average reduction in 2027-28 household impact from the energy price shock after this policy.
-              </div>
-            </div>
-            <div className="metric-card">
-              <div className="text-xs font-medium uppercase tracking-[0.08em] text-slate-500">
-                Fuel poverty reduction vs scenario
-              </div>
-              <div className="mt-2 text-3xl font-bold tracking-tight text-slate-900">
-                {policy.fuel_poverty_reduction_pp != null
-                  ? `${policy.fuel_poverty_reduction_pp.toFixed(1)}pp`
-                  : "--"}
-              </div>
-              <div className="mt-2 text-sm leading-6 text-slate-500">
-                Percentage point fall in fuel poverty compared with the same shock scenario before policy.
               </div>
             </div>
           </div>

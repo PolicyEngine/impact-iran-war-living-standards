@@ -24,7 +24,11 @@ The pipeline applies price increases through three transmission channels and com
 
 Plus a separately reported **uprating compensation shortfall** — CPI-linked benefits (state pension excluded: triple lock) are uprated each April from the previous September's CPI, so no offset arrives during the shock year. This is reported as the compensation an immediate uprating would deliver, and is *not* added to the cost channels: the household's loss is the price rise itself, and adding an uprating term on top would count the same shock twice. It is what the accelerated-uprating policy pays.
 
-Poverty is measured as people below 60% of the person-weighted median of equivalised HBAI household net income (BHC); the post-shock figure holds that baseline line fixed and nets modelled costs off income, so it is an anchored, consumption-adjusted measure rather than official HBAI poverty. Fuel poverty uses the indicative 10%-of-income ratio (not the official LILEE metric). Results are broken down by income decile, region, country, tenure type, and household composition.
+Poverty is measured as people below 60% of the person-weighted median of equivalised HBAI household net income (BHC); the post-shock figure holds that baseline line fixed and nets modelled costs off income, so it is an anchored, consumption-adjusted measure rather than official HBAI poverty.
+
+No fuel poverty figure is reported. The study previously published an indicative 10%-of-income energy-spend ratio; its level was not comparable with any official statistic (England's LILEE measure adds an energy-efficiency test, and DESNZ's own 10% indicator uses after-housing-costs income and modelled *required* rather than actual energy costs), so it was withdrawn rather than published alongside figures it invited comparison with. See [#22](https://github.com/PolicyEngine/impact-iran-war-living-standards/issues/22).
+
+Results are broken down by income decile, region, country, tenure type, and household composition.
 
 ## Policy responses evaluated
 
@@ -41,7 +45,7 @@ Aligned to the live Autumn Budget 2026 decisions where applicable:
 - Social tariff
 - Combined package
 
-Each policy is assessed on fiscal cost (unclipped government outlay), targeting efficiency (share reaching bottom quintiles), and fuel poverty reduction.
+Each policy is assessed on gross outlay (unclipped government spending), household protection and residual impact, targeting efficiency (share of spending reaching the bottom two quintiles), and the number of people lifted back above the anchored poverty line.
 
 ## Project structure
 
