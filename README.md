@@ -64,7 +64,12 @@ dashboard/              # Next.js interactive dashboard
 # Install the Python package. The `uk` extra pulls policyengine[uk]==5.0.1,
 # which brings the UK country package the pipeline needs. Installing plain
 # `policyengine` is not enough — the managed-simulation import fails.
-pip install -e ".[uk,dev]"          # or: uv pip sync requirements.lock
+pip install -e ".[uk,dev]"
+
+# Or, to pin every dependency exactly (see Reproducibility below). The lock
+# holds third-party pins only, so the project itself is installed separately:
+#   uv pip sync requirements.lock
+#   uv pip install -e . --no-deps
 
 # Authenticate for the managed microdata (see Data access below)
 export HF_TOKEN=...            # or: hf auth login
@@ -111,9 +116,17 @@ Two runs of the same revision against the same certified data build produce
 identical output apart from the run timestamp and git revision.
 
 `requirements.lock` pins the complete Python environment, including the
-`policyengine-uk` version the release bundle certifies. Install it with
-`uv pip sync requirements.lock` for a byte-identical regeneration; CI checks
-that the lock still matches `pyproject.toml`.
+`policyengine-uk` version the release bundle certifies. It is a compiled
+requirements file, so it contains third-party pins only — installing it takes
+two steps, the second of which puts `iran_impact` and the `iran-impact-build`
+console script on the path:
+
+```bash
+uv pip sync requirements.lock     # exact third-party versions
+uv pip install -e . --no-deps     # this project, without touching those pins
+```
+
+CI checks that the lock still matches `pyproject.toml`.
 
 CI also compares the source hashes recorded in the committed output against the
 working tree. A change to `config.py`, `pipeline.py`, `provenance.py`,
