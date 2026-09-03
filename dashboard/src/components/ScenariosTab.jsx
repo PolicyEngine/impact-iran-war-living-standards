@@ -562,7 +562,10 @@ export default function ScenariosTab({ data }) {
               : "--"}
           </div>
           <div className="mt-1 text-sm text-slate-500">
-            Percentage point increase in the 10%-of-income fuel poverty indicator in 2027-28
+            Percentage point increase in the indicative 10%-of-income fuel poverty
+            indicator in 2027-28. Read as a change, not a level: it is not comparable
+            with LILEE or with DESNZ&apos;s after-housing-costs 10% indicator &mdash; see
+            Methodology.
           </div>
         </div>
         <div className="metric-card">

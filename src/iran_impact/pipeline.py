@@ -321,6 +321,10 @@ def run_baseline(year=YEAR):
     income = _vals(sim, "household_net_income", year)
     equiv_income = _vals(sim, "equiv_household_net_income", year)
     hbai_income = _vals(sim, "hbai_household_net_income", year)
+    # After-housing-costs HBAI income, the denominator DESNZ uses for its own
+    # 10%-of-income affordability indicator. Reported alongside the headline
+    # indicator so the two can be compared (#22).
+    hbai_income_ahc = _vals(sim, "hbai_household_net_income_ahc", year)
     equiv_hbai_income = _vals(sim, "equiv_hbai_household_net_income", year)
     people = _vals(sim, "household_count_people", year)
     weights = _vals(sim, "household_weight", year, unweighted=True)
@@ -365,6 +369,7 @@ def run_baseline(year=YEAR):
         "income": income,
         "equiv_income": equiv_income,
         "hbai_income": hbai_income,
+        "hbai_income_ahc": hbai_income_ahc,
         "equiv_hbai_income": equiv_hbai_income,
         "people": people,
         "weights": weights,
@@ -1009,6 +1014,26 @@ def _scenario_output(data, scenario_key):
             weighted_mean(shocked_fuel_poor.astype(float), weights) * 100,
             1,
         ),
+        "fp_rate_baseline_ahc_pct": round(
+            weighted_mean(
+                _fuel_poverty_flags(baseline_energy, data["hbai_income_ahc"]).astype(
+                    float
+                ),
+                weights,
+            )
+            * 100,
+            1,
+        ),
+        "fp_rate_shocked_ahc_pct": round(
+            weighted_mean(
+                _fuel_poverty_flags(shocked_energy, data["hbai_income_ahc"]).astype(
+                    float
+                ),
+                weights,
+            )
+            * 100,
+            1,
+        ),
         "fp_extra_households": round(
             weighted_sum(shocked_fuel_poor.astype(float), weights)
             - weighted_sum(baseline_fuel_poor.astype(float), weights)
@@ -1090,6 +1115,9 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
     # pulling the reported shares down (#11 review A1).
     energy_share = _safe_div(data["energy"], data["income"])
     income_defined = _positive_income(data["income"])
+    baseline_fuel_poor_ahc = _fuel_poverty_flags(
+        data["energy"], data["hbai_income_ahc"]
+    )
     baseline_fuel_poor = _fuel_poverty_flags(data["energy"], data["income"])
 
     results = {
@@ -1124,6 +1152,17 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
             ),
             "fuel_poor_households": round(
                 weighted_sum(baseline_fuel_poor.astype(float), weights)
+            ),
+            # Same 10% threshold on the after-housing-costs HBAI income that
+            # DESNZ uses for its own affordability indicator, so the two can
+            # be compared. Housing costs are a large and largely unavoidable
+            # claim on income, so this basis is materially higher (#22).
+            "fuel_poverty_rate_ahc_pct": round(
+                weighted_mean(baseline_fuel_poor_ahc.astype(float), weights) * 100,
+                1,
+            ),
+            "fuel_poor_households_ahc": round(
+                weighted_sum(baseline_fuel_poor_ahc.astype(float), weights)
             ),
             # Households whose fuel-poverty status comes from the
             # non-positive-income rule rather than the 10% ratio, and which
@@ -1239,6 +1278,48 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
                 "cited scenarios describe 2026 disruptions, some lasting a few "
                 "months; no time path or duration is modelled"
             ),
+            "fuel_poverty_comparability": {
+                "headline_basis": (
+                    "modelled domestic energy spend above 10% of "
+                    "household_net_income, before housing costs, "
+                    "unequivalised"
+                ),
+                "alternative_basis": (
+                    "the same threshold on hbai_household_net_income_ahc, "
+                    "after housing costs — the denominator DESNZ uses for its "
+                    "own 10% affordability indicator; reported as "
+                    "fuel_poverty_rate_ahc_pct"
+                ),
+                "published_comparisons": {
+                    "desnz_10pc_ahc_indicator_england_2025": {
+                        "rate_pct": 30.4,
+                        "households_m": 7.63,
+                        "source_url": (
+                            "https://assets.publishing.service.gov.uk/media/"
+                            "69c3af123ed0546101e0dc3e/"
+                            "Main_Report__2026_Fuel_Poverty_Statistics_"
+                            "Publication_.pdf"
+                        ),
+                    },
+                    "desnz_lilee_england_2025": {
+                        "rate_pct": 9.4,
+                        "households_m": 2.36,
+                    },
+                },
+                "why_the_figures_differ": (
+                    "Neither published figure is comparable with the headline "
+                    "indicator here. DESNZ's 10% indicator uses "
+                    "after-housing-costs income and modelled REQUIRED energy "
+                    "costs, and covers England only; this model uses "
+                    "before-housing-costs income and modelled ACTUAL spend "
+                    "across the UK. LILEE is a different measure again, "
+                    "combining a low-income test with an energy-efficiency "
+                    "test. The income basis alone accounts for most of the "
+                    "level difference — see fuel_poverty_rate_ahc_pct. Read "
+                    "these rates for the CHANGE a scenario produces, not as "
+                    "estimates of the level of fuel poverty (#22)"
+                ),
+            },
             "fuel_poverty_definition": (
                 "Indicative ratio: modelled domestic energy spend above 10% of "
                 "household_net_income — not the official LILEE metric and not "

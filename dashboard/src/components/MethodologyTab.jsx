@@ -5,6 +5,10 @@ import { getScenarioNarrative, getScenarioOptions } from "../lib/scenarioContent
 export default function MethodologyTab({ data }) {
   const householdCount = data?.baseline?.n_households_m;
   const currentEnergyCap = data?.current_energy_cap;
+  // Both fuel-poverty bases, so the methodology text states the actual gap
+  // rather than a hard-coded one.
+  const fpBhc = data?.baseline?.fuel_poverty_rate_pct;
+  const fpAhc = data?.baseline?.fuel_poverty_rate_ahc_pct;
   const scenarioOptions = getScenarioOptions(data);
 
   return (
@@ -235,15 +239,24 @@ export default function MethodologyTab({ data }) {
               </tr>
               <tr>
                 <td className="font-medium">Fuel poverty indicator</td>
-                <td>10% of income</td>
+                <td>10% of income (before housing costs)</td>
                 <td className="text-xs text-slate-500">
                   Boardman (1991) 10%-of-income ratio, computed on
-                  <code> household_net_income</code>. Indicative only &mdash; this is
-                  <strong> not</strong> England&apos;s official LILEE metric and is not
-                  comparable with official fuel poverty statistics. Households with
-                  non-positive income and a positive energy bill are counted as fuel
-                  poor, and are excluded from statistics expressed as a share of income;
-                  the results file reports how many households that affects.
+                  <code> household_net_income</code> before housing costs.
+                  <strong> Read it for the change a scenario produces, not as an
+                  estimate of the level of fuel poverty.</strong> It is not comparable
+                  with any published figure: England&apos;s official LILEE measure
+                  combines a low-income test with an energy-efficiency test (9.4%, 2.36m
+                  households in 2025), while DESNZ&apos;s own 10% indicator uses
+                  <em> after-housing-costs</em> income and modelled <em>required</em>
+                  energy costs and reported 30.4% (7.63m English households) for the same
+                  year. Housing costs are the largest single reason for the gap: on the
+                  after-housing-costs basis this model gives {fpAhc != null ? `${fpAhc.toFixed(1)}%` : "about 14%"} rather
+                  than {fpBhc != null ? `${fpBhc.toFixed(1)}%` : "6.4%"}, and the results file reports both as
+                  <code> fuel_poverty_rate_pct</code> and
+                  <code> fuel_poverty_rate_ahc_pct</code>. Households with non-positive
+                  income and a positive energy bill are counted as fuel poor, and are
+                  excluded from statistics expressed as a share of income.
                 </td>
               </tr>
               <tr>

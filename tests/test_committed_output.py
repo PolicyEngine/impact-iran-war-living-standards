@@ -123,3 +123,24 @@ def test_the_policy_accounting_closes_in_the_committed_output(results):
             )
             assert closed == pytest.approx(shock, abs=0.05), f"{scenario}/{name}"
             assert policy["gross_outlay_bn"] >= policy["household_protection_bn"]
+
+
+def test_both_fuel_poverty_bases_are_reported(results):
+    """The headline indicator alone is not comparable with any published
+    figure, so the after-housing-costs basis is reported alongside it (#22)."""
+    baseline = results["baseline"]
+    assert baseline["fuel_poverty_rate_ahc_pct"] > baseline["fuel_poverty_rate_pct"]
+    assert baseline["fuel_poor_households_ahc"] > baseline["fuel_poor_households"]
+    for scenario in config.SCENARIOS:
+        summary = results["scenarios"][scenario]["summary"]
+        assert summary["fp_rate_shocked_ahc_pct"] > summary["fp_rate_baseline_ahc_pct"]
+
+
+def test_the_fuel_poverty_comparability_note_names_the_published_figures(results):
+    note = results["metadata"]["fuel_poverty_comparability"]
+    assert note["published_comparisons"]["desnz_10pc_ahc_indicator_england_2025"][
+        "rate_pct"
+    ] == 30.4
+    assert note["published_comparisons"]["desnz_lilee_england_2025"]["rate_pct"] == 9.4
+    for phrase in ["after-housing-costs", "REQUIRED", "ACTUAL", "CHANGE"]:
+        assert phrase in note["why_the_figures_differ"]

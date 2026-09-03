@@ -154,3 +154,30 @@ def test_energy_share_excludes_undefined_denominators(synthetic_data):
     without_mask = weighted_mean(share, data["weights"])
     # Including a zero for the undefined household drags the mean down.
     assert with_mask > without_mask
+
+
+# ── Fuel-poverty comparability: the two income bases (#22) ───────────────
+
+
+def test_the_ahc_basis_gives_a_higher_rate(synthetic_data):
+    """Housing costs are a large, largely unavoidable claim on income, so the
+    after-housing-costs denominator must produce a higher rate — that is most
+    of the gap to DESNZ's published 10% indicator (#22).
+    """
+    data = dict(synthetic_data)
+    energy = data["energy"]
+    bhc = _fuel_poverty_flags(energy, data["income"])
+    ahc = _fuel_poverty_flags(energy, data["hbai_income_ahc"])
+    assert ahc.sum() >= bhc.sum()
+    assert ahc.sum() > 0
+
+
+def test_both_bases_use_the_same_threshold(synthetic_data):
+    """Only the denominator differs; the 10% test itself is unchanged."""
+    data = dict(synthetic_data)
+    # Give both concepts the same income: the flags must then agree exactly.
+    data["hbai_income_ahc"] = data["income"]
+    assert np.array_equal(
+        _fuel_poverty_flags(data["energy"], data["income"]),
+        _fuel_poverty_flags(data["energy"], data["hbai_income_ahc"]),
+    )

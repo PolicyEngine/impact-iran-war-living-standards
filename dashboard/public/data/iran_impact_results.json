@@ -2,8 +2,8 @@
   "year": 2027,
   "current_energy_cap": 1663,
   "provenance": {
-    "generated_at": "2026-09-03T09:54:25+00:00",
-    "git_revision": "1491313e2e11a3fb3252a56b43433012d45c3c71",
+    "generated_at": "2026-09-03T11:38:19+00:00",
+    "git_revision": "a7f877301d076acc4368f1a79e1fcea71f309330",
     "git_dirty": true,
     "packages": {
       "policyengine": "5.0.1",
@@ -14,7 +14,7 @@
     },
     "source_hashes": {
       "config.py": "211a7452e5b5d1628a38a29e9c874103dcea841ccbe701c85d4f9edae47befcb",
-      "pipeline.py": "0ef10c0ddf26520b636489c0c9d6d1e4fc61c862fa5a95230192564b828f1bbe",
+      "pipeline.py": "6432b8865632958f5173b9a1939c49fcd717cc0880291193c1360addbfbfbdaa",
       "provenance.py": "956bcc99b7f9c3f796082ae19edf451310fe6e14ea93deda16bc665455d75541",
       "pyproject.toml": "32bea2356cf51d4274827d38867963b7a28085338b19c5334ff37aefdb8cd863",
       "requirements.lock": "16e390c27392135057dd0bae6c7689b764448337fc38018ef43b85c5b10904f4"
@@ -45,6 +45,8 @@
     "total_energy_spend_bn": 39.4,
     "fuel_poverty_rate_pct": 6.4,
     "fuel_poor_households": 1896869,
+    "fuel_poverty_rate_ahc_pct": 14.0,
+    "fuel_poor_households_ahc": 4152842,
     "mean_transport_fuel_spend": 1031,
     "mean_food_spend": 3667,
     "vehicle_owning_share_pct": 77.3,
@@ -104,6 +106,8 @@
         "total_impact_bn": 14.2,
         "fp_rate_baseline_pct": 6.4,
         "fp_rate_shocked_pct": 7.5,
+        "fp_rate_baseline_ahc_pct": 14.0,
+        "fp_rate_shocked_ahc_pct": 17.0,
         "fp_extra_households": 323714,
         "poverty_rate_baseline_pct": 19.91,
         "below_anchored_line_shocked_pct": 20.39,
@@ -494,6 +498,8 @@
         "total_impact_bn": 35.8,
         "fp_rate_baseline_pct": 6.4,
         "fp_rate_shocked_pct": 11.0,
+        "fp_rate_baseline_ahc_pct": 14.0,
+        "fp_rate_shocked_ahc_pct": 21.9,
         "fp_extra_households": 1346860,
         "poverty_rate_baseline_pct": 19.91,
         "below_anchored_line_shocked_pct": 21.34,
@@ -884,6 +890,8 @@
         "total_impact_bn": 66.9,
         "fp_rate_baseline_pct": 6.4,
         "fp_rate_shocked_pct": 16.0,
+        "fp_rate_baseline_ahc_pct": 14.0,
+        "fp_rate_shocked_ahc_pct": 28.3,
         "fp_extra_households": 2823879,
         "poverty_rate_baseline_pct": 19.91,
         "below_anchored_line_shocked_pct": 22.63,
@@ -3864,6 +3872,22 @@
     "october_2026_energy_cap": 1723,
     "fixed_tariff_account_share": 0.4,
     "timing_basis": "All changes are applied as full-year 2027-28 amounts. The cited scenarios describe 2026 disruptions, some lasting a few months; no time path or duration is modelled",
+    "fuel_poverty_comparability": {
+      "headline_basis": "modelled domestic energy spend above 10% of household_net_income, before housing costs, unequivalised",
+      "alternative_basis": "the same threshold on hbai_household_net_income_ahc, after housing costs \u2014 the denominator DESNZ uses for its own 10% affordability indicator; reported as fuel_poverty_rate_ahc_pct",
+      "published_comparisons": {
+        "desnz_10pc_ahc_indicator_england_2025": {
+          "rate_pct": 30.4,
+          "households_m": 7.63,
+          "source_url": "https://assets.publishing.service.gov.uk/media/69c3af123ed0546101e0dc3e/Main_Report__2026_Fuel_Poverty_Statistics_Publication_.pdf"
+        },
+        "desnz_lilee_england_2025": {
+          "rate_pct": 9.4,
+          "households_m": 2.36
+        }
+      },
+      "why_the_figures_differ": "Neither published figure is comparable with the headline indicator here. DESNZ's 10% indicator uses after-housing-costs income and modelled REQUIRED energy costs, and covers England only; this model uses before-housing-costs income and modelled ACTUAL spend across the UK. LILEE is a different measure again, combining a low-income test with an energy-efficiency test. The income basis alone accounts for most of the level difference \u2014 see fuel_poverty_rate_ahc_pct. Read these rates for the CHANGE a scenario produces, not as estimates of the level of fuel poverty (#22)"
+    },
     "fuel_poverty_definition": "Indicative ratio: modelled domestic energy spend above 10% of household_net_income \u2014 not the official LILEE metric and not comparable with official fuel poverty statistics. Households with non-positive income and a positive energy bill count as fuel poor; see baseline.non_positive_income_households for how many rest on that rule",
     "poverty_definition": "Baseline: people below 60% of the person-weighted median of equiv_hbai_household_net_income (HBAI BHC relative poverty). Post-shock: people below that same baseline line once modelled energy, fuel, food and uprating-lag costs are netted off HBAI income \u2014 a consumption-adjusted resource measure against an anchored threshold, not official HBAI poverty. The line is not recalculated on the post-shock distribution",
     "income_variables": {

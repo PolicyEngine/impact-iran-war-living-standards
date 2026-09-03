@@ -30,6 +30,8 @@ def synthetic_data():
         # HBAI income sits slightly below total net income, as it does in the
         # data: poverty is measured on it, affordability on the total.
         "hbai_income": decile * 9_000.0,
+        # After housing costs: lower again, as it is in the data.
+        "hbai_income_ahc": decile * 7_000.0,
         "equiv_hbai_income": decile * 9_000.0,
         "people": np.full(n, 2.0),
         "weights": np.full(n, 1_000.0),
