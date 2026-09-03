@@ -29,14 +29,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
-      # Fails if requirements.lock no longer matches pyproject.toml, so a
+      # Fails if requirements.lock no longer satisfies pyproject.toml, so a
       # dependency change cannot land without a regenerated lock — and the
       # lock's hash is part of the committed output's staleness signal.
-      - name: Check lock matches pyproject
+      #
+      # The committed lock is copied to the output path first so uv treats its
+      # pins as preferences. Without that, uv resolves from scratch and the
+      # check fails whenever any transitive dependency publishes a new
+      # release, which says nothing about this repository.
+      - name: Check lock satisfies pyproject
         run: |
+          cp requirements.lock /tmp/requirements.lock
           uv pip compile pyproject.toml --extra uk --extra dev --python-version 3.13 -o /tmp/requirements.lock --quiet
-          # Compare pins only: uv's header records the output path it was
-          # given, which differs between the committed file and this check.
+          # Compare pins only: uv's header records the output path it was given.
           diff -u <(grep -v '^#' requirements.lock) <(grep -v '^#' /tmp/requirements.lock)
 
   dashboard:
