@@ -17,18 +17,12 @@ certifi==2026.7.22
     #   httpcore
     #   httpx
     #   requests
-cffi==2.1.1
-    # via cryptography
 charset-normalizer==3.5.1
     # via requests
 click==8.5.0
     # via huggingface-hub
-cryptography==50.0.1
-    # via google-auth
 decorator==5.3.1
     # via ipython
-diskcache==5.6.3
-    # via policyengine
 dpath==2.2.0
     # via policyengine-core
 et-xmlfile==2.0.0
@@ -39,27 +33,6 @@ filelock==3.32.5
     # via huggingface-hub
 fsspec==2026.7.0
     # via huggingface-hub
-google-api-core==2.34.0
-    # via
-    #   google-cloud-core
-    #   google-cloud-storage
-google-auth==2.57.0
-    # via
-    #   google-api-core
-    #   google-cloud-core
-    #   google-cloud-storage
-google-cloud-core==2.7.0
-    # via google-cloud-storage
-google-cloud-storage==3.13.1
-    # via policyengine
-google-crc32c==1.8.0
-    # via
-    #   google-cloud-storage
-    #   google-resumable-media
-google-resumable-media==2.10.2
-    # via google-cloud-storage
-googleapis-common-protos==1.75.2
-    # via google-api-core
 h11==0.16.0
     # via httpcore
 h2==4.4.1
@@ -162,23 +135,16 @@ plotly==5.24.1
     # via policyengine-core
 pluggy==1.6.0
     # via pytest
-policyengine==5.0.1
+policyengine==5.3.0
     # via energy-price-shock-impact (pyproject.toml)
-policyengine-core==3.30.0
+policyengine-core==3.30.1
     # via
     #   policyengine
     #   policyengine-uk
-policyengine-uk==2.89.2
+policyengine-uk==2.90.2
     # via policyengine
 prompt-toolkit==3.0.53
     # via ipython
-proto-plus==1.28.4
-    # via google-api-core
-protobuf==7.36.1
-    # via
-    #   google-api-core
-    #   googleapis-common-protos
-    #   proto-plus
 psutil==6.1.1
     # via
     #   policyengine
@@ -189,12 +155,6 @@ pure-eval==0.2.3
     # via stack-data
 py-cpuinfo==9.0.0
     # via tables
-pyasn1==0.6.4
-    # via pyasn1-modules
-pyasn1-modules==0.4.2
-    # via google-auth
-pycparser==3.0
-    # via cffi
 pydantic==2.13.5
     # via
     #   blosc2
@@ -223,8 +183,6 @@ referencing==0.37.0
     #   jsonschema-specifications
 requests==2.34.2
     # via
-    #   google-api-core
-    #   google-cloud-storage
     #   policyengine
     #   policyengine-core
 rich==15.0.0

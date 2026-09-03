@@ -6,74 +6,56 @@ calculation:
 
     pytest tests/test_integration.py
 
-The pinned values are the reproduced results recorded in the September 2026
-model-validation audit (issue #16).
+The pinned values are the results for the certified data build named below.
 """
 
 import pytest
 
 from iran_impact import config
 
-CERTIFIED_DATA_BUILD = "populace-uk-2023-dd68c73-4aa4b14-20260619T023711Z"
-CERTIFIED_MODEL_VERSION = "2.89.2"
+CERTIFIED_DATA_BUILD = "policyengine-uk-data-1.56.16"
+CERTIFIED_MODEL_VERSION = "2.90.2"
 
-# Reproduced audit figures. Tolerances are tight because the same code against
+# Baseline figures for the certified build above (policyengine 5.3.0,
+# enhanced_frs_2024_25). Tolerances are tight because the same code against
 # the same certified build is deterministic; they exist only to absorb the
 # rounding applied on output.
-EXPECTED_HOUSEHOLDS_M = 29.6
-EXPECTED_MEAN_NET_INCOME = 61_924
-EXPECTED_MEAN_ENERGY_SPEND = 1_331
-
-
-HF_CACHE_DATASET = "datasets--policyengine--populace-uk-private"
-
-
-def _managed_data_available():
-    """Whether this environment can reach the private managed dataset.
-
-    Checked before running, rather than by catching every exception from the
-    run: a genuine model, schema or calculation regression in an authorized
-    environment must fail, not report itself as skipped.
-    """
-    try:
-        import policyengine  # noqa: F401
-        from policyengine.tax_benefit_models.uk import (  # noqa: F401
-            managed_microsimulation,
-        )
-    except ImportError:
-        return False, "policyengine[uk] is not installed"
-
-    import os
-    from pathlib import Path
-
-    if os.environ.get("HF_TOKEN") or os.environ.get("HUGGING_FACE_HUB_TOKEN"):
-        return True, ""
-    try:
-        from huggingface_hub import get_token
-
-        if get_token():
-            return True, ""
-    except ImportError:
-        pass
-    # No token, but an already-downloaded snapshot works offline.
-    cache = Path.home() / ".cache" / "huggingface" / "hub" / HF_CACHE_DATASET
-    if cache.exists():
-        return True, ""
-    return False, (
-        "no Hugging Face token and no cached populace-uk-private snapshot"
-    )
+#
+# The September 2026 audit's reproduced figures (29.6m households, £61,924
+# mean net income, £1,331 mean energy spend) belong to the superseded
+# populace_uk_2023 build and no longer apply.
+EXPECTED_HOUSEHOLDS_M = 31.6
+EXPECTED_MEAN_NET_INCOME = 57_103
+EXPECTED_MEAN_ENERGY_SPEND = 1_584
 
 
 def _baseline():
-    """Run the baseline, skipping only where the data is genuinely absent."""
-    available, reason = _managed_data_available()
-    if not available:
-        pytest.skip(f"managed dataset unavailable: {reason}")
+    """Run the baseline, skipping only where the dataset is genuinely absent.
+
+    Availability is not guessed at. Enumerating token environment variables
+    or looking for a Hugging Face cache directory both get this wrong:
+    policyengine.py accepts several token names, and it only reuses a
+    SHA-verified artifact at its own materialization target, so a populated
+    hub cache does not mean the run can proceed.
+
+    Instead the materializer decides. Only its own
+    DatasetMaterializationError counts as "no data"; every other failure —
+    model, schema or calculation — propagates as a test failure, which is the
+    point of these tests.
+    """
+    try:
+        from policyengine.provenance.dataset_materialization import (
+            DatasetMaterializationError,
+        )
+    except ImportError:
+        pytest.skip("policyengine[uk] is not installed")
 
     from iran_impact.pipeline import run_baseline
 
-    # Deliberately not wrapped: any failure from here is a real regression.
-    return run_baseline(year=config.YEAR)
+    try:
+        return run_baseline(year=config.YEAR)
+    except DatasetMaterializationError as exc:
+        pytest.skip(f"certified dataset unavailable: {exc}")
 
 
 @pytest.fixture(scope="module")

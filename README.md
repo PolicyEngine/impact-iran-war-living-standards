@@ -1,6 +1,6 @@
 # Impact of the Middle East War on UK Living Standards
 
-Microsimulation-based analysis of how energy price rises from the ongoing Middle East conflict (active since late February 2026, with recurrent Strait of Hormuz disruption) affect UK households in 2027-28 — modelling impacts through energy bills, fuel costs and food inflation across 29.6 million weighted households using [policyengine.py](https://github.com/PolicyEngine/policyengine.py) 5.0.1.
+Microsimulation-based analysis of how energy price rises from the ongoing Middle East conflict (active since late February 2026, with recurrent Strait of Hormuz disruption) affect UK households in 2027-28 — modelling impacts through energy bills, fuel costs and food inflation across 31.6 million weighted households using [policyengine.py](https://github.com/PolicyEngine/policyengine.py) 5.3.0.
 
 **[Live Dashboard](https://uk-energy-shock-impact.vercel.app)**
 
@@ -62,7 +62,7 @@ dashboard/              # Next.js interactive dashboard
 ## Quick start
 
 ```bash
-# Install the Python package. The `uk` extra pulls policyengine[uk]==5.0.1,
+# Install the Python package. The `uk` extra pulls policyengine[uk]==5.3.0,
 # which brings the UK country package the pipeline needs. Installing plain
 # `policyengine` is not enough — the managed-simulation import fails.
 pip install -e ".[uk,dev]"
@@ -95,16 +95,28 @@ than chosen by this repository. The current bundle resolves to:
 
 | | |
 |---|---|
-| Bundle | `uk-5.0.1` |
-| Model | `policyengine-uk` 2.89.2 (certified by the bundle — do not pin separately) |
-| Dataset | `populace_uk_2023` |
-| Data build | `populace-uk-2023-dd68c73-4aa4b14-20260619T023711Z` |
+| Bundle | `uk-5.3.0` |
+| Model | `policyengine-uk` 2.90.2 (certified by the bundle — do not pin separately) |
+| Dataset | `enhanced_frs_2024_25` |
+| Data build | `policyengine-uk-data-1.56.16` |
 
-The microdata lives in the private Hugging Face dataset
-`policyengine/populace-uk-private`. Running the pipeline requires a Hugging
-Face token from an account with access to it, supplied either through
-`HF_TOKEN` in the environment or by `hf auth login`. Without it the
+The microdata lives in the Hugging Face repository
+`policyengine/policyengine-uk-data-private`, which is **gated**: access is
+granted per account rather than being public. Running the pipeline requires a
+token from an account that has been granted access, supplied either through
+`HUGGING_FACE_TOKEN`, `HF_TOKEN` or `HUGGINGFACE_HUB_TOKEN` in the
+environment, or by `hf auth login`. Without it the
 `managed_microsimulation()` call fails when it tries to fetch the dataset.
+
+A populated Hugging Face hub cache is not sufficient on its own:
+policyengine.py reuses only a SHA-verified artifact at its own
+materialization target (`./data/enhanced_frs_2024_25.h5` relative to the
+working directory), and otherwise downloads it.
+
+Do not pin `policyengine-uk` or the dataset directly. policyengine.py's
+release bundle selects both, and pinning them here could contradict it — the
+5.3.0 bundle selects `policyengine-uk` 2.90.2, which is not the newest
+release of that package.
 
 ## Reproducibility
 
@@ -138,7 +150,7 @@ touching any calculation source. Regenerate with
 
 ## Data sources
 
-- [policyengine.py](https://github.com/PolicyEngine/policyengine.py) 5.0.1 managed UK microsimulation (`populace_uk_2023`; see Data access)
+- [policyengine.py](https://github.com/PolicyEngine/policyengine.py) 5.3.0 managed UK microsimulation (`enhanced_frs_2024_25`; see Data access)
 - ONS Consumer Price Index weights
 - Ofgem energy price cap data
 - OBR fiscal forecasts

@@ -92,24 +92,26 @@ def test_committed_headlines_match_the_reviewed_values(results):
     An accidental regeneration that moves a headline fails here until someone
     updates these values deliberately, in the PR that changes them.
 
-    Data build: populace-uk-2023-dd68c73-4aa4b14-20260619T023711Z.
+    Data build: policyengine-uk-data-1.56.16 (enhanced_frs_2024_25).
     """
     baseline = results["baseline"]
-    assert baseline["n_households_m"] == 29.6
-    assert baseline["mean_net_income"] == 61_924
-    assert baseline["poverty_rate_baseline_pct"] == 19.91
-    assert baseline["non_positive_income_households"] == 188_777
-    assert baseline["households_with_no_transport_fuel_spend"] == 6_702_935
+    assert baseline["n_households_m"] == 31.6
+    assert baseline["mean_net_income"] == 57_103
+    assert baseline["mean_energy_spend"] == 1_584
+    assert baseline["poverty_rate_baseline_pct"] == 18.97
+    assert baseline["non_positive_income_households"] == 217_920
+    assert baseline["households_with_no_transport_fuel_spend"] == 7_197_973
+    assert baseline["fuel_poverty_rate_pct"] == 10.5
 
     central = results["scenarios"]["central_shock"]["summary"]
-    assert central["mean_net_impact"] == 1_210
-    assert central["total_impact_bn"] == 35.8
-    assert central["n_newly_below_anchored_line"] == 1_004_293
+    assert central["mean_net_impact"] == 1_324
+    assert central["total_impact_bn"] == 41.8
+    assert central["n_newly_below_anchored_line"] == 1_505_723
 
     package = results["policy_responses"]["central_shock"]["combined"]
-    assert package["gross_outlay_bn"] == 40.35
-    assert package["household_protection_bn"] == 30.78
-    assert package["residual_impact_bn"] == 5.00
+    assert package["gross_outlay_bn"] == 54.87
+    assert package["household_protection_bn"] == 37.03
+    assert package["residual_impact_bn"] == 4.77
 
 
 def test_the_policy_accounting_closes_in_the_committed_output(results):
