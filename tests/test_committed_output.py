@@ -72,3 +72,25 @@ def test_dashboard_narrative_inputs_are_present(results):
     """The dashboard derives its comparison note from these two fields."""
     assert results["baseline"]["mean_household_size"] > 1
     assert results["scenarios"]["low_shock"]["summary"]["n_pushed_into_poverty"] > 0
+
+
+def test_committed_headlines_match_the_reviewed_values(results):
+    """Regression baseline for the pinned certified data build.
+
+    These are the figures reviewed in this pull request. Each PR further up
+    the stack that moves a headline updates these values in its own
+    "Regenerate" commit, so the pins double as a statement of each PR's
+    numeric effect.
+
+    Data build: populace-uk-2023-dd68c73-4aa4b14-20260619T023711Z.
+    """
+    baseline = results["baseline"]
+    assert baseline["n_households_m"] == 29.6
+    assert baseline["mean_net_income"] == 61_924
+    assert baseline["poverty_rate_baseline_pct"] == 19.91
+    assert baseline["non_positive_income_households"] == 188_777
+
+    central = results["scenarios"]["central_shock"]["summary"]
+    assert central["mean_net_impact"] == 1_429
+    assert central["total_impact_bn"] == 42.3
+    assert central["n_newly_below_anchored_line"] == 1_243_917

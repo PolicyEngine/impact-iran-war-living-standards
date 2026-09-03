@@ -219,8 +219,19 @@ def run_baseline(year=YEAR):
     electricity = _vals(sim, "electricity_consumption", year)
     energy = electricity + _vals(sim, "gas_consumption", year)
 
+    # Two income concepts, used for different things and deliberately not
+    # interchangeable:
+    #   income / equiv_income     — total household net income, the
+    #     affordability denominator for the fuel-poverty ratio and for impacts
+    #     expressed as a share of income.
+    #   hbai_income / equiv_hbai_income — the HBAI income concept, which is
+    #     what a before-housing-costs poverty measure is defined on. The
+    #     pipeline previously described its poverty measure as HBAI BHC while
+    #     computing it from household_net_income (#11).
     income = _vals(sim, "household_net_income", year)
     equiv_income = _vals(sim, "equiv_household_net_income", year)
+    hbai_income = _vals(sim, "hbai_household_net_income", year)
+    equiv_hbai_income = _vals(sim, "equiv_hbai_household_net_income", year)
     people = _vals(sim, "household_count_people", year)
     weights = _vals(sim, "household_weight", year, unweighted=True)
     # Clip deciles into 1-10: PolicyEngine assigns -1 to negative-income
@@ -248,6 +259,8 @@ def run_baseline(year=YEAR):
         "electricity": electricity,
         "income": income,
         "equiv_income": equiv_income,
+        "hbai_income": hbai_income,
+        "equiv_hbai_income": equiv_hbai_income,
         "people": people,
         "weights": weights,
         "decile": decile,
@@ -456,8 +469,45 @@ def _impact_pct(net, income):
     return _safe_div(net, income) * 100
 
 
+def _mean_impact_pct(net, income, weights, mask=None):
+    """Weighted mean impact as a share of income, over households where that
+    share is defined.
+
+    Households with non-positive income are excluded rather than entered as
+    0%, which would drag the mean towards zero (#11).
+    """
+    defined = _positive_income(income)
+    if mask is not None:
+        defined = defined & mask
+    if not np.any(defined):
+        return 0.0
+    return weighted_mean(_impact_pct(net, income), weights, defined)
+
+
+def _positive_income(income):
+    """Households for which a share-of-income statistic is defined."""
+    return income > 0
+
+
 def _fuel_poverty_flags(energy, income):
-    return _safe_div(energy, income) > FUEL_POVERTY_THRESHOLD
+    """Energy spend above 10% of net income.
+
+    Households with non-positive income cannot spend a defined share of it.
+    `_safe_div` returns 0 for them, which previously classified every such
+    household as *not* fuel poor — 188,777 weighted households on the
+    certified data build (#11). A household with no positive income and a
+    positive energy bill cannot afford it by any reading, so it counts as
+    fuel poor. `_fuel_poverty_excluded` reports how many that is.
+    """
+    ratio_above = _safe_div(energy, income) > FUEL_POVERTY_THRESHOLD
+    unaffordable = (~_positive_income(income)) & (energy > 0)
+    return ratio_above | unaffordable
+
+
+def _fuel_poverty_excluded(income):
+    """Households whose fuel-poverty status rests on the non-positive-income
+    rule rather than on the 10% ratio."""
+    return ~_positive_income(income)
 
 
 def _shocked_energy(data, impacts):
@@ -470,14 +520,13 @@ def _by_quintile(data, impacts, shocked_fuel_poor):
     quintile = data["quintile"]
     income = data["income"]
     net = impacts["net_impact"]
-    net_pct = _impact_pct(net, income)
     rows = []
     for q in range(1, 6):
         mask = quintile == q
         rows.append({
             "quintile": q,
             "mean_impact": round(weighted_mean(net, weights, mask)),
-            "mean_impact_pct": round(weighted_mean(net_pct, weights, mask), 1),
+            "mean_impact_pct": round(_mean_impact_pct(net, income, weights, mask), 1),
             "energy": round(weighted_mean(impacts["energy_shock"], weights, mask)),
             "fuel": round(weighted_mean(impacts["fuel_shock"], weights, mask)),
             "food": round(weighted_mean(impacts["food_shock"], weights, mask)),
@@ -496,7 +545,6 @@ def _grouped_impacts(data, impacts, group_key, label_key, shocked_fuel_poor):
     weights = data["weights"]
     income = data["income"]
     net = impacts["net_impact"]
-    net_pct = _impact_pct(net, income)
     rows = []
     for group in sorted(np.unique(data[group_key])):
         group_str = str(group)
@@ -508,7 +556,7 @@ def _grouped_impacts(data, impacts, group_key, label_key, shocked_fuel_poor):
         rows.append({
             label_key: group_str,
             "mean_impact": round(weighted_mean(net, weights, mask)),
-            "mean_impact_pct": round(weighted_mean(net_pct, weights, mask), 1),
+            "mean_impact_pct": round(_mean_impact_pct(net, income, weights, mask), 1),
             "energy": round(weighted_mean(impacts["energy_shock"], weights, mask)),
             "fuel": round(weighted_mean(impacts["fuel_shock"], weights, mask)),
             "food": round(weighted_mean(impacts["food_shock"], weights, mask)),
@@ -559,20 +607,51 @@ def _channel_decomposition(data, impacts):
 
 
 def _poverty_line(data):
-    """60% of median equivalised household net income (BHC), person-weighted.
+    """60% of median equivalised HBAI income (BHC), person-weighted.
 
-    Uses PolicyEngine's equivalised income; the median is taken over people
-    (household weight × household size) to match standard HBAI practice.
+    Computed on `equiv_hbai_household_net_income`, the variable PolicyEngine
+    provides for the HBAI income concept. The median is taken over people
+    (household weight × household size), matching HBAI practice.
+
+    This line is measured on the *baseline* distribution and then held fixed
+    when the shock is applied, so the post-shock statistic is an **anchored**
+    threshold, not a contemporaneous relative one — see
+    `_below_anchored_line` and the `poverty_definition` metadata.
     """
     person_weights = data["weights"] * data["people"]
-    return POVERTY_LINE_RATIO * _weighted_median(data["equiv_income"], person_weights)
+    return POVERTY_LINE_RATIO * _weighted_median(
+        data["equiv_hbai_income"], person_weights
+    )
 
 
 def _equiv_after_cost(data, cost):
-    """Approximate equivalised income after an annual consumption cost by
-    scaling equivalised income with the household-level proportional loss."""
-    scale = 1 - _safe_div(cost, data["income"])
-    return data["equiv_income"] * np.clip(scale, 0, None)
+    """Equivalised HBAI income less an annual consumption cost.
+
+    The cost is a household-level amount, so it is applied as a proportional
+    reduction in household HBAI income and carried across to the equivalised
+    figure. Households with non-positive HBAI income get no reduction: a
+    proportional scale is undefined for them, and `_safe_div` returns 0.
+
+    The result is a **consumption-adjusted** resource measure, not HBAI BHC
+    income, because modelled consumption costs have been netted off it (#11).
+    """
+    scale = 1 - _safe_div(cost, data["hbai_income"])
+    return data["equiv_hbai_income"] * np.clip(scale, 0, None)
+
+
+def _below_anchored_line(data, cost, poverty_line):
+    """Households whose consumption-adjusted equivalised HBAI income falls
+    below the baseline-anchored poverty line."""
+    return _equiv_after_cost(data, cost) < poverty_line
+
+
+def _baseline_in_poverty(data, poverty_line):
+    """Baseline HBAI BHC relative poverty, before any modelled shock.
+
+    This one *is* comparable in definition with official HBAI BHC relative
+    poverty: no consumption adjustment and a contemporaneous line.
+    """
+    return data["equiv_hbai_income"] < poverty_line
 
 
 def _eval_policy(data, impacts, policy_name, effect):
@@ -594,9 +673,9 @@ def _eval_policy(data, impacts, policy_name, effect):
     # Poverty: people (not households) below 60% of median equivalised income
     person_weights = weights * data["people"]
     poverty_line = _poverty_line(data)
-    shocked_equiv = _equiv_after_cost(data, net)
-    post_policy_equiv = _equiv_after_cost(data, residual)
-    lifted_out = (shocked_equiv < poverty_line) & (post_policy_equiv >= poverty_line)
+    below_without_policy = _below_anchored_line(data, net, poverty_line)
+    below_with_policy = _below_anchored_line(data, residual, poverty_line)
+    lifted_out = below_without_policy & ~below_with_policy
 
     total_benefit = weighted_sum(benefit, weights)
     quintile = data["quintile"]
@@ -614,8 +693,7 @@ def _eval_policy(data, impacts, policy_name, effect):
             "mean_benefit": round(weighted_mean(benefit, weights, mask)),
             "mean_residual_impact": round(weighted_mean(residual, weights, mask)),
             "mean_benefit_pct_income": round(
-                weighted_mean(_safe_div(benefit, income) * 100, weights, mask),
-                1,
+                _mean_impact_pct(benefit, income, weights, mask), 1
             ),
             "benefit_share_pct": round(
                 weighted_sum(benefit, weights, mask) / total_benefit * 100, 1
@@ -688,17 +766,14 @@ def _scenario_output(data, scenario_key):
     # People (not households) pushed below 60% of median equivalised income
     person_weights = weights * data["people"]
     poverty_line = _poverty_line(data)
-    baseline_in_poverty = data["equiv_income"] < poverty_line
-    shocked_in_poverty = _equiv_after_cost(data, net) < poverty_line
+    baseline_in_poverty = _baseline_in_poverty(data, poverty_line)
+    shocked_in_poverty = _below_anchored_line(data, net, poverty_line)
     newly_poor = (~baseline_in_poverty) & shocked_in_poverty
 
     summary = {
         "mean_gross_impact": round(weighted_mean(gross, weights)),
         "mean_net_impact": round(weighted_mean(net, weights)),
-        "mean_net_impact_pct": round(
-            weighted_mean(_impact_pct(net, income), weights),
-            1,
-        ),
+        "mean_net_impact_pct": round(_mean_impact_pct(net, income, weights), 1),
         "total_impact_bn": round(weighted_sum(net, weights) / 1e9, 1),
         "fp_rate_baseline_pct": round(
             weighted_mean(baseline_fuel_poor.astype(float), weights) * 100,
@@ -712,6 +787,24 @@ def _scenario_output(data, scenario_key):
             weighted_sum(shocked_fuel_poor.astype(float), weights)
             - weighted_sum(baseline_fuel_poor.astype(float), weights)
         ),
+        # Baseline HBAI BHC relative poverty, comparable in definition with
+        # official statistics.
+        "poverty_rate_baseline_pct": round(
+            weighted_mean(baseline_in_poverty.astype(float), person_weights) * 100,
+            2,
+        ),
+        # Share below the same line once modelled consumption costs are netted
+        # off. Consumption-adjusted and anchored — not official HBAI poverty.
+        "below_anchored_line_shocked_pct": round(
+            weighted_mean(shocked_in_poverty.astype(float), person_weights) * 100,
+            2,
+        ),
+        "n_newly_below_anchored_line": round(
+            weighted_sum(newly_poor.astype(float), person_weights)
+        ),
+        # Retained under its original key so the dashboard and any external
+        # reference to it keep working; it is the same figure as
+        # `n_newly_below_anchored_line`.
         "n_pushed_into_poverty": round(
             weighted_sum(newly_poor.astype(float), person_weights)
         ),
@@ -766,7 +859,11 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
     data = run_baseline(year=year)
     weights = data["weights"]
 
+    # Energy spend as a share of income, over households where that share is
+    # defined. Households with non-positive income entered as 0% before,
+    # pulling the reported shares down (#11 review A1).
     energy_share = _safe_div(data["energy"], data["income"])
+    income_defined = _positive_income(data["income"])
     baseline_fuel_poor = _fuel_poverty_flags(data["energy"], data["income"])
 
     results = {
@@ -795,6 +892,22 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
             "fuel_poor_households": round(
                 weighted_sum(baseline_fuel_poor.astype(float), weights)
             ),
+            # Households whose fuel-poverty status comes from the
+            # non-positive-income rule rather than the 10% ratio, and which
+            # are excluded from every share-of-income mean (#11).
+            "non_positive_income_households": round(
+                weighted_sum(
+                    _fuel_poverty_excluded(data["income"]).astype(float), weights
+                )
+            ),
+            "poverty_rate_baseline_pct": round(
+                weighted_mean(
+                    _baseline_in_poverty(data, _poverty_line(data)).astype(float),
+                    weights * data["people"],
+                )
+                * 100,
+                2,
+            ),
             "by_quintile": [
                 {
                     "quintile": q,
@@ -805,7 +918,12 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
                         weighted_mean(data["income"], weights, data["quintile"] == q)
                     ),
                     "energy_share_pct": round(
-                        weighted_mean(energy_share, weights, data["quintile"] == q) * 100,
+                        weighted_mean(
+                            energy_share,
+                            weights,
+                            (data["quintile"] == q) & income_defined,
+                        )
+                        * 100,
                         1,
                     ),
                     "fp_rate_pct": round(
@@ -838,13 +956,30 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
                 "basis (≈£1,862 on the pre-July 2026 basis)"
             ),
             "fuel_poverty_definition": (
-                "Indicative 10%-of-net-income energy spend ratio — not the "
-                "official LILEE metric; not comparable with official statistics"
+                "Indicative ratio: modelled domestic energy spend above 10% of "
+                "household_net_income — not the official LILEE metric and not "
+                "comparable with official fuel poverty statistics. Households "
+                "with non-positive income and a positive energy bill count as "
+                "fuel poor; see baseline.non_positive_income_households for "
+                "how many rest on that rule"
             ),
             "poverty_definition": (
-                "People below 60% of median equivalised household net income "
-                "(BHC), person-weighted"
+                "Baseline: people below 60% of the person-weighted median of "
+                "equiv_hbai_household_net_income (HBAI BHC relative poverty). "
+                "Post-shock: people below that same baseline line once modelled "
+                "energy, fuel, food and uprating-lag costs are netted off HBAI "
+                "income — a consumption-adjusted resource measure against an "
+                "anchored threshold, not official HBAI poverty. The line is not "
+                "recalculated on the post-shock distribution"
             ),
+            "income_variables": {
+                "poverty": [
+                    "hbai_household_net_income",
+                    "equiv_hbai_household_net_income",
+                ],
+                "affordability_and_shares_of_income": ["household_net_income"],
+            },
+            "poverty_threshold_basis": "anchored to the baseline distribution",
         },
     }
 

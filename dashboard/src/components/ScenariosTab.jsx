@@ -483,7 +483,7 @@ export default function ScenariosTab({ data }) {
         note: "Our low scenario matches the observed cap rise; the RF sustained case sits between our low and central.",
       },
       {
-        metric: "Pushed into poverty in 2027-28",
+        metric: "Newly below the anchored poverty line in 2027-28",
         external: [
           { label: "NIESR: 200,000 additional UK households", url: "https://www.gbnews.com/money/iran-war-british-households-poverty-cost-of-living" },
         ],
@@ -556,7 +556,7 @@ export default function ScenariosTab({ data }) {
         </div>
         <div className="metric-card">
           <div className="text-xs font-medium uppercase tracking-[0.08em] text-slate-500">
-            Poverty increase
+            Newly below the anchored line
           </div>
           <div className="mt-2 text-3xl font-bold tracking-tight" style={{ color: colors.primary[800] }}>
             {scenarioData?.poverty_increase != null
@@ -564,7 +564,8 @@ export default function ScenariosTab({ data }) {
               : "--"}
           </div>
           <div className="mt-1 text-sm text-slate-500">
-            People pushed below 60% of median equivalised income in 2027-28
+            People pushed below the baseline HBAI BHC poverty line in 2027-28 once
+            modelled costs are netted off income (anchored threshold)
           </div>
         </div>
       </div>

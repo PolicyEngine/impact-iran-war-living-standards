@@ -60,7 +60,7 @@ def test_poverty_line_is_person_weighted(synthetic_data):
     """
     line = _poverty_line(synthetic_data)
     expected_median = _weighted_median(
-        synthetic_data["equiv_income"],
+        synthetic_data["equiv_hbai_income"],
         synthetic_data["weights"] * synthetic_data["people"],
     )
     assert line == pytest.approx(config.POVERTY_LINE_RATIO * expected_median)
@@ -73,6 +73,6 @@ def test_poverty_line_person_weighting_differs_from_household(synthetic_data):
     data["people"] = np.where(data["decile"] >= 8, 10.0, 1.0)
     person_weighted = _poverty_line(data)
     household_weighted = config.POVERTY_LINE_RATIO * _weighted_median(
-        data["equiv_income"], data["weights"]
+        data["equiv_hbai_income"], data["weights"]
     )
     assert person_weighted > household_weighted
