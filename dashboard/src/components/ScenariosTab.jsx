@@ -509,7 +509,7 @@ export default function ScenariosTab({ data }) {
           { label: "Bank of England: ~3% Q3, ~3¼% Q4 2026", url: "https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/june-2026" },
         ],
         ours: `+${low.params.cpi_increase_pp}pp (low), +${central.params.cpi_increase_pp}pp (central), +${severe.params.cpi_increase_pp}pp (high)`,
-        note: `Our low (+${low.params.cpi_increase_pp}pp) matches the OBR/BoE view of the shock as it stands, and our central (+${central.params.cpi_increase_pp}pp) sits inside NIESR's +1pp to +3pp range. Our high (+${severe.params.cpi_increase_pp}pp) is deliberately above every published estimate: it is a tail-risk stress test, extrapolated from the Oxford Economics escalation case (which reports a 5.8% peak in world CPI) rather than derived from a published UK figure.`,
+        note: `Our figures are additions to CPI, so they compare with the shock-addition estimates above (OBR, NIESR) rather than with total-CPI levels. Our low (+${low.params.cpi_increase_pp}pp) matches the OBR view of the shock as it stands, and our central (+${central.params.cpi_increase_pp}pp) sits inside NIESR's +1pp to +3pp range. Our high (+${severe.params.cpi_increase_pp}pp) is above the top of that range and is a judgemental tail-risk assumption, not a published UK figure: it is extrapolated from the Oxford Economics escalation case, which reports a 5.8% peak in world CPI, with no stated equation linking that to a UK addition. Other severe published scenarios exist on a total-CPI basis and are not directly comparable with an addition.`,
       },
     ];
   }, [data]);
