@@ -119,12 +119,24 @@ def test_package_outlay_is_the_sum_of_its_post_interaction_components(
     )
 
 
-def test_package_routing_matches_its_reported_outlay(synthetic_data, impacts):
-    """Energy reduction plus income addition must reconcile to the outlay."""
+def test_package_routing_accounts_for_its_whole_outlay(synthetic_data, impacts):
+    """Every pound of outlay must be routed somewhere.
+
+    Not all of it reaches the fuel-poverty ratio: a fuel-duty saving reduces
+    road-fuel costs, which are neither a domestic energy bill nor income, so
+    the identity is energy + income + other cost reductions = outlay. It was
+    previously energy + income = outlay, which only held because the
+    fuel-duty saving was wrongly counted as income (#14 review C2).
+    """
+    from iran_impact.pipeline import OTHER_COST_REDUCTION_KEYS
+
     effects = compute_policy_effects(synthetic_data, "central_shock", impacts)
+    policies = compute_policies(synthetic_data, "central_shock", impacts)
+    components = policies["_combined_components"]
     combined = effects["combined"]
-    assert combined["energy_reduction"] + combined["income_addition"] == pytest.approx(
-        combined["fiscal_outlay"]
+    other = sum(components[key] for key in OTHER_COST_REDUCTION_KEYS)
+    assert combined["energy_reduction"] + combined["income_addition"] + other == (
+        pytest.approx(combined["fiscal_outlay"])
     )
 
 
@@ -238,3 +250,79 @@ def test_support_is_never_negative(synthetic_data, impacts):
     effects = compute_policy_effects(synthetic_data, "central_shock", impacts)
     for name, effect in effects.items():
         assert np.all(effect["benefit"] >= 0), name
+
+
+# ── Fuel-poverty routing: energy bills vs income vs neither ───────────────
+
+
+def test_the_routing_lists_partition_the_package(synthetic_data, impacts):
+    """Every combined component must be routed exactly once, so a measure
+    cannot be silently treated as both or neither (#14 review C2)."""
+    from iran_impact.pipeline import (
+        CASH_TRANSFER_KEYS,
+        ENERGY_BILL_KEYS,
+        OTHER_COST_REDUCTION_KEYS,
+    )
+
+    routed = ENERGY_BILL_KEYS + CASH_TRANSFER_KEYS + OTHER_COST_REDUCTION_KEYS
+    assert sorted(routed) == sorted(COMBINED_KEYS)
+    assert len(routed) == len(set(routed))
+
+
+def test_fuel_duty_savings_are_not_income_for_any_policy(synthetic_data, impacts):
+    """A road-fuel saving is neither a domestic energy bill reduction nor
+    income, so it must not raise the fuel-poverty denominator.
+
+    The standalone policy got this right while the combined package routed
+    the same saving as income, understating combined-policy fuel poverty
+    (#14 review C2).
+    """
+    effects = compute_policy_effects(synthetic_data, "central_shock", impacts)
+    policies = compute_policies(synthetic_data, "central_shock", impacts)
+    fuel_duty = policies["fuel_duty_cut"]
+    assert np.any(fuel_duty > 0)
+
+    # Standalone: routed to neither.
+    assert np.all(effects["fuel_duty_cut"]["income_addition"] == 0)
+    assert np.all(effects["fuel_duty_cut"]["energy_reduction"] == 0)
+
+    # Combined: the package's income must be the cash transfers alone.
+    expected = sum(
+        policies[key] for key in
+        ["flat_rebate", "ct_rebate", "uc_uplift", "means_tested_payment",
+         "accelerated_uprating"]
+    )
+    assert effects["combined"]["income_addition"] == pytest.approx(expected)
+    # Explicitly: adding the fuel-duty saving would change it.
+    assert not np.allclose(
+        effects["combined"]["income_addition"], expected + fuel_duty
+    )
+
+
+def test_combined_routing_matches_the_standalone_routing(synthetic_data, impacts):
+    """Guards the class of bug directly: the package and the standalone
+    policies must agree on how each measure reaches a household."""
+    effects = compute_policy_effects(synthetic_data, "central_shock", impacts)
+    for key in COMBINED_KEYS:
+        standalone_is_income = np.any(effects[key]["income_addition"] > 0)
+        standalone_is_energy = np.any(effects[key]["energy_reduction"] > 0)
+        # A measure routed to neither standalone must not appear in the
+        # package's income or energy sums either.
+        if not standalone_is_income and not standalone_is_energy:
+            from iran_impact.pipeline import (
+                CASH_TRANSFER_KEYS,
+                ENERGY_BILL_KEYS,
+            )
+
+            assert key not in CASH_TRANSFER_KEYS, key
+            assert key not in ENERGY_BILL_KEYS, key
+
+
+def test_package_energy_reduction_is_the_energy_measures_only(
+    synthetic_data, impacts
+):
+    effects = compute_policy_effects(synthetic_data, "central_shock", impacts)
+    policies = compute_policies(synthetic_data, "central_shock", impacts)
+    components = policies["_combined_components"]
+    expected = components["energy_price_guarantee"] + components["elec_vat_cut"]
+    assert effects["combined"]["energy_reduction"] == pytest.approx(expected)

@@ -2,8 +2,8 @@
   "year": 2027,
   "current_energy_cap": 1663,
   "provenance": {
-    "generated_at": "2026-09-02T11:39:07+00:00",
-    "git_revision": "550ba6d920a587bdfc14f704c0bfb1821876d2dc",
+    "generated_at": "2026-09-03T09:54:25+00:00",
+    "git_revision": "1491313e2e11a3fb3252a56b43433012d45c3c71",
     "git_dirty": true,
     "packages": {
       "policyengine": "5.0.1",
@@ -14,7 +14,7 @@
     },
     "source_hashes": {
       "config.py": "211a7452e5b5d1628a38a29e9c874103dcea841ccbe701c85d4f9edae47befcb",
-      "pipeline.py": "b673a2bafc8bb6cf270ae1f5db96ba35aeffd310ed2ea1dda5aa0b06524d51c0",
+      "pipeline.py": "0ef10c0ddf26520b636489c0c9d6d1e4fc61c862fa5a95230192564b828f1bbe",
       "provenance.py": "956bcc99b7f9c3f796082ae19edf451310fe6e14ea93deda16bc665455d75541",
       "pyproject.toml": "32bea2356cf51d4274827d38867963b7a28085338b19c5334ff37aefdb8cd863",
       "requirements.lock": "16e390c27392135057dd0bae6c7689b764448337fc38018ef43b85c5b10904f4"

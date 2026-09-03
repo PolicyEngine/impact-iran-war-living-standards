@@ -448,6 +448,29 @@ def compute_scenario(data, scenario_key):
 
 # ── 3. Policy responses ─────────────────────────────────────────────────
 
+# How each measure reaches a household, for fuel-poverty accounting:
+#
+#   ENERGY_BILL_KEYS  — reduce the domestic energy bill, so they lower the
+#                       numerator of the energy-to-income ratio.
+#   CASH_TRANSFER_KEYS — raise income, so they raise the denominator.
+#
+# A fuel-duty cut is in neither: it reduces road-fuel costs, which are not
+# domestic energy and are not income. Routing it as income would raise the
+# affordability denominator and understate fuel poverty (#14 review C2).
+# Both the standalone effects and the combined package read these lists, so
+# the two cannot diverge — which is how the combined package came to treat
+# fuel-duty savings as income while the standalone policy did not.
+ENERGY_BILL_KEYS = ["energy_price_guarantee", "elec_vat_cut"]
+CASH_TRANSFER_KEYS = [
+    "flat_rebate",
+    "ct_rebate",
+    "uc_uplift",
+    "means_tested_payment",
+    "accelerated_uprating",
+]
+# Reduces a non-domestic cost: neither an energy-bill reduction nor income.
+OTHER_COST_REDUCTION_KEYS = ["fuel_duty_cut"]
+
 COMBINED_KEYS = [
     "energy_price_guarantee",
     "flat_rebate",
@@ -586,7 +609,11 @@ def compute_policy_effects(data, scenario_key, scenario_impacts):
     Domestic energy subsidies reduce the numerator in the fuel-poverty ratio.
     Cash transfers raise the affordability denominator. Fuel-duty cuts reduce
     total living-standard pressure but do not directly affect domestic energy
-    affordability.
+    affordability, so they do neither — see the routing lists above.
+
+    The combined package routes its components through the same lists as the
+    standalone policies, so a measure cannot be treated as income in one and
+    not the other.
     """
     policies = compute_policies(data, scenario_key, scenario_impacts)
     combined_outlay = policies.pop("_combined_outlay")
@@ -601,35 +628,21 @@ def compute_policy_effects(data, scenario_key, scenario_impacts):
             "income_addition": zeros.copy(),
         }
 
-    effects["energy_price_guarantee"]["energy_reduction"] = policies[
-        "energy_price_guarantee"
-    ]
-    # Social tariff and the electricity VAT cut reduce energy bills directly
-    effects["social_tariff"]["energy_reduction"] = policies["social_tariff"]
-    effects["elec_vat_cut"]["energy_reduction"] = policies["elec_vat_cut"]
-    for key in [
-        "flat_rebate",
-        "ct_rebate",
-        "uc_uplift",
-        "means_tested_payment",
-        "accelerated_uprating",
-    ]:
+    # The social tariff is not in the combined package but reduces energy
+    # bills the same way the package's energy measures do.
+    for key in ENERGY_BILL_KEYS + ["social_tariff"]:
+        effects[key]["energy_reduction"] = policies[key]
+    for key in CASH_TRANSFER_KEYS:
         effects[key]["income_addition"] = policies[key]
 
     effects["combined"]["fiscal_outlay"] = combined_outlay
     # Use the post-interaction component amounts, so the package's energy and
     # income routing matches the outlay it reports (#14).
-    effects["combined"]["energy_reduction"] = (
-        combined_components["energy_price_guarantee"]
-        + combined_components["elec_vat_cut"]
+    effects["combined"]["energy_reduction"] = sum(
+        (combined_components[key] for key in ENERGY_BILL_KEYS), zeros.copy()
     )
     effects["combined"]["income_addition"] = sum(
-        (
-            combined_components[key]
-            for key in COMBINED_KEYS
-            if key not in {"energy_price_guarantee", "elec_vat_cut"}
-        ),
-        zeros.copy(),
+        (combined_components[key] for key in CASH_TRANSFER_KEYS), zeros.copy()
     )
     return effects
 
