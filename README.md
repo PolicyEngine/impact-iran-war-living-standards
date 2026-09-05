@@ -32,22 +32,27 @@ Poverty is measured as people below 60% of the person-weighted median of equival
 
 No fuel poverty figure is reported. The study previously published an indicative 10%-of-income energy-spend ratio; its level was not comparable with any official statistic (England's LILEE measure adds an energy-efficiency test, and DESNZ's own 10% indicator uses after-housing-costs income and modelled *required* rather than actual energy costs), so it was withdrawn rather than published alongside figures it invited comparison with. See [#22](https://github.com/PolicyEngine/impact-iran-war-living-standards/issues/22).
 
-Results are broken down by income decile, region, country, tenure type, and household composition.
+Results are broken down by income quintile, region, country, tenure type, and household composition.
 
 ## Headline results
 
-Central scenario, 2027-28, across 31.6 million weighted households. Regenerate with `iran-impact-build --sync-dashboard`; these figures are pinned as a regression test in `tests/test_committed_output.py`.
+All three scenarios, 2027-28, across 31.6 million weighted households. Regenerate with `iran-impact-build --sync-dashboard`; these figures are pinned as a regression test in `tests/test_committed_output.py`.
 
 | | Low | Central | High |
 |---|---:|---:|---:|
 | Mean cost per household | £517 | **£1,324** | £2,489 |
-| As a share of net income | 1.7% | **4.5%** | 8.5% |
 | Total cost | £16.3bn | **£41.8bn** | £78.6bn |
 | People newly below the anchored poverty line | 359,642 | **1,505,723** | 2,472,590 |
+| Mean of per-household cost/income ratios | 1.7% | **4.5%** | 8.5% |
+| Total cost ÷ total net income | 0.9% | **2.3%** | 4.4% |
+
+The last two rows are different statistics, not two estimates of one thing. The mean of ratios weights every household equally and so is pulled up by households with very low incomes; it is the figure the dashboard reports as `mean_net_impact_pct`, and it excludes households with non-positive income, for whom the ratio is undefined. The aggregate ratio is total cost divided by total income.
 
 Central-scenario cost by channel, per household: energy £713, fuel £464, food £147. The uprating compensation shortfall is a further £67, reported separately rather than added (see above).
 
-The shock is regressive in relative terms — the poorest fifth of households lose 10.2% of net income against 1.7% for the richest fifth, even though the cash amounts run the other way (£974 against £1,598).
+The shock is regressive on either basis. Under the central scenario the poorest fifth of households bear a cost equal to 4.2% of their mean net income against 1.4% for the richest fifth (10.2% against 1.7% as a mean of ratios), even though the cash amounts run the other way — £974 against £1,598.
+
+Only the central column's cost, total and poverty count, plus the baseline aggregates and the combined package, are pinned as a regression test in `tests/test_committed_output.py`. The other figures here are read from the generated output and are not test-guarded.
 
 ## Policy responses evaluated
 
@@ -62,7 +67,7 @@ Aligned to the live Autumn Budget 2026 decisions where applicable:
 - Accelerated benefit uprating
 - Electricity VAT cut extension (5% → 0%, enacted Oct 2026–Mar 2027; modelled full-year)
 - Social tariff
-- Combined package (applied jointly, so the Energy Price Guarantee caps the bill before the electricity VAT relief applies to it)
+- Combined package — the eight measures above except the social tariff, applied jointly so the Energy Price Guarantee caps the bill before the electricity VAT relief applies to it. The social tariff is evaluated standalone only.
 
 Every cost is a **gross modelled household transfer, not an Exchequer costing**: it excludes tax and benefit interactions, take-up, behavioural responses, administration, non-household fuel use and financing. Each policy is assessed on gross outlay (unclipped government spending), household protection and residual impact, targeting efficiency (share of spending reaching the bottom two quintiles), and the number of people lifted back above the anchored poverty line.
 
@@ -79,10 +84,12 @@ src/iran_impact/        # Python microsimulation pipeline
 scripts/
   extract_ons_a6.py     # Regenerates the A6 extract from the ONS workbook
 run_pipeline.py         # Runs pipeline, writes JSON output
+data/                   # CLI output, and where the certified dataset materializes
 tests/                  # Unit tests (synthetic) and integration tests (managed data)
 requirements.lock       # Fully pinned Python environment
 .github/workflows/      # CI: tests, lockfile check, dashboard lint and build
 dashboard/              # Next.js interactive dashboard
+  app/                  # App Router entry (layout, page, global styles)
   src/components/       # React components (scenarios, policy, methodology tabs)
   src/lib/              # Data helpers, formatters, chart utils
   public/data/          # Pipeline JSON output consumed by frontend
@@ -179,7 +186,7 @@ touching any calculation source. Regenerate with
 
 ## Data sources
 
-- [policyengine.py](https://github.com/PolicyEngine/policyengine.py) 5.3.0 managed UK microsimulation (`enhanced_frs_2024_25`; see Data access) — household incomes, benefits, energy and road-fuel consumption, vehicle ownership
+- [policyengine.py](https://github.com/PolicyEngine/policyengine.py) 5.3.0 managed UK microsimulation (`enhanced_frs_2024_25`; see Data access) — household incomes, benefits, energy and road-fuel consumption, vehicle ownership, council tax band, region, tenure and family type
 - [ONS Family Spending in the UK, FYE 2024, Table A6](https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/expenditure/bulletins/familyspendingintheuk/april2023tomarch2024) — transport fuel and food spending by gross-income decile, committed as a versioned extract under `src/iran_impact/inputs/`
 - [Ofgem price cap announcements](https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-july-and-30-september-2026) — reported as context; not used in the calculation
 - Scenario anchors: Goldman Sachs Hormuz-closure analysis, [Oxford Economics escalation scenario](https://www.oxfordeconomics.com/resource/iran-war-scenarios-the-oil-price-that-breaks-parts-of-the-economy/), [Commons Library CBP-10601](https://commonslibrary.parliament.uk/research-briefings/cbp-10601/) and [CBP-10403](https://commonslibrary.parliament.uk/research-briefings/cbp-10403/), Bank of England and NIESR inflation projections — see `parameters.registry` in the output for which figure each supports
