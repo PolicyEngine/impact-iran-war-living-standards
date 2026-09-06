@@ -3,7 +3,7 @@
 import numpy as np
 import pytest
 
-from iran_impact import config
+from iran_impact import config, pipeline
 from iran_impact.pipeline import (
     COMBINED_KEYS,
     MEANS_TESTED_QUALIFYING_BENEFITS,
@@ -48,8 +48,36 @@ def test_housing_benefit_is_not_a_qualifying_benefit():
 
 def test_payment_goes_only_to_qualifying_households(policies, synthetic_data):
     qualifying = synthetic_data["is_means_tested"]
-    assert np.all(policies["means_tested_payment"][qualifying] == config.MEANS_TEST_AMOUNT)
+    assert np.all(policies["means_tested_payment"][qualifying] > 0)
     assert np.all(policies["means_tested_payment"][~qualifying] == 0)
+
+
+def test_the_payment_is_scaled_for_the_qualifying_windows(policies, synthetic_data):
+    """The 2022 scheme paid in two instalments, each needing entitlement in
+    its own window, so not every recipient received the full amount (#14)."""
+    qualifying = synthetic_data["is_means_tested"]
+    paid = policies["means_tested_payment"][qualifying]
+    assert np.all(paid < config.MEANS_TEST_AMOUNT)
+    assert np.all(
+        paid
+        == pytest.approx(
+            config.MEANS_TEST_AMOUNT
+            * config.MEANS_TEST_CONTINUOUS_RECEIPT_SHARE
+            * config.MEANS_TEST_TAKE_UP
+        )
+    )
+
+
+def test_a_full_continuous_receipt_share_pays_the_whole_amount(
+    synthetic_data, impacts, monkeypatch
+):
+    """The scaling must be a modelling choice, not baked in."""
+    monkeypatch.setattr(pipeline, "MEANS_TEST_CONTINUOUS_RECEIPT_SHARE", 1.0)
+    policies = compute_policies(synthetic_data, "central_shock", impacts)
+    qualifying = synthetic_data["is_means_tested"]
+    assert np.all(
+        policies["means_tested_payment"][qualifying] == config.MEANS_TEST_AMOUNT
+    )
 
 
 # ── Fuel duty on litres, not scaled spending ──────────────────────────────

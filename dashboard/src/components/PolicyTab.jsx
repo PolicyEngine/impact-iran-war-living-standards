@@ -48,7 +48,7 @@ const POLICY_DESCRIPTIONS = {
   },
   means_tested: {
     mechanism: "Pays £650 to households receiving a benefit that qualified for the 2022 Cost of Living Payment: Universal Credit, income-based JSA, income-related ESA, Income Support, Working Tax Credit, Child Tax Credit or Pension Credit. Housing Benefit alone did not qualify.",
-    model: "The model treats this as income support for qualifying households in the selected shock scenario, assuming complete take-up. The 2022 scheme's qualifying assessment window and its payment in two instalments are not modelled.",
+    model: "The 2022 scheme paid in two instalments, each requiring entitlement in its own qualifying window, so a household on benefit for only part of the year could receive one or neither. The annual microdata cannot observe entitlement within a window, so the model scales the payment by an assumed 85% share of qualifying households entitled across both \u2014 an assumption, not a sourced figure, and the modelled cost is proportional to it. Take-up among qualifying households is complete, since the 2022 payments were automatic.",
   },
   elec_vat_cut: {
     mechanism: "Extends the electricity VAT cut (5% to 0%) announced in July 2026 — currently legislated for October 2026 to March 2027 — for a full year.",

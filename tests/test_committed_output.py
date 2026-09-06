@@ -107,7 +107,7 @@ def test_committed_headlines_match_the_reviewed_values(results):
     assert central["n_newly_below_anchored_line"] == 1_505_723
 
     package = results["policy_responses"]["central_shock"]["combined"]
-    assert package["gross_outlay_bn"] == 54.87
+    assert package["gross_outlay_bn"] == 54.10
     assert package["household_protection_bn"] == 37.03
     assert package["residual_impact_bn"] == 4.77
 

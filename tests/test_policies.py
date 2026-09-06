@@ -36,7 +36,11 @@ def test_uc_uplift_is_weekly_rate_annualised_for_recipients(policies, synthetic_
 
 def test_means_tested_payment_follows_benefit_receipt(policies, synthetic_data):
     recipients = synthetic_data["is_means_tested"]
-    assert np.all(policies["means_tested_payment"][recipients] == config.MEANS_TEST_AMOUNT)
+    # Scaled by the assumed share entitled across both qualifying windows.
+    expected = config.MEANS_TEST_AMOUNT * (
+        config.MEANS_TEST_CONTINUOUS_RECEIPT_SHARE * config.MEANS_TEST_TAKE_UP
+    )
+    assert np.all(policies["means_tested_payment"][recipients] == expected)
     assert np.all(policies["means_tested_payment"][~recipients] == 0)
 
 

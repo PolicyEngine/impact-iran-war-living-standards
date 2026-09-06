@@ -24,6 +24,9 @@ from .config import (
     UC_UPLIFT_WEEKLY,
     FUEL_DUTY_CUT_PENCE,
     MEANS_TEST_AMOUNT,
+    MEANS_TEST_CONTINUOUS_RECEIPT_SHARE,
+    MEANS_TEST_TAKE_UP,
+    MEANS_TEST_INSTALMENTS,
     ELEC_VAT_SAVING_RATE,
     SOCIAL_TARIFF_INCOME_THRESHOLD,
     SOCIAL_TARIFF_DISCOUNT,
@@ -506,9 +509,18 @@ def compute_policies(data, scenario_key, scenario_impacts):
     )
 
     # Policy F: Means-tested payment – £650 to households receiving a
-    # means-tested benefit (the 2022 Cost of Living Payment eligibility basis)
+    # qualifying benefit (the 2022 Cost of Living Payment eligibility basis).
+    #
+    # The 2022 scheme paid in two instalments, each requiring entitlement in
+    # its own qualifying window, so a household on benefit for part of the
+    # year could receive one or neither. The annual microdata cannot observe
+    # entitlement within a window, so the expected payment is scaled by the
+    # assumed share entitled across both, rather than selecting households the
+    # data cannot identify (#14). Take-up is complete because the 2022
+    # payments were automatic for households already on a qualifying benefit.
+    expected_share = MEANS_TEST_CONTINUOUS_RECEIPT_SHARE * MEANS_TEST_TAKE_UP
     policies["means_tested_payment"] = np.where(
-        data["is_means_tested"], MEANS_TEST_AMOUNT, 0.0
+        data["is_means_tested"], MEANS_TEST_AMOUNT * expected_share, 0.0
     )
 
     # Policy J: Electricity VAT cut (enacted Oct 2026–Mar 2027; modelled as a
@@ -1260,9 +1272,25 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
                     "cost-of-living-support/"
                     "cost-of-living-support-factsheet-26-may-2022"
                 ),
-                "not_modelled": (
-                    "the 2022 scheme's qualifying assessment window and its "
-                    "two instalments; take-up is assumed complete"
+                "instalments": MEANS_TEST_INSTALMENTS,
+                "continuous_receipt_share": MEANS_TEST_CONTINUOUS_RECEIPT_SHARE,
+                "take_up": MEANS_TEST_TAKE_UP,
+                "timing_treatment": (
+                    "The 2022 scheme paid in two instalments, each requiring "
+                    "entitlement in its own qualifying window. The annual "
+                    "microdata cannot observe entitlement within a window, so "
+                    f"the payment is scaled by an assumed "
+                    f"{MEANS_TEST_CONTINUOUS_RECEIPT_SHARE:.0%} share of "
+                    "qualifying households entitled across both, as an "
+                    "expected value rather than by selecting households. That "
+                    "share is an assumption, not a sourced figure, and the "
+                    "modelled cost is proportional to it"
+                ),
+                "take_up_treatment": (
+                    "Complete among qualifying households: the 2022 payments "
+                    "were automatic for households already receiving a "
+                    "qualifying benefit. Losses from benefit take-up upstream "
+                    "are already reflected in the microdata"
                 ),
             },
             "winners_and_losers": (
