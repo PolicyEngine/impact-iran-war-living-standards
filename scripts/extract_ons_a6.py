@@ -29,6 +29,12 @@ BULLETIN_URL = (
 )
 
 SHEET = "A6"
+# Table A1 of the same workbook publishes the full-method percentage standard
+# error for every COICOP line, at UK all-household level. A6 itself has none.
+SE_SHEET = "A1"
+SE_MEAN_COLUMN = 7
+SE_RECORDING_HOUSEHOLDS_COLUMN = 9
+SE_PERCENT_COLUMN = 10
 # Table A6 lays the ten gross-income decile groups out in columns E-N, with
 # the all-households column in O.
 FIRST_DECILE_COLUMN = 5
@@ -64,10 +70,45 @@ def _find_row(sheet, code, label_column):
     raise LookupError(f"no row with code {code!r} in column {label_column}")
 
 
+def _extract_standard_errors(workbook):
+    """Percentage standard errors from Table A1, keyed by A6 commodity code.
+
+    ONS computes these on the survey's actual multi-stage stratified clustered
+    design ("full method"), which is why they cannot be derived from the
+    sample size alone. They are published for UK all-household means only —
+    there are no decile-level standard errors anywhere in the release.
+    """
+    sheet = workbook[SE_SHEET]
+    wanted = set(COMMODITIES)
+    found = {}
+    for row in range(1, sheet.max_row + 1):
+        for column in (1, 2, 3):
+            code = str(sheet.cell(row, column).value or "").strip()
+            if code not in wanted or code in found:
+                continue
+            label = str(sheet.cell(row, column + 1).value or "")
+            if "continued" in label.lower():
+                continue
+            found[code] = {
+                "mean_weekly": _cell(sheet, row, SE_MEAN_COLUMN),
+                "recording_households": _cell(
+                    sheet, row, SE_RECORDING_HOUSEHOLDS_COLUMN
+                ),
+                "percentage_standard_error": _cell(sheet, row, SE_PERCENT_COLUMN),
+            }
+            break
+    missing = wanted - set(found)
+    if missing:
+        raise LookupError(f"no Table {SE_SHEET} standard errors for {sorted(missing)}")
+    return found
+
+
 def extract(workbook_path):
     import openpyxl
 
-    sheet = openpyxl.load_workbook(workbook_path, data_only=True)[SHEET]
+    workbook = openpyxl.load_workbook(workbook_path, data_only=True)
+    standard_errors = _extract_standard_errors(workbook)
+    sheet = workbook[SHEET]
     rows = []
     for code, name in COMMODITIES.items():
         # A6 indents its classification codes: top-level codes sit in the
@@ -84,6 +125,13 @@ def extract(workbook_path):
         # The description is the cell immediately right of the code.
         description = str(sheet.cell(row, label_column + 1).value or "").strip()
         all_households = _cell(sheet, row, ALL_HOUSEHOLDS_COLUMN)
+        errors = standard_errors[code]
+        # A1 and A6 must agree on the mean, or the two are not the same series.
+        if abs(errors["mean_weekly"] - all_households) > 0.005:
+            raise ValueError(
+                f"{code}: Table {SHEET} mean {all_households} does not match "
+                f"Table {SE_SHEET} mean {errors['mean_weekly']}"
+            )
         for offset in range(10):
             weekly = _cell(sheet, row, FIRST_DECILE_COLUMN + offset)
             rows.append(
@@ -94,6 +142,12 @@ def extract(workbook_path):
                     "gross_income_decile": offset + 1,
                     "weekly_spend_gbp": f"{weekly:.2f}",
                     "all_households_weekly_spend_gbp": f"{all_households:.2f}",
+                    "all_households_pct_standard_error": (
+                        f"{errors['percentage_standard_error']:.1f}"
+                    ),
+                    "recording_households_in_sample": (
+                        f"{errors['recording_households']:.0f}"
+                    ),
                 }
             )
     return rows
@@ -126,6 +180,9 @@ def main():
             "# ONS Family Spending in the UK, financial year ending 2024.\n"
             f"# Table: {SHEET} - detailed household expenditure by gross "
             "income decile group, UK\n"
+            f"# Standard errors: Table {SE_SHEET} of the same workbook, "
+            "full-method percentage standard error, UK all-household mean "
+            "only (no decile-level errors are published)\n"
             "# Units: mean GBP per week per household, in FYE 2024 prices\n"
             "# Grouping variable: gross household income decile (ONS's own "
             "grouping for this table)\n"

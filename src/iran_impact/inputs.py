@@ -63,6 +63,24 @@ class SpendingTable:
         weekly_all = float(rows[0]["all_households_weekly_spend_gbp"])
         self.annual_mean = round(weekly_all * WEEKS_PER_YEAR, 2)
         self.weekly_mean = weekly_all
+
+        # Sampling uncertainty, from Table A1 of the same workbook. ONS
+        # computes these on the survey's actual multi-stage stratified
+        # clustered design, so they cannot be derived from the sample size.
+        # Published for the UK all-household mean only — there is no
+        # decile-level standard error in the release, which is why
+        # `annual_by_decile` carries no interval.
+        self.pct_standard_error = float(rows[0]["all_households_pct_standard_error"])
+        self.recording_households = int(rows[0]["recording_households_in_sample"])
+        self.annual_standard_error = round(
+            self.annual_mean * self.pct_standard_error / 100, 2
+        )
+        # 95% interval on the annual all-household mean.
+        half_width = 1.96 * self.annual_standard_error
+        self.annual_mean_ci95 = (
+            round(self.annual_mean - half_width, 2),
+            round(self.annual_mean + half_width, 2),
+        )
         self.annual_by_decile = {
             int(row["gross_income_decile"]): round(
                 float(row["weekly_spend_gbp"]) * WEEKS_PER_YEAR, 2

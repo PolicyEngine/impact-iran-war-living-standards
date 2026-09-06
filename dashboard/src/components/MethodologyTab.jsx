@@ -145,8 +145,12 @@ export default function MethodologyTab({ data }) {
             spread across that decile&apos;s vehicle-owning households only, so households
             with no vehicle spend nothing on fuel and receive no fuel-duty benefit. These
             remain decile-level averages rather than household microdata: within-decile
-            variation among vehicle owners is not captured, and the survey&apos;s sampling
-            uncertainty is not carried into the results.
+            variation among vehicle owners is not captured. ONS publishes a
+            full-method standard error for each all-household mean &mdash; 2.6% for
+            transport fuel and 1.0% for food, both small against the scenario price
+            ranges &mdash; but no decile-level standard errors, so sampling uncertainty
+            is reported in the results file rather than propagated through the
+            scenarios.
           </div>
           <div>
             <strong className="text-slate-800">Food prices:</strong>{" "}

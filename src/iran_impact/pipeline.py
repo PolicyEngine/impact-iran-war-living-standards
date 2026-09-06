@@ -1066,11 +1066,49 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
                     if ALLOCATE_FUEL_TO_VEHICLE_OWNERS
                     else "spread evenly across all households in the decile"
                 ),
+                "sampling_uncertainty": {
+                    "basis": (
+                        "ONS full-method percentage standard error, Table A1 "
+                        "of the same workbook, UK all-household mean"
+                    ),
+                    "transport_fuel": {
+                        "annual_mean_gbp": TRANSPORT_FUEL_SPEND.annual_mean,
+                        "pct_standard_error": (
+                            TRANSPORT_FUEL_SPEND.pct_standard_error
+                        ),
+                        "annual_standard_error_gbp": (
+                            TRANSPORT_FUEL_SPEND.annual_standard_error
+                        ),
+                        "annual_mean_ci95_gbp": list(
+                            TRANSPORT_FUEL_SPEND.annual_mean_ci95
+                        ),
+                        "recording_households_in_sample": (
+                            TRANSPORT_FUEL_SPEND.recording_households
+                        ),
+                    },
+                    "food": {
+                        "annual_mean_gbp": FOOD_SPEND.annual_mean,
+                        "pct_standard_error": FOOD_SPEND.pct_standard_error,
+                        "annual_standard_error_gbp": (
+                            FOOD_SPEND.annual_standard_error
+                        ),
+                        "annual_mean_ci95_gbp": list(FOOD_SPEND.annual_mean_ci95),
+                        "recording_households_in_sample": (
+                            FOOD_SPEND.recording_households
+                        ),
+                    },
+                },
                 "uncertainty_treatment": (
-                    "not quantified: Table A6 publishes no standard errors, so "
-                    "the Living Costs and Food Survey's sampling uncertainty is "
-                    "not carried into these results. Scenario ranges reflect "
-                    "price assumptions only"
+                    "Sampling uncertainty on the all-household spending means "
+                    "is reported above, from ONS's own full-method standard "
+                    "errors. It is NOT propagated into the scenario results: "
+                    "the model applies each decile's point estimate, and ONS "
+                    "publishes no decile-level standard errors, so a "
+                    "distribution over decile spending would have to be "
+                    "assumed rather than sourced. To size the effect, the "
+                    "standard errors above are 2.6% of the transport-fuel mean "
+                    "and 1.0% of the food mean, small against the scenario "
+                    "price ranges in parameters.registry"
                 ),
             },
         },

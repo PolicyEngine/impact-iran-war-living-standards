@@ -176,3 +176,54 @@ def test_a_decile_with_no_owners_is_an_error():
             np.array([False, False]),
             np.ones(2),
         )
+
+
+# ── Sampling uncertainty, from Table A1 (#12) ────────────────────────────
+
+# Published ONS full-method percentage standard errors, FYE 2024 Table A1.
+A1_TRANSPORT_FUEL_PCT_SE = 2.6
+A1_FOOD_PCT_SE = 1.0
+A1_TRANSPORT_FUEL_RECORDING = 2_430
+A1_FOOD_RECORDING = 4_180
+
+
+def test_standard_errors_match_the_published_table():
+    assert TRANSPORT_FUEL_SPEND.pct_standard_error == pytest.approx(
+        A1_TRANSPORT_FUEL_PCT_SE
+    )
+    assert FOOD_SPEND.pct_standard_error == pytest.approx(A1_FOOD_PCT_SE)
+    assert TRANSPORT_FUEL_SPEND.recording_households == A1_TRANSPORT_FUEL_RECORDING
+    assert FOOD_SPEND.recording_households == A1_FOOD_RECORDING
+
+
+def test_annual_standard_error_scales_the_annual_mean():
+    for table, pct in (
+        (TRANSPORT_FUEL_SPEND, A1_TRANSPORT_FUEL_PCT_SE),
+        (FOOD_SPEND, A1_FOOD_PCT_SE),
+    ):
+        assert table.annual_standard_error == pytest.approx(
+            table.annual_mean * pct / 100, abs=0.01
+        )
+
+
+def test_the_confidence_interval_brackets_the_mean():
+    for table in (TRANSPORT_FUEL_SPEND, FOOD_SPEND):
+        low, high = table.annual_mean_ci95
+        assert low < table.annual_mean < high
+        # Symmetric, at 1.96 standard errors either side.
+        assert (high - low) / 2 == pytest.approx(
+            1.96 * table.annual_standard_error, abs=0.02
+        )
+
+
+def test_transport_fuel_is_the_less_precisely_estimated_series():
+    """Fewer households record road-fuel spending than food, so its mean
+    carries the wider relative interval — which is why the two are reported
+    separately rather than as one figure."""
+    assert (
+        TRANSPORT_FUEL_SPEND.pct_standard_error > FOOD_SPEND.pct_standard_error
+    )
+    assert (
+        TRANSPORT_FUEL_SPEND.recording_households
+        < FOOD_SPEND.recording_households
+    )

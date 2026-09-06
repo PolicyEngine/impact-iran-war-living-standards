@@ -2,8 +2,8 @@
   "year": 2027,
   "current_energy_cap": 1663,
   "provenance": {
-    "generated_at": "2026-09-03T22:37:48+00:00",
-    "git_revision": "b462773ff731e595d424b7f4aff2510d06472490",
+    "generated_at": "2026-09-06T10:42:10+00:00",
+    "git_revision": "7b4b0ba3c76b6ef7f7debf23bd1655b6ff76273e",
     "git_dirty": true,
     "packages": {
       "policyengine": "5.3.0",
@@ -14,13 +14,13 @@
     },
     "source_hashes": {
       "config.py": "29d3e14d1f22c1248f6fc2c0e48931dce37788f55a74832381613118f83c645a",
-      "pipeline.py": "083dc7cc18c90ac3c95dfa37de24de2cc4d1c024e7f45314c461212e280afe5e",
+      "pipeline.py": "7df4a4a0aa8bc2cc889a9d3d1a1a26437f80b6690d39db188e6e8e5dafc50f23",
       "provenance.py": "956bcc99b7f9c3f796082ae19edf451310fe6e14ea93deda16bc665455d75541",
       "pyproject.toml": "67312746740b8f3fa072d28c40905bfcdbbdc7d089876e5c6814ac0f102cb161",
       "requirements.lock": "eb6a3b253777a9c501b13cad26e2e847c52b3f58168a3928dd9aaff075e0835a"
     },
     "input_hashes": {
-      "src/iran_impact/inputs/ons_family_spending_a6_fye2024.csv": "cdf1e912c273813700a2b2108bbae57bcbdbc2a4a17d9ec176fb43b34d02bf7a"
+      "src/iran_impact/inputs/ons_family_spending_a6_fye2024.csv": "0eebea6388f91f01f75ae49b03d97ff7e4aca1b4596050bc51073a8d7150ba00"
     },
     "release_bundle": {
       "bundle_id": "uk-5.3.0",
@@ -3566,7 +3566,7 @@
         "bulletin_url": "https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/expenditure/bulletins/familyspendingintheuk/april2023tomarch2024",
         "workbook_url": "https://www.ons.gov.uk/file?uri=%2Fpeoplepopulationandcommunity%2Fpersonalandhouseholdfinances%2Fexpenditure%2Fdatasets%2Ffamilyspendingworkbook1detailedexpenditureandtrends%2Ffye2024%2Fworkbook1detailedexpenditureandtrends.xlsx",
         "workbook_sha256": "476a54e600c28cde22b778df48ce66d6b3906a5112b49bc4811ec46b47145f62",
-        "csv_sha256": "cdf1e912c273813700a2b2108bbae57bcbdbc2a4a17d9ec176fb43b34d02bf7a"
+        "csv_sha256": "0eebea6388f91f01f75ae49b03d97ff7e4aca1b4596050bc51073a8d7150ba00"
       },
       "transport_fuel_annual_gbp_by_gross_decile": {
         "1": 384.8,
@@ -3594,7 +3594,30 @@
       },
       "grouping_applied": "household_gross_income decile, household-weighted",
       "transport_fuel_allocation": "each gross-income decile's A6 mean spread across that decile's vehicle-owning households only",
-      "uncertainty_treatment": "not quantified: Table A6 publishes no standard errors, so the Living Costs and Food Survey's sampling uncertainty is not carried into these results. Scenario ranges reflect price assumptions only"
+      "sampling_uncertainty": {
+        "basis": "ONS full-method percentage standard error, Table A1 of the same workbook, UK all-household mean",
+        "transport_fuel": {
+          "annual_mean_gbp": 1029.6,
+          "pct_standard_error": 2.6,
+          "annual_standard_error_gbp": 26.77,
+          "annual_mean_ci95_gbp": [
+            977.13,
+            1082.07
+          ],
+          "recording_households_in_sample": 2430
+        },
+        "food": {
+          "annual_mean_gbp": 3666.0,
+          "pct_standard_error": 1.0,
+          "annual_standard_error_gbp": 36.66,
+          "annual_mean_ci95_gbp": [
+            3594.15,
+            3737.85
+          ],
+          "recording_households_in_sample": 4180
+        }
+      },
+      "uncertainty_treatment": "Sampling uncertainty on the all-household spending means is reported above, from ONS's own full-method standard errors. It is NOT propagated into the scenario results: the model applies each decile's point estimate, and ONS publishes no decile-level standard errors, so a distribution over decile spending would have to be assumed rather than sourced. To size the effect, the standard errors above are 2.6% of the transport-fuel mean and 1.0% of the food mean, small against the scenario price ranges in parameters.registry"
     }
   },
   "metadata": {
