@@ -361,8 +361,12 @@ METHOD_LIMITATIONS = [
     "deliver and is not counted as a cost, so the household loss is the price "
     "rise alone.",
     "Uncertainty: the ranges in PARAMETER_REGISTRY describe the spread of the "
-    "price assumptions. They do not include the Living Costs and Food Survey's "
-    "sampling uncertainty, which Table A6 does not publish.",
+    "price assumptions and are now evaluated through the model — see "
+    "scenarios[*].sensitivity. They are judgements, not sampling "
+    "distributions, so the resulting spread is not a confidence interval. "
+    "Survey sampling uncertainty on the spending inputs is reported separately "
+    "under parameters.spending_inputs.sampling_uncertainty and is not "
+    "propagated, because ONS publishes no decile-level standard errors.",
 ]
 
 SCENARIO_TYPE = "annual stress test"

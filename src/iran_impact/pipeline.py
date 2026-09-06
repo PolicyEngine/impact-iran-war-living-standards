@@ -388,13 +388,15 @@ def run_baseline(year=YEAR):
 # ── 2. Scenario shock computation ───────────────────────────────────────
 
 
-def compute_scenario(data, scenario_key):
+def compute_scenario(data, scenario_key, params_override=None):
     """Compute multi-channel shock impacts for a given scenario.
 
     Returns a dict of per-household numpy arrays for each shock channel
-    and the net total.
+    and the net total. `params_override` substitutes the scenario's
+    parameters, which is how the sensitivity analysis walks the registry's
+    uncertainty ranges without duplicating this arithmetic.
     """
-    params = SCENARIOS[scenario_key]
+    params = params_override or SCENARIOS[scenario_key]
     cap_increase_pct = params["cap_increase_pct"] / 100
     cpi_increase_pp = params["cpi_increase_pp"] / 100
     fuel_pct = params["fuel_pct"] / 100
@@ -880,6 +882,62 @@ def _policy_responses(data, scenario_key, impacts):
     }
 
 
+def _sensitivity(data, scenario_key):
+    """Evaluate each scenario at the low and high end of its parameter ranges.
+
+    The registry has always carried an uncertainty range per parameter, but
+    nothing computed results across them, so the ranges were documentation
+    rather than a sensitivity analysis (#13).
+
+    Two kinds of result are reported. `combined` moves every parameter to the
+    same end of its range at once — the widest defensible spread, and not a
+    confidence interval: it assumes the parameters err together, which is
+    plausible here since they share a driver in the oil price. `by_parameter`
+    moves one parameter at a time, holding the rest at their central value,
+    which is what shows where the result's sensitivity actually lies.
+    """
+    registry = PARAMETER_REGISTRY[scenario_key]["parameters"]
+    weights = data["weights"]
+    base = dict(SCENARIOS[scenario_key])
+
+    def total_for(params):
+        impacts = compute_scenario(data, scenario_key, params_override=params)
+        return round(weighted_sum(impacts["net_impact"], weights) / 1e9, 1)
+
+    central = total_for(base)
+    ends = {}
+    for end, index in (("low", 0), ("high", 1)):
+        params = {
+            name: registry[name]["uncertainty_range"][index] for name in base
+        }
+        ends[end] = total_for(params)
+
+    by_parameter = {}
+    for name in base:
+        low, high = registry[name]["uncertainty_range"]
+        by_parameter[name] = {
+            "range": [low, high],
+            "total_impact_bn_low": total_for({**base, name: low}),
+            "total_impact_bn_high": total_for({**base, name: high}),
+        }
+
+    return {
+        "basis": (
+            "Each parameter's uncertainty_range in parameters.registry, "
+            "evaluated through the model. NOT a confidence interval: the "
+            "ranges are judgements about the price assumptions, not sampling "
+            "distributions, and the combined case moves every parameter "
+            "together"
+        ),
+        "central_total_impact_bn": central,
+        "combined": {
+            "total_impact_bn_low": ends["low"],
+            "total_impact_bn_high": ends["high"],
+        },
+        "by_parameter": by_parameter,
+    }
+
+
 def _scenario_output(data, scenario_key):
     weights = data["weights"]
     income = data["income"]
@@ -940,6 +998,7 @@ def _scenario_output(data, scenario_key):
             data, impacts, "hh_type", "hh_type"
         ),
         "channel_decomposition": _channel_decomposition(data, impacts),
+        "sensitivity": _sensitivity(data, scenario_key),
     }, _policy_responses(data, scenario_key, impacts)
 
 

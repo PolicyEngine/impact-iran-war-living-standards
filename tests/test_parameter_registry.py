@@ -132,3 +132,29 @@ def test_the_cap_constant_is_not_used_in_any_calculation():
 def test_the_october_cap_is_recorded():
     assert config.OCTOBER_2026_ENERGY_CAP == 1_723
     assert config.FIXED_TARIFF_ACCOUNT_SHARE == pytest.approx(0.40)
+
+
+# ── Sensitivity: the registry's ranges, evaluated (#13) ──────────────────
+
+
+def test_compute_scenario_accepts_a_parameter_override():
+    """The sensitivity analysis walks the ranges through the real model
+    rather than reimplementing the arithmetic."""
+    import numpy as np
+
+    from iran_impact.pipeline import compute_scenario
+
+    decile = np.arange(1, 11)
+    data = {
+        "energy": np.full(10, 1_000.0),
+        "fuel_cost": np.full(10, 500.0),
+        "food_cost": np.full(10, 2_000.0),
+        "benefit_income": np.zeros(10),
+    }
+    base = compute_scenario(data, "central_shock")
+    doubled = dict(config.SCENARIOS["central_shock"])
+    doubled["cap_increase_pct"] *= 2
+    override = compute_scenario(data, "central_shock", params_override=doubled)
+    assert override["energy_shock"].sum() == pytest.approx(
+        base["energy_shock"].sum() * 2
+    )

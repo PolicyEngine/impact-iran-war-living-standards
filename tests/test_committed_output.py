@@ -132,3 +132,39 @@ def test_no_fuel_poverty_figures_remain(results):
     for token in ["fuel_poverty_rate", "fuel_poor_households", "fp_rate", "fp_by_tenure"]:
         assert token not in text, f"{token} still present in the committed output"
     assert "Not reported" in results["metadata"]["fuel_poverty"]
+
+
+def test_every_scenario_reports_an_evaluated_sensitivity(results):
+    """#13 asked for results across the registry's ranges, not just the ranges."""
+    for scenario in config.SCENARIOS:
+        sensitivity = results["scenarios"][scenario]["sensitivity"]
+        summary = results["scenarios"][scenario]["summary"]
+        assert sensitivity["central_total_impact_bn"] == summary["total_impact_bn"]
+        combined = sensitivity["combined"]
+        assert (
+            combined["total_impact_bn_low"]
+            < sensitivity["central_total_impact_bn"]
+            < combined["total_impact_bn_high"]
+        )
+        assert set(sensitivity["by_parameter"]) == set(config.SCENARIOS[scenario])
+        assert "NOT a confidence interval" in sensitivity["basis"]
+
+
+def test_each_parameter_is_varied_within_its_registered_range(results):
+    for scenario in config.SCENARIOS:
+        registry = config.PARAMETER_REGISTRY[scenario]["parameters"]
+        for name, entry in results["scenarios"][scenario]["sensitivity"][
+            "by_parameter"
+        ].items():
+            assert entry["range"] == list(registry[name]["uncertainty_range"])
+            assert entry["total_impact_bn_low"] <= entry["total_impact_bn_high"]
+
+
+def test_the_cpi_parameter_no_longer_moves_the_household_cost(results):
+    """CPI sizes the uprating shortfall, which #13 removed from the cost
+    channels — so varying it must leave the total unchanged."""
+    for scenario in config.SCENARIOS:
+        entry = results["scenarios"][scenario]["sensitivity"]["by_parameter"][
+            "cpi_increase_pp"
+        ]
+        assert entry["total_impact_bn_low"] == entry["total_impact_bn_high"]
