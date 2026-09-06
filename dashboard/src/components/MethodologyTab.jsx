@@ -5,6 +5,11 @@ import { getScenarioNarrative, getScenarioOptions } from "../lib/scenarioContent
 export default function MethodologyTab({ data }) {
   const householdCount = data?.baseline?.n_households_m;
   const currentEnergyCap = data?.current_energy_cap;
+  // Household-count benchmark, so the caveat quotes the generated figures
+  // rather than hard-coding them.
+  const hhBenchmark = data?.baseline?.household_count_vs_ons;
+  const hhModelled = hhBenchmark?.modelled;
+  const hhDiff = hhBenchmark?.difference_pct;
   const scenarioOptions = getScenarioOptions(data);
 
   return (
@@ -70,6 +75,19 @@ export default function MethodologyTab({ data }) {
           and the{" "}
           <a href="https://commonslibrary.parliament.uk/research-briefings/cbp-10601/" target="_blank" rel="noreferrer" className="underline">Commons Library briefing on the conflict and the UK economy</a>.
         </p>
+        <div className="mt-4 rounded-lg bg-amber-50 p-4 text-sm leading-7 text-slate-700">
+          <strong>Aggregate totals are overstated by roughly a tenth.</strong> The
+          certified microdata weights to about {hhModelled != null ? `${(hhModelled / 1e6).toFixed(1)} million` : "31.6 million"} UK
+          households, against the ONS estimate of 28.6 million for 2024
+          {hhDiff != null ? ` (+${hhDiff.toFixed(1)}%)` : ""}. Modelled population is close to the
+          ONS figure, so the excess is household composition &mdash; one-person
+          households are over-represented &mdash; rather than people. Every
+          aggregate on this dashboard, including total costs and policy outlays,
+          scales with that count and should be read as indicative of scale.
+          Per-household means and distributional shares are ratios and are far less
+          affected. This originates in the upstream data build&apos;s household-type
+          calibration rather than in this model.
+        </div>
         <div className="mt-4 overflow-x-auto">
           <table className="data-table" style={{ tableLayout: "fixed" }}>
             <colgroup>

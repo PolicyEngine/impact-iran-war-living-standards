@@ -338,6 +338,14 @@ UPRATING_LAG_REGISTRY = {
 
 # Limitations that the implemented model does not address, stated so the
 # dashboard and any reader can tell what the numbers do and do not represent.
+# Published UK household count, for the population benchmark below.
+# Source: ONS, Families and households in the UK: 2024.
+ONS_HOUSEHOLDS_2024 = 28_600_000
+ONS_HOUSEHOLDS_SOURCE_URL = (
+    "https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages"
+    "/families/bulletins/familiesandhouseholds/2024"
+)
+
 METHOD_LIMITATIONS = [
     "Scenario type: annual stress test, not a forecast. Every change is "
     "applied as a full-year 2027-28 amount, including where the cited source "
@@ -360,6 +368,14 @@ METHOD_LIMITATIONS = [
     "amount is reported as the compensation an immediate uprating would "
     "deliver and is not counted as a cost, so the household loss is the price "
     "rise alone.",
+    "Population base: the certified dataset weights to about 31.6 million UK "
+    "households against ONS's 28.6 million for 2024, with one-person "
+    "households over-represented. Total modelled population is close to the "
+    "ONS estimate, so the excess is household composition rather than people. "
+    "Aggregate totals scale with the household count and are therefore likely "
+    "overstated by roughly this margin; per-household means and distributional "
+    "shares are ratios and are far less affected. This originates in the "
+    "upstream data build's household-type calibration, not in this model.",
     "Uncertainty: the ranges in PARAMETER_REGISTRY describe the spread of the "
     "price assumptions. They do not include the Living Costs and Food Survey's "
     "sampling uncertainty, which Table A6 does not publish.",

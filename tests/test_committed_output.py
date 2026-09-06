@@ -132,3 +132,25 @@ def test_no_fuel_poverty_figures_remain(results):
     for token in ["fuel_poverty_rate", "fuel_poor_households", "fp_rate", "fp_by_tenure"]:
         assert token not in text, f"{token} still present in the committed output"
     assert "Not reported" in results["metadata"]["fuel_poverty"]
+
+
+def test_the_household_count_benchmark_is_reported(results):
+    """Aggregate totals scale with the household count, which sits above the
+    ONS estimate, so the comparison must travel with the results (#22)."""
+    benchmark = results["baseline"]["household_count_vs_ons"]
+    assert benchmark["ons_2024"] == config.ONS_HOUSEHOLDS_2024
+    assert benchmark["modelled"] == round(
+        results["baseline"]["n_households_m"] * 1e6, -3
+    ) or abs(
+        benchmark["modelled"] / 1e6 - results["baseline"]["n_households_m"]
+    ) < 0.05
+    # The model is above ONS, and the note says which way the totals err.
+    assert benchmark["difference_pct"] > 0
+    assert "overstated" in benchmark["note"]
+    assert benchmark["source_url"].startswith("https://www.ons.gov.uk/")
+
+
+def test_the_population_caveat_is_in_the_limitations(results):
+    joined = " ".join(results["metadata"]["method_limitations"]).lower()
+    assert "population base" in joined
+    assert "28.6 million" in joined

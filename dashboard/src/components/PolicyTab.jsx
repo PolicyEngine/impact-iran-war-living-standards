@@ -255,7 +255,7 @@ export default function PolicyTab({ data }) {
                 {policy.gross_outlay_bn != null ? formatBn(policy.gross_outlay_bn) : "--"}
               </div>
               <div className="mt-2 text-sm leading-6 text-slate-500">
-                Gross modelled household transfer from applying {policyLabel.toLowerCase()} in the selected shock scenario over 2027-28. <strong>Not an Exchequer costing</strong> &mdash; it excludes tax and benefit interactions, take-up, behavioural responses, administration, non-household fuel use and financing.
+                Gross modelled household transfer from applying {policyLabel.toLowerCase()} in the selected shock scenario over 2027-28. <strong>Not an Exchequer costing</strong> &mdash; it excludes tax and benefit interactions, take-up, behavioural responses, administration, non-household fuel use and financing. Aggregate totals also scale with the modelled household count, which sits about 10% above the ONS estimate, so read them as indicative of scale rather than as point estimates &mdash; see Methodology.
               </div>
             </div>
             <div className="metric-card">

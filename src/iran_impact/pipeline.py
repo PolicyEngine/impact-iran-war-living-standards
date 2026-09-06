@@ -35,6 +35,8 @@ from .config import (
     EPG_CAP_PCT,
     REGION_TO_COUNTRY,
     ALLOCATE_FUEL_TO_VEHICLE_OWNERS,
+    ONS_HOUSEHOLDS_2024,
+    ONS_HOUSEHOLDS_SOURCE_URL,
     PARAMETER_REGISTRY,
     UPRATING_LAG_REGISTRY,
     METHOD_LIMITATIONS,
@@ -1012,6 +1014,25 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
                     _non_positive_income(data["income"]).astype(float), weights
                 )
             ),
+            # Benchmark against the published household count, so a reader
+            # can size the aggregate-total caveat without leaving the file.
+            "household_count_vs_ons": {
+                "modelled": round(float(weights.sum())),
+                "ons_2024": ONS_HOUSEHOLDS_2024,
+                "difference_pct": round(
+                    (float(weights.sum()) / ONS_HOUSEHOLDS_2024 - 1) * 100, 1
+                ),
+                "source_url": ONS_HOUSEHOLDS_SOURCE_URL,
+                "note": (
+                    "Aggregate totals scale with the household count, so they "
+                    "are likely overstated by roughly this margin. Per-household "
+                    "means and distributional shares are ratios and are far "
+                    "less affected. Modelled population is close to the ONS "
+                    "estimate; the excess is household composition, and "
+                    "originates upstream in the data build's household-type "
+                    "calibration"
+                ),
+            },
             "poverty_rate_baseline_pct": round(
                 weighted_mean(
                     _baseline_in_poverty(data, _poverty_line(data)).astype(float),
