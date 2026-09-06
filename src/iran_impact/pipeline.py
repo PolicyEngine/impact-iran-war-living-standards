@@ -23,7 +23,6 @@ from .config import (
     CT_REBATE,
     UC_UPLIFT_WEEKLY,
     FUEL_DUTY_CUT_PENCE,
-    MEAN_ANNUAL_LITRES,
     MEANS_TEST_AMOUNT,
     ELEC_VAT_SAVING_RATE,
     SOCIAL_TARIFF_INCOME_THRESHOLD,
@@ -721,6 +720,15 @@ def _poverty_line(data):
     when the shock is applied, so the post-shock statistic is an **anchored**
     threshold, not a contemporaneous relative one — see
     `_below_anchored_line` and the `poverty_definition` metadata.
+
+    The median is taken over PEOPLE, which is what DWP HBAI does and is why
+    this differs from PolicyEngine's own `in_relative_poverty_bhc`: that
+    variable takes the median over households (`household_weight`), which on
+    the enhanced_frs_2024_25 build gives £42,951 against £44,632 here, and so
+    a rate of 17.11% against 18.97%. The gap is the median's weighting basis
+    alone — same income variable, same equivalisation, same 0.6 ratio — and
+    it widened on this data because small, low-income households are
+    over-weighted in it (#22).
     """
     person_weights = data["weights"] * data["people"]
     return POVERTY_LINE_RATIO * _weighted_median(

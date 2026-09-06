@@ -2,8 +2,8 @@
   "year": 2027,
   "current_energy_cap": 1663,
   "provenance": {
-    "generated_at": "2026-09-03T22:37:48+00:00",
-    "git_revision": "b462773ff731e595d424b7f4aff2510d06472490",
+    "generated_at": "2026-09-05T17:07:11+00:00",
+    "git_revision": "8674d55bfcf5484f02e78c822ca7e80125f25971",
     "git_dirty": true,
     "packages": {
       "policyengine": "5.3.0",
@@ -13,8 +13,8 @@
       "microdf-python": "1.3.0"
     },
     "source_hashes": {
-      "config.py": "29d3e14d1f22c1248f6fc2c0e48931dce37788f55a74832381613118f83c645a",
-      "pipeline.py": "083dc7cc18c90ac3c95dfa37de24de2cc4d1c024e7f45314c461212e280afe5e",
+      "config.py": "40c3303ad50edae15afa15f678d8c926f71afbbe6a01ba19f1bbbef6184bf8e0",
+      "pipeline.py": "c65fc92c251a012475e2611baa350ed0c6c75a15ba86e47d18f20ef5bfd45788",
       "provenance.py": "956bcc99b7f9c3f796082ae19edf451310fe6e14ea93deda16bc665455d75541",
       "pyproject.toml": "67312746740b8f3fa072d28c40905bfcdbbdc7d089876e5c6814ac0f102cb161",
       "requirements.lock": "eb6a3b253777a9c501b13cad26e2e847c52b3f58168a3928dd9aaff075e0835a"

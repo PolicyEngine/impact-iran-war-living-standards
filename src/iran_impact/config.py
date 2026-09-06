@@ -425,7 +425,6 @@ FUEL_DUTY_CUT_PENCE = 5  # pence/litre; the existing 5p cut runs to 31 Dec 2026 
 # this policy models extending it through the shock period rather than a new cut.
 # Effective pump saving is ~6p including VAT on duty; we model the 5p duty element.
 # Source: https://www.gov.uk/government/publications/amended-fuel-duty-rates-for-2026-to-2027/amended-fuel-duty-rates-2026-to-2027
-MEAN_ANNUAL_LITRES = 1_200  # avg household fuel consumption litres/year (scaled by decile fuel spend)
 MEANS_TEST_AMOUNT = 650  # £ payment, modelled on the 2022 Cost of Living Payment:
 # eligibility keyed to means-tested benefit receipt (UC/Pension Credit/legacy), not an income cliff.
 
