@@ -158,3 +158,13 @@ def test_compute_scenario_accepts_a_parameter_override():
     assert override["energy_shock"].sum() == pytest.approx(
         base["energy_shock"].sum() * 2
     )
+
+
+def test_the_energy_channel_is_labelled_as_a_sensitivity():
+    """#13 offered modelling retail energy properly or relabelling the
+    channel. This is the relabel, so the label has to be unambiguous."""
+    joined = " ".join(config.METHOD_LIMITATIONS)
+    assert "household-energy-expenditure sensitivity" in joined
+    assert "rather than a price-cap calculation" in joined
+    # And it must say the relabel was the deliberate choice, not an omission.
+    assert "this is the relabel" in joined

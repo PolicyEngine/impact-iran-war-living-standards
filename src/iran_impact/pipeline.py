@@ -1313,6 +1313,18 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
             ),
             "october_2026_energy_cap": OCTOBER_2026_ENERGY_CAP,
             "fixed_tariff_account_share": FIXED_TARIFF_ACCOUNT_SHARE,
+            "energy_channel_basis": (
+                "Household-energy-expenditure sensitivity, not a price-cap "
+                "calculation. The scenario percentage is applied to each "
+                "household's own modelled gas and electricity expenditure. "
+                "The model does not represent unit rates, standing charges, "
+                "the gas/electricity split, region, payment method, quarterly "
+                "cap periods or fixed-tariff coverage, so the channel should "
+                "be read as the sensitivity of household energy spending to a "
+                "given percentage increase, not as a modelled cap outcome "
+                "(#13). Ofgem cap levels are reported under cap_basis for "
+                "context only"
+            ),
             "timing_basis": (
                 "All changes are applied as full-year 2027-28 amounts. The "
                 "cited scenarios describe 2026 disruptions, some lasting a few "

@@ -32,7 +32,7 @@ const AXIS_STYLE = {
 };
 
 const CHANNEL_LABELS = {
-  energy: "Energy",
+  energy: "Energy spending",
   fuel: "Fuel",
   food: "Food",
   benefit_uprating_shortfall: "Uprating compensation shortfall",
@@ -111,7 +111,7 @@ const SORTED_FILLS = [
 ];
 
 const CHANNEL_STACK = [
-  { key: "energy", label: "Energy", color: channelColors.energy },
+  { key: "energy", label: "Energy spending", color: channelColors.energy },
   { key: "fuel", label: "Fuel", color: channelColors.fuel },
   { key: "food", label: "Food", color: channelColors.food },
 
@@ -201,7 +201,7 @@ function ExampleHousehold({ data, scenario }) {
   const pctIncome = income > 0 ? (total / income) * 100 : null;
 
   const rows = [
-    { label: "Higher energy bills", value: energy, color: channelColors.energy },
+    { label: "Higher energy spending", value: energy, color: channelColors.energy },
     { label: "Higher fuel costs", value: fuel, color: channelColors.fuel },
     { label: "Higher food prices", value: food, color: channelColors.food },
   ];

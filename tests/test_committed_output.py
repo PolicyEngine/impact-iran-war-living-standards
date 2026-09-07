@@ -226,3 +226,11 @@ def test_the_exchequer_and_household_figures_are_both_reported(results):
         "gross_outlay_bn"
     ]
     assert exchequer == pytest.approx(household, abs=0.1)
+
+
+def test_the_energy_channel_basis_is_stated(results):
+    basis = results["metadata"]["energy_channel_basis"]
+    assert "sensitivity" in basis
+    assert "not a price-cap calculation" in basis
+    for unmodelled in ("standing charges", "fixed-tariff", "quarterly"):
+        assert unmodelled in basis
