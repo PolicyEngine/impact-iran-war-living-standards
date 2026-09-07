@@ -81,17 +81,20 @@ export default function MethodologyTab({ data }) {
         </p>
         <div className="mt-4 overflow-x-auto">
           <table className="data-table" style={{ tableLayout: "fixed" }}>
+            {/* The description carries most of the content, so it gets most
+                of the width; the two numeric columns need only enough for
+                "+45%" plus their headers. */}
             <colgroup>
-              <col style={{ width: "25%" }} />
-              <col style={{ width: "25%" }} />
-              <col style={{ width: "25%" }} />
-              <col style={{ width: "25%" }} />
+              <col style={{ width: "12%" }} />
+              <col style={{ width: "13%" }} />
+              <col style={{ width: "13%" }} />
+              <col style={{ width: "62%" }} />
             </colgroup>
             <thead>
               <tr>
                 <th>Scenario</th>
-                <th style={{ textAlign: "right" }}>Fuel price increase</th>
-                <th style={{ textAlign: "right" }}>Energy cap increase</th>
+                <th style={{ textAlign: "right" }}>Fuel price</th>
+                <th style={{ textAlign: "right" }}>Energy spending</th>
                 <th>Description</th>
               </tr>
             </thead>

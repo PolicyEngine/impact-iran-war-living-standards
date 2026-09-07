@@ -442,7 +442,16 @@ FLAT_REBATE = 400  # £/household, modelled on the 2022 Energy Bills Support Sch
 CT_REBATE = 300    # £ council tax rebate bands A-D (2022 scheme was England-only £150; stylised UK-wide)
 UC_UPLIFT_WEEKLY = 20  # £/week, matching the 2020-21 covid UC uplift
 FUEL_DUTY_CUT_PENCE = 5  # pence/litre; the existing 5p cut runs to 31 Dec 2026 —
-# this policy models extending it through the shock period rather than a new cut.
+# this policy models EXTENDING it through the shock period rather than a new
+# cut. The extension is not government policy: it is a live decision for the
+# Autumn Budget on 28 October 2026, which is why it is modelled as an option.
+#
+# In force now at 52.95p/litre. Absent action the rate returns to the Budget
+# 2025 baseline in two steps rather than a single cliff: 55.95p on 1 Jan 2027
+# and 57.95p on 1 Mar 2027. The model applies a full-year 2027-28 extension,
+# so it does not represent that taper — one more consequence of the annual
+# basis recorded in METHOD_LIMITATIONS.
+#
 # Effective pump saving is ~6p including VAT on duty; we model the 5p duty element.
 # Source: https://www.gov.uk/government/publications/amended-fuel-duty-rates-for-2026-to-2027/amended-fuel-duty-rates-2026-to-2027
 # The 2022 scheme paid in two instalments, each a separate award conditional
@@ -493,9 +502,14 @@ MEANS_TEST_TAKE_UP = 1.0
 MEANS_TEST_AMOUNT = sum(MEANS_TEST_INSTALMENT_AMOUNTS)  # £650
 # Eligibility is keyed to qualifying-benefit receipt, not an income cliff.
 
-# Electricity VAT cut: enacted July 2026 (VAT on domestic electricity 5% -> 0%
-# for 1 Oct 2026-31 Mar 2027, ~£45/household, ~£850m). Modelled here as a
-# full-year extension. Saving = 5/105 of the electricity bill.
+# Electricity VAT cut: announced 21 July 2026 (VAT on qualifying domestic
+# electricity 5% -> 0% for 1 Oct 2026-31 Mar 2027, ~£45/household, ~£850m,
+# electricity only and not gas). Modelled here as a full-year EXTENSION beyond
+# 31 March 2027, which is not government policy: the government's stated
+# position is that an extension "will be considered at the Autumn Budget",
+# so like the fuel duty extension it is a live decision for 28 October 2026
+# and is modelled as an option rather than as baseline.
+# Saving = 5/105 of the electricity bill.
 # Source: https://www.gov.uk/government/news/new-pm-cuts-tax-on-household-electricity-bills-to-give-breathing-space-on-cost-of-living
 ELEC_VAT_SAVING_RATE = 5 / 105
 
