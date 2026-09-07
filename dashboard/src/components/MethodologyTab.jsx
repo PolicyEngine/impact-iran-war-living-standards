@@ -51,7 +51,16 @@ export default function MethodologyTab({ data }) {
           and lags implied by the percentages below are judgements anchored to the cited
           sources rather than equations derived from them; the results file records the
           definition, source, reference period, derivation and range of every parameter
-          under <code>parameters.registry</code>.
+          under <code>parameters.registry</code>, and evaluates those ranges through
+          the model under <code>scenarios[*].sensitivity</code> &mdash; moving every
+          parameter to one end at once, and one at a time. On the central scenario the
+          total ranges from &pound;27.7bn to &pound;55.9bn against a &pound;41.8bn
+          point estimate. That spread is not a confidence interval: the ranges are
+          judgements about the price assumptions, not sampling distributions. The CPI
+          assumption moves the uprating compensation shortfall
+          (&pound;0.85bn&ndash;&pound;2.55bn) rather than the household cost, since it
+          is deliberately not a cost channel &mdash; each parameter records which
+          aggregates it affects.
         </p>
         <p className="mt-4 text-sm leading-7 text-slate-600">
           Each scenario represents a forward path for the conflict from the August 2026

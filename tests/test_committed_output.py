@@ -132,3 +132,71 @@ def test_no_fuel_poverty_figures_remain(results):
     for token in ["fuel_poverty_rate", "fuel_poor_households", "fp_rate", "fp_by_tenure"]:
         assert token not in text, f"{token} still present in the committed output"
     assert "Not reported" in results["metadata"]["fuel_poverty"]
+
+
+def test_every_scenario_reports_an_evaluated_sensitivity(results):
+    """#13 asked for results across the registry's ranges, not just the ranges."""
+    for scenario in config.SCENARIOS:
+        sensitivity = results["scenarios"][scenario]["sensitivity"]
+        summary = results["scenarios"][scenario]["summary"]
+        assert sensitivity["central_total_impact_bn"] == summary["total_impact_bn"]
+        combined = sensitivity["combined"]
+        assert (
+            combined["total_impact_bn_low"]
+            < sensitivity["central_total_impact_bn"]
+            < combined["total_impact_bn_high"]
+        )
+        assert set(sensitivity["by_parameter"]) == set(config.SCENARIOS[scenario])
+        assert "NOT a confidence interval" in sensitivity["basis"]
+
+
+def test_each_parameter_is_varied_within_its_registered_range(results):
+    for scenario in config.SCENARIOS:
+        registry = config.PARAMETER_REGISTRY[scenario]["parameters"]
+        for name, entry in results["scenarios"][scenario]["sensitivity"][
+            "by_parameter"
+        ].items():
+            assert entry["range"] == list(registry[name]["uncertainty_range"])
+            assert entry["total_impact_bn_low"] <= entry["total_impact_bn_high"]
+
+
+def test_the_cpi_parameter_moves_the_shortfall_not_the_household_cost(results):
+    """CPI sizes the uprating shortfall, which #13 removed from the cost
+    channels — so varying it leaves the household total unchanged while
+    moving the shortfall. Reporting only the total would have made it look
+    irrelevant (#13 review A1)."""
+    for scenario in config.SCENARIOS:
+        entry = results["scenarios"][scenario]["sensitivity"]["by_parameter"][
+            "cpi_increase_pp"
+        ]
+        assert entry["total_impact_bn_low"] == entry["total_impact_bn_high"]
+        assert (
+            entry["uprating_shortfall_bn_low"]
+            < entry["uprating_shortfall_bn_high"]
+        )
+        assert entry["moves"] == ["uprating_shortfall"]
+
+
+def test_the_price_parameters_move_the_cost_not_the_shortfall(results):
+    for scenario in config.SCENARIOS:
+        by_parameter = results["scenarios"][scenario]["sensitivity"][
+            "by_parameter"
+        ]
+        for name in ("cap_increase_pct", "fuel_pct", "food_increase_pct"):
+            entry = by_parameter[name]
+            assert entry["total_impact_bn_low"] < entry["total_impact_bn_high"]
+            assert (
+                entry["uprating_shortfall_bn_low"]
+                == entry["uprating_shortfall_bn_high"]
+            )
+            assert entry["moves"] == ["total_impact"]
+
+
+def test_every_registered_parameter_moves_something(results):
+    """A parameter that moves no reported aggregate would be either
+    mis-registered or have an unreported effect."""
+    for scenario in config.SCENARIOS:
+        for name, entry in results["scenarios"][scenario]["sensitivity"][
+            "by_parameter"
+        ].items():
+            assert entry["moves"], f"{scenario}/{name} moves no reported output"
