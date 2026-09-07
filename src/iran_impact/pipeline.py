@@ -900,25 +900,54 @@ def _sensitivity(data, scenario_key):
     weights = data["weights"]
     base = dict(SCENARIOS[scenario_key])
 
-    def total_for(params):
-        impacts = compute_scenario(data, scenario_key, params_override=params)
-        return round(weighted_sum(impacts["net_impact"], weights) / 1e9, 1)
+    def outputs_for(params):
+        """Every aggregate a scenario parameter can move.
 
-    central = total_for(base)
+        Reporting only net_impact would make `cpi_increase_pp` look
+        irrelevant: it is excluded from the cost channels by design (#13), so
+        varying it leaves the household shock untouched while moving the
+        uprating shortfall and the accelerated-uprating policy that pays it
+        (#13 review A1).
+        """
+        impacts = compute_scenario(data, scenario_key, params_override=params)
+        return {
+            "total_impact_bn": round(
+                weighted_sum(impacts["net_impact"], weights) / 1e9, 1
+            ),
+            "uprating_shortfall_bn": round(
+                weighted_sum(impacts["benefit_uprating_shortfall"], weights)
+                / 1e9,
+                2,
+            ),
+        }
+
+    central = outputs_for(base)
     ends = {}
     for end, index in (("low", 0), ("high", 1)):
         params = {
             name: registry[name]["uncertainty_range"][index] for name in base
         }
-        ends[end] = total_for(params)
+        ends[end] = outputs_for(params)
 
     by_parameter = {}
     for name in base:
         low, high = registry[name]["uncertainty_range"]
+        at_low = outputs_for({**base, name: low})
+        at_high = outputs_for({**base, name: high})
         by_parameter[name] = {
             "range": [low, high],
-            "total_impact_bn_low": total_for({**base, name: low}),
-            "total_impact_bn_high": total_for({**base, name: high}),
+            "total_impact_bn_low": at_low["total_impact_bn"],
+            "total_impact_bn_high": at_high["total_impact_bn"],
+            "uprating_shortfall_bn_low": at_low["uprating_shortfall_bn"],
+            "uprating_shortfall_bn_high": at_high["uprating_shortfall_bn"],
+            # Which reported aggregates this parameter actually moves, so a
+            # zero range reads as "affects something else" rather than
+            # "irrelevant".
+            "moves": sorted(
+                key.replace("_bn", "")
+                for key in central
+                if at_low[key] != at_high[key]
+            ),
         }
 
     return {
@@ -927,12 +956,18 @@ def _sensitivity(data, scenario_key):
             "evaluated through the model. NOT a confidence interval: the "
             "ranges are judgements about the price assumptions, not sampling "
             "distributions, and the combined case moves every parameter "
-            "together"
+            "together. Two aggregates are reported per point, because "
+            "cpi_increase_pp moves the uprating shortfall rather than the "
+            "household cost — `moves` names which aggregates each parameter "
+            "affects"
         ),
-        "central_total_impact_bn": central,
+        "central_total_impact_bn": central["total_impact_bn"],
+        "central_uprating_shortfall_bn": central["uprating_shortfall_bn"],
         "combined": {
-            "total_impact_bn_low": ends["low"],
-            "total_impact_bn_high": ends["high"],
+            "total_impact_bn_low": ends["low"]["total_impact_bn"],
+            "total_impact_bn_high": ends["high"]["total_impact_bn"],
+            "uprating_shortfall_bn_low": ends["low"]["uprating_shortfall_bn"],
+            "uprating_shortfall_bn_high": ends["high"]["uprating_shortfall_bn"],
         },
         "by_parameter": by_parameter,
     }

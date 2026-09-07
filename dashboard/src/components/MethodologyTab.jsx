@@ -56,7 +56,11 @@ export default function MethodologyTab({ data }) {
           parameter to one end at once, and one at a time. On the central scenario the
           total ranges from &pound;27.7bn to &pound;55.9bn against a &pound;41.8bn
           point estimate. That spread is not a confidence interval: the ranges are
-          judgements about the price assumptions, not sampling distributions.
+          judgements about the price assumptions, not sampling distributions. The CPI
+          assumption moves the uprating compensation shortfall
+          (&pound;0.85bn&ndash;&pound;2.55bn) rather than the household cost, since it
+          is deliberately not a cost channel &mdash; each parameter records which
+          aggregates it affects.
         </p>
         <p className="mt-4 text-sm leading-7 text-slate-600">
           Each scenario represents a forward path for the conflict from the August 2026

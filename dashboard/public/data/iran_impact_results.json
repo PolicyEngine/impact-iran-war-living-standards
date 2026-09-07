@@ -2,9 +2,9 @@
   "year": 2027,
   "current_energy_cap": 1663,
   "provenance": {
-    "generated_at": "2026-09-06T15:28:23+00:00",
-    "git_revision": "2a11495ab44bed5d1174ee349eeddd69182e5a76",
-    "git_dirty": false,
+    "generated_at": "2026-09-07T10:31:22+00:00",
+    "git_revision": "606837ec1ad1114e6a8c083e7d94c0684a2ea80a",
+    "git_dirty": true,
     "packages": {
       "policyengine": "5.3.0",
       "policyengine-uk": "2.90.2",
@@ -14,7 +14,7 @@
     },
     "source_hashes": {
       "config.py": "1eb72ea8dc0929218af4b6da932486a409f858a2d5b35fb4e4ef3f16faeb4b22",
-      "pipeline.py": "588141d9adc30113a637eaf55c4e38c0bc5b67368b34140cd93fdcf0cc59eb62",
+      "pipeline.py": "ae4a327fb1567fde51d13125c787acaeb68c93ce1e2970b4e2ba9dd96ce981f3",
       "provenance.py": "956bcc99b7f9c3f796082ae19edf451310fe6e14ea93deda16bc665455d75541",
       "pyproject.toml": "67312746740b8f3fa072d28c40905bfcdbbdc7d089876e5c6814ac0f102cb161",
       "requirements.lock": "eb6a3b253777a9c501b13cad26e2e847c52b3f58168a3928dd9aaff075e0835a"
@@ -411,11 +411,14 @@
         ]
       },
       "sensitivity": {
-        "basis": "Each parameter's uncertainty_range in parameters.registry, evaluated through the model. NOT a confidence interval: the ranges are judgements about the price assumptions, not sampling distributions, and the combined case moves every parameter together",
+        "basis": "Each parameter's uncertainty_range in parameters.registry, evaluated through the model. NOT a confidence interval: the ranges are judgements about the price assumptions, not sampling distributions, and the combined case moves every parameter together. Two aggregates are reported per point, because cpi_increase_pp moves the uprating shortfall rather than the household cost \u2014 `moves` names which aggregates each parameter affects",
         "central_total_impact_bn": 16.3,
+        "central_uprating_shortfall_bn": 0.85,
         "combined": {
           "total_impact_bn_low": 12.5,
-          "total_impact_bn_high": 21.6
+          "total_impact_bn_high": 21.6,
+          "uprating_shortfall_bn_low": 0.43,
+          "uprating_shortfall_bn_high": 1.28
         },
         "by_parameter": {
           "cap_increase_pct": {
@@ -424,7 +427,12 @@
               20
             ],
             "total_impact_bn_low": 15.3,
-            "total_impact_bn_high": 18.8
+            "total_impact_bn_high": 18.8,
+            "uprating_shortfall_bn_low": 0.85,
+            "uprating_shortfall_bn_high": 0.85,
+            "moves": [
+              "total_impact"
+            ]
           },
           "cpi_increase_pp": {
             "range": [
@@ -432,7 +440,12 @@
               1.5
             ],
             "total_impact_bn_low": 16.3,
-            "total_impact_bn_high": 16.3
+            "total_impact_bn_high": 16.3,
+            "uprating_shortfall_bn_low": 0.43,
+            "uprating_shortfall_bn_high": 1.28,
+            "moves": [
+              "uprating_shortfall"
+            ]
           },
           "fuel_pct": {
             "range": [
@@ -440,7 +453,12 @@
               25
             ],
             "total_impact_bn_low": 14.7,
-            "total_impact_bn_high": 18.0
+            "total_impact_bn_high": 18.0,
+            "uprating_shortfall_bn_low": 0.85,
+            "uprating_shortfall_bn_high": 0.85,
+            "moves": [
+              "total_impact"
+            ]
           },
           "food_increase_pct": {
             "range": [
@@ -448,7 +466,12 @@
               3.0
             ],
             "total_impact_bn_low": 15.2,
-            "total_impact_bn_high": 17.5
+            "total_impact_bn_high": 17.5,
+            "uprating_shortfall_bn_low": 0.85,
+            "uprating_shortfall_bn_high": 0.85,
+            "moves": [
+              "total_impact"
+            ]
           }
         }
       }
@@ -781,11 +804,14 @@
         ]
       },
       "sensitivity": {
-        "basis": "Each parameter's uncertainty_range in parameters.registry, evaluated through the model. NOT a confidence interval: the ranges are judgements about the price assumptions, not sampling distributions, and the combined case moves every parameter together",
+        "basis": "Each parameter's uncertainty_range in parameters.registry, evaluated through the model. NOT a confidence interval: the ranges are judgements about the price assumptions, not sampling distributions, and the combined case moves every parameter together. Two aggregates are reported per point, because cpi_increase_pp moves the uprating shortfall rather than the household cost \u2014 `moves` names which aggregates each parameter affects",
         "central_total_impact_bn": 41.8,
+        "central_uprating_shortfall_bn": 2.13,
         "combined": {
           "total_impact_bn_low": 27.7,
-          "total_impact_bn_high": 55.9
+          "total_impact_bn_high": 55.9,
+          "uprating_shortfall_bn_low": 0.85,
+          "uprating_shortfall_bn_high": 2.55
         },
         "by_parameter": {
           "cap_increase_pct": {
@@ -794,7 +820,12 @@
               60
             ],
             "total_impact_bn_low": 34.3,
-            "total_impact_bn_high": 49.3
+            "total_impact_bn_high": 49.3,
+            "uprating_shortfall_bn_low": 2.13,
+            "uprating_shortfall_bn_high": 2.13,
+            "moves": [
+              "total_impact"
+            ]
           },
           "cpi_increase_pp": {
             "range": [
@@ -802,7 +833,12 @@
               3.0
             ],
             "total_impact_bn_low": 41.8,
-            "total_impact_bn_high": 41.8
+            "total_impact_bn_high": 41.8,
+            "uprating_shortfall_bn_low": 0.85,
+            "uprating_shortfall_bn_high": 2.55,
+            "moves": [
+              "uprating_shortfall"
+            ]
           },
           "fuel_pct": {
             "range": [
@@ -810,7 +846,12 @@
               60
             ],
             "total_impact_bn_low": 36.9,
-            "total_impact_bn_high": 46.7
+            "total_impact_bn_high": 46.7,
+            "uprating_shortfall_bn_low": 2.13,
+            "uprating_shortfall_bn_high": 2.13,
+            "moves": [
+              "total_impact"
+            ]
           },
           "food_increase_pct": {
             "range": [
@@ -818,7 +859,12 @@
               5.5
             ],
             "total_impact_bn_low": 40.1,
-            "total_impact_bn_high": 43.5
+            "total_impact_bn_high": 43.5,
+            "uprating_shortfall_bn_low": 2.13,
+            "uprating_shortfall_bn_high": 2.13,
+            "moves": [
+              "total_impact"
+            ]
           }
         }
       }
@@ -1151,11 +1197,14 @@
         ]
       },
       "sensitivity": {
-        "basis": "Each parameter's uncertainty_range in parameters.registry, evaluated through the model. NOT a confidence interval: the ranges are judgements about the price assumptions, not sampling distributions, and the combined case moves every parameter together",
+        "basis": "Each parameter's uncertainty_range in parameters.registry, evaluated through the model. NOT a confidence interval: the ranges are judgements about the price assumptions, not sampling distributions, and the combined case moves every parameter together. Two aggregates are reported per point, because cpi_increase_pp moves the uprating shortfall rather than the household cost \u2014 `moves` names which aggregates each parameter affects",
         "central_total_impact_bn": 78.6,
+        "central_uprating_shortfall_bn": 3.83,
         "combined": {
           "total_impact_bn_low": 54.2,
-          "total_impact_bn_high": 106.3
+          "total_impact_bn_high": 106.3,
+          "uprating_shortfall_bn_low": 2.55,
+          "uprating_shortfall_bn_high": 5.11
         },
         "by_parameter": {
           "cap_increase_pct": {
@@ -1164,7 +1213,12 @@
               120
             ],
             "total_impact_bn_low": 63.6,
-            "total_impact_bn_high": 93.6
+            "total_impact_bn_high": 93.6,
+            "uprating_shortfall_bn_low": 3.83,
+            "uprating_shortfall_bn_high": 3.83,
+            "moves": [
+              "total_impact"
+            ]
           },
           "cpi_increase_pp": {
             "range": [
@@ -1172,7 +1226,12 @@
               6.0
             ],
             "total_impact_bn_low": 78.6,
-            "total_impact_bn_high": 78.6
+            "total_impact_bn_high": 78.6,
+            "uprating_shortfall_bn_low": 2.55,
+            "uprating_shortfall_bn_high": 5.11,
+            "moves": [
+              "uprating_shortfall"
+            ]
           },
           "fuel_pct": {
             "range": [
@@ -1180,7 +1239,12 @@
               110
             ],
             "total_impact_bn_low": 72.1,
-            "total_impact_bn_high": 88.4
+            "total_impact_bn_high": 88.4,
+            "uprating_shortfall_bn_low": 3.83,
+            "uprating_shortfall_bn_high": 3.83,
+            "moves": [
+              "total_impact"
+            ]
           },
           "food_increase_pct": {
             "range": [
@@ -1188,7 +1252,12 @@
               9.0
             ],
             "total_impact_bn_low": 75.7,
-            "total_impact_bn_high": 81.5
+            "total_impact_bn_high": 81.5,
+            "uprating_shortfall_bn_low": 3.83,
+            "uprating_shortfall_bn_high": 3.83,
+            "moves": [
+              "total_impact"
+            ]
           }
         }
       }
