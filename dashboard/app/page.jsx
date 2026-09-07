@@ -25,6 +25,10 @@ function Dashboard() {
   const router = useRouter();
 
   const [activeTab, setActiveTab] = useState(() => getInitialTab(searchParams.get("tab")));
+  // Read the versions from the provenance block the pipeline writes, so the
+  // footer cannot drift from what actually produced the results.
+  const policyengineVersion = data?.provenance?.packages?.policyengine;
+  const dataBuild = data?.provenance?.release_bundle?.runtime_dataset;
 
   useEffect(() => {
     const tabParam = searchParams.get("tab");
@@ -124,8 +128,9 @@ function Dashboard() {
             . Built with{" "}
             <a href="https://github.com/PolicyEngine/policyengine.py" target="_blank" rel="noreferrer">
               policyengine.py
-            </a>{" "}
-            5.0.1.
+            </a>
+            {policyengineVersion ? ` ${policyengineVersion}` : ""}
+            {dataBuild ? `, dataset ${dataBuild}` : ""}.
           </p>
         </footer>
       </main>
