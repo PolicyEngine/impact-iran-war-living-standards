@@ -200,3 +200,29 @@ def test_every_registered_parameter_moves_something(results):
             "by_parameter"
         ].items():
             assert entry["moves"], f"{scenario}/{name} moves no reported output"
+
+
+def test_the_fuel_duty_exchequer_cost_is_reported(results):
+    """#14 asks that aggregate costs reconcile to a documented tax base."""
+    cost = results["parameters"]["fuel_duty_exchequer_cost"]
+    assert cost, "no reform-based Exchequer cost in the committed output"
+    assert cost["cut_pence_per_litre"] == config.FUEL_DUTY_CUT_PENCE
+    assert cost["baseline_receipts_bn"] > cost["reform_receipts_bn"]
+    assert cost["exchequer_cost_bn"] == pytest.approx(
+        cost["baseline_receipts_bn"] - cost["reform_receipts_bn"], abs=0.02
+    )
+    # It must say what it does not cover.
+    assert "reduced_rate" in cost["not_costed_this_way"]
+
+
+def test_the_exchequer_and_household_figures_are_both_reported(results):
+    """They are near-equal here, which is itself the finding: household
+    road-fuel volumes sit close to the national total, so they absorb
+    business and freight use."""
+    exchequer = results["parameters"]["fuel_duty_exchequer_cost"][
+        "exchequer_cost_bn"
+    ]
+    household = results["policy_responses"]["central_shock"]["fuel_duty_cut"][
+        "gross_outlay_bn"
+    ]
+    assert exchequer == pytest.approx(household, abs=0.1)

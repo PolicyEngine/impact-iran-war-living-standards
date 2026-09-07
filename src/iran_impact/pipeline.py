@@ -23,6 +23,7 @@ from .config import (
     CT_REBATE,
     UC_UPLIFT_WEEKLY,
     FUEL_DUTY_CUT_PENCE,
+    FUEL_DUTY_PARAMETER,
     MEANS_TEST_AMOUNT,
     MEANS_TEST_INSTALMENT_AMOUNTS,
     MEANS_TEST_WINDOW_ENTITLEMENT_RATE,
@@ -296,6 +297,99 @@ def _build_benefit_income(sim, year=YEAR):
 
     return np.array([hh_ben.get(hid, 0.0) for hid in hh_id_hh])
 
+
+
+def _fuel_duty_exchequer_cost(year=YEAR):
+    """Exchequer cost of the fuel-duty cut, from a real PolicyEngine reform.
+
+    Fuel duty is a PolicyEngine parameter, so this measure's cost does not
+    have to be inferred from household spending: the cut can be run as an
+    actual reform and the change in receipts read off. That is what #14 asks
+    for "where supported", and it gives a figure that reconciles against a
+    documented tax base rather than a modelled household transfer.
+
+    Returns None if the reform cannot be run, so a pipeline without data
+    access still produces output rather than failing.
+
+    Note on the reform form: the date-range key is deliberate.
+    policyengine.py's `compile_reform` emits a bare-date key
+    ({"2027-01-01": value}) which does NOT apply across the year — it moved
+    receipts by only about a twelfth of the expected amount. The explicit
+    "start.end" range applies correctly and reconciles with the arithmetic.
+    """
+    from policyengine.tax_benefit_models.uk import managed_microsimulation
+
+    try:
+        current_rate = _fuel_duty_rate(year)
+        cut_rate = current_rate - FUEL_DUTY_CUT_PENCE / PENCE_PER_POUND
+        reform = {
+            FUEL_DUTY_PARAMETER: {
+                f"{year}-01-01.{year}-12-31": cut_rate,
+            }
+        }
+        baseline_sim = managed_microsimulation()
+        reform_sim = managed_microsimulation(reform=reform)
+    except Exception:  # pragma: no cover - environment dependent
+        return None
+
+    def receipts(sim):
+        weights = _vals(sim, "household_weight", year, unweighted=True)
+        return weighted_sum(_vals(sim, "fuel_duty", year), weights)
+
+    baseline_receipts = receipts(baseline_sim)
+    reform_receipts = receipts(reform_sim)
+    litres = weighted_sum(
+        _vals(baseline_sim, "petrol_litres", year)
+        + _vals(baseline_sim, "diesel_litres", year),
+        _vals(baseline_sim, "household_weight", year, unweighted=True),
+    )
+    return {
+        "basis": (
+            "change in modelled fuel duty receipts when the cut is applied as "
+            "a PolicyEngine reform to "
+            f"{FUEL_DUTY_PARAMETER}, rather than inferred from household "
+            "spending"
+        ),
+        "duty_rate_gbp_per_litre": round(current_rate, 4),
+        "cut_pence_per_litre": FUEL_DUTY_CUT_PENCE,
+        "baseline_receipts_bn": round(baseline_receipts / 1e9, 2),
+        "reform_receipts_bn": round(reform_receipts / 1e9, 2),
+        "exchequer_cost_bn": round(
+            (baseline_receipts - reform_receipts) / 1e9, 2
+        ),
+        "modelled_litres_bn": round(litres / 1e9, 1),
+        "reconciliation": (
+            "The cost equals the cut times modelled road-fuel volume, so it "
+            "reconciles with the duty base rather than being a separate "
+            "estimate. Because the microdata attributes road-fuel volume to "
+            "households at close to the national total, this figure and the "
+            "household transfer are nearly equal — which also means household "
+            "volumes absorb business and freight use, so the household "
+            "incidence is overstated to that extent"
+        ),
+        "not_costed_this_way": (
+            "The electricity VAT cut is not costed as a reform: the only "
+            "relevant parameter, gov.hmrc.vat.reduced_rate, covers all "
+            "reduced-rate consumption rather than domestic electricity alone, "
+            "so a reform would price a much broader change. Every other "
+            "measure here is a stylised scheme with no corresponding "
+            "PolicyEngine parameter"
+        ),
+    }
+
+
+def _fuel_duty_rate(year=YEAR):
+    """Fuel duty rate in force at the start of the given tax year."""
+    from policyengine.tax_benefit_models.uk import uk_latest
+
+    from datetime import datetime
+
+    parameter = uk_latest.get_parameter(FUEL_DUTY_PARAMETER)
+    at = datetime(year, 4, 6)
+    applicable = [v for v in parameter.parameter_values if v.start_date <= at]
+    if not applicable:
+        raise LookupError(f"no {FUEL_DUTY_PARAMETER} value on or before {at}")
+    return max(applicable, key=lambda v: v.start_date).value
 
 
 def run_baseline(year=YEAR):
@@ -1178,6 +1272,9 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
             "base_food_spend": BASE_FOOD_SPEND,
             "registry": PARAMETER_REGISTRY,
             "uprating_lag": UPRATING_LAG_REGISTRY,
+            # Exchequer cost of the one measure that is a real PolicyEngine
+            # parameter, computed as an actual reform (#14).
+            "fuel_duty_exchequer_cost": _fuel_duty_exchequer_cost(year),
             "spending_inputs": {
                 "source": spending_source_metadata(),
                 "transport_fuel_annual_gbp_by_gross_decile": (
