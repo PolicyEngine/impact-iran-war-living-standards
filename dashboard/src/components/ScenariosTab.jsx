@@ -462,6 +462,10 @@ export default function ScenariosTab({ data }) {
   const [scenario, setScenario] = useState("low_shock");
 
   const scenarioData = getScenario(data, scenario);
+  // Poverty rate before and after the shock, on the anchored HBAI BHC basis.
+  const povertySummary = data?.scenarios?.[scenario]?.summary;
+  const povertyBaseline = povertySummary?.poverty_rate_baseline_pct;
+  const povertyShocked = povertySummary?.below_anchored_line_shocked_pct;
   const quintileData = getQuintileBreakdown(data, scenario);
   const countryData = getCountryBreakdown(data, scenario);
   const tenureData = getTenureBreakdown(data, scenario);
@@ -562,6 +566,23 @@ export default function ScenariosTab({ data }) {
           <div className="mt-1 text-sm text-slate-500">
             People pushed below the baseline HBAI BHC poverty line in 2027-28 once
             modelled costs are netted off income (anchored threshold)
+          </div>
+        </div>
+        <div className="metric-card">
+          <div className="text-xs font-medium uppercase tracking-[0.08em] text-slate-500">
+            Poverty rate
+          </div>
+          <div className="mt-2 text-3xl font-bold tracking-tight" style={{ color: colors.primary[800] }}>
+            {povertyBaseline != null && povertyShocked != null
+              ? `${povertyBaseline.toFixed(1)}% → ${povertyShocked.toFixed(1)}%`
+              : "--"}
+          </div>
+          <div className="mt-1 text-sm text-slate-500">
+            Share of people below the poverty line, before the shock and after modelled
+            costs are netted off income
+            {povertyBaseline != null && povertyShocked != null
+              ? ` (+${(povertyShocked - povertyBaseline).toFixed(1)}pp)`
+              : ""}
           </div>
         </div>
       </div>

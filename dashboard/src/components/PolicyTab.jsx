@@ -15,7 +15,7 @@ import {
 } from "recharts";
 import SectionHeading from "./SectionHeading";
 import { getPolicyComparison, POLICY_KEYS, POLICY_LABELS } from "../lib/dataHelpers";
-import { formatCurrency, formatBn } from "../lib/formatters";
+import { formatCurrency, formatBn, formatCount } from "../lib/formatters";
 import ChartLogo from "./ChartLogo";
 import QuintileTargetingChart from "./QuintileTargetingChart";
 import { getScenarioNarrative, getScenarioOptions } from "../lib/scenarioContent";
@@ -269,6 +269,21 @@ export default function PolicyTab({ data }) {
               </div>
               <div className="mt-2 text-sm leading-6 text-slate-500">
                 Average reduction in 2027-28 household impact from the energy price shock after this policy.
+              </div>
+            </div>
+            <div className="metric-card">
+              <div className="text-xs font-medium uppercase tracking-[0.08em] text-slate-500">
+                Kept above the poverty line
+              </div>
+              <div className="mt-2 text-3xl font-bold tracking-tight" style={{ color: colors.primary[800] }}>
+                {policy.n_lifted_from_poverty != null
+                  ? formatCount(policy.n_lifted_from_poverty)
+                  : "--"}
+              </div>
+              <div className="mt-2 text-sm leading-6 text-slate-500">
+                People who would fall below the baseline HBAI BHC poverty line under this
+                shock scenario, but do not once {policyLabel.toLowerCase()} is applied
+                (anchored threshold).
               </div>
             </div>
           </div>
