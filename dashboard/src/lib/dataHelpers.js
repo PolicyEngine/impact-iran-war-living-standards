@@ -157,6 +157,7 @@ export function getPolicyComparison(data, scenarioKey) {
     return {
       ...p,
       avg_household_benefit: p.avg_benefit_per_hh,
+      n_lifted_from_poverty: p.n_lifted_from_poverty,
       targeting_bottom40: p.targeting_bottom40,
     };
   };
