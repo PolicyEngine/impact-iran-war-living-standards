@@ -24,9 +24,9 @@ from .config import (
     UC_UPLIFT_WEEKLY,
     FUEL_DUTY_CUT_PENCE,
     MEANS_TEST_AMOUNT,
-    MEANS_TEST_CONTINUOUS_RECEIPT_SHARE,
+    MEANS_TEST_INSTALMENT_AMOUNTS,
+    MEANS_TEST_WINDOW_ENTITLEMENT_RATE,
     MEANS_TEST_TAKE_UP,
-    MEANS_TEST_INSTALMENTS,
     ELEC_VAT_SAVING_RATE,
     SOCIAL_TARIFF_INCOME_THRESHOLD,
     SOCIAL_TARIFF_DISCOUNT,
@@ -508,19 +508,30 @@ def compute_policies(data, scenario_key, scenario_impacts):
         FUEL_DUTY_CUT_PENCE / PENCE_PER_POUND * data["fuel_litres"]
     )
 
-    # Policy F: Means-tested payment – £650 to households receiving a
-    # qualifying benefit (the 2022 Cost of Living Payment eligibility basis).
+    # Policy F: Means-tested payment – the 2022 Cost of Living Payment's two
+    # awards of £326 and £324, to households receiving a qualifying benefit.
     #
-    # The 2022 scheme paid in two instalments, each requiring entitlement in
-    # its own qualifying window, so a household on benefit for part of the
-    # year could receive one or neither. The annual microdata cannot observe
-    # entitlement within a window, so the expected payment is scaled by the
-    # assumed share entitled across both, rather than selecting households the
-    # data cannot identify (#14). Take-up is complete because the 2022
-    # payments were automatic for households already on a qualifying benefit.
-    expected_share = MEANS_TEST_CONTINUOUS_RECEIPT_SHARE * MEANS_TEST_TAKE_UP
+    # Each instalment was a separate award conditional on entitlement in its
+    # own qualifying window, so a household entitled in only one window
+    # received that instalment alone. The annual microdata cannot observe
+    # entitlement within a window, so each instalment is paid at the assumed
+    # per-window entitlement rate. Summing over instalments gives the expected
+    # value across all four qualifying states — both, first only, second only,
+    # neither — without needing their joint distribution, which the annual
+    # data could not identify (#14).
+    #
+    # Scaling the FULL award by a single "entitled in both windows" share
+    # would instead imply that every household not entitled twice received
+    # nothing, dropping the two single-instalment states entirely.
+    #
+    # Take-up is complete because the 2022 payments were automatic for
+    # households already on a qualifying benefit.
+    expected_payment = sum(
+        amount * MEANS_TEST_WINDOW_ENTITLEMENT_RATE * MEANS_TEST_TAKE_UP
+        for amount in MEANS_TEST_INSTALMENT_AMOUNTS
+    )
     policies["means_tested_payment"] = np.where(
-        data["is_means_tested"], MEANS_TEST_AMOUNT * expected_share, 0.0
+        data["is_means_tested"], expected_payment, 0.0
     )
 
     # Policy J: Electricity VAT cut (enacted Oct 2026–Mar 2027; modelled as a
@@ -1272,20 +1283,41 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
                     "cost-of-living-support/"
                     "cost-of-living-support-factsheet-26-may-2022"
                 ),
-                "instalments": MEANS_TEST_INSTALMENTS,
-                "continuous_receipt_share": MEANS_TEST_CONTINUOUS_RECEIPT_SHARE,
+                "instalment_amounts_gbp": list(MEANS_TEST_INSTALMENT_AMOUNTS),
+                "window_entitlement_rate": MEANS_TEST_WINDOW_ENTITLEMENT_RATE,
                 "take_up": MEANS_TEST_TAKE_UP,
+                "expected_payment_gbp": round(
+                    sum(
+                        amount * MEANS_TEST_WINDOW_ENTITLEMENT_RATE
+                        * MEANS_TEST_TAKE_UP
+                        for amount in MEANS_TEST_INSTALMENT_AMOUNTS
+                    ),
+                    2,
+                ),
                 "timing_treatment": (
-                    "The 2022 scheme paid in two instalments, each requiring "
-                    "entitlement in its own qualifying window. The annual "
+                    "The 2022 scheme paid two separate awards of £326 and "
+                    "£324, each conditional on entitlement in its own "
+                    "qualifying window, so a household entitled in only one "
+                    "window received that instalment alone. The annual "
                     "microdata cannot observe entitlement within a window, so "
-                    f"the payment is scaled by an assumed "
-                    f"{MEANS_TEST_CONTINUOUS_RECEIPT_SHARE:.0%} share of "
-                    "qualifying households entitled across both, as an "
-                    "expected value rather than by selecting households. That "
-                    "share is an assumption, not a sourced figure, and the "
+                    "each instalment is paid at an assumed "
+                    f"{MEANS_TEST_WINDOW_ENTITLEMENT_RATE:.0%} per-window "
+                    "entitlement rate. Summing over instalments gives the "
+                    "expected value across all four qualifying states — both, "
+                    "first only, second only, neither — without modelling "
+                    "their joint distribution, which the annual data cannot "
+                    "identify. Applying a single 'entitled in both windows' "
+                    "share to the full award would instead have implied that "
+                    "every household not entitled twice received nothing. The "
+                    "rate is an assumption, not a sourced figure, and the "
                     "modelled cost is proportional to it"
                 ),
+                "source_urls": [
+                    "https://www.legislation.gov.uk/ukpga/2022/38",
+                    "https://assets.publishing.service.gov.uk/government/"
+                    "uploads/system/uploads/attachment_data/file/1097764/"
+                    "adm17-22.pdf",
+                ],
                 "take_up_treatment": (
                     "Complete among qualifying households: the 2022 payments "
                     "were automatic for households already receiving a "

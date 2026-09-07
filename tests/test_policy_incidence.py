@@ -52,32 +52,72 @@ def test_payment_goes_only_to_qualifying_households(policies, synthetic_data):
     assert np.all(policies["means_tested_payment"][~qualifying] == 0)
 
 
-def test_the_payment_is_scaled_for_the_qualifying_windows(policies, synthetic_data):
-    """The 2022 scheme paid in two instalments, each needing entitlement in
-    its own window, so not every recipient received the full amount (#14)."""
-    qualifying = synthetic_data["is_means_tested"]
-    paid = policies["means_tested_payment"][qualifying]
-    assert np.all(paid < config.MEANS_TEST_AMOUNT)
-    assert np.all(
-        paid
-        == pytest.approx(
-            config.MEANS_TEST_AMOUNT
-            * config.MEANS_TEST_CONTINUOUS_RECEIPT_SHARE
-            * config.MEANS_TEST_TAKE_UP
-        )
+def test_the_instalment_amounts_are_the_statutory_awards():
+    """Social Security (Additional Payments) Act 2022, ss.1-2: two separate
+    awards of £326 and £324."""
+    assert config.MEANS_TEST_INSTALMENT_AMOUNTS == (326, 324)
+    assert config.MEANS_TEST_AMOUNT == 650
+
+
+def test_the_payment_is_the_expectation_over_all_four_window_states(
+    policies, synthetic_data
+):
+    """Each instalment is a separate award conditional on its own window, so
+    a household can be entitled to both, either one, or neither. Paying each
+    instalment at the per-window rate is the expectation over that whole
+    distribution — not just "both or nothing" (#14 review C1).
+    """
+    rate = config.MEANS_TEST_WINDOW_ENTITLEMENT_RATE
+    first, second = config.MEANS_TEST_INSTALMENT_AMOUNTS
+
+    # Expectation built explicitly from the four states, assuming the two
+    # windows are independent at the per-window rate.
+    p_both = rate * rate
+    p_first_only = rate * (1 - rate)
+    p_second_only = (1 - rate) * rate
+    explicit = (
+        p_both * (first + second)
+        + p_first_only * first
+        + p_second_only * second
+        # neither: contributes nothing
     )
 
+    qualifying = synthetic_data["is_means_tested"]
+    paid = policies["means_tested_payment"][qualifying]
+    assert np.all(paid == pytest.approx(explicit))
+    # And strictly between "nobody qualifies twice" and "everybody does".
+    assert np.all(paid < config.MEANS_TEST_AMOUNT)
+    assert np.all(paid > 0)
 
-def test_a_full_continuous_receipt_share_pays_the_whole_amount(
+
+def test_the_single_instalment_states_are_not_dropped(policies, synthetic_data):
+    """Scaling the full award by a single "entitled in both windows" share
+    would imply every household not entitled twice received nothing. That
+    understates the payment, and this asserts we are not doing it."""
+    rate = config.MEANS_TEST_WINDOW_ENTITLEMENT_RATE
+    both_or_nothing = config.MEANS_TEST_AMOUNT * rate * rate
+    paid = policies["means_tested_payment"][synthetic_data["is_means_tested"]]
+    assert np.all(paid > both_or_nothing)
+
+
+def test_a_full_entitlement_rate_pays_both_instalments(
     synthetic_data, impacts, monkeypatch
 ):
     """The scaling must be a modelling choice, not baked in."""
-    monkeypatch.setattr(pipeline, "MEANS_TEST_CONTINUOUS_RECEIPT_SHARE", 1.0)
+    monkeypatch.setattr(pipeline, "MEANS_TEST_WINDOW_ENTITLEMENT_RATE", 1.0)
     policies = compute_policies(synthetic_data, "central_shock", impacts)
     qualifying = synthetic_data["is_means_tested"]
     assert np.all(
         policies["means_tested_payment"][qualifying] == config.MEANS_TEST_AMOUNT
     )
+
+
+def test_a_zero_entitlement_rate_pays_nothing(
+    synthetic_data, impacts, monkeypatch
+):
+    monkeypatch.setattr(pipeline, "MEANS_TEST_WINDOW_ENTITLEMENT_RATE", 0.0)
+    policies = compute_policies(synthetic_data, "central_shock", impacts)
+    assert np.all(policies["means_tested_payment"] == 0)
 
 
 # ── Fuel duty on litres, not scaled spending ──────────────────────────────

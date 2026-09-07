@@ -360,12 +360,14 @@ METHOD_LIMITATIONS = [
     "amount is reported as the compensation an immediate uprating would "
     "deliver and is not counted as a cost, so the household loss is the price "
     "rise alone.",
-    "Means-tested payment timing: the 2022 scheme paid in two instalments, "
-    "each requiring entitlement in a specific qualifying window. The annual "
-    "microdata cannot observe entitlement within a window, so the model "
-    "applies an assumed share of qualifying households entitled across both "
-    "(MEANS_TEST_CONTINUOUS_RECEIPT_SHARE) as an expected value rather than "
-    "selecting households. That share is a stated assumption, not a sourced "
+    "Means-tested payment timing: the 2022 scheme paid two separate awards of "
+    "£326 and £324, each conditional on entitlement in its own qualifying "
+    "window, so a household entitled in only one window received that "
+    "instalment alone. The annual microdata cannot observe entitlement within "
+    "a window, so each instalment is paid at an assumed per-window "
+    "entitlement rate (MEANS_TEST_WINDOW_ENTITLEMENT_RATE), which gives the "
+    "expected value across all four qualifying states without modelling their "
+    "joint distribution. That rate is a stated assumption, not a sourced "
     "figure, and the modelled cost is proportional to it. Take-up among "
     "qualifying households is treated as complete, since the 2022 payments "
     "were automatic.",
@@ -438,24 +440,32 @@ FUEL_DUTY_CUT_PENCE = 5  # pence/litre; the existing 5p cut runs to 31 Dec 2026 
 # this policy models extending it through the shock period rather than a new cut.
 # Effective pump saving is ~6p including VAT on duty; we model the 5p duty element.
 # Source: https://www.gov.uk/government/publications/amended-fuel-duty-rates-for-2026-to-2027/amended-fuel-duty-rates-2026-to-2027
-# The 2022 scheme paid in two instalments, each with its own qualifying
-# window: a household had to be entitled to a qualifying benefit for an
-# assessment period ending in the window to receive that instalment. A
-# household on benefit for only part of the year could therefore receive one
-# instalment, or neither, rather than the full amount.
-#
-# The microdata is annual, so entitlement within a specific window cannot be
-# observed. Modelling it needs an assumption about how many recipients are on
-# benefit continuously; MEANS_TEST_CONTINUOUS_RECEIPT_SHARE is that
-# assumption, applied as an expected value rather than by selecting
-# households, since the data cannot say which ones.
-MEANS_TEST_INSTALMENTS = 2
+# The 2022 scheme paid in two instalments, each a separate award conditional
+# on its own qualifying period: £326 and £324. A household entitled in only
+# one window received that instalment alone — first-only and second-only are
+# real states, not just "both or neither".
+# Sources:
+#   Social Security (Additional Payments) Act 2022, ss.1-2
+#     https://www.legislation.gov.uk/ukpga/2022/38
+#   DWP ADM Memo 17/22
+#     https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1097764/adm17-22.pdf
+MEANS_TEST_INSTALMENT_AMOUNTS = (326, 324)
 
-# Share of qualifying households assumed entitled across both windows. DWP's
-# 2022 evaluation is not granular enough to pin this, so it is a stated
-# assumption, not a sourced figure — see METHOD_LIMITATIONS. Setting it to 1.0
-# reproduces the previous behaviour of paying every recipient in full.
-MEANS_TEST_CONTINUOUS_RECEIPT_SHARE = 0.85
+# Probability that a household observed on a qualifying benefit in the annual
+# microdata was entitled in each instalment's window, applied per instalment.
+#
+# This is deliberately a PER-WINDOW entitlement rate, not a share entitled in
+# both. Multiplying the full award by a "both windows" share would imply that
+# every household not entitled twice received nothing, which omits the
+# first-only and second-only states the scheme allows. Applying the rate to
+# each instalment separately gives the expected value across all four states
+# without needing to model their joint distribution — which the annual data
+# cannot identify anyway.
+#
+# DWP's 2022 evaluation is not granular enough to pin the rate, so it is a
+# stated assumption, not a sourced figure — see METHOD_LIMITATIONS. Setting it
+# to 1.0 reproduces paying every recipient both instalments in full.
+MEANS_TEST_WINDOW_ENTITLEMENT_RATE = 0.85
 
 # Take-up. The 2022 payments were made automatically to households already
 # receiving a qualifying benefit, so take-up among those households was
@@ -463,8 +473,9 @@ MEANS_TEST_CONTINUOUS_RECEIPT_SHARE = 0.85
 # microdata already reflects. Kept explicit so the assumption is visible.
 MEANS_TEST_TAKE_UP = 1.0
 
-MEANS_TEST_AMOUNT = 650  # £ payment, modelled on the 2022 Cost of Living Payment:
-# eligibility keyed to means-tested benefit receipt (UC/Pension Credit/legacy), not an income cliff.
+# Total award, the sum of the two statutory instalments.
+MEANS_TEST_AMOUNT = sum(MEANS_TEST_INSTALMENT_AMOUNTS)  # £650
+# Eligibility is keyed to qualifying-benefit receipt, not an income cliff.
 
 # Electricity VAT cut: enacted July 2026 (VAT on domestic electricity 5% -> 0%
 # for 1 Oct 2026-31 Mar 2027, ~£45/household, ~£850m). Modelled here as a
