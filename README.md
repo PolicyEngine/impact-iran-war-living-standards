@@ -22,7 +22,7 @@ The Ofgem cap (£1,663 for July–September 2026 on the new typical-consumption 
 
 The pipeline applies price increases through three transmission channels and computes household-level impacts for the 2027-28 tax year:
 
-1. **Energy** — Each household's own baseline gas and electricity spend, raised by the scenario percentage
+1. **Energy** — Each household's own baseline gas and electricity spend, raised by the scenario percentage. This is a household-energy-expenditure sensitivity, not a price-cap calculation: no cap level, unit rate, standing charge or tariff type enters it
 2. **Fuel** — Petrol and diesel spending (ONS Family Spending Table A6, allocated to vehicle-owning households only), raised by the scenario percentage
 3. **Food** — Food and non-alcoholic drink spending (ONS Family Spending Table A6), raised by the scenario percentage
 

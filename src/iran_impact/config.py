@@ -343,6 +343,11 @@ METHOD_LIMITATIONS = [
     "applied as a full-year 2027-28 amount, including where the cited source "
     "describes a 2026 disruption lasting a few months. No time path, quarterly "
     "or monthly profile, or shock duration is modelled.",
+    "Energy channel: this is a household-energy-expenditure sensitivity "
+    "rather than a price-cap calculation — the scenario percentage is applied "
+    "to each household's own modelled energy spending, and no cap level, unit "
+    "rate or tariff type enters it. Issue #13 offered modelling retail energy "
+    "properly or relabelling the channel; this is the relabel.",
     "Energy prices: the model multiplies each household's baseline gas and "
     "electricity expenditure by the scenario percentage. It does not model "
     "unit rates or standing charges, the gas/electricity split, region, "
