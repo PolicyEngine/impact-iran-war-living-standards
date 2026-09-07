@@ -449,6 +449,17 @@ FUEL_DUTY_CUT_PENCE = 5  # pence/litre; the existing 5p cut runs to 31 Dec 2026 
 #     https://www.legislation.gov.uk/ukpga/2022/38
 #   DWP ADM Memo 17/22
 #     https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1097764/adm17-22.pdf
+# Fuel duty is one of the two measures in this study that is an actual
+# PolicyEngine parameter, so its Exchequer cost can be computed by running the
+# cut as a real reform rather than inferred from household spending. That is
+# what #14 asks for where the model supports it.
+FUEL_DUTY_PARAMETER = "gov.hmrc.fuel_duty.petrol_and_diesel"
+
+# Electricity VAT is deliberately NOT costed this way. The only relevant
+# parameter, gov.hmrc.vat.reduced_rate, applies to all reduced-rate
+# consumption rather than domestic electricity alone, so zeroing it would cost
+# a much broader reform than the one modelled.
+
 MEANS_TEST_INSTALMENT_AMOUNTS = (326, 324)
 
 # Probability that a household observed on a qualifying benefit in the annual

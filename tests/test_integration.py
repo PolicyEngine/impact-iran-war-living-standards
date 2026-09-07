@@ -130,3 +130,69 @@ def test_gross_income_deciles_are_ten_equal_weighted_groups(baseline):
         for d in range(1, 11)
     ]
     assert all(share == pytest.approx(0.1, abs=0.005) for share in shares)
+
+
+def test_the_fuel_duty_cut_costs_the_cut_times_the_duty_base():
+    """Exchequer cost from a real PolicyEngine reform, reconciled against the
+    duty base rather than inferred from household spending (#14).
+
+    Skipped where the dataset is unavailable, like the other managed-data
+    tests, since it runs two simulations.
+    """
+    from iran_impact.pipeline import _fuel_duty_exchequer_cost
+
+    if not _managed_data_available_for_reform():
+        pytest.skip("certified dataset unavailable")
+
+    result = _fuel_duty_exchequer_cost(year=config.YEAR)
+    assert result is not None
+
+    # The cost must equal the rate cut times modelled volume, which is what
+    # makes it a reconciliation rather than a second independent estimate.
+    implied = (
+        config.FUEL_DUTY_CUT_PENCE
+        / config.PENCE_PER_POUND
+        * result["modelled_litres_bn"]
+    )
+    assert result["exchequer_cost_bn"] == pytest.approx(implied, abs=0.05)
+    # And receipts must fall by exactly that much.
+    assert (
+        result["baseline_receipts_bn"] - result["reform_receipts_bn"]
+    ) == pytest.approx(result["exchequer_cost_bn"], abs=0.01)
+    # A cut cannot raise receipts.
+    assert result["reform_receipts_bn"] < result["baseline_receipts_bn"]
+
+
+def _managed_data_available_for_reform():
+    try:
+        from policyengine.provenance.dataset_materialization import (
+            DatasetMaterializationError,
+        )
+        from policyengine.tax_benefit_models.uk import managed_microsimulation
+    except ImportError:
+        return False
+    try:
+        managed_microsimulation()
+    except DatasetMaterializationError:
+        return False
+    return True
+
+
+def test_the_reform_actually_changes_the_parameter():
+    """Guards the bug this implementation had to work around: a bare-date
+    reform key moved receipts by only about a twelfth of the expected amount,
+    because it did not apply across the year. If the range form ever stops
+    applying, the cost collapses and this fails."""
+    from iran_impact.pipeline import _fuel_duty_exchequer_cost, _fuel_duty_rate
+
+    if not _managed_data_available_for_reform():
+        pytest.skip("certified dataset unavailable")
+
+    result = _fuel_duty_exchequer_cost(year=config.YEAR)
+    rate = _fuel_duty_rate(config.YEAR)
+    cut_share = (config.FUEL_DUTY_CUT_PENCE / config.PENCE_PER_POUND) / rate
+    # Receipts should fall by the proportional rate cut, about 8.4%.
+    observed_share = (
+        result["exchequer_cost_bn"] / result["baseline_receipts_bn"]
+    )
+    assert observed_share == pytest.approx(cut_share, rel=0.02)

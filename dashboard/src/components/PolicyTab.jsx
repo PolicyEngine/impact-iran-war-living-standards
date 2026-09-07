@@ -44,7 +44,7 @@ const POLICY_DESCRIPTIONS = {
   },
   fuel_duty_cut: {
     mechanism: "Extends the existing 5p per litre fuel duty cut (currently legislated to expire 31 December 2026) through the shock period.",
-    model: "The model applies 5p to each household's own modelled petrol and diesel volume, so households with no vehicle receive nothing. The figure covers household road fuel only; an Exchequer estimate would also cover business and freight use and the associated VAT.",
+    model: "The model applies 5p to each household's own modelled petrol and diesel volume, so households with no vehicle receive nothing. Fuel duty is one of the few measures here that is a real PolicyEngine parameter, so its Exchequer cost is also computed by running the cut as an actual reform: \u00A32.18bn against baseline receipts of \u00A325.9bn. That matches the household transfer almost exactly, because the microdata attributes road-fuel volume to households at close to the national total \u2014 which means household volumes absorb business and freight use, and the household incidence is overstated to that extent.",
   },
   means_tested: {
     mechanism: "Pays £650 to households receiving a benefit that qualified for the 2022 Cost of Living Payment: Universal Credit, income-based JSA, income-related ESA, Income Support, Working Tax Credit, Child Tax Credit or Pension Credit. Housing Benefit alone did not qualify.",
