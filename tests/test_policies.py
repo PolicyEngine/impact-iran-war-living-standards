@@ -36,7 +36,8 @@ def test_uc_uplift_is_weekly_rate_annualised_for_recipients(policies, synthetic_
 
 def test_means_tested_payment_follows_benefit_receipt(policies, synthetic_data):
     recipients = synthetic_data["is_means_tested"]
-    # Scaled by the assumed share entitled across both qualifying windows.
+    # Each statutory instalment is paid at the per-window marginal
+    # entitlement rate, not the full award scaled by a "both windows" share.
     expected = sum(
         amount
         * config.MEANS_TEST_WINDOW_ENTITLEMENT_RATE

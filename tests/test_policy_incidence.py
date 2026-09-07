@@ -64,14 +64,18 @@ def test_the_payment_is_the_expectation_over_all_four_window_states(
 ):
     """Each instalment is a separate award conditional on its own window, so
     a household can be entitled to both, either one, or neither. Paying each
-    instalment at the per-window rate is the expectation over that whole
+    instalment at its per-window rate is the expectation over that whole
     distribution — not just "both or nothing" (#14 review C1).
+
+    By linearity of expectation the total depends only on each window's
+    MARGINAL entitlement probability, not on the joint distribution. The
+    independent case below is therefore one convenient way to enumerate the
+    four states and check the identity — not an assumption the model makes.
     """
     rate = config.MEANS_TEST_WINDOW_ENTITLEMENT_RATE
     first, second = config.MEANS_TEST_INSTALMENT_AMOUNTS
 
-    # Expectation built explicitly from the four states, assuming the two
-    # windows are independent at the per-window rate.
+    # One joint distribution with the right marginals: independent windows.
     p_both = rate * rate
     p_first_only = rate * (1 - rate)
     p_second_only = (1 - rate) * rate
@@ -88,6 +92,28 @@ def test_the_payment_is_the_expectation_over_all_four_window_states(
     # And strictly between "nobody qualifies twice" and "everybody does".
     assert np.all(paid < config.MEANS_TEST_AMOUNT)
     assert np.all(paid > 0)
+
+
+def test_the_result_does_not_depend_on_the_joint_distribution(synthetic_data):
+    """Perfectly correlated windows have the same marginals as independent
+    ones, so they must give the same expected total — which is why the model
+    needs only the per-window rate (#14 review S1)."""
+    rate = config.MEANS_TEST_WINDOW_ENTITLEMENT_RATE
+    first, second = config.MEANS_TEST_INSTALMENT_AMOUNTS
+
+    independent = (
+        rate * rate * (first + second)
+        + rate * (1 - rate) * first
+        + (1 - rate) * rate * second
+    )
+    # Perfectly correlated: a household is entitled in both windows or
+    # neither, with the same per-window probability.
+    correlated = rate * (first + second)
+
+    assert independent == pytest.approx(correlated)
+    assert independent == pytest.approx(
+        sum(amount * rate for amount in config.MEANS_TEST_INSTALMENT_AMOUNTS)
+    )
 
 
 def test_the_single_instalment_states_are_not_dropped(policies, synthetic_data):
