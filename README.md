@@ -2,7 +2,7 @@
 
 Microsimulation-based analysis of how energy price rises from the ongoing Middle East conflict (active since late February 2026, with recurrent Strait of Hormuz disruption) affect UK households in 2027-28 — modelling impacts through energy bills, fuel costs and food inflation across 31.6 million weighted households using [policyengine.py](https://github.com/PolicyEngine/policyengine.py) 5.3.0.
 
-**[Live Dashboard](https://uk-energy-shock-impact.vercel.app)**
+**[Live Dashboard](https://uk-energy-shock-impact-eight.vercel.app)**
 
 ## Scenarios
 
