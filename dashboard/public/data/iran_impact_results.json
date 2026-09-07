@@ -2,9 +2,9 @@
   "year": 2027,
   "current_energy_cap": 1663,
   "provenance": {
-    "generated_at": "2026-09-07T10:31:22+00:00",
-    "git_revision": "606837ec1ad1114e6a8c083e7d94c0684a2ea80a",
-    "git_dirty": true,
+    "generated_at": "2026-09-07T10:36:55+00:00",
+    "git_revision": "d3ad2bc522d2ad3df27825e13f0d7bba233d648d",
+    "git_dirty": false,
     "packages": {
       "policyengine": "5.3.0",
       "policyengine-uk": "2.90.2",
@@ -13,8 +13,8 @@
       "microdf-python": "1.3.0"
     },
     "source_hashes": {
-      "config.py": "1eb72ea8dc0929218af4b6da932486a409f858a2d5b35fb4e4ef3f16faeb4b22",
-      "pipeline.py": "ae4a327fb1567fde51d13125c787acaeb68c93ce1e2970b4e2ba9dd96ce981f3",
+      "config.py": "00400af9b2128fcdc449246c6dd66eaffb61773c24d29f255a226939f80bb912",
+      "pipeline.py": "ffb78eef4f6fb7459cf4f9d30020e86ef53a517d069d6420ef5f29a62dd5ac97",
       "provenance.py": "956bcc99b7f9c3f796082ae19edf451310fe6e14ea93deda16bc665455d75541",
       "pyproject.toml": "67312746740b8f3fa072d28c40905bfcdbbdc7d089876e5c6814ac0f102cb161",
       "requirements.lock": "eb6a3b253777a9c501b13cad26e2e847c52b3f58168a3928dd9aaff075e0835a"
@@ -1643,45 +1643,45 @@
       "means_tested": {
         "name": "Means-tested cost-of-living payment",
         "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
-        "gross_outlay_bn": 5.08,
-        "fiscal_cost_bn": 5.08,
-        "household_protection_bn": 2.01,
-        "residual_impact_bn": 14.32,
-        "avg_benefit_per_hh": 64,
+        "gross_outlay_bn": 4.32,
+        "fiscal_cost_bn": 4.32,
+        "household_protection_bn": 1.99,
+        "residual_impact_bn": 14.35,
+        "avg_benefit_per_hh": 63,
         "targeting_bottom40": 66.6,
-        "n_lifted_from_poverty": 133089,
+        "n_lifted_from_poverty": 133084,
         "by_quintile": [
           {
             "quintile": 1,
-            "mean_benefit": 93,
-            "mean_residual_impact": 280,
+            "mean_benefit": 92,
+            "mean_residual_impact": 281,
             "mean_benefit_pct_income": 0.5,
             "benefit_share_pct": 38.7
           },
           {
             "quintile": 2,
-            "mean_benefit": 94,
-            "mean_residual_impact": 375,
+            "mean_benefit": 93,
+            "mean_residual_impact": 376,
             "mean_benefit_pct_income": 0.3,
             "benefit_share_pct": 27.9
           },
           {
             "quintile": 3,
-            "mean_benefit": 78,
-            "mean_residual_impact": 452,
+            "mean_benefit": 77,
+            "mean_residual_impact": 453,
             "mean_benefit_pct_income": 0.2,
             "benefit_share_pct": 22.5
           },
           {
             "quintile": 4,
-            "mean_benefit": 33,
+            "mean_benefit": 32,
             "mean_residual_impact": 577,
             "mean_benefit_pct_income": 0.1,
             "benefit_share_pct": 8.5
           },
           {
             "quintile": 5,
-            "mean_benefit": 12,
+            "mean_benefit": 11,
             "mean_residual_impact": 628,
             "mean_benefit_pct_income": 0.0,
             "benefit_share_pct": 2.4
@@ -1943,12 +1943,12 @@
       "combined": {
         "name": "Combined package",
         "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
-        "gross_outlay_bn": 38.58,
-        "fiscal_cost_bn": 38.58,
+        "gross_outlay_bn": 37.82,
+        "fiscal_cost_bn": 37.82,
         "household_protection_bn": 15.8,
         "residual_impact_bn": 0.53,
         "avg_benefit_per_hh": 501,
-        "targeting_bottom40": 51.4,
+        "targeting_bottom40": 51.1,
         "n_lifted_from_poverty": 358669,
         "by_quintile": [
           {
@@ -1956,35 +1956,35 @@
             "mean_benefit": 371,
             "mean_residual_impact": 2,
             "mean_benefit_pct_income": 3.8,
-            "benefit_share_pct": 27.9
+            "benefit_share_pct": 27.7
           },
           {
             "quintile": 2,
             "mean_benefit": 462,
             "mean_residual_impact": 7,
             "mean_benefit_pct_income": 1.5,
-            "benefit_share_pct": 23.5
+            "benefit_share_pct": 23.4
           },
           {
             "quintile": 3,
             "mean_benefit": 517,
             "mean_residual_impact": 13,
             "mean_benefit_pct_income": 1.1,
-            "benefit_share_pct": 20.5
+            "benefit_share_pct": 20.4
           },
           {
             "quintile": 4,
             "mean_benefit": 583,
             "mean_residual_impact": 26,
             "mean_benefit_pct_income": 0.9,
-            "benefit_share_pct": 15.4
+            "benefit_share_pct": 15.5
           },
           {
             "quintile": 5,
             "mean_benefit": 599,
             "mean_residual_impact": 40,
             "mean_benefit_pct_income": 0.6,
-            "benefit_share_pct": 12.7
+            "benefit_share_pct": 12.9
           }
         ],
         "support_shares": [
@@ -2395,46 +2395,46 @@
       "means_tested": {
         "name": "Means-tested cost-of-living payment",
         "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
-        "gross_outlay_bn": 5.08,
-        "fiscal_cost_bn": 5.08,
-        "household_protection_bn": 3.61,
-        "residual_impact_bn": 38.19,
-        "avg_benefit_per_hh": 114,
+        "gross_outlay_bn": 4.32,
+        "fiscal_cost_bn": 4.32,
+        "household_protection_bn": 3.24,
+        "residual_impact_bn": 38.56,
+        "avg_benefit_per_hh": 102,
         "targeting_bottom40": 66.6,
-        "n_lifted_from_poverty": 449157,
+        "n_lifted_from_poverty": 430684,
         "by_quintile": [
           {
             "quintile": 1,
-            "mean_benefit": 181,
-            "mean_residual_impact": 794,
-            "mean_benefit_pct_income": 1.1,
+            "mean_benefit": 164,
+            "mean_residual_impact": 811,
+            "mean_benefit_pct_income": 1.0,
             "benefit_share_pct": 38.7
           },
           {
             "quintile": 2,
-            "mean_benefit": 161,
-            "mean_residual_impact": 1050,
-            "mean_benefit_pct_income": 0.5,
+            "mean_benefit": 143,
+            "mean_residual_impact": 1068,
+            "mean_benefit_pct_income": 0.4,
             "benefit_share_pct": 27.9
           },
           {
             "quintile": 3,
-            "mean_benefit": 134,
-            "mean_residual_impact": 1232,
+            "mean_benefit": 120,
+            "mean_residual_impact": 1246,
             "mean_benefit_pct_income": 0.3,
             "benefit_share_pct": 22.5
           },
           {
             "quintile": 4,
-            "mean_benefit": 59,
-            "mean_residual_impact": 1491,
+            "mean_benefit": 53,
+            "mean_residual_impact": 1498,
             "mean_benefit_pct_income": 0.1,
             "benefit_share_pct": 8.5
           },
           {
             "quintile": 5,
-            "mean_benefit": 16,
-            "mean_residual_impact": 1582,
+            "mean_benefit": 15,
+            "mean_residual_impact": 1584,
             "mean_benefit_pct_income": 0.0,
             "benefit_share_pct": 2.4
           }
@@ -2695,12 +2695,12 @@
       "combined": {
         "name": "Combined package",
         "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
-        "gross_outlay_bn": 54.87,
-        "fiscal_cost_bn": 54.87,
+        "gross_outlay_bn": 54.1,
+        "fiscal_cost_bn": 54.1,
         "household_protection_bn": 37.03,
         "residual_impact_bn": 4.77,
         "avg_benefit_per_hh": 1173,
-        "targeting_bottom40": 47.9,
+        "targeting_bottom40": 47.7,
         "n_lifted_from_poverty": 1481164,
         "by_quintile": [
           {
@@ -2708,14 +2708,14 @@
             "mean_benefit": 947,
             "mean_residual_impact": 28,
             "mean_benefit_pct_income": 10.1,
-            "benefit_share_pct": 25.3
+            "benefit_share_pct": 25.1
           },
           {
             "quintile": 2,
             "mean_benefit": 1143,
             "mean_residual_impact": 68,
             "mean_benefit_pct_income": 3.8,
-            "benefit_share_pct": 22.6
+            "benefit_share_pct": 22.5
           },
           {
             "quintile": 3,
@@ -2729,14 +2729,14 @@
             "mean_benefit": 1324,
             "mean_residual_impact": 226,
             "mean_benefit_pct_income": 2.2,
-            "benefit_share_pct": 16.9
+            "benefit_share_pct": 17.0
           },
           {
             "quintile": 5,
             "mean_benefit": 1236,
             "mean_residual_impact": 362,
             "mean_benefit_pct_income": 1.3,
-            "benefit_share_pct": 14.4
+            "benefit_share_pct": 14.5
           }
         ],
         "support_shares": [
@@ -3147,46 +3147,46 @@
       "means_tested": {
         "name": "Means-tested cost-of-living payment",
         "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
-        "gross_outlay_bn": 5.08,
-        "fiscal_cost_bn": 5.08,
-        "household_protection_bn": 4.31,
-        "residual_impact_bn": 74.3,
-        "avg_benefit_per_hh": 136,
+        "gross_outlay_bn": 4.32,
+        "fiscal_cost_bn": 4.32,
+        "household_protection_bn": 3.8,
+        "residual_impact_bn": 74.81,
+        "avg_benefit_per_hh": 120,
         "targeting_bottom40": 66.6,
-        "n_lifted_from_poverty": 268862,
+        "n_lifted_from_poverty": 243550,
         "by_quintile": [
           {
             "quintile": 1,
-            "mean_benefit": 221,
-            "mean_residual_impact": 1628,
-            "mean_benefit_pct_income": 1.4,
+            "mean_benefit": 196,
+            "mean_residual_impact": 1653,
+            "mean_benefit_pct_income": 1.2,
             "benefit_share_pct": 38.7
           },
           {
             "quintile": 2,
-            "mean_benefit": 187,
-            "mean_residual_impact": 2100,
-            "mean_benefit_pct_income": 0.6,
+            "mean_benefit": 164,
+            "mean_residual_impact": 2123,
+            "mean_benefit_pct_income": 0.5,
             "benefit_share_pct": 27.9
           },
           {
             "quintile": 3,
-            "mean_benefit": 164,
-            "mean_residual_impact": 2413,
+            "mean_benefit": 144,
+            "mean_residual_impact": 2432,
             "mean_benefit_pct_income": 0.4,
             "benefit_share_pct": 22.5
           },
           {
             "quintile": 4,
-            "mean_benefit": 67,
-            "mean_residual_impact": 2842,
+            "mean_benefit": 58,
+            "mean_residual_impact": 2851,
             "mean_benefit_pct_income": 0.1,
             "benefit_share_pct": 8.5
           },
           {
             "quintile": 5,
-            "mean_benefit": 20,
-            "mean_residual_impact": 2955,
+            "mean_benefit": 17,
+            "mean_residual_impact": 2958,
             "mean_benefit_pct_income": 0.0,
             "benefit_share_pct": 2.4
           }
@@ -3447,12 +3447,12 @@
       "combined": {
         "name": "Combined package",
         "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
-        "gross_outlay_bn": 79.08,
-        "fiscal_cost_bn": 79.08,
+        "gross_outlay_bn": 78.32,
+        "fiscal_cost_bn": 78.32,
         "household_protection_bn": 62.85,
         "residual_impact_bn": 15.76,
         "avg_benefit_per_hh": 1990,
-        "targeting_bottom40": 45.4,
+        "targeting_bottom40": 45.2,
         "n_lifted_from_poverty": 2271862,
         "by_quintile": [
           {
@@ -3460,7 +3460,7 @@
             "mean_benefit": 1692,
             "mean_residual_impact": 156,
             "mean_benefit_pct_income": 18.9,
-            "benefit_share_pct": 23.4
+            "benefit_share_pct": 23.3
           },
           {
             "quintile": 2,
@@ -3481,14 +3481,14 @@
             "mean_benefit": 2188,
             "mean_residual_impact": 721,
             "mean_benefit_pct_income": 3.6,
-            "benefit_share_pct": 17.9
+            "benefit_share_pct": 18.0
           },
           {
             "quintile": 5,
             "mean_benefit": 2014,
             "mean_residual_impact": 961,
             "mean_benefit_pct_income": 2.2,
-            "benefit_share_pct": 15.6
+            "benefit_share_pct": 15.7
           }
         ],
         "support_shares": [
@@ -3799,6 +3799,7 @@
       "Energy prices: the model multiplies each household's baseline gas and electricity expenditure by the scenario percentage. It does not model unit rates or standing charges, the gas/electricity split, region, payment method, quarterly cap periods, or fixed-tariff coverage \u2014 about 40% of accounts were on fixed tariffs for the July 2026 cap, and the cap does not set their prices. CURRENT_ENERGY_CAP is reported as context and does not enter the calculation.",
       "Pass-through: the oil-to-wholesale-to-retail coefficients and lags implied by the scenario percentages are judgements anchored to the cited sources, not equations derived from them. See PARAMETER_REGISTRY for the derivation of each figure.",
       "Benefit uprating: a single expected-coverage factor is applied to a broad set of CPI-linked benefit income, rather than modelling each benefit's own uprating rule and April 2027 timing against the price path. The amount is reported as the compensation an immediate uprating would deliver and is not counted as a cost, so the household loss is the price rise alone.",
+      "Means-tested payment timing: the 2022 scheme paid two separate awards of \u00a3326 and \u00a3324, each conditional on entitlement in its own qualifying window, so a household entitled in only one window received that instalment alone. The annual microdata cannot observe entitlement within a window, so each instalment is paid at an assumed per-window entitlement rate (MEANS_TEST_WINDOW_ENTITLEMENT_RATE), which gives the expected value across all four qualifying states without modelling their joint distribution. That rate is a stated assumption, not a sourced figure, and the modelled cost is proportional to it. Take-up among qualifying households is treated as complete, since the 2022 payments were automatic.",
       "Uncertainty: the ranges in PARAMETER_REGISTRY describe the spread of the price assumptions and are now evaluated through the model \u2014 see scenarios[*].sensitivity. They are judgements, not sampling distributions, so the resulting spread is not a confidence interval. Survey sampling uncertainty on the spending inputs is reported separately under parameters.spending_inputs.sampling_uncertainty and is not propagated, because ONS publishes no decile-level standard errors."
     ],
     "cap_basis": "Reported for context only and NOT used in the calculation: Ofgem default tariff cap \u00a31,663/yr, Jul-Sep 2026, new TDCV basis (\u2248\u00a31,862 on the pre-July 2026 basis); the Oct-Dec 2026 cap is \u00a31,723. The energy channel multiplies each household's own baseline gas and electricity expenditure by the scenario percentage and never references a cap level, unit rate, standing charge, tariff type or cap period. About 40% of accounts were on fixed tariffs for the July 2026 cap, whose prices the cap does not set",
@@ -3831,7 +3832,19 @@
         "pension_credit"
       ],
       "source_url": "https://www.gov.uk/government/publications/cost-of-living-support/cost-of-living-support-factsheet-26-may-2022",
-      "not_modelled": "the 2022 scheme's qualifying assessment window and its two instalments; take-up is assumed complete"
+      "instalment_amounts_gbp": [
+        326,
+        324
+      ],
+      "window_entitlement_rate": 0.85,
+      "take_up": 1.0,
+      "expected_payment_gbp": 552.5,
+      "timing_treatment": "The 2022 scheme paid two separate awards of \u00a3326 and \u00a3324, each conditional on entitlement in its own qualifying window, so a household entitled in only one window received that instalment alone. The annual microdata cannot observe entitlement within a window, so each instalment is paid at an assumed 85% per-window entitlement rate. Summing over instalments gives the expected value across all four qualifying states \u2014 both, first only, second only, neither \u2014 without modelling their joint distribution, which the annual data cannot identify. Applying a single 'entitled in both windows' share to the full award would instead have implied that every household not entitled twice received nothing. The rate is an assumption, not a sourced figure, and the modelled cost is proportional to it",
+      "source_urls": [
+        "https://www.legislation.gov.uk/ukpga/2022/38",
+        "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1097764/adm17-22.pdf"
+      ],
+      "take_up_treatment": "Complete among qualifying households: the 2022 payments were automatic for households already receiving a qualifying benefit. Losses from benefit take-up upstream are already reflected in the microdata"
     },
     "winners_and_losers": "Not reported. Support is non-negative and residual impact is floored at zero, so a household made worse off by a policy is impossible by construction; support_shares reports the share receiving support instead"
   }
