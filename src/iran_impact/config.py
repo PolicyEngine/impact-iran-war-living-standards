@@ -37,7 +37,7 @@ FIXED_TARIFF_ACCOUNT_SHARE = 0.40
 # - "low": conflict de-escalates from the August 2026 position — Brent settles
 #   near ~$85/bbl (4 Aug 2026 spot), pump prices ~157p petrol / ~187p diesel
 #   (~+20% on Autumn Budget 2025 levels), cap rise in line with the observed
-#   +13% July 2026 increase plus Cornwall Insight's Q4 forecast (~£1,700).
+#   +13.5% July 2026 increase plus Cornwall Insight's Q4 forecast (~£1,700).
 # - "central": sustained Strait of Hormuz constraint — Goldman Sachs scenario
 #   of Brent averaging >$100/bbl through 2026 ($120 Q3 / $115 Q4 in the
 #   extended-closure case). Oil-to-retail pass-through per Commons Library

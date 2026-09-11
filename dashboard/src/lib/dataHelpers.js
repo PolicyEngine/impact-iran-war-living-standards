@@ -111,7 +111,7 @@ export const POLICY_KEYS = [
 export const POLICY_LABELS = {
   epg: "Energy Price Guarantee",
   flat_rebate: "Flat rebate",
-  ct_rebate: "Council Tax rebate",
+  ct_rebate: "Council tax rebate",
   uc_uplift: "UC uplift",
   fuel_duty_cut: "Fuel duty cut extension",
   means_tested: "Means-tested payment",

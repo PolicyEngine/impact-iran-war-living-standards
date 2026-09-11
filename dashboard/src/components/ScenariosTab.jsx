@@ -238,7 +238,7 @@ function ExampleHousehold({ data, scenario }) {
           />
           <NumberInput
             label="CPI-linked benefits / yr"
-            hint="UC, child benefit, PIP…; 0 if none"
+            hint="Universal Credit, child benefit, PIP and similar; 0 if none"
             value={benefitIncome}
             onChange={setBenefitIncome}
           />
@@ -270,8 +270,8 @@ function ExampleHousehold({ data, scenario }) {
                 An immediate benefit uprating would offset about{" "}
                 <strong>{formatCurrency(upratingShortfall)}</strong> of this. The
                 scheduled April uprating is set from the previous September&apos;s CPI,
-                so it does not arrive during the year &mdash; which is why the cost
-                above is the full price rise rather than the price rise plus a
+                so that offset does not arrive during the shock year. That is why the
+                cost above is the full price rise, rather than the price rise plus a
                 separate uprating loss.
               </div>
             ) : null}
@@ -493,7 +493,7 @@ export default function ScenariosTab({ data }) {
           { label: `Resolution Foundation: ~+${formatCurrency(500)} if rises are sustained`, url: "https://www.resolutionfoundation.org/press-releases/poorest-households-are-set-to-see-inflation-nearly-a-third-higher-than-the-richest/" },
         ],
         ours: `${formatCurrency(low.channel_decomposition.energy_shock)} (low) to ${formatCurrency(central.channel_decomposition.energy_shock)} (central)`,
-        note: "Our low scenario matches the observed cap rise; the RF sustained case sits between our low and central.",
+        note: "Our low scenario matches the observed cap rise; the Resolution Foundation sustained case sits between our low and central.",
       },
       {
         metric: "Newly below the anchored poverty line in 2027-28",
@@ -532,8 +532,8 @@ export default function ScenariosTab({ data }) {
 
       {/* Scenario selector */}
       <SectionHeading
-        title="Select scenario"
-        description="Choose a conflict path to see its estimated impact on UK households over the 2027-28 tax year. Each scenario applies a different magnitude of energy, fuel, food, and inflation shock, sustained for 12 months."
+        title="Select a scenario"
+        description="These are stress tests, not forecasts: none is a prediction of what will happen, and \u201Ccentral\u201D does not mean most likely. Choose a conflict path to see its estimated impact on UK households over the 2027-28 tax year. Each applies a different magnitude of energy, fuel, food and inflation shock, sustained for 12 months."
       />
       <ScenarioSelector data={data} selected={scenario} onSelect={setScenario} />
 
@@ -556,7 +556,7 @@ export default function ScenariosTab({ data }) {
         </div>
         <div className="metric-card">
           <div className="text-xs font-medium uppercase tracking-[0.08em] text-slate-500">
-            Newly below the anchored line
+            Newly below the anchored poverty line
           </div>
           <div className="mt-2 text-3xl font-bold tracking-tight" style={{ color: colors.primary[800] }}>
             {scenarioData?.poverty_increase != null
@@ -564,8 +564,10 @@ export default function ScenariosTab({ data }) {
               : "--"}
           </div>
           <div className="mt-1 text-sm text-slate-500">
-            People pushed below the baseline HBAI BHC poverty line in 2027-28 once
-            modelled costs are netted off income (anchored threshold)
+            People pushed below the baseline poverty line in 2027-28 once modelled
+            costs are netted off income. The line is HBAI (Households Below Average
+            Income) before housing costs, held at its pre-shock level &mdash; an
+            anchored threshold.
           </div>
         </div>
         <div className="metric-card">
@@ -598,7 +600,7 @@ export default function ScenariosTab({ data }) {
       <div className="border-t border-slate-200 pt-10">
         <SectionHeading
           title="Cost breakdown by transmission channel"
-          description="How the average household cost in 2027-28 splits across the three routes the shock reaches households: energy bills, fuel at the pump, and food prices (energy is a major input cost). The uprating compensation shortfall is reported separately rather than as a fourth cost: because the scheduled April uprating is set from the previous September's CPI, no offset arrives during the year, so the household's loss is the price rise itself. That shortfall is the size of the compensation an immediate uprating would deliver, and is what the accelerated-uprating policy pays."
+          description="How the average household cost in 2027-28 splits across the three routes through which the shock reaches households: energy spending, fuel at the pump, and food prices (energy is a major input cost). The uprating compensation shortfall is reported separately rather than as a fourth cost. The scheduled April uprating is set from the previous September's CPI, so no offset arrives during the shock year and the household's loss is the price rise itself. The shortfall is the size of the compensation an immediate uprating would deliver, and is what the accelerated-uprating policy pays."
         />
       </div>
 

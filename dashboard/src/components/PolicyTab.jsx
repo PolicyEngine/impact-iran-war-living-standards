@@ -27,43 +27,43 @@ const AXIS_STYLE = {
 
 const POLICY_DESCRIPTIONS = {
   epg: {
-    mechanism: "Caps the domestic energy-bill increase at 10% of each household's pre-shock energy bill — a stylised version of the 2022 Energy Price Guarantee, which froze the unit-price level rather than the percentage increase. Ministers have ruled out repeating universal 2022-scale support, favouring targeted help, so this is modelled as the ruled-out benchmark the targeted options are judged against.",
+    mechanism: "Illustrative benchmark. Caps the domestic energy-bill increase at 10% of each household's pre-shock energy bill — a stylised version of the 2022 Energy Price Guarantee, which froze the unit-price level rather than the percentage increase. Modelled for comparison with the targeted options.",
     model: "The model treats this as a direct reduction in the household energy bill, so it reduces residual household impact.",
   },
   flat_rebate: {
-    mechanism: "Pays every household a flat £400 energy rebate.",
+    mechanism: "Illustrative option. Pays every household a flat £400 energy rebate.",
     model: "The model treats this as cash support against the selected energy price shock. It lowers residual household impact and improves energy affordability through higher disposable resources.",
   },
   ct_rebate: {
-    mechanism: "Pays a £300 council tax rebate to households in bands A-D.",
+    mechanism: "Illustrative option. Pays a £300 council tax rebate to households in bands A–D.",
     model: "The model treats this as targeted cash support. Eligibility is based on the household council tax band in the microsimulation.",
   },
   uc_uplift: {
-    mechanism: "Increases Universal Credit by £20 per week for UC-recipient households, matching the 2020-21 covid uplift.",
+    mechanism: "Illustrative option. Increases Universal Credit by £20 per week for UC-recipient households, matching the 2020–21 Covid-19 uplift.",
     model: "The model annualises this to £1,040 for households receiving UC and treats it as income support during the selected shock scenario.",
   },
   fuel_duty_cut: {
-    mechanism: "Extends the existing 5p per litre fuel duty cut (currently legislated to expire 31 December 2026) through the shock period.",
+    mechanism: "Extension of an enacted measure, and a decision for the Autumn Budget on 28 October 2026. Extends the existing 5p per litre fuel duty cut (currently legislated to expire 31 December 2026) through the shock period.",
     model: "The model applies 5p to each household's own modelled petrol and diesel volume, so households with no vehicle receive nothing. Fuel duty is one of the few measures here that is a real PolicyEngine parameter, so its Exchequer cost is also computed by running the cut as an actual reform: \u00A32.18bn against baseline receipts of \u00A325.9bn. That matches the household transfer almost exactly, because the microdata attributes road-fuel volume to households at close to the national total \u2014 which means household volumes absorb business and freight use, and the household incidence is overstated to that extent.",
   },
   means_tested: {
-    mechanism: "Pays £650 to households receiving a benefit that qualified for the 2022 Cost of Living Payment: Universal Credit, income-based JSA, income-related ESA, Income Support, Working Tax Credit, Child Tax Credit or Pension Credit. Housing Benefit alone did not qualify.",
+    mechanism: "Illustrative option, modelled on the 2022 scheme. Pays £650 to households receiving a benefit that qualified for the 2022 Cost of Living Payment: Universal Credit, income-based JSA, income-related ESA, Income Support, Working Tax Credit, Child Tax Credit or Pension Credit. Housing Benefit alone did not qualify.",
     model: "The 2022 scheme paid two separate awards of \u00A3326 and \u00A3324, each conditional on entitlement in its own qualifying window, so a household entitled in only one window received that instalment alone. The annual microdata cannot observe entitlement within a window, so each instalment is paid at an assumed 85% per-window entitlement rate \u2014 giving \u00A3552.50 expected, which is the expectation across all four states (both, first only, second only, neither) rather than a \"both or nothing\" split. That rate is an assumption, not a sourced figure, and the modelled cost is proportional to it. Take-up among qualifying households is complete, since the 2022 payments were automatic.",
   },
   elec_vat_cut: {
-    mechanism: "Extends the electricity VAT cut (5% to 0%) announced in July 2026 — currently legislated for October 2026 to March 2027 — for a full year.",
+    mechanism: "Extension of an announced measure, and a decision for the Autumn Budget on 28 October 2026. Extends the electricity VAT cut (5% to 0%) announced in July 2026 — currently legislated for October 2026 to March 2027 — for a full year.",
     model: "The model removes the 5% VAT component from each household's post-shock electricity bill, directly reducing energy costs.",
   },
   accelerated_uprating: {
-    mechanism: "Updates benefit levels immediately for the shock-driven inflation increase instead of waiting for the usual uprating cycle.",
+    mechanism: "Illustrative option. Updates benefit levels immediately for the shock-driven inflation increase instead of waiting for the usual uprating cycle.",
     model: "The model offsets the estimated real loss from benefit-uprating lag for households receiving uprated benefits.",
   },
   social_tariff: {
-    mechanism: "Offers a discounted energy tariff to low-income and vulnerable households, halving the energy price shock for those on Universal Credit or with household income below \u00A320,000.",
-    model: "The model applies a 50% reduction in the energy price shock for eligible households. This directly reduces residual household impact and is the most progressive policy option modelled.",
+    mechanism: "Illustrative option. Offers a discounted energy tariff to low-income and vulnerable households, halving the energy price shock for those on Universal Credit or with household income below \u00A320,000.",
+    model: "The model applies a 50% reduction in the energy price shock for eligible households, which directly reduces residual household impact. See the targeting figure above for the share of its spending reaching the bottom two quintiles.",
   },
   combined: {
-    mechanism: "Applies all policies above together (excluding the social tariff).",
+    mechanism: "Illustrative package of the options above. Applies all policies above together (excluding the social tariff).",
     model: "The measures are applied jointly rather than summed: the Energy Price Guarantee caps the bill increase first, so the electricity VAT relief applies to the already-capped bill. Household protection is capped at the size of the shock, while the gross outlay is unclipped \u2014 government spending does not shrink when a household is over-compensated.",
   },
 };
@@ -104,7 +104,7 @@ export default function PolicyTab({ data }) {
   const scenarioDescription = getScenarioNarrative(scenario);
   const scenarioOptions = getScenarioOptions(data);
 
-  // Decile data for selected policy
+  // Quintile data for the selected policy
   const quintileData = useMemo(() => {
     if (!policy?.by_quintile) return [];
     return policy.by_quintile.map((q) => ({
@@ -149,15 +149,12 @@ export default function PolicyTab({ data }) {
         electricity VAT cut and the 5p fuel duty cut, a benefits-targeted winter energy
         payment, and the timing of benefit uprating). The baseline for every comparison is
         the selected shock scenario before any policy response; the reform case is the same
-        scenario with the selected policy applied. Gross outlay is the full unclipped
-        government payment in 2027-28 \u2014 a gross modelled household transfer, not an
-        Exchequer costing, since it excludes tax and benefit interactions, take-up,
-        behavioural responses, administration, non-household fuel use and financing;
-        average household benefit is the reduction in annual
-        household impact from the energy price shock. Targeting matters
-        as much as scale: a policy that spends less but concentrates support on the
-        lowest-income households can protect them better per pound than a larger universal
-        scheme.
+        scenario with the selected policy applied. Gross outlay is the full unclipped government payment in 2027-28. It is a
+        gross modelled household transfer, not an Exchequer costing: it excludes tax and
+        benefit interactions, take-up, behavioural responses, administration,
+        non-household fuel use and financing. Average household benefit is the reduction
+        in annual household impact from the energy price shock. The dashboard reports both gross outlay and the share of
+        spending reaching the bottom two quintiles; policies differ on both dimensions.
       </p>
 
       <div className="grid items-stretch gap-6 lg:grid-cols-2">
@@ -255,7 +252,7 @@ export default function PolicyTab({ data }) {
                 {policy.gross_outlay_bn != null ? formatBn(policy.gross_outlay_bn) : "--"}
               </div>
               <div className="mt-2 text-sm leading-6 text-slate-500">
-                Gross modelled household transfer from applying {policyLabel.toLowerCase()} in the selected shock scenario over 2027-28. <strong>Not an Exchequer costing</strong> &mdash; it excludes tax and benefit interactions, take-up, behavioural responses, administration, non-household fuel use and financing.
+                Gross modelled household transfer from applying {policyLabel} in the selected shock scenario over 2027-28. <strong>Not an Exchequer costing</strong> &mdash; it excludes tax and benefit interactions, take-up, behavioural responses, administration, non-household fuel use and financing.
               </div>
             </div>
             <div className="metric-card">
@@ -282,7 +279,7 @@ export default function PolicyTab({ data }) {
               </div>
               <div className="mt-2 text-sm leading-6 text-slate-500">
                 People who would fall below the baseline HBAI BHC poverty line under this
-                shock scenario, but do not once {policyLabel.toLowerCase()} is applied
+                shock scenario, but do not once {policyLabel} is applied
                 (anchored threshold).
               </div>
             </div>
@@ -295,7 +292,7 @@ export default function PolicyTab({ data }) {
                   <div className="min-h-[132px]">
                     <SectionHeading
                       title="Distributional impact by quintile"
-                      description={`Average household reduction in the selected shock scenario's residual impact after ${policyLabel.toLowerCase()}, by income quintile (Q1 = lowest income).`}
+                      description={`Average household reduction in the selected shock scenario's residual impact after ${policyLabel}, by income quintile (Q1 = lowest income).`}
                     />
                   </div>
                   <div className="min-h-0 flex-1 w-full">
@@ -325,7 +322,7 @@ export default function PolicyTab({ data }) {
                 </div>
               ) : (
                 <div className="section-card flex h-[560px] flex-col">
-                  <p className="text-sm text-slate-500">Decile data not available for this policy.</p>
+                  <p className="text-sm text-slate-500">Quintile data not available for this policy.</p>
                 </div>
               )}
             </div>
@@ -336,7 +333,7 @@ export default function PolicyTab({ data }) {
                   <div className="min-h-[132px]">
                     <SectionHeading
                       title="Who receives support"
-                      description={`Share of households whose annual residual impact falls by more than £1 when ${policyLabel.toLowerCase()} is applied to the selected shock scenario. No household can be made worse off: support is non-negative and residual impact is floored at zero, so a "worse off" category would report a model identity rather than a finding.`}
+                      description={`Share of households whose annual residual impact falls by more than £1 when ${policyLabel} is applied to the selected shock scenario. No household can be made worse off: support is non-negative and residual impact is floored at zero, so a "worse off" category would report a model identity rather than a finding.`}
                     />
                   </div>
                   <div className="min-h-0 flex-1 w-full">
