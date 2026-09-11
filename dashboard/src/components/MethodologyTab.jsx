@@ -49,11 +49,11 @@ export default function MethodologyTab({ data }) {
           cited source describes a 2026 disruption lasting a few months. No time path,
           quarterly profile or shock duration is modelled. The pass-through coefficients
           and lags implied by the percentages below are judgements anchored to the cited
-          sources rather than equations derived from them; the results file records the
+          sources, not equations derived from them. The results file records the
           definition, source, reference period, derivation and range of every parameter
-          under <code>parameters.registry</code>, and evaluates those ranges through
-          the model under <code>scenarios[*].sensitivity</code> &mdash; moving every
-          parameter to one end at once, and one at a time. On the central scenario the
+          under <code>parameters.registry</code>. It also evaluates those ranges through
+          the model under <code>scenarios[*].sensitivity</code>, moving every parameter
+          to one end at once and one at a time. On the central scenario the
           total ranges from &pound;27.7bn to &pound;55.9bn against a &pound;41.8bn
           point estimate. That spread is not a confidence interval: the ranges are
           judgements about the price assumptions, not sampling distributions. The CPI
@@ -182,10 +182,10 @@ export default function MethodologyTab({ data }) {
             is therefore the price rise itself, which the three channels above already
             measure in full.
             <br /><br />
-            The model reports a separate <strong>uprating compensation shortfall</strong>
-            &mdash; CPI-linked benefit income &times; CPI increase &times; 0.5, with the
-            state pension excluded because it is uprated by the triple lock rather than
-            CPI &mdash; but does <strong>not</strong> add it to the cost channels. Doing
+            The model reports a separate <strong>uprating compensation shortfall</strong>:
+            CPI-linked benefit income &times; CPI increase &times; 0.5, with the state
+            pension excluded because it is uprated by the triple lock rather than CPI.
+            It does <strong>not</strong> add that shortfall to the cost channels. Doing
             so would count the same price shock twice: the lack of indexation is why no
             offset arrives, not a second cost on top of the prices. What the shortfall
             measures is the size of the compensation an immediate uprating would deliver,

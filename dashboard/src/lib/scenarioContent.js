@@ -3,7 +3,7 @@ export const SCENARIO_CONTENT = {
     shortLabel: "Low",
     selectorLabel: "Low (+15% energy, +20% fuel, +1pp CPI)",
     description:
-      "The conflict de-escalates and prices stabilise where they already are: Brent ~$85/bbl, energy spending +15% (in line with the observed July 2026 cap rise plus Cornwall Insight's Q4 forecast), fuel +20% (today's pump prices), food +2%, CPI +1pp — prices sustained at their observed August 2026 levels plus the forecast Q4 cap rise, for 12 months.",
+      "The conflict de-escalates and prices stabilise where they already are: Brent ~$85/bbl. Energy spending +15%, in line with the observed July 2026 cap rise plus Cornwall Insight's Q4 forecast. Fuel +20%, today's pump prices; food +2%; CPI +1pp. Prices are held at those levels for 12 months.",
   },
   central_shock: {
     shortLabel: "Central",
@@ -15,7 +15,7 @@ export const SCENARIO_CONTENT = {
     shortLabel: "High",
     selectorLabel: "High (+90% energy, +80% fuel, +4.5pp CPI)",
     description:
-      "A prolonged war with extended Strait of Hormuz closure — the tail risk: Brent above $115–120/bbl (Goldman extreme-adverse; Oxford Economics' escalation case, which reports a 5.8% peak in world CPI and a global recession). Energy spending +90% — comparable to the 2022 gas crisis — fuel +80%, food +6.5%, CPI +4.5pp, sustained for 12 months.",
+      "A prolonged war with extended Strait of Hormuz closure, as a tail risk: Brent above $115–120/bbl. This follows Goldman's extreme-adverse case and the Oxford Economics escalation case, which reports a 5.8% peak in world CPI and a global recession. Energy spending +90%, comparable to the 2022 gas crisis, with fuel +80%, food +6.5% and CPI +4.5pp, sustained for 12 months.",
   },
 };
 

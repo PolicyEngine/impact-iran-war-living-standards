@@ -44,11 +44,11 @@ const POLICY_DESCRIPTIONS = {
   },
   fuel_duty_cut: {
     mechanism: "Extension of an enacted measure, and a decision for the Autumn Budget on 28 October 2026. Extends the existing 5p per litre fuel duty cut (currently legislated to expire 31 December 2026) through the shock period.",
-    model: "The model applies 5p to each household's own modelled petrol and diesel volume, so households with no vehicle receive nothing. Fuel duty is one of the few measures here that is a real PolicyEngine parameter, so its Exchequer cost is also computed by running the cut as an actual reform: \u00A32.18bn against baseline receipts of \u00A325.9bn. That matches the household transfer almost exactly, because the microdata attributes road-fuel volume to households at close to the national total \u2014 which means household volumes absorb business and freight use, and the household incidence is overstated to that extent.",
+    model: "The model applies 5p to each household's own modelled petrol and diesel volume, so households with no vehicle receive nothing. Fuel duty is one of the few measures here that is a real PolicyEngine parameter. Its Exchequer cost is therefore also computed by running the cut as an actual reform: \u00A32.18bn, against baseline receipts of \u00A325.9bn. That almost exactly matches the household transfer, because the microdata attributes road-fuel volume to households at close to the national total. Household volumes therefore absorb business and freight use, and the household incidence is overstated to that extent.",
   },
   means_tested: {
     mechanism: "Illustrative option, modelled on the 2022 scheme. Pays £650 to households receiving a benefit that qualified for the 2022 Cost of Living Payment: Universal Credit, income-based JSA, income-related ESA, Income Support, Working Tax Credit, Child Tax Credit or Pension Credit. Housing Benefit alone did not qualify.",
-    model: "The 2022 scheme paid two separate awards of \u00A3326 and \u00A3324, each conditional on entitlement in its own qualifying window, so a household entitled in only one window received that instalment alone. The annual microdata cannot observe entitlement within a window, so each instalment is paid at an assumed 85% per-window entitlement rate \u2014 giving \u00A3552.50 expected, which is the expectation across all four states (both, first only, second only, neither) rather than a \"both or nothing\" split. That rate is an assumption, not a sourced figure, and the modelled cost is proportional to it. Take-up among qualifying households is complete, since the 2022 payments were automatic.",
+    model: "The 2022 scheme paid two separate awards of \u00A3326 and \u00A3324, each conditional on entitlement in its own qualifying window. A household entitled in only one window received that instalment alone. The annual microdata cannot observe entitlement within a window, so each instalment is paid at an assumed 85% per-window entitlement rate, giving \u00A3552.50 expected. That is the expectation across all four states \u2014 both, first only, second only, neither \u2014 rather than a \"both or nothing\" split. The rate is an assumption, not a sourced figure, and the modelled cost is proportional to it. Take-up among qualifying households is complete, since the 2022 payments were automatic.",
   },
   elec_vat_cut: {
     mechanism: "Extension of an announced measure, and a decision for the Autumn Budget on 28 October 2026. The cut from 5% to 0% was announced on 21 July 2026 and runs from 1 October 2026 to 31 March 2027; this models extending it for a full year.",
@@ -64,7 +64,7 @@ const POLICY_DESCRIPTIONS = {
   },
   combined: {
     mechanism: "Illustrative package of the options above. Applies all policies above together (excluding the social tariff).",
-    model: "The measures are applied jointly rather than summed: the Energy Price Guarantee caps the bill increase first, so the electricity VAT relief applies to the already-capped bill. Household protection is capped at the size of the shock, while the gross outlay is unclipped \u2014 government spending does not shrink when a household is over-compensated.",
+    model: "The measures are applied jointly rather than summed. The Energy Price Guarantee caps the bill increase first, so the electricity VAT relief applies to the already-capped bill. Household protection is capped at the size of the shock. Gross outlay is not: government spending does not shrink when a household is over-compensated.",
   },
 };
 
