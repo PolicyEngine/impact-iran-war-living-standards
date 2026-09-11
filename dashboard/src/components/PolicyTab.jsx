@@ -39,7 +39,7 @@ const POLICY_DESCRIPTIONS = {
     model: "The model treats this as targeted cash support. Eligibility is based on the household council tax band in the microsimulation.",
   },
   uc_uplift: {
-    mechanism: "Illustrative option. Increases Universal Credit by £20 per week for UC-recipient households, matching the 2020–21 Covid-19 uplift.",
+    mechanism: "Illustrative option. Increases Universal Credit by £20 per week for UC-recipient households, matching the 2020-21 Covid-19 uplift.",
     model: "The model annualises this to £1,040 for households receiving UC and treats it as income support during the selected shock scenario.",
   },
   fuel_duty_cut: {
@@ -51,7 +51,7 @@ const POLICY_DESCRIPTIONS = {
     model: "The 2022 scheme paid two separate awards of \u00A3326 and \u00A3324, each conditional on entitlement in its own qualifying window, so a household entitled in only one window received that instalment alone. The annual microdata cannot observe entitlement within a window, so each instalment is paid at an assumed 85% per-window entitlement rate \u2014 giving \u00A3552.50 expected, which is the expectation across all four states (both, first only, second only, neither) rather than a \"both or nothing\" split. That rate is an assumption, not a sourced figure, and the modelled cost is proportional to it. Take-up among qualifying households is complete, since the 2022 payments were automatic.",
   },
   elec_vat_cut: {
-    mechanism: "Extension of an announced measure, and a decision for the Autumn Budget on 28 October 2026. Extends the electricity VAT cut (5% to 0%) announced in July 2026 — currently legislated for October 2026 to March 2027 — for a full year.",
+    mechanism: "Extension of an announced measure, and a decision for the Autumn Budget on 28 October 2026. The cut from 5% to 0% was announced on 21 July 2026 and runs from 1 October 2026 to 31 March 2027; this models extending it for a full year.",
     model: "The model removes the 5% VAT component from each household's post-shock electricity bill, directly reducing energy costs.",
   },
   accelerated_uprating: {
@@ -60,7 +60,7 @@ const POLICY_DESCRIPTIONS = {
   },
   social_tariff: {
     mechanism: "Illustrative option. Offers a discounted energy tariff to low-income and vulnerable households, halving the energy price shock for those on Universal Credit or with household income below \u00A320,000.",
-    model: "The model applies a 50% reduction in the energy price shock for eligible households, which directly reduces residual household impact. See the targeting figure above for the share of its spending reaching the bottom two quintiles.",
+    model: "The model applies a 50% reduction in the energy price shock for eligible households, which directly reduces residual household impact. See the policy targeting chart below for the share of its spending reaching the bottom two quintiles.",
   },
   combined: {
     mechanism: "Illustrative package of the options above. Applies all policies above together (excluding the social tariff).",
@@ -145,9 +145,9 @@ export default function PolicyTab({ data }) {
       {/* ================================================================ */}
       <p className="text-sm leading-7 text-slate-600">
         This tab compares the government support options for the 2027-28 tax year — including
-        the decisions on the table for the Autumn Budget on 28 October 2026 (extending the
-        electricity VAT cut and the 5p fuel duty cut, a benefits-targeted winter energy
-        payment, and the timing of benefit uprating). The baseline for every comparison is
+        two decisions due at the Autumn Budget on 28 October 2026: extending the
+        electricity VAT cut, and extending the 5p fuel duty cut. The other measures are
+        modelled as illustrative options. The baseline for every comparison is
         the selected shock scenario before any policy response; the reform case is the same
         scenario with the selected policy applied. Gross outlay is the full unclipped government payment in 2027-28. It is a
         gross modelled household transfer, not an Exchequer costing: it excludes tax and
@@ -160,8 +160,8 @@ export default function PolicyTab({ data }) {
       <div className="grid items-stretch gap-6 lg:grid-cols-2">
         <div className="section-card flex h-full flex-col">
           <SectionHeading
-            title="Select scenario"
-            description="Choose a scenario to evaluate policy responses."
+            title="Select a scenario"
+            description="Stress tests, not forecasts: “central” does not mean most likely. Choose a scenario to evaluate policy responses against it."
           />
           <div className="mt-4 flex flex-wrap gap-2">
             {scenarioOptions.map((s) => (

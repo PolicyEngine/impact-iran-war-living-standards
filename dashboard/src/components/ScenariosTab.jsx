@@ -471,7 +471,6 @@ export default function ScenariosTab({ data }) {
   const tenureData = getTenureBreakdown(data, scenario);
   const channels = getChannelDecomposition(data, scenario);
   const hhTypeData = getHouseholdTypeBreakdown(data, scenario);
-  const scenarioLabel = getScenarioNarrative(scenario)?.selectorLabel || scenario;
 
   // External-comparison table: each row is a metric that BOTH a published
   // source and our model put a number on, computed live from the pipeline
@@ -533,7 +532,7 @@ export default function ScenariosTab({ data }) {
       {/* Scenario selector */}
       <SectionHeading
         title="Select a scenario"
-        description="These are stress tests, not forecasts: none is a prediction of what will happen, and \u201Ccentral\u201D does not mean most likely. Choose a conflict path to see its estimated impact on UK households over the 2027-28 tax year. Each applies a different magnitude of energy, fuel, food and inflation shock, sustained for 12 months."
+        description="These are stress tests, not forecasts: none is a prediction of what will happen, and “central” does not mean most likely. Choose a conflict path to see its estimated impact on UK households over the 2027-28 tax year. Each applies a different magnitude of energy, fuel, food and inflation shock, sustained for 12 months."
       />
       <ScenarioSelector data={data} selected={scenario} onSelect={setScenario} />
 
@@ -551,7 +550,8 @@ export default function ScenariosTab({ data }) {
               : "--"}
           </div>
           <div className="mt-1 text-sm text-slate-500">
-            Additional cost per household in 2027-28 under {scenarioLabel.toLowerCase()}
+            Additional cost per household in 2027-28 under the{" "}
+            {getScenarioNarrative(scenario)?.shortLabel || scenario} scenario
           </div>
         </div>
         <div className="metric-card">
@@ -639,7 +639,7 @@ export default function ScenariosTab({ data }) {
       )}
 
       {/* ================================================================ */}
-      {/* DISTRIBUTIONAL IMPACT (decile / country / tenure / hh type)        */}
+      {/* DISTRIBUTIONAL IMPACT (quintile / country / tenure / hh type)        */}
       {/* ================================================================ */}
       <DistributionalBreakdown
         quintileData={quintileData}

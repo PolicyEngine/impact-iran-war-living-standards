@@ -80,7 +80,7 @@ function Dashboard() {
             >
               Bloomberg
             </a>{" "}
-            on the Burnham government&apos;s electricity VAT cut and the{" "}
+            on the government&apos;s electricity VAT cut and the{" "}
             <a
               href="https://www.resolutionfoundation.org/press-releases/poorest-households-are-set-to-see-inflation-nearly-a-third-higher-than-the-richest/"
               target="_blank"
@@ -89,7 +89,7 @@ function Dashboard() {
             >
               Resolution Foundation
             </a>
-            &apos;s analysis of who the energy shock hits hardest.
+            &apos;s analysis of who the energy price shock hits hardest.
           </p>
         </div>
 
