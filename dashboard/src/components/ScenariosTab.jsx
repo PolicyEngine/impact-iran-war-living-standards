@@ -238,7 +238,7 @@ function ExampleHousehold({ data, scenario }) {
           />
           <NumberInput
             label="CPI-linked benefits / yr"
-            hint="UC, child benefit, PIP…; 0 if none"
+            hint="Universal Credit, child benefit, PIP and similar; 0 if none"
             value={benefitIncome}
             onChange={setBenefitIncome}
           />
@@ -270,8 +270,8 @@ function ExampleHousehold({ data, scenario }) {
                 An immediate benefit uprating would offset about{" "}
                 <strong>{formatCurrency(upratingShortfall)}</strong> of this. The
                 scheduled April uprating is set from the previous September&apos;s CPI,
-                so it does not arrive during the year &mdash; which is why the cost
-                above is the full price rise rather than the price rise plus a
+                so that offset does not arrive during the shock year. That is why the
+                cost above is the full price rise, rather than the price rise plus a
                 separate uprating loss.
               </div>
             ) : null}
@@ -471,7 +471,6 @@ export default function ScenariosTab({ data }) {
   const tenureData = getTenureBreakdown(data, scenario);
   const channels = getChannelDecomposition(data, scenario);
   const hhTypeData = getHouseholdTypeBreakdown(data, scenario);
-  const scenarioLabel = getScenarioNarrative(scenario)?.selectorLabel || scenario;
 
   // External-comparison table: each row is a metric that BOTH a published
   // source and our model put a number on, computed live from the pipeline
@@ -493,7 +492,7 @@ export default function ScenariosTab({ data }) {
           { label: `Resolution Foundation: ~+${formatCurrency(500)} if rises are sustained`, url: "https://www.resolutionfoundation.org/press-releases/poorest-households-are-set-to-see-inflation-nearly-a-third-higher-than-the-richest/" },
         ],
         ours: `${formatCurrency(low.channel_decomposition.energy_shock)} (low) to ${formatCurrency(central.channel_decomposition.energy_shock)} (central)`,
-        note: "Our low scenario matches the observed cap rise; the RF sustained case sits between our low and central.",
+        note: "Our low scenario matches the observed cap rise; the Resolution Foundation sustained case sits between our low and central.",
       },
       {
         metric: "Newly below the anchored poverty line in 2027-28",
@@ -511,7 +510,7 @@ export default function ScenariosTab({ data }) {
           { label: "Bank of England: ~3% Q3, ~3¼% Q4 2026", url: "https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/june-2026" },
         ],
         ours: `+${low.params.cpi_increase_pp}pp (low), +${central.params.cpi_increase_pp}pp (central), +${severe.params.cpi_increase_pp}pp (high)`,
-        note: `Our figures are additions to CPI, so they compare with the shock-addition estimates above (OBR, NIESR) rather than with total-CPI levels. Our low (+${low.params.cpi_increase_pp}pp) matches the OBR view of the shock as it stands, and our central (+${central.params.cpi_increase_pp}pp) sits inside NIESR's +1pp to +3pp range. Our high (+${severe.params.cpi_increase_pp}pp) is above the top of that range and is a judgemental tail-risk assumption, not a published UK figure: it is extrapolated from the Oxford Economics escalation case, which reports a 5.8% peak in world CPI, with no stated equation linking that to a UK addition. Other severe published scenarios exist on a total-CPI basis and are not directly comparable with an addition.`,
+        note: `Our figures are additions to CPI, so they compare with the shock-addition estimates above (OBR, NIESR) rather than with total-CPI levels. Our low (+${low.params.cpi_increase_pp}pp) matches the OBR view of the shock as it stands. Our central (+${central.params.cpi_increase_pp}pp) sits inside NIESR's +1pp to +3pp range. Our high (+${severe.params.cpi_increase_pp}pp) is above the top of that range. It is a judgemental tail-risk assumption rather than a published UK figure, extrapolated from the Oxford Economics escalation case, which reports a 5.8% peak in world CPI with no stated equation linking that to a UK addition. Other severe published scenarios exist on a total-CPI basis and are not directly comparable with an addition.`,
       },
     ];
   }, [data]);
@@ -532,8 +531,8 @@ export default function ScenariosTab({ data }) {
 
       {/* Scenario selector */}
       <SectionHeading
-        title="Select scenario"
-        description="Choose a conflict path to see its estimated impact on UK households over the 2027-28 tax year. Each scenario applies a different magnitude of energy, fuel, food, and inflation shock, sustained for 12 months."
+        title="Select a scenario"
+        description="These are stress tests, not forecasts: none is a prediction of what will happen, and “central” does not mean most likely. Choose a conflict path to see its estimated impact on UK households over the 2027-28 tax year. Each applies a different magnitude of energy, fuel, food and inflation shock, sustained for 12 months."
       />
       <ScenarioSelector data={data} selected={scenario} onSelect={setScenario} />
 
@@ -551,12 +550,13 @@ export default function ScenariosTab({ data }) {
               : "--"}
           </div>
           <div className="mt-1 text-sm text-slate-500">
-            Additional cost per household in 2027-28 under {scenarioLabel.toLowerCase()}
+            Additional cost per household in 2027-28 under the{" "}
+            {getScenarioNarrative(scenario)?.shortLabel || scenario} scenario
           </div>
         </div>
         <div className="metric-card">
           <div className="text-xs font-medium uppercase tracking-[0.08em] text-slate-500">
-            Newly below the anchored line
+            Newly below the anchored poverty line
           </div>
           <div className="mt-2 text-3xl font-bold tracking-tight" style={{ color: colors.primary[800] }}>
             {scenarioData?.poverty_increase != null
@@ -564,8 +564,10 @@ export default function ScenariosTab({ data }) {
               : "--"}
           </div>
           <div className="mt-1 text-sm text-slate-500">
-            People pushed below the baseline HBAI BHC poverty line in 2027-28 once
-            modelled costs are netted off income (anchored threshold)
+            People pushed below the baseline poverty line in 2027-28 once modelled
+            costs are netted off income. The line is HBAI (Households Below Average
+            Income) before housing costs, held at its pre-shock level &mdash; an
+            anchored threshold.
           </div>
         </div>
         <div className="metric-card">
@@ -598,7 +600,7 @@ export default function ScenariosTab({ data }) {
       <div className="border-t border-slate-200 pt-10">
         <SectionHeading
           title="Cost breakdown by transmission channel"
-          description="How the average household cost in 2027-28 splits across the three routes the shock reaches households: energy bills, fuel at the pump, and food prices (energy is a major input cost). The uprating compensation shortfall is reported separately rather than as a fourth cost: because the scheduled April uprating is set from the previous September's CPI, no offset arrives during the year, so the household's loss is the price rise itself. That shortfall is the size of the compensation an immediate uprating would deliver, and is what the accelerated-uprating policy pays."
+          description="How the average household cost in 2027-28 splits across the three routes through which the shock reaches households: energy spending, fuel at the pump, and food prices (energy is a major input cost). The uprating compensation shortfall is reported separately rather than as a fourth cost. The scheduled April uprating is set from the previous September's CPI, so no offset arrives during the shock year and the household's loss is the price rise itself. The shortfall is the size of the compensation an immediate uprating would deliver, and is what the accelerated-uprating policy pays."
         />
       </div>
 
@@ -637,7 +639,7 @@ export default function ScenariosTab({ data }) {
       )}
 
       {/* ================================================================ */}
-      {/* DISTRIBUTIONAL IMPACT (decile / country / tenure / hh type)        */}
+      {/* DISTRIBUTIONAL IMPACT (quintile / country / tenure / hh type)        */}
       {/* ================================================================ */}
       <DistributionalBreakdown
         quintileData={quintileData}
