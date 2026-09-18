@@ -168,3 +168,44 @@ def test_the_energy_channel_is_labelled_as_a_sensitivity():
     assert "rather than a price-cap calculation" in joined
     # And it must say the relabel was the deliberate choice, not an omission.
     assert "this is the relabel" in joined
+
+
+# ── Pre-conflict baseline (#37) ──────────────────────────────────────────
+
+
+def test_the_pre_conflict_baseline_is_recorded():
+    """The percentages are measured from it, so it has to be a number rather
+    than prose or the forcing assumptions cannot be audited."""
+    assert config.PRE_CONFLICT_CAP_NEW_BASIS == 1_465
+    assert config.PRE_CONFLICT_CAP_OLD_BASIS == 1_641
+    assert config.PRE_CONFLICT_PETROL_PENCE == 131
+
+
+def test_the_baseline_derivation_reproduces_from_the_stated_figures():
+    """£1,663 at +13.5% implies £1,465; and the old-basis cross-check must
+    land on PolicyEngine UK's own cap parameter."""
+    implied_new = config.CURRENT_ENERGY_CAP / 1.135
+    assert implied_new == pytest.approx(config.PRE_CONFLICT_CAP_NEW_BASIS, abs=1)
+    # £1,663 new basis is stated as £1,862 old basis in the config comments.
+    implied_old = 1_862 / 1.135
+    assert implied_old == pytest.approx(config.PRE_CONFLICT_CAP_OLD_BASIS, abs=1)
+
+
+def test_the_low_scenario_is_not_silently_below_an_announced_outturn():
+    """The announced Oct 2026 cap is +17.6% on the pre-conflict baseline. The
+    low scenario sits below that, which is defensible only because it is
+    labelled as the premium unwinding rather than as de-escalation (#37)."""
+    announced_pct = (
+        config.ANNOUNCED_OCT_2026_CAP / config.PRE_CONFLICT_CAP_NEW_BASIS - 1
+    ) * 100
+    assert announced_pct == pytest.approx(17.6, abs=0.1)
+
+    low = config.SCENARIOS["low_shock"]["cap_increase_pct"]
+    if low < announced_pct:
+        derivation = config.PARAMETER_REGISTRY["low_shock"]["parameters"][
+            "cap_increase_pct"
+        ]["derivation"]
+        assert "below" in derivation.lower(), (
+            "the low scenario is below the announced October 2026 cap, so its "
+            "derivation must say so rather than calling it de-escalation"
+        )

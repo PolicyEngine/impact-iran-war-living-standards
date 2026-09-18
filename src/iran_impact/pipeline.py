@@ -24,6 +24,10 @@ from .config import (
     UC_UPLIFT_WEEKLY,
     FUEL_DUTY_CUT_PENCE,
     FUEL_DUTY_PARAMETER,
+    PRE_CONFLICT_CAP_NEW_BASIS,
+    PRE_CONFLICT_CAP_OLD_BASIS,
+    PRE_CONFLICT_PETROL_PENCE,
+    ANNOUNCED_OCT_2026_CAP,
     MEANS_TEST_AMOUNT,
     MEANS_TEST_INSTALMENT_AMOUNTS,
     MEANS_TEST_WINDOW_ENTITLEMENT_RATE,
@@ -1313,6 +1317,36 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
             ),
             "october_2026_energy_cap": OCTOBER_2026_ENERGY_CAP,
             "fixed_tariff_account_share": FIXED_TARIFF_ACCOUNT_SHARE,
+            # The baseline every scenario percentage is measured from, so the
+            # forcing assumptions can be audited without reading the source
+            # (#37).
+            "pre_conflict_baseline": {
+                "energy_price_cap_new_basis_gbp": PRE_CONFLICT_CAP_NEW_BASIS,
+                "energy_price_cap_old_basis_gbp": PRE_CONFLICT_CAP_OLD_BASIS,
+                "petrol_pence_per_litre": PRE_CONFLICT_PETROL_PENCE,
+                "period": "April-June 2026, immediately before the conflict",
+                "derivation": (
+                    "The July 2026 cap of £1,663 (new TDCV basis) was a +13.5% "
+                    "rise, implying £1,465 immediately before it. Cross-check: "
+                    "£1,663 new basis is stated as £1,862 on the pre-July "
+                    "basis, and £1,862 / 1.135 = £1,641, which is exactly "
+                    "PolicyEngine UK's gov.ofgem.energy_price_cap parameter "
+                    "for 2026 onward"
+                ),
+                "announced_oct_2026_cap_gbp": ANNOUNCED_OCT_2026_CAP,
+                "announced_oct_2026_vs_pre_conflict_pct": round(
+                    (ANNOUNCED_OCT_2026_CAP / PRE_CONFLICT_CAP_NEW_BASIS - 1)
+                    * 100,
+                    1,
+                ),
+                "low_scenario_note": (
+                    "The low scenario's +15% sits slightly below the announced "
+                    "October 2026 cap, which is +17.6% on this baseline. It "
+                    "represents the Q4-2026 premium partially unwinding "
+                    "through 2027-28, not prices falling back below current "
+                    "levels"
+                ),
+            },
             "energy_channel_basis": (
                 "Household-energy-expenditure sensitivity, not a price-cap "
                 "calculation. The scenario percentage is applied to each "

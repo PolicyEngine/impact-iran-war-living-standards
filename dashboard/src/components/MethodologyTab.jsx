@@ -63,6 +63,15 @@ export default function MethodologyTab({ data }) {
           aggregates it affects.
         </p>
         <p className="mt-4 text-sm leading-7 text-slate-600">
+          Every percentage below is measured from the <strong>pre-conflict April&ndash;June
+          2026 level</strong>: an Ofgem cap of &pound;1,465 on the new typical-consumption
+          basis (&pound;1,641 on the pre-July basis, which is PolicyEngine UK&apos;s own
+          cap parameter), and petrol at about 131p a litre. For scale, the announced
+          October&ndash;December 2026 cap of &pound;1,723 is +17.6% on that baseline, so
+          the low scenario&apos;s +15% represents that premium partially unwinding through
+          2027-28 rather than prices falling back below current levels.
+        </p>
+        <p className="mt-4 text-sm leading-7 text-slate-600">
           Each scenario represents a forward path for the conflict from the August 2026
           position. The low scenario tracks the observed price path assuming
           de-escalation (<a href="https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-july-and-30-september-2026" target="_blank" rel="noreferrer" className="underline">Ofgem cap +13.5% in July 2026</a>;
