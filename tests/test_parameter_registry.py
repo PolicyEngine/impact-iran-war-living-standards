@@ -228,14 +228,30 @@ def test_the_low_scenario_is_not_described_as_de_escalation():
         assert "conflict de-escalates" not in text
 
 
-def test_the_announced_cap_percentage_is_not_hard_coded_in_prose():
-    """It is computed, so the strings that quote it must be formatted from
-    the function rather than carrying a literal that can drift (#39).
+def test_emitted_text_quotes_the_computed_announced_cap_percentage():
+    """Assert on the emitted text against the function, not on the source.
 
-    Comments are exempt: they document, they are not emitted.
+    An earlier version of this test grepped the source for the current
+    computed value. That catches a literal only while it is still correct: if
+    the inputs move, a stale literal stops matching what the test searches
+    for and the test passes — exactly the drift it claims to prevent (#40).
+
+    Asserting the derivation CONTAINS the computed figure fails the moment the
+    inputs move and a stale literal is left behind.
+    """
+    pct = config.announced_oct_2026_vs_pre_conflict_pct()
+    derivation = config.PARAMETER_REGISTRY["low_shock"]["parameters"][
+        "cap_increase_pct"
+    ]["derivation"]
+    assert f"+{pct}%" in derivation
+
+
+def test_no_new_literals_of_the_computed_percentage_in_source():
+    """Belt-and-braces on newly introduced literals, alongside the test above.
+
+    On its own this is not a drift guard, for the reason given there.
     """
     from pathlib import Path
-    import re
 
     pct = config.announced_oct_2026_vs_pre_conflict_pct()
     for name in ("config.py", "pipeline.py"):

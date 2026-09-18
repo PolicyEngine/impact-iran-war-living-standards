@@ -59,6 +59,19 @@ PRE_CONFLICT_DIESEL_PENCE = 156
 PRE_CONFLICT_PUMP_PRICE_PERIOD = "Autumn Budget 2025 (November 2025)"
 
 
+# Cornwall Insight's Q4 2026 forecast, superseded by the announced cap but
+# still cited in the low-scenario derivation as what it was anchored to.
+CORNWALL_Q4_FORECAST = 1_700
+
+
+def cornwall_q4_vs_pre_conflict_pct():
+    """The superseded Cornwall forecast as a percentage of the pre-conflict
+    cap. Derived so the figure cannot go stale if the baseline moves (#40)."""
+    return round(
+        (CORNWALL_Q4_FORECAST / PRE_CONFLICT_CAP_NEW_BASIS - 1) * 100, 1
+    )
+
+
 def announced_oct_2026_vs_pre_conflict_pct():
     """The announced Oct-Dec 2026 cap as a percentage of the pre-conflict cap.
 
@@ -218,8 +231,10 @@ _SCENARIO_SOURCES = {
                 f"(+{announced_oct_2026_vs_pre_conflict_pct()}%), so it "
                 "represents the Q4-2026 premium partially "
                 "unwinding through 2027-28 rather than prices returning to "
-                "pre-conflict levels. Cornwall Insight's earlier ~£1,700 Q4 "
-                "forecast (+16.0% on this baseline) has been superseded by "
+                "pre-conflict levels. Cornwall Insight's earlier "
+                f"~£{CORNWALL_Q4_FORECAST:,} Q4 "
+                f"forecast (+{cornwall_q4_vs_pre_conflict_pct()}% on this "
+                "baseline) has been superseded by "
                 "that announcement (#37)"
             ),
             "uncertainty_range": [13, 20],

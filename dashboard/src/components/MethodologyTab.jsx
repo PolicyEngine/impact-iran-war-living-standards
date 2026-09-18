@@ -11,7 +11,9 @@ export default function MethodologyTab({ data }) {
   const currentEnergyCap = data?.current_energy_cap;
   // Pre-conflict baseline, so the prose quotes the generated figures and
   // their periods rather than hard-coding either (#39).
-  const baseline = data?.metadata?.pre_conflict_baseline;
+  // `data` is a static import, so the block is always present; read it
+  // unconditionally rather than re-hard-coding every value in a fallback.
+  const baseline = data.metadata.pre_conflict_baseline;
   const scenarioOptions = getScenarioOptions(data);
 
   return (
@@ -70,16 +72,17 @@ export default function MethodologyTab({ data }) {
           aggregates it affects.
         </p>
         <p className="mt-4 text-sm leading-7 text-slate-600">
-          Every percentage below is measured from the <strong>pre-conflict April&ndash;June
-          2026 level</strong>: an Ofgem cap of &pound;{baseline?.energy_price_cap_new_basis_gbp?.toLocaleString("en-GB") ?? "1,465"} on
-          the new typical-consumption basis (&pound;{baseline?.energy_price_cap_old_basis_gbp?.toLocaleString("en-GB") ?? "1,641"} on
+          The energy percentages below are measured from the <strong>pre-conflict
+          April&ndash;June 2026 level</strong>: an Ofgem cap of &pound;{baseline.energy_price_cap_new_basis_gbp.toLocaleString("en-GB")} on
+          the new typical-consumption basis (&pound;{baseline.energy_price_cap_old_basis_gbp.toLocaleString("en-GB")} on
           the pre-July basis, which is PolicyEngine UK&apos;s own cap parameter). Pump
-          prices are anchored to a different period &mdash; {baseline?.pump_price_period ?? "Autumn Budget 2025"} &mdash;
-          at about {baseline?.petrol_pence_per_litre ?? 131}p a litre for petrol and
-          {" "}{baseline?.diesel_pence_per_litre ?? 156}p for diesel. For scale, the
-          announced October&ndash;December 2026 cap of &pound;{baseline?.announced_oct_2026_cap_gbp?.toLocaleString("en-GB") ?? "1,723"} is
-          +{baseline?.announced_oct_2026_vs_pre_conflict_pct ?? 17.6}% on that cap
-          baseline, so the low scenario&apos;s +15% represents that premium partially
+          prices are anchored to a different period &mdash; {baseline.pump_price_period} &mdash;
+          at about {baseline.petrol_pence_per_litre}p a litre for petrol and
+          {" "}{baseline.diesel_pence_per_litre}p for diesel. For scale, the
+          announced October&ndash;December 2026 cap of &pound;{baseline.announced_oct_2026_cap_gbp.toLocaleString("en-GB")} is
+          +{baseline.announced_oct_2026_vs_pre_conflict_pct}% on that cap
+          baseline, so the low scenario&apos;s
+          +{data.scenarios.low_shock.params.cap_increase_pct}% represents that premium partially
           unwinding through 2027-28 rather than prices falling back below current levels.
         </p>
         <p className="mt-4 text-sm leading-7 text-slate-600">
