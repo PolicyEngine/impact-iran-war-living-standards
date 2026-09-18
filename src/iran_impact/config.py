@@ -23,6 +23,57 @@ YEAR = 2027  # 2027-28 tax year — the year the Autumn Budget 2026 decisions ap
 # quarterly cap periods — see METHOD_LIMITATIONS.
 CURRENT_ENERGY_CAP = 1_663
 
+# ── Pre-conflict baseline ────────────────────────────────────────────────
+#
+# Every scenario percentage is expressed "relative to the pre-conflict
+# early-2026 baseline". That baseline was previously stated only in prose, so
+# the forcing assumptions could not be audited (#37). It is recorded here.
+#
+# The old-basis figure is stated outright by Ofgem, not derived: the July 2026
+# press release says "The current price cap ... is £1,641" and "Under our
+# existing TDCV, the typical household bill from July is £1,862 (up from
+# £1,641)". It also matches PolicyEngine UK's own
+# `gov.ofgem.energy_price_cap` parameter for 2026 onward.
+#
+# Consistency check: £1,862 / 1.135 = £1,640.5, which rounds to the published
+# £1,641 — so the stated rise and the two TDCV bases agree.
+#
+# The new-basis figure is INFERRED, not published: Ofgem never gave Apr-Jun
+# 2026 on the new TDCVs. £1,663 / 1.135 = £1,465 assumes the rebasing scales
+# both quarters equally.
+PRE_CONFLICT_CAP_NEW_BASIS = 1_465  # Apr-Jun 2026, new TDCV basis
+PRE_CONFLICT_CAP_OLD_BASIS = 1_641  # same cap, pre-July basis; == PE UK's parameter
+
+# Pre-conflict pump prices, implied by this file's low-scenario anchor:
+# observed August 2026 prices of ~157p petrol / ~187p diesel are stated as
+# ~+20% on Autumn Budget 2025 levels, so pre-conflict petrol was ~131p and
+# diesel ~156p per litre.
+#
+# NOTE the reference period differs from the cap figures above. These derive
+# from Autumn Budget 2025 (November 2025), not April-June 2026, because that
+# is the comparison the fuel scenario is anchored to. Sourcing an Apr-Jun 2026
+# pump price from the weekly DESNZ series would put the whole baseline on one
+# period (#37).
+PRE_CONFLICT_PETROL_PENCE = 131
+PRE_CONFLICT_DIESEL_PENCE = 156
+PRE_CONFLICT_PUMP_PRICE_PERIOD = "Autumn Budget 2025 (November 2025)"
+
+
+def announced_oct_2026_vs_pre_conflict_pct():
+    """The announced Oct-Dec 2026 cap as a percentage of the pre-conflict cap.
+
+    Derived rather than written into prose in several places, so the figure
+    cannot drift between the config, the registry and the dashboard (#37).
+    """
+    return round(
+        (OCTOBER_2026_ENERGY_CAP / PRE_CONFLICT_CAP_NEW_BASIS - 1) * 100, 1
+    )
+
+# The announced Oct-Dec 2026 cap bounds the low scenario: it is +17.6% on
+# PRE_CONFLICT_CAP_NEW_BASIS, so any case below that figure sits beneath an
+# announced outturn. It is OCTOBER_2026_ENERGY_CAP, defined below — not
+# duplicated here, so the two cannot drift apart.
+
 # The subsequent cap period, published before this analysis was written.
 # Source: https://www.ofgem.gov.uk/press-release/energy-price-cap-will-rise-4-october-2026
 OCTOBER_2026_ENERGY_CAP = 1_723
@@ -34,7 +85,12 @@ FIXED_TARIFF_ACCOUNT_SHARE = 0.40
 
 # Scenario calibration (relative to the pre-conflict early-2026 baseline).
 # Anchors:
-# - "low": conflict de-escalates from the August 2026 position — Brent settles
+# - "low": the conflict's effect on prices as it stands, held for the year.
+#   NOT a de-escalation below current levels: the announced Oct-Dec 2026 cap
+#   of £1,723 is +17.6% on the pre-conflict £1,465, so +15% is slightly BELOW
+#   the level already announced. It is best read as "the Q4-2026 premium
+#   partially unwinds through 2027-28", not as prices falling back (#37).
+#   Brent settles
 #   near ~$85/bbl (4 Aug 2026 spot), pump prices ~157p petrol / ~187p diesel
 #   (~+20% on Autumn Budget 2025 levels), cap rise in line with the observed
 #   +13.5% July 2026 increase plus Cornwall Insight's Q4 forecast (~£1,700).
@@ -143,7 +199,8 @@ _PARAMETER_DEFINITIONS = {
 _SCENARIO_SOURCES = {
     "low_shock": {
         "narrative": (
-            "Conflict de-escalates from the August 2026 position: Brent settles "
+            "Prices settle near their current elevated levels rather than "
+            "falling back, from the August 2026 position: Brent settles "
             "near $85/bbl, pump prices around 157p petrol and 187p diesel"
         ),
         "cap_increase_pct": {
@@ -151,9 +208,14 @@ _SCENARIO_SOURCES = {
             "source_date": "2026-07-01",
             "reference_period": "1 July - 30 September 2026 cap period",
             "derivation": (
-                "Set to the observed +13.5% July 2026 cap rise, rounded up to "
-                "15% to span Cornwall Insight's ~£1,700 Q4 2026 forecast. "
-                "Judgement anchored to the outturn, not a calculation from it"
+                "Anchored to the observed +13.5% July 2026 cap rise. Not "
+                "a de-escalation: on the pre-conflict £1,465 baseline this "
+                "sits below the announced Oct-Dec 2026 cap of £1,723 "
+                "(+17.6%), so it represents the Q4-2026 premium partially "
+                "unwinding through 2027-28 rather than prices returning to "
+                "pre-conflict levels. Cornwall Insight's earlier ~£1,700 Q4 "
+                "forecast (+16.0% on this baseline) has been superseded by "
+                "that announcement (#37)"
             ),
             "uncertainty_range": [13, 20],
         },
@@ -172,8 +234,8 @@ _SCENARIO_SOURCES = {
             "source_date": "2026-08-04",
             "reference_period": "2027-28",
             "derivation": (
-                "Judgement: food price response to a de-escalating energy "
-                "shock, no published scenario for this figure"
+                "Judgement: food price response to energy prices settling "
+                "near current levels; no published scenario for this figure"
             ),
             "uncertainty_range": [1.0, 3.0],
         },

@@ -1,18 +1,23 @@
 export const SCENARIO_CONTENT = {
   low_shock: {
     shortLabel: "Low",
+    // The conflict path this scenario represents. Defined once here so a
+    // relabel cannot be partial; every tab reads it rather than restating it.
+    pathLabel: "premium partially unwinds",
     selectorLabel: "Low (+15% energy, +20% fuel, +1pp CPI)",
     description:
-      "The conflict de-escalates and prices stabilise where they already are: Brent ~$85/bbl. Energy spending +15%, in line with the observed July 2026 cap rise plus Cornwall Insight's Q4 forecast. Fuel +20%, today's pump prices; food +2%; CPI +1pp. Prices are held at those levels for 12 months.",
+      "Prices settle near their current elevated levels rather than falling back: Brent ~$85/bbl. Energy spending +15%, anchored to the observed +13.5% July 2026 cap rise. This sits slightly below the announced October 2026 cap, so it represents the Q4-2026 premium partially unwinding through 2027-28, not a return to pre-conflict prices. Fuel +20%, today's pump prices; food +2%; CPI +1pp. Held at those levels for 12 months.",
   },
   central_shock: {
     shortLabel: "Central",
+    pathLabel: "sustained disruption",
     selectorLabel: "Central (+45% energy, +45% fuel, +2.5pp CPI)",
     description:
       "The Strait of Hormuz constraint persists, keeping Brent above $100/bbl (Goldman Sachs' extended-closure case): energy spending +45%, fuel +45%, food +4%, CPI +2.5pp, sustained for 12 months. Lower-income households, who spend roughly three times the budget share on energy of the top decile, bear the largest proportional losses.",
   },
   severe_shock: {
     shortLabel: "High",
+    pathLabel: "prolonged war",
     selectorLabel: "High (+90% energy, +80% fuel, +4.5pp CPI)",
     description:
       "A prolonged war with extended Strait of Hormuz closure, as a tail risk: Brent above $115–120/bbl. This follows Goldman's extreme-adverse case and the Oxford Economics escalation case, which reports a 5.8% peak in world CPI and a global recession. Energy spending +90%, comparable to the 2022 gas crisis, with fuel +80%, food +6.5% and CPI +4.5pp, sustained for 12 months.",
@@ -36,4 +41,14 @@ export function getScenarioOptions(data) {
 
 export function getScenarioNarrative(scenarioKey) {
   return SCENARIO_CONTENT[scenarioKey] || null;
+}
+
+/**
+ * The three conflict paths, named once, in scenario order. Tabs that list the
+ * paths read this rather than restating them, so a relabel cannot be partial.
+ */
+export function getScenarioPathLabels() {
+  return SCENARIO_ORDER.map((key) => SCENARIO_CONTENT[key]?.pathLabel).filter(
+    Boolean,
+  );
 }

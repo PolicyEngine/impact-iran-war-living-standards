@@ -24,6 +24,12 @@ from .config import (
     UC_UPLIFT_WEEKLY,
     FUEL_DUTY_CUT_PENCE,
     FUEL_DUTY_PARAMETER,
+    PRE_CONFLICT_CAP_NEW_BASIS,
+    PRE_CONFLICT_CAP_OLD_BASIS,
+    PRE_CONFLICT_PETROL_PENCE,
+    PRE_CONFLICT_DIESEL_PENCE,
+    PRE_CONFLICT_PUMP_PRICE_PERIOD,
+    announced_oct_2026_vs_pre_conflict_pct,
     MEANS_TEST_AMOUNT,
     MEANS_TEST_INSTALMENT_AMOUNTS,
     MEANS_TEST_WINDOW_ENTITLEMENT_RATE,
@@ -1313,6 +1319,42 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
             ),
             "october_2026_energy_cap": OCTOBER_2026_ENERGY_CAP,
             "fixed_tariff_account_share": FIXED_TARIFF_ACCOUNT_SHARE,
+            # The baseline every scenario percentage is measured from, so the
+            # forcing assumptions can be audited without reading the source
+            # (#37).
+            "pre_conflict_baseline": {
+                "energy_price_cap_new_basis_gbp": PRE_CONFLICT_CAP_NEW_BASIS,
+                "energy_price_cap_old_basis_gbp": PRE_CONFLICT_CAP_OLD_BASIS,
+                "energy_cap_period": (
+                    "April-June 2026, immediately before the conflict"
+                ),
+                "petrol_pence_per_litre": PRE_CONFLICT_PETROL_PENCE,
+                "diesel_pence_per_litre": PRE_CONFLICT_DIESEL_PENCE,
+                # Pump prices are anchored to a different reference period
+                # from the cap figures, which the block states rather than
+                # implying one period covers both (#37).
+                "pump_price_period": PRE_CONFLICT_PUMP_PRICE_PERIOD,
+                "derivation": (
+                    "The old-basis £1,641 is stated outright by Ofgem's July "
+                    "2026 press release and matches PolicyEngine UK's "
+                    "gov.ofgem.energy_price_cap parameter. £1,862 / 1.135 = "
+                    "£1,640.5 rounds to it, so the stated rise and the two "
+                    "TDCV bases agree. The new-basis £1,465 is INFERRED, not "
+                    "published: £1,663 / 1.135, assuming the TDCV rebasing "
+                    "scales both quarters equally"
+                ),
+                "announced_oct_2026_cap_gbp": OCTOBER_2026_ENERGY_CAP,
+                "announced_oct_2026_vs_pre_conflict_pct": (
+                    announced_oct_2026_vs_pre_conflict_pct()
+                ),
+                "low_scenario_note": (
+                    "The low scenario's +15% sits slightly below the announced "
+                    "October 2026 cap, which is +17.6% on this baseline. It "
+                    "represents the Q4-2026 premium partially unwinding "
+                    "through 2027-28, not prices falling back below current "
+                    "levels"
+                ),
+            },
             "energy_channel_basis": (
                 "Household-energy-expenditure sensitivity, not a price-cap "
                 "calculation. The scenario percentage is applied to each "
