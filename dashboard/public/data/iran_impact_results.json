@@ -2,9 +2,9 @@
   "year": 2027,
   "current_energy_cap": 1663,
   "provenance": {
-    "generated_at": "2026-09-18T11:13:41+00:00",
-    "git_revision": "7a1fa01c1398e0edab7fe51388cb465b4d0778a2",
-    "git_dirty": true,
+    "generated_at": "2026-09-18T12:50:59+00:00",
+    "git_revision": "d748cd5fa9e408a2be3ec5510793e766dc7a167b",
+    "git_dirty": false,
     "packages": {
       "policyengine": "5.3.0",
       "policyengine-uk": "2.90.2",
@@ -13,7 +13,7 @@
       "microdf-python": "1.3.0"
     },
     "source_hashes": {
-      "config.py": "87159e3fb502be5f07de90f6a7dbd9f0e8db3f12024444ff53a4d1598c0d6e60",
+      "config.py": "d4863714d70406e8cd45b461d8bb706be8cdcc42d20af244d85cead87a3f3750",
       "pipeline.py": "2776dae245eb3a34fec64540e329a8cef086692b888f8b043b47f2e0238ccea3",
       "provenance.py": "956bcc99b7f9c3f796082ae19edf451310fe6e14ea93deda16bc665455d75541",
       "pyproject.toml": "67312746740b8f3fa072d28c40905bfcdbbdc7d089876e5c6814ac0f102cb161",
