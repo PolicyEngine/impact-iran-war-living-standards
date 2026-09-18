@@ -1,6 +1,10 @@
 "use client";
 
-import { getScenarioNarrative, getScenarioOptions } from "../lib/scenarioContent";
+import {
+  getScenarioNarrative,
+  getScenarioOptions,
+  getScenarioPathLabels,
+} from "../lib/scenarioContent";
 
 export default function MethodologyTab({ data }) {
   const householdCount = data?.baseline?.n_households_m;
@@ -21,7 +25,7 @@ export default function MethodologyTab({ data }) {
           This dashboard estimates how energy price rises from the ongoing Middle East
           conflict — active since late February 2026, with recurrent Strait of Hormuz
           disruption — affect UK household living standards. We model three forward
-          paths for the conflict (de-escalation, sustained disruption, prolonged war),
+          paths for the conflict ({getScenarioPathLabels().join(", ")}),
           each transmitted to households through three cost channels &mdash; higher
           energy spending, increased fuel costs and food price inflation &mdash; plus a
           separately reported uprating compensation shortfall. The analysis covers the 2027-28 tax year. The model
@@ -74,7 +78,7 @@ export default function MethodologyTab({ data }) {
         <p className="mt-4 text-sm leading-7 text-slate-600">
           Each scenario represents a forward path for the conflict from the August 2026
           position. The low scenario tracks the observed price path assuming
-          de-escalation (<a href="https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-july-and-30-september-2026" target="_blank" rel="noreferrer" className="underline">Ofgem cap +13.5% in July 2026</a>;
+          the Q4-2026 premium partially unwinding (<a href="https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-july-and-30-september-2026" target="_blank" rel="noreferrer" className="underline">Ofgem cap +13.5% in July 2026</a>;
           Brent ~$85/bbl in early August). The central scenario follows{" "}
           <a href="https://oilprice.com/Latest-Energy-News/World-News/Goldman-Another-Month-of-Hormuz-Closure-Means-Over-100-Brent-Throughout-2026.html" target="_blank" rel="noreferrer" className="underline">Goldman Sachs&apos; extended Strait of Hormuz closure case</a>{" "}
           (Brent above $100/bbl through 2026). The high scenario reflects

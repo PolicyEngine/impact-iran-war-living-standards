@@ -27,7 +27,9 @@ from .config import (
     PRE_CONFLICT_CAP_NEW_BASIS,
     PRE_CONFLICT_CAP_OLD_BASIS,
     PRE_CONFLICT_PETROL_PENCE,
-    ANNOUNCED_OCT_2026_CAP,
+    PRE_CONFLICT_DIESEL_PENCE,
+    PRE_CONFLICT_PUMP_PRICE_PERIOD,
+    announced_oct_2026_vs_pre_conflict_pct,
     MEANS_TEST_AMOUNT,
     MEANS_TEST_INSTALMENT_AMOUNTS,
     MEANS_TEST_WINDOW_ENTITLEMENT_RATE,
@@ -1323,21 +1325,27 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
             "pre_conflict_baseline": {
                 "energy_price_cap_new_basis_gbp": PRE_CONFLICT_CAP_NEW_BASIS,
                 "energy_price_cap_old_basis_gbp": PRE_CONFLICT_CAP_OLD_BASIS,
-                "petrol_pence_per_litre": PRE_CONFLICT_PETROL_PENCE,
-                "period": "April-June 2026, immediately before the conflict",
-                "derivation": (
-                    "The July 2026 cap of £1,663 (new TDCV basis) was a +13.5% "
-                    "rise, implying £1,465 immediately before it. Cross-check: "
-                    "£1,663 new basis is stated as £1,862 on the pre-July "
-                    "basis, and £1,862 / 1.135 = £1,641, which is exactly "
-                    "PolicyEngine UK's gov.ofgem.energy_price_cap parameter "
-                    "for 2026 onward"
+                "energy_cap_period": (
+                    "April-June 2026, immediately before the conflict"
                 ),
-                "announced_oct_2026_cap_gbp": ANNOUNCED_OCT_2026_CAP,
-                "announced_oct_2026_vs_pre_conflict_pct": round(
-                    (ANNOUNCED_OCT_2026_CAP / PRE_CONFLICT_CAP_NEW_BASIS - 1)
-                    * 100,
-                    1,
+                "petrol_pence_per_litre": PRE_CONFLICT_PETROL_PENCE,
+                "diesel_pence_per_litre": PRE_CONFLICT_DIESEL_PENCE,
+                # Pump prices are anchored to a different reference period
+                # from the cap figures, which the block states rather than
+                # implying one period covers both (#37).
+                "pump_price_period": PRE_CONFLICT_PUMP_PRICE_PERIOD,
+                "derivation": (
+                    "The old-basis £1,641 is stated outright by Ofgem's July "
+                    "2026 press release and matches PolicyEngine UK's "
+                    "gov.ofgem.energy_price_cap parameter. £1,862 / 1.135 = "
+                    "£1,640.5 rounds to it, so the stated rise and the two "
+                    "TDCV bases agree. The new-basis £1,465 is INFERRED, not "
+                    "published: £1,663 / 1.135, assuming the TDCV rebasing "
+                    "scales both quarters equally"
+                ),
+                "announced_oct_2026_cap_gbp": OCTOBER_2026_ENERGY_CAP,
+                "announced_oct_2026_vs_pre_conflict_pct": (
+                    announced_oct_2026_vs_pre_conflict_pct()
                 ),
                 "low_scenario_note": (
                     "The low scenario's +15% sits slightly below the announced "

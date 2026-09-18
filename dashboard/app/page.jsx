@@ -62,8 +62,8 @@ function Dashboard() {
             &apos;s microsimulation model to estimate how energy price rises from the
             ongoing Middle East conflict and Strait of Hormuz disruption affect UK
             household living standards. The{" "}
-            <strong>Household impacts</strong> tab models three conflict paths (de-escalation,
-            sustained disruption, prolonged war) and their distributional effects across
+            <strong>Household impacts</strong> tab models three conflict paths and their
+            distributional effects across
             income quintiles, countries, tenures and household types. The{" "}
             <strong>Policy options</strong> tab evaluates ten policy responses with their
             gross outlay and targeting. They include two decisions due at the Autumn
