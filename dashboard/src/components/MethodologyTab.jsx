@@ -22,9 +22,9 @@ export default function MethodologyTab({ data }) {
           conflict — active since late February 2026, with recurrent Strait of Hormuz
           disruption — affect UK household living standards. We model three forward
           paths for the conflict (de-escalation, sustained disruption, prolonged war),
-          each transmitted to households through four channels: higher energy bills,
-          increased fuel costs, food price inflation, and the real-value loss from
-          benefit uprating timing. The analysis covers the 2027-28 tax year. The model
+          each transmitted to households through three cost channels &mdash; higher
+          energy spending, increased fuel costs and food price inflation &mdash; plus a
+          separately reported uprating compensation shortfall. The analysis covers the 2027-28 tax year. The model
           is built on{" "}
           <a href="https://policyengine.org" target="_blank" rel="noreferrer" className="underline">PolicyEngine UK</a>{" "}
           microsimulation using the Enhanced Family Resources Survey, covering approximately
@@ -45,15 +45,15 @@ export default function MethodologyTab({ data }) {
         </h3>
         <p className="mt-4 rounded-lg bg-amber-50 p-4 text-sm leading-7 text-slate-700">
           <strong>These are stress tests, not forecasts.</strong> Each scenario applies a
-          set of price assumptions as full-year 2027&ndash;28 amounts, including where the
+          set of price assumptions as full-year 2027-28 amounts, including where the
           cited source describes a 2026 disruption lasting a few months. No time path,
           quarterly profile or shock duration is modelled. The pass-through coefficients
           and lags implied by the percentages below are judgements anchored to the cited
-          sources rather than equations derived from them; the results file records the
+          sources, not equations derived from them. The results file records the
           definition, source, reference period, derivation and range of every parameter
-          under <code>parameters.registry</code>, and evaluates those ranges through
-          the model under <code>scenarios[*].sensitivity</code> &mdash; moving every
-          parameter to one end at once, and one at a time. On the central scenario the
+          under <code>parameters.registry</code>. It also evaluates those ranges through
+          the model under <code>scenarios[*].sensitivity</code>, moving every parameter
+          to one end at once and one at a time. On the central scenario the
           total ranges from &pound;27.7bn to &pound;55.9bn against a &pound;41.8bn
           point estimate. That spread is not a confidence interval: the ranges are
           judgements about the price assumptions, not sampling distributions. The CPI
@@ -65,11 +65,11 @@ export default function MethodologyTab({ data }) {
         <p className="mt-4 text-sm leading-7 text-slate-600">
           Each scenario represents a forward path for the conflict from the August 2026
           position. The low scenario tracks the observed price path assuming
-          de-escalation (<a href="https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-july-and-30-september-2026" target="_blank" rel="noreferrer" className="underline">Ofgem cap +13% in July 2026</a>;
+          de-escalation (<a href="https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-july-and-30-september-2026" target="_blank" rel="noreferrer" className="underline">Ofgem cap +13.5% in July 2026</a>;
           Brent ~$85/bbl in early August). The central scenario follows{" "}
           <a href="https://oilprice.com/Latest-Energy-News/World-News/Goldman-Another-Month-of-Hormuz-Closure-Means-Over-100-Brent-Throughout-2026.html" target="_blank" rel="noreferrer" className="underline">Goldman Sachs&apos; extended Strait of Hormuz closure case</a>{" "}
           (Brent above $100/bbl through 2026). The high scenario reflects
-          Goldman&apos;s extreme-adverse case (Brent above $115-120) and{" "}
+          Goldman&apos;s extreme-adverse case (Brent above $115–120/bbl) and{" "}
           <a href="https://www.oxfordeconomics.com/resource/iran-war-scenarios-the-oil-price-that-breaks-parts-of-the-economy/" target="_blank" rel="noreferrer" className="underline">Oxford Economics&apos; escalation scenario</a>,
           which reports a 5.8% peak in <em>world</em> CPI under its two-month $140/bbl
           case; the +4.5pp UK CPI assumption is a judgement above that, not a figure the
@@ -143,8 +143,8 @@ export default function MethodologyTab({ data }) {
             in the microdata &mdash; the cap figures above are context and do not enter
             the calculation. The model does not represent unit rates, standing charges,
             the gas/electricity split, region, payment method, quarterly cap periods or
-            fixed-tariff coverage; about 40% of accounts were on fixed tariffs for the
-            July 2026 cap, whose prices the cap does not set.
+            fixed-tariff coverage. About 40% of accounts were on fixed tariffs for the
+            July 2026 cap period, and the cap does not set the price those accounts pay.
           </div>
           <div>
             <strong className="text-slate-800">Fuel costs:</strong>{" "}
@@ -182,10 +182,10 @@ export default function MethodologyTab({ data }) {
             is therefore the price rise itself, which the three channels above already
             measure in full.
             <br /><br />
-            The model reports a separate <strong>uprating compensation shortfall</strong>
-            &mdash; CPI-linked benefit income &times; CPI increase &times; 0.5, with the
-            state pension excluded because it is uprated by the triple lock rather than
-            CPI &mdash; but does <strong>not</strong> add it to the cost channels. Doing
+            The model reports a separate <strong>uprating compensation shortfall</strong>:
+            CPI-linked benefit income &times; CPI increase &times; 0.5, with the state
+            pension excluded because it is uprated by the triple lock rather than CPI.
+            It does <strong>not</strong> add that shortfall to the cost channels. Doing
             so would count the same price shock twice: the lack of indexation is why no
             offset arrives, not a second cost on top of the prices. What the shortfall
             measures is the size of the compensation an immediate uprating would deliver,

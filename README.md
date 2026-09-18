@@ -32,7 +32,7 @@ Poverty is measured as people below 60% of the person-weighted median of equival
 
 No fuel poverty figure is reported. The study previously published an indicative 10%-of-income energy-spend ratio; its level was not comparable with any official statistic (England's LILEE measure adds an energy-efficiency test, and DESNZ's own 10% indicator uses after-housing-costs income and modelled *required* rather than actual energy costs), so it was withdrawn rather than published alongside figures it invited comparison with. See [#22](https://github.com/PolicyEngine/impact-iran-war-living-standards/issues/22).
 
-Results are broken down by income quintile, region, country, tenure type, and household composition.
+The results file breaks impacts down by income quintile, region, country, tenure type and household composition. The dashboard presents all of these except the regional breakdown.
 
 ## Headline results
 

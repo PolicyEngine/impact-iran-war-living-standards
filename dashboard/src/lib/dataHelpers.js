@@ -5,9 +5,6 @@
  * shapes that the React components expect.
  */
 
-export function getBaseline(data) {
-  return data?.baseline || {};
-}
 
 /**
  * Returns a flat object with headline scenario metrics.
@@ -50,16 +47,6 @@ export function getChannelDecomposition(data, scenarioKey) {
   };
 }
 
-/**
- * Regional breakdown — components use `avg_cost`.
- */
-export function getRegionalBreakdown(data, scenarioKey) {
-  const raw = data?.scenarios?.[scenarioKey]?.by_region || [];
-  return raw.map((r) => ({
-    ...r,
-    avg_cost: r.mean_impact,
-  }));
-}
 
 /**
  * Country breakdown — components use `avg_cost`.
@@ -111,7 +98,7 @@ export const POLICY_KEYS = [
 export const POLICY_LABELS = {
   epg: "Energy Price Guarantee",
   flat_rebate: "Flat rebate",
-  ct_rebate: "Council Tax rebate",
+  ct_rebate: "Council tax rebate",
   uc_uplift: "UC uplift",
   fuel_duty_cut: "Fuel duty cut extension",
   means_tested: "Means-tested payment",
