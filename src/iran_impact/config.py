@@ -59,6 +59,19 @@ PRE_CONFLICT_DIESEL_PENCE = 156
 PRE_CONFLICT_PUMP_PRICE_PERIOD = "Autumn Budget 2025 (November 2025)"
 
 
+# Cornwall Insight's Q4 2026 forecast, superseded by the announced cap but
+# still cited in the low-scenario derivation as what it was anchored to.
+CORNWALL_Q4_FORECAST = 1_700
+
+
+def cornwall_q4_vs_pre_conflict_pct():
+    """The superseded Cornwall forecast as a percentage of the pre-conflict
+    cap. Derived so the figure cannot go stale if the baseline moves (#40)."""
+    return round(
+        (CORNWALL_Q4_FORECAST / PRE_CONFLICT_CAP_NEW_BASIS - 1) * 100, 1
+    )
+
+
 def announced_oct_2026_vs_pre_conflict_pct():
     """The announced Oct-Dec 2026 cap as a percentage of the pre-conflict cap.
 
@@ -93,7 +106,9 @@ FIXED_TARIFF_ACCOUNT_SHARE = 0.40
 #   Brent settles
 #   near ~$85/bbl (4 Aug 2026 spot), pump prices ~157p petrol / ~187p diesel
 #   (~+20% on Autumn Budget 2025 levels), cap rise in line with the observed
-#   +13.5% July 2026 increase plus Cornwall Insight's Q4 forecast (~£1,700).
+#   +13.5% July 2026 increase. (An earlier Cornwall Insight Q4 forecast of
+#   ~£1,700 also informed this figure, but has since been superseded by the
+#   announced £1,723 — see the registry derivation.)
 # - "central": sustained Strait of Hormuz constraint — Goldman Sachs scenario
 #   of Brent averaging >$100/bbl through 2026 ($120 Q3 / $115 Q4 in the
 #   extended-closure case). Oil-to-retail pass-through per Commons Library
@@ -209,12 +224,17 @@ _SCENARIO_SOURCES = {
             "reference_period": "1 July - 30 September 2026 cap period",
             "derivation": (
                 "Anchored to the observed +13.5% July 2026 cap rise. Not "
-                "a de-escalation: on the pre-conflict £1,465 baseline this "
-                "sits below the announced Oct-Dec 2026 cap of £1,723 "
-                "(+17.6%), so it represents the Q4-2026 premium partially "
+                "a de-escalation: on the pre-conflict "
+                f"£{PRE_CONFLICT_CAP_NEW_BASIS:,} baseline this "
+                f"sits below the announced Oct-Dec 2026 cap of "
+                f"£{OCTOBER_2026_ENERGY_CAP:,} "
+                f"(+{announced_oct_2026_vs_pre_conflict_pct()}%), so it "
+                "represents the Q4-2026 premium partially "
                 "unwinding through 2027-28 rather than prices returning to "
-                "pre-conflict levels. Cornwall Insight's earlier ~£1,700 Q4 "
-                "forecast (+16.0% on this baseline) has been superseded by "
+                "pre-conflict levels. Cornwall Insight's earlier "
+                f"~£{CORNWALL_Q4_FORECAST:,} Q4 "
+                f"forecast (+{cornwall_q4_vs_pre_conflict_pct()}% on this "
+                "baseline) has been superseded by "
                 "that announcement (#37)"
             ),
             "uncertainty_range": [13, 20],

@@ -234,3 +234,18 @@ def test_the_energy_channel_basis_is_stated(results):
     assert "not a price-cap calculation" in basis
     for unmodelled in ("standing charges", "fixed-tariff", "quarterly"):
         assert unmodelled in basis
+
+
+def test_the_low_scenario_note_quotes_the_computed_figures(results):
+    """The note is formatted from the same helpers as the registry
+    derivation, but the emitted-text guard in test_parameter_registry covers
+    only the derivation. A stale literal here would not trip it (#40).
+
+    Asserting on the generated output closes that gap: this fails the moment
+    the inputs move and the note is left carrying an old figure.
+    """
+    note = results["metadata"]["pre_conflict_baseline"]["low_scenario_note"]
+    pct = config.announced_oct_2026_vs_pre_conflict_pct()
+    low_pct = config.SCENARIOS["low_shock"]["cap_increase_pct"]
+    assert f"+{pct}%" in note
+    assert f"+{low_pct}%" in note
