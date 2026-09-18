@@ -226,3 +226,24 @@ def test_the_low_scenario_is_not_described_as_de_escalation():
         # The energy derivation may say "not a de-escalation"; nothing may
         # assert the scenario IS one.
         assert "conflict de-escalates" not in text
+
+
+def test_the_announced_cap_percentage_is_not_hard_coded_in_prose():
+    """It is computed, so the strings that quote it must be formatted from
+    the function rather than carrying a literal that can drift (#39).
+
+    Comments are exempt: they document, they are not emitted.
+    """
+    from pathlib import Path
+    import re
+
+    pct = config.announced_oct_2026_vs_pre_conflict_pct()
+    for name in ("config.py", "pipeline.py"):
+        source = (Path(config.__file__).with_name(name)).read_text()
+        code = "\n".join(
+            line for line in source.splitlines() if not line.lstrip().startswith("#")
+        )
+        assert f"+{pct}%" not in code, (
+            f"{name} carries a literal +{pct}% in emitted text; format it from "
+            "announced_oct_2026_vs_pre_conflict_pct() instead"
+        )
