@@ -178,8 +178,14 @@ def test_the_pre_conflict_baseline_is_recorded():
     than prose or the forcing assumptions cannot be audited."""
     assert config.PRE_CONFLICT_CAP_NEW_BASIS == 1_465
     assert config.PRE_CONFLICT_CAP_OLD_BASIS == 1_641
-    assert config.PRE_CONFLICT_PETROL_PENCE == 131
-    assert config.PRE_CONFLICT_DIESEL_PENCE == 156
+    # Observed DESNZ November 2025 monthly means, not back-derived (#37).
+    assert config.PRE_CONFLICT_PETROL_PENCE == 135
+    assert config.PRE_CONFLICT_DIESEL_PENCE == 144
+    assert config.AUGUST_2026_PETROL_PENCE == 161
+    assert config.AUGUST_2026_DIESEL_PENCE == 182
+    # Diesel rose materially more than petrol, so a single uniform uplift
+    # cannot describe both — the error the old back-derivation made.
+    assert config.observed_diesel_rise_pct() > config.observed_petrol_rise_pct() + 5
     # Pump prices sit on a different reference period from the cap, which the
     # block must state rather than implying one period covers both (#37).
     assert "2025" in config.PRE_CONFLICT_PUMP_PRICE_PERIOD
