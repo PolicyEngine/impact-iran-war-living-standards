@@ -66,15 +66,17 @@ PRE_CONFLICT_CAP_OLD_BASIS = 1_641  # same cap, pre-July basis; == PE UK's param
 # NOTE the reference period differs from the cap figures above. These are
 # Autumn Budget 2025 (November 2025), not April-June 2026, because that is the
 # comparison the fuel scenario is anchored to.
-PRE_CONFLICT_PETROL_PENCE = 135  # DESNZ November 2025 mean: 135.04
-PRE_CONFLICT_DIESEL_PENCE = 144  # DESNZ November 2025 mean: 143.82
+# Stored unrounded: the derived rises below divide these, so rounding the
+# constants first gave 19.3%/26.4% where the observed rises are 19.5%/26.5%.
+PRE_CONFLICT_PETROL_PENCE = 135.04  # DESNZ November 2025 mean
+PRE_CONFLICT_DIESEL_PENCE = 143.82  # DESNZ November 2025 mean
 PRE_CONFLICT_PUMP_PRICE_PERIOD = "Autumn Budget 2025 (November 2025)"
 
 # Observed August 2026 pump prices (DESNZ monthly means), recorded so the
 # fuel scenarios can be audited against the move they actually represent
 # rather than against a uniform assumption.
-AUGUST_2026_PETROL_PENCE = 161  # DESNZ August 2026 mean: 161.42
-AUGUST_2026_DIESEL_PENCE = 182  # DESNZ August 2026 mean: 181.98
+AUGUST_2026_PETROL_PENCE = 161.42  # DESNZ August 2026 mean
+AUGUST_2026_DIESEL_PENCE = 181.98  # DESNZ August 2026 mean
 
 
 def observed_petrol_rise_pct():
@@ -172,7 +174,9 @@ FIXED_TARIFF_ACCOUNT_SHARE = 0.40
 #   the level already announced. It is best read as "the Q4-2026 premium
 #   partially unwinds through 2027-28", not as prices falling back (#37).
 #   Brent settles
-#   near ~$85/bbl (4 Aug 2026 spot), pump prices ~157p petrol / ~187p diesel
+#   near ~$85/bbl (4 Aug 2026 spot), pump prices ~161p petrol / ~182p diesel
+#   (DESNZ August 2026 means; the ~187p previously quoted here was diesel's
+#   April 2026 peak, not an August level)
 #   (~+20% on Autumn Budget 2025 levels), cap rise in line with the observed
 #   +13.5% July 2026 increase. (An earlier Cornwall Insight Q4 forecast of
 #   ~£1,700 also informed this figure, but has since been superseded by the
@@ -291,7 +295,8 @@ _SCENARIO_SOURCES = {
         "narrative": (
             "Prices settle near their current elevated levels rather than "
             "falling back, from the August 2026 position: Brent settles "
-            "near $85/bbl, pump prices around 157p petrol and 187p diesel"
+            "near $85/bbl, pump prices around 161p petrol and 182p diesel "
+            "(DESNZ August 2026 means)"
         ),
         "cap_increase_pct": {
             "source_url": OFGEM_JULY_2026,
@@ -439,15 +444,20 @@ _SCENARIO_SOURCES = {
             "derivation": (
                 "Oil-to-pump pass-through applied to Brent of $140/bbl. The "
                 "source publishes no pump-price figure, so the pass-through "
-                "is this study's, but it is now arithmetic rather than "
-                "assertion. At 1 bbl = 159 litres and USD/GBP ~1.34, $1/bbl "
-                "is ~0.47p/litre before tax and ~0.56p at the pump once VAT "
-                "is applied; fuel duty is a fixed 52.95p/litre and so damps "
-                "the percentage rise. Carrying the crack spread observed "
-                "between November 2025 and August 2026 forward, $140/bbl "
-                "implies roughly 215-225p/litre against the observed "
-                "pre-conflict 135p, i.e. about +60% to +70%. Set at the "
-                "middle of that. The previous +80% required a further ~45p/"
+                "is this study's. The extrapolation used is the OBSERVED "
+                "pump slope, not a crude-only pass-through: DESNZ pump prices "
+                "moved 135.04p to 161.42p between November 2025 and August "
+                "2026 while Brent moved from about $64 to about $85, i.e. "
+                "~1.2p/litre per $1/bbl. That slope embeds this episode's "
+                "refining-margin widening as well as the crude cost, which is "
+                "why it exceeds the ~0.56p/litre that $1/bbl contributes "
+                "through crude and VAT alone (fuel duty is a fixed "
+                "52.95p/litre and damps the percentage rise). Carried "
+                "forward, $140/bbl gives roughly 227p/litre, about +68% on "
+                "135.04p; $115/bbl gives roughly 197p, about +46%, which is "
+                "where the central +45% sits. Set at 65%, just below the "
+                "$140 reading, since sustaining that level for a full year is "
+                "a stronger assumption than reaching it. The previous +80% required a further ~45p/"
                 "litre refining-margin blowout that neither this file nor "
                 "the source asserted"
             ),
