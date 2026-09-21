@@ -28,6 +28,10 @@ from .config import (
     PRE_CONFLICT_CAP_OLD_BASIS,
     PRE_CONFLICT_PETROL_PENCE,
     PRE_CONFLICT_DIESEL_PENCE,
+    AUGUST_2026_PETROL_PENCE,
+    AUGUST_2026_DIESEL_PENCE,
+    observed_petrol_rise_pct,
+    observed_diesel_rise_pct,
     PRE_CONFLICT_PUMP_PRICE_PERIOD,
     announced_oct_2026_vs_pre_conflict_pct,
     MEANS_TEST_AMOUNT,
@@ -1330,6 +1334,20 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
                 ),
                 "petrol_pence_per_litre": PRE_CONFLICT_PETROL_PENCE,
                 "diesel_pence_per_litre": PRE_CONFLICT_DIESEL_PENCE,
+                # The observed move the fuel scenarios are measured against,
+                # so a reader can audit them without re-deriving it (#37).
+                "august_2026_petrol_pence_per_litre": (
+                    AUGUST_2026_PETROL_PENCE
+                ),
+                "august_2026_diesel_pence_per_litre": (
+                    AUGUST_2026_DIESEL_PENCE
+                ),
+                "observed_petrol_rise_pct": observed_petrol_rise_pct(),
+                "observed_diesel_rise_pct": observed_diesel_rise_pct(),
+                "pump_price_source": (
+                    "DESNZ weekly road fuel prices, monthly means; duty was "
+                    "52.95p/litre at both endpoints"
+                ),
                 # Pump prices are anchored to a different reference period
                 # from the cap figures, which the block states rather than
                 # implying one period covers both (#37).

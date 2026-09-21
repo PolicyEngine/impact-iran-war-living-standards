@@ -44,19 +44,55 @@ CURRENT_ENERGY_CAP = 1_663
 PRE_CONFLICT_CAP_NEW_BASIS = 1_465  # Apr-Jun 2026, new TDCV basis
 PRE_CONFLICT_CAP_OLD_BASIS = 1_641  # same cap, pre-July basis; == PE UK's parameter
 
-# Pre-conflict pump prices, implied by this file's low-scenario anchor:
-# observed August 2026 prices of ~157p petrol / ~187p diesel are stated as
-# ~+20% on Autumn Budget 2025 levels, so pre-conflict petrol was ~131p and
-# diesel ~156p per litre.
+# Pre-conflict pump prices, OBSERVED as November 2025 monthly means in the
+# DESNZ weekly road fuel price series. Monthly means are used at BOTH ends of
+# the comparison below, so the two are on one basis. Source:
+# https://www.gov.uk/government/statistics/weekly-road-fuel-prices
 #
-# NOTE the reference period differs from the cap figures above. These derive
-# from Autumn Budget 2025 (November 2025), not April-June 2026, because that
-# is the comparison the fuel scenario is anchored to. Sourcing an Apr-Jun 2026
-# pump price from the weekly DESNZ series would put the whole baseline on one
-# period (#37).
-PRE_CONFLICT_PETROL_PENCE = 131
-PRE_CONFLICT_DIESEL_PENCE = 156
+# These were previously BACK-DERIVED rather than observed: an assumed uniform
+# "+20% since Autumn Budget 2025" was divided into stated August 2026 prices
+# of ~157p/~187p. Both inputs were wrong, so both outputs were (#37):
+#   - August 2026 was in fact ~161p petrol / ~182p diesel (monthly means).
+#     The 187p was diesel's April 2026 conflict peak, not an August level;
+#     diesel did not reach 187p in any August week.
+#   - The rise was not uniform: +19.5% petrol but +26.5% diesel, because
+#     middle-distillate cracks widened more than gasoline in this episode.
+# The old constants were therefore ~5p LOW on petrol and ~11p HIGH on diesel,
+# errors in opposite directions that a single uniform uplift could not catch.
+#
+# Duty was 52.95p/litre at both endpoints (the Autumn Budget 2025 extension of
+# the 5p cut ran to 31 August 2026), so the comparison is duty-clean.
+#
+# NOTE the reference period differs from the cap figures above. These are
+# Autumn Budget 2025 (November 2025), not April-June 2026, because that is the
+# comparison the fuel scenario is anchored to.
+PRE_CONFLICT_PETROL_PENCE = 135  # DESNZ November 2025 mean: 135.04
+PRE_CONFLICT_DIESEL_PENCE = 144  # DESNZ November 2025 mean: 143.82
 PRE_CONFLICT_PUMP_PRICE_PERIOD = "Autumn Budget 2025 (November 2025)"
+
+# Observed August 2026 pump prices (DESNZ monthly means), recorded so the
+# fuel scenarios can be audited against the move they actually represent
+# rather than against a uniform assumption.
+AUGUST_2026_PETROL_PENCE = 161  # DESNZ August 2026 mean: 161.42
+AUGUST_2026_DIESEL_PENCE = 182  # DESNZ August 2026 mean: 181.98
+
+
+def observed_petrol_rise_pct():
+    """Observed Nov 2025 -> Aug 2026 petrol rise, from the DESNZ series."""
+    return round(
+        (AUGUST_2026_PETROL_PENCE / PRE_CONFLICT_PETROL_PENCE - 1) * 100, 1
+    )
+
+
+def observed_diesel_rise_pct():
+    """Observed Nov 2025 -> Aug 2026 diesel rise, from the DESNZ series.
+
+    Materially larger than petrol's; the model applies one fuel_pct to both,
+    which METHOD_LIMITATIONS records.
+    """
+    return round(
+        (AUGUST_2026_DIESEL_PENCE / PRE_CONFLICT_DIESEL_PENCE - 1) * 100, 1
+    )
 
 
 # Cornwall Insight's Q4 2026 forecast, superseded by the announced cap but
