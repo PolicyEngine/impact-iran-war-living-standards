@@ -147,9 +147,11 @@ FIXED_TARIFF_ACCOUNT_SHARE = 0.40
 #   announced £1,723 — see the registry derivation.)
 # - "central": sustained Strait of Hormuz constraint — Goldman Sachs scenario
 #   of Brent averaging >$100/bbl through 2026 ($120 Q3 / $115 Q4 in the
-#   extended-closure case). Oil-to-retail pass-through per Commons Library
-#   CBP-10601. CPI adder consistent with BoE June 2026 projection moving from
-#   ~3% to the 4%+ range.
+#   extended-closure case), which sets the FUEL channel. The ENERGY channel is
+#   anchored to gas, not oil: NBP/TTF roughly doubling, transmitted via halted
+#   Qatari LNG. Oil-to-pump pass-through per Commons Library CBP-10601 applies
+#   to pump prices only. CPI adder consistent with BoE June 2026 projection
+#   moving from ~3% to the 4%+ range.
 # - "severe": extended full closure / prolonged war — Goldman extreme-adverse
 #   (Brent >$115-120) and the Oxford Economics escalation scenario, which
 #   reports a 5.8% peak in world CPI under its two-month $140/bbl case. An
@@ -200,6 +202,11 @@ SCENARIOS = {
 OFGEM_JULY_2026 = "https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-july-and-30-september-2026"
 OFGEM_OCTOBER_2026 = "https://www.ofgem.gov.uk/press-release/energy-price-cap-will-rise-4-october-2026"
 GOLDMAN_HORMUZ = "https://oilprice.com/Latest-Energy-News/World-News/Goldman-Another-Month-of-Hormuz-Closure-Means-Over-100-Brent-Throughout-2026.html"
+# The energy channel transmits through GAS, not oil, so it cites gas sources.
+# Ofgem's wholesale allowance is built from NBP gas and UK baseload power
+# forwards; crude oil enters the cap nowhere (#37).
+KPLER_HORMUZ_LNG = "https://www.kpler.com/blog/hormuz-strait-disruptions-trigger-a-price-spike-in-ttf-and-asian-lng-while-middle-east-exports-come-to-a-halt"
+OFGEM_CAP_METHODOLOGY = "https://www.ofgem.gov.uk/information-consumers/energy-advice-households/energy-price-cap"
 OXFORD_ECONOMICS = "https://www.oxfordeconomics.com/resource/iran-war-scenarios-the-oil-price-that-breaks-parts-of-the-economy/"
 COMMONS_FUEL_PRICES = "https://commonslibrary.parliament.uk/research-briefings/cbp-10601/"
 COMMONS_UPRATING = "https://commonslibrary.parliament.uk/research-briefings/cbp-10403/"
@@ -312,14 +319,22 @@ _SCENARIO_SOURCES = {
             "Brent averaging above $100/bbl through 2026"
         ),
         "cap_increase_pct": {
-            "source_url": GOLDMAN_HORMUZ,
+            "source_url": KPLER_HORMUZ_LNG,
             "source_date": "2026-07-01",
             "reference_period": "2026 calendar year",
             "derivation": (
-                "Judgement: wholesale gas response to Brent above $100/bbl, "
-                "translated to a retail bill increase. The oil-to-retail "
-                "pass-through coefficient and lag are not published in the "
-                "source and are not derived here"
+                "Judgement: NBP/TTF gas sustained at roughly twice "
+                "pre-conflict levels across the 2027-28 cap assessment "
+                "windows, as the Hormuz closure halts Qatari LNG (~19% of "
+                "global LNG exports). Wholesale is ~40-45% of the cap, so a "
+                "doubling of wholesale implies ~+45% on the retail bill. "
+                "Anchored to gas rather than to Brent because Ofgem's "
+                "wholesale allowance is built from NBP gas and UK baseload "
+                "power forwards and crude oil enters it nowhere; in this "
+                "episode oil flows recovered to about two-thirds of pre-war "
+                "levels while LNG stayed halted, so an oil anchor would if "
+                "anything understate the gas shock. The pass-through "
+                "coefficient and hedging lag remain judgements"
             ),
             "uncertainty_range": [30, 60],
         },
@@ -360,13 +375,19 @@ _SCENARIO_SOURCES = {
             "case and the Oxford Economics escalation scenario"
         ),
         "cap_increase_pct": {
-            "source_url": OXFORD_ECONOMICS,
+            "source_url": KPLER_HORMUZ_LNG,
             "source_date": "2026-06-01",
             "reference_period": "two-month $140/bbl case",
             "derivation": (
-                "Judgement: retail bill response under the Oxford Economics "
-                "escalation case and Goldman extreme-adverse Brent of "
-                "$115-120. Not derived from a published cap projection"
+                "Judgement: NBP/TTF gas sustained at roughly triple "
+                "pre-conflict levels across the 2027-28 assessment windows "
+                "(~+200% wholesale on a ~40-45% share), under the Oxford "
+                "Economics escalation case. Not derived from a published cap "
+                "projection. For precedent, the announced October 2022 cap of "
+                "£3,549 was +178% year-on-year on October 2021's £1,277 under "
+                "a comparable gas-supply shock, so a tripling of wholesale is "
+                "within recent experience. Anchored to gas rather than Brent, "
+                "for the reason given on the central scenario"
             ),
             "uncertainty_range": [60, 120],
         },
@@ -484,10 +505,15 @@ METHOD_LIMITATIONS = [
     "40% of accounts were on fixed tariffs for the July 2026 cap, and the cap "
     "does not set their prices. CURRENT_ENERGY_CAP is reported as context and "
     "does not enter the calculation.",
-    "Pass-through: the oil-to-wholesale-to-retail coefficients and lags "
-    "implied by the scenario percentages are judgements anchored to the cited "
-    "sources, not equations derived from them. See PARAMETER_REGISTRY for the "
-    "derivation of each figure.",
+    "Pass-through: the coefficients and lags implied by the scenario "
+    "percentages are judgements anchored to the cited sources, not equations "
+    "derived from them. The energy channel is gas-to-retail (Ofgem's wholesale "
+    "allowance is built from NBP gas and UK baseload power forwards, and crude "
+    "oil enters it nowhere); the fuel channel is oil-to-pump. In this episode "
+    "oil and gas flows diverged — oil recovered to roughly two-thirds of "
+    "pre-war levels while LNG stayed halted — so an oil-anchored energy "
+    "calibration would if anything understate the gas shock. See "
+    "PARAMETER_REGISTRY for the derivation of each figure.",
     "Benefit uprating: a single expected-coverage factor is applied to a broad "
     "set of CPI-linked benefit income, rather than modelling each benefit's "
     "own uprating rule and April 2027 timing against the price path. The "
