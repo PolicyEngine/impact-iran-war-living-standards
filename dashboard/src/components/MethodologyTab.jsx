@@ -87,16 +87,28 @@ export default function MethodologyTab({ data }) {
         </p>
         <p className="mt-4 text-sm leading-7 text-slate-600">
           Each scenario represents a forward path for the conflict from the August 2026
-          position. The low scenario tracks the observed price path assuming
-          the Q4-2026 premium partially unwinding (<a href="https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-july-and-30-september-2026" target="_blank" rel="noreferrer" className="underline">Ofgem cap +13.5% in July 2026</a>;
-          Brent ~$85/bbl in early August). The central scenario follows{" "}
+          position. <strong>The energy channel is gas-driven, not oil-driven</strong>: Ofgem&apos;s
+          wholesale allowance is built from NBP gas and UK baseload power forwards, and a
+          Strait of Hormuz closure reaches UK bills through Qatari LNG &mdash; about 19% of
+          global exports &mdash; rather than through crude. The low scenario tracks the
+          observed path assuming the Q4-2026 premium partially unwinds (<a href="https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-july-and-30-september-2026" target="_blank" rel="noreferrer" className="underline">Ofgem cap +13.5% in July 2026</a>).
+          Central assumes gas sustained at roughly twice pre-conflict levels and high at
+          roughly triple; for scale, the announced October 2022 cap rose 178% year on year
+          under a comparable gas-supply shock. In this episode oil and gas diverged &mdash;
+          oil flows recovered while LNG stayed halted &mdash; so an oil-anchored calibration
+          would if anything understate the energy shock.
+        </p>
+        <p className="mt-4 text-sm leading-7 text-slate-600">
+          The <em>fuel</em> channel is oil-driven, and follows{" "}
           <a href="https://oilprice.com/Latest-Energy-News/World-News/Goldman-Another-Month-of-Hormuz-Closure-Means-Over-100-Brent-Throughout-2026.html" target="_blank" rel="noreferrer" className="underline">Goldman Sachs&apos; extended Strait of Hormuz closure case</a>{" "}
-          (Brent above $100/bbl through 2026). The high scenario reflects
-          Goldman&apos;s extreme-adverse case (Brent above $115–120/bbl) and{" "}
-          <a href="https://www.oxfordeconomics.com/resource/iran-war-scenarios-the-oil-price-that-breaks-parts-of-the-economy/" target="_blank" rel="noreferrer" className="underline">Oxford Economics&apos; escalation scenario</a>,
-          which reports a 5.8% peak in <em>world</em> CPI under its two-month $140/bbl
-          case; the +4.5pp UK CPI assumption is a judgement above that, not a figure the
-          source publishes.
+          (Brent above $100/bbl) for central, and{" "}
+          <a href="https://www.oxfordeconomics.com/resource/iran-war-scenarios-the-oil-price-that-breaks-parts-of-the-economy/" target="_blank" rel="noreferrer" className="underline">Oxford Economics&apos; escalation scenario</a>{" "}
+          (a two-month $140/bbl case) for high. That source publishes no pump-price figure,
+          so the pass-through is ours: fuel duty is a fixed 52.95p a litre and damps the
+          percentage rise, which puts $140/bbl at roughly +60% to +70% against the observed
+          pre-conflict pump price. The CPI adders are set to at least the first-round
+          effect of each scenario&apos;s own energy, fuel and food assumptions on ONS 2026
+          basket weights, so no scenario assumes less inflation than its own prices imply.
           CPI transmission draws on{" "}
           <a href="https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/june-2026" target="_blank" rel="noreferrer" className="underline">Bank of England June 2026 projections</a>{" "}
           and the{" "}
@@ -124,7 +136,7 @@ export default function MethodologyTab({ data }) {
             <tbody>
               {scenarioOptions.map((scenario) => {
                 const params = data?.scenarios?.[scenario.id]?.params;
-                const narrative = getScenarioNarrative(scenario.id);
+                const narrative = getScenarioNarrative(scenario.id, data);
                 return (
                   <tr key={scenario.id}>
                     <td className="font-medium">{narrative?.shortLabel || scenario.label}</td>

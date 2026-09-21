@@ -65,7 +65,7 @@ function CustomTooltip({ active, payload, label, formatter }) {
 
 function ScenarioSelector({ data, selected, onSelect }) {
   const scenarioOptions = getScenarioOptions(data);
-  const active = getScenarioNarrative(selected);
+  const active = getScenarioNarrative(selected, data);
   return (
     <div className="mb-8">
       <div className="flex flex-wrap gap-2">

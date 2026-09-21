@@ -101,7 +101,7 @@ export default function PolicyTab({ data }) {
   const policy = policies?.[selectedPolicy] || null;
   const policyLabel = POLICY_LABELS[selectedPolicy] || selectedPolicy;
   const policyDescription = POLICY_DESCRIPTIONS[selectedPolicy];
-  const scenarioDescription = getScenarioNarrative(scenario);
+  const scenarioDescription = getScenarioNarrative(scenario, data);
   const scenarioOptions = getScenarioOptions(data);
 
   // Quintile data for the selected policy
