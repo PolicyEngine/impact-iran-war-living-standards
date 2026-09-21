@@ -308,3 +308,21 @@ def test_the_readme_headline_table_matches_the_committed_output(results):
     assert f"£{channels['benefit_uprating_shortfall']}" in readme, (
         "README's uprating shortfall is stale"
     )
+
+def test_every_quintile_row_reports_a_robust_share_alongside_the_mean(results):
+    """The bottom-quintile mean share is driven by the income tail: 10.2%
+    against a 3.4% median, and 5.3% if the bottom 1% of incomes is dropped.
+
+    The gradient is robust, the level is not, so the median must ship
+    alongside the mean and nobody should be able to remove it quietly (#46).
+    """
+    for scenario in results["scenarios"].values():
+        for row in scenario["by_quintile"]:
+            assert "median_impact_pct" in row
+            assert row["median_impact_pct"] >= 0
+
+    central = results["scenarios"]["central_shock"]["by_quintile"]
+    bottom, top = central[0], central[-1]
+    # The gradient must survive on the robust statistic too, or the
+    # regressivity claim rests on the mean alone.
+    assert bottom["median_impact_pct"] > top["median_impact_pct"]

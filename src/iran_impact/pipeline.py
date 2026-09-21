@@ -738,6 +738,23 @@ def _impact_pct(net, income):
     return _safe_div(net, income) * 100
 
 
+def _median_impact_pct(net, income, weights, mask=None):
+    """Weighted MEDIAN impact as a share of income.
+
+    Reported alongside the mean because the mean is not robust here: a small
+    number of very-low-income households pull it up sharply. In the central
+    scenario the bottom quintile's mean is 10.2% while its median is 3.4%,
+    and dropping the bottom 1% of incomes halves the mean to 5.3% (#46).
+    The direction of the gradient is robust; the level is not.
+    """
+    defined = _positive_income(income)
+    if mask is not None:
+        defined = defined & mask
+    if not np.any(defined):
+        return 0.0
+    return _weighted_median(_impact_pct(net, income)[defined], weights[defined])
+
+
 def _mean_impact_pct(net, income, weights, mask=None):
     """Weighted mean impact as a share of income, over households where that
     share is defined.
@@ -779,6 +796,11 @@ def _by_quintile(data, impacts):
             "quintile": q,
             "mean_impact": round(weighted_mean(net, weights, mask)),
             "mean_impact_pct": round(_mean_impact_pct(net, income, weights, mask), 1),
+            # The mean is sensitive to the bottom income tail; the median is
+            # not. Quote both, or the gradient rather than the level (#46).
+            "median_impact_pct": round(
+                _median_impact_pct(net, income, weights, mask), 1
+            ),
             "energy": round(weighted_mean(impacts["energy_shock"], weights, mask)),
             "fuel": round(weighted_mean(impacts["fuel_shock"], weights, mask)),
             "food": round(weighted_mean(impacts["food_shock"], weights, mask)),
@@ -1408,6 +1430,12 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
                 "level invited a false comparison while adding nothing the "
                 "energy channel of the impact results does not already show. "
                 "See issue #22 for the comparison that led to removing it"
+            ),
+            "share_of_income_robustness": (
+                "Bottom-quintile mean 10.2% of income vs median 3.4%; excluding "
+                "the bottom 1% of incomes gives 5.3%. The gradient (3-6x the top "
+                "quintile) is robust; the level is not. See METHOD_LIMITATIONS "
+                "and median_impact_pct on each quintile row (#46)."
             ),
             "poverty_definition": (
                 "Baseline: people below 60% of the person-weighted median of "

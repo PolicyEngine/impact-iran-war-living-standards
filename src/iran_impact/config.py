@@ -576,6 +576,17 @@ METHOD_LIMITATIONS = [
     "pre-war levels while LNG stayed halted — so an oil-anchored energy "
     "calibration would if anything understate the gas shock. See "
     "PARAMETER_REGISTRY for the derivation of each figure.",
+    "Share-of-income statistics: the MEAN share is not robust in the bottom "
+    "quintile, because a small number of very-low-income households with a "
+    "defined but tiny denominator pull it up sharply. In the central "
+    "scenario the bottom quintile's mean is 10.2% of income while its median "
+    "is 3.4%, and excluding the bottom 1% of incomes halves the mean to "
+    "5.3%. The GRADIENT is robust under every variant tested - the bottom "
+    "quintile loses 3 to 6 times the top quintile's share - but the LEVEL is "
+    "not, so median_impact_pct is reported alongside the mean and the "
+    "gradient should be preferred to the level when quoting a single figure "
+    "(#46). Excluding zero-energy households moves the mean only 10.2% to "
+    "10.8%, so the sensitivity is to the income tail, not the energy tail.",
     "Benefit uprating: a single expected-coverage factor is applied to a broad "
     "set of CPI-linked benefit income, rather than modelling each benefit's "
     "own uprating rule and April 2027 timing against the price path. The "
