@@ -95,6 +95,38 @@ def observed_diesel_rise_pct():
     )
 
 
+# ONS CPI basket weights for 2026, in parts per thousand, from the MM23
+# time series: CJVF (04.5 electricity, gas and other fuels), CJXR (07.2.2
+# fuels and lubricants) and CHZR (01 food and non-alcoholic beverages).
+# Used to check each scenario's CPI adder against the first-round direct
+# effect of its OWN price assumptions, which is checkable in one line by
+# anyone reading the methodology (#37).
+CPI_BASKET_WEIGHTS_2026 = {
+    "energy": 0.03198,  # CJVF, 31.98 ppt
+    "fuel": 0.02637,  # CJXR, 26.37 ppt
+    "food": 0.10961,  # CHZR, 109.61 ppt
+}
+
+
+def direct_cpi_pp(scenario_key):
+    """First-round direct CPI effect of a scenario's own price assumptions.
+
+    Weight times price rise, summed over the three priced channels. This is a
+    FLOOR, not a forecast: it excludes second-round effects, which push up,
+    and demand destruction, which pushes down. The configured adder may
+    legitimately differ, but if it sits below this the derivation has to say
+    what offsets it (#37).
+    """
+    s = SCENARIOS[scenario_key]
+    w = CPI_BASKET_WEIGHTS_2026
+    return round(
+        s["cap_increase_pct"] * w["energy"]
+        + s["fuel_pct"] * w["fuel"]
+        + s["food_increase_pct"] * w["food"],
+        2,
+    )
+
+
 # Cornwall Insight's Q4 2026 forecast, superseded by the announced cap but
 # still cited in the low-scenario derivation as what it was anchored to.
 CORNWALL_Q4_FORECAST = 1_700
@@ -164,19 +196,19 @@ FIXED_TARIFF_ACCOUNT_SHARE = 0.40
 SCENARIOS = {
     "low_shock": {
         "cap_increase_pct": 15,
-        "cpi_increase_pp": 1.0,
+        "cpi_increase_pp": 1.3,
         "fuel_pct": 20,
         "food_increase_pct": 2.0,
     },
     "central_shock": {
         "cap_increase_pct": 45,
-        "cpi_increase_pp": 2.5,
+        "cpi_increase_pp": 3.1,
         "fuel_pct": 45,
         "food_increase_pct": 4.0,
     },
     "severe_shock": {
         "cap_increase_pct": 90,
-        "cpi_increase_pp": 4.5,
+        "cpi_increase_pp": 5.3,
         "fuel_pct": 65,
         "food_increase_pct": 6.5,
     },
@@ -308,9 +340,12 @@ _SCENARIO_SOURCES = {
             "reference_period": "2026-27",
             "derivation": (
                 "Bank of England June 2026 projection of CPI near 3% against "
-                "about 2% pre-conflict, i.e. roughly +1pp"
+                "about 2% pre-conflict, i.e. roughly +1pp. Raised to 1.3pp so "
+                "the adder is not below the first-round direct effect of this "
+                "scenario's own price assumptions, which ONS 2026 basket "
+                "weights put at 1.23pp (#37)"
             ),
-            "uncertainty_range": [0.5, 1.5],
+            "uncertainty_range": [1.0, 1.8],
         },
     },
     "central_shock": {
@@ -364,9 +399,15 @@ _SCENARIO_SOURCES = {
             "reference_period": "2026-27",
             "derivation": (
                 "NIESR central case of about 4% CPI against about 2% "
-                "pre-conflict, taken at the middle of its +1pp to +3pp range"
+                "pre-conflict, whose +1pp to +3pp range was previously taken "
+                "at the middle. Raised to 3.1pp because the first-round "
+                "direct effect of this scenario's own price assumptions is "
+                "3.06pp on ONS 2026 basket weights, above the whole of that "
+                "range — so the midpoint was not merely conservative but "
+                "arithmetically impossible without a demand-destruction "
+                "offset the derivation never stated (#37)"
             ),
-            "uncertainty_range": [1.0, 3.0],
+            "uncertainty_range": [2.5, 4.1],
         },
     },
     "severe_shock": {
@@ -428,12 +469,15 @@ _SCENARIO_SOURCES = {
             "reference_period": "two-month $140/bbl case",
             "derivation": (
                 "The source reports a 5.8% peak in WORLD CPI, roughly 3pp "
-                "above its baseline. Set to 4.5pp for UK CPI as a judgement "
-                "reflecting the UK's higher energy import share. The source "
+                "above its baseline. Set to 5.3pp for UK CPI: the "
+                "first-round direct effect of this scenario's own price "
+                "assumptions on ONS 2026 basket weights, which exceeds the "
+                "~3pp world figure, consistent with the UK's higher energy "
+                "import share. The source "
                 "does not publish a UK figure, and does not report the 7.7% "
                 "this file previously attributed to it"
             ),
-            "uncertainty_range": [3.0, 6.0],
+            "uncertainty_range": [4.5, 7.0],
         },
     },
 }
