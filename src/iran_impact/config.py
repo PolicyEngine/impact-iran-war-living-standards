@@ -175,7 +175,7 @@ SCENARIOS = {
     "severe_shock": {
         "cap_increase_pct": 90,
         "cpi_increase_pp": 4.5,
-        "fuel_pct": 80,
+        "fuel_pct": 65,
         "food_increase_pct": 6.5,
     },
 }
@@ -375,10 +375,21 @@ _SCENARIO_SOURCES = {
             "source_date": "2026-06-01",
             "reference_period": "two-month $140/bbl case",
             "derivation": (
-                "Oil-to-pump pass-through applied to Brent of $140/bbl, as a "
-                "judgement"
+                "Oil-to-pump pass-through applied to Brent of $140/bbl. The "
+                "source publishes no pump-price figure, so the pass-through "
+                "is this study's, but it is now arithmetic rather than "
+                "assertion. At 1 bbl = 159 litres and USD/GBP ~1.34, $1/bbl "
+                "is ~0.47p/litre before tax and ~0.56p at the pump once VAT "
+                "is applied; fuel duty is a fixed 52.95p/litre and so damps "
+                "the percentage rise. Carrying the crack spread observed "
+                "between November 2025 and August 2026 forward, $140/bbl "
+                "implies roughly 215-225p/litre against the observed "
+                "pre-conflict 135p, i.e. about +60% to +70%. Set at the "
+                "middle of that. The previous +80% required a further ~45p/"
+                "litre refining-margin blowout that neither this file nor "
+                "the source asserted"
             ),
-            "uncertainty_range": [60, 110],
+            "uncertainty_range": [50, 80],
         },
         "food_increase_pct": {
             "source_url": OXFORD_ECONOMICS,
