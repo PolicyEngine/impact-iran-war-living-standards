@@ -226,3 +226,40 @@ def test_the_low_scenario_is_not_described_as_de_escalation():
         # The energy derivation may say "not a de-escalation"; nothing may
         # assert the scenario IS one.
         assert "conflict de-escalates" not in text
+
+
+def test_emitted_text_quotes_the_computed_announced_cap_percentage():
+    """Assert on the emitted text against the function, not on the source.
+
+    An earlier version of this test grepped the source for the current
+    computed value. That catches a literal only while it is still correct: if
+    the inputs move, a stale literal stops matching what the test searches
+    for and the test passes — exactly the drift it claims to prevent (#40).
+
+    Asserting the derivation CONTAINS the computed figure fails the moment the
+    inputs move and a stale literal is left behind.
+    """
+    pct = config.announced_oct_2026_vs_pre_conflict_pct()
+    derivation = config.PARAMETER_REGISTRY["low_shock"]["parameters"][
+        "cap_increase_pct"
+    ]["derivation"]
+    assert f"+{pct}%" in derivation
+
+
+def test_no_new_literals_of_the_computed_percentage_in_source():
+    """Belt-and-braces on newly introduced literals, alongside the test above.
+
+    On its own this is not a drift guard, for the reason given there.
+    """
+    from pathlib import Path
+
+    pct = config.announced_oct_2026_vs_pre_conflict_pct()
+    for name in ("config.py", "pipeline.py"):
+        source = (Path(config.__file__).with_name(name)).read_text()
+        code = "\n".join(
+            line for line in source.splitlines() if not line.lstrip().startswith("#")
+        )
+        assert f"+{pct}%" not in code, (
+            f"{name} carries a literal +{pct}% in emitted text; format it from "
+            "announced_oct_2026_vs_pre_conflict_pct() instead"
+        )

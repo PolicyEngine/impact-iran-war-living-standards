@@ -1348,8 +1348,11 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
                     announced_oct_2026_vs_pre_conflict_pct()
                 ),
                 "low_scenario_note": (
-                    "The low scenario's +15% sits slightly below the announced "
-                    "October 2026 cap, which is +17.6% on this baseline. It "
+                    "The low scenario's "
+                    f"+{SCENARIOS['low_shock']['cap_increase_pct']}% sits "
+                    "slightly below the announced October 2026 cap, which is "
+                    f"+{announced_oct_2026_vs_pre_conflict_pct()}% on this "
+                    "baseline. It "
                     "represents the Q4-2026 premium partially unwinding "
                     "through 2027-28, not prices falling back below current "
                     "levels"
