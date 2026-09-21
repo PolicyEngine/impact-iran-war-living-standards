@@ -107,9 +107,13 @@ def test_committed_headlines_match_the_reviewed_values(results):
     assert central["n_newly_below_anchored_line"] == 1_505_723
 
     package = results["policy_responses"]["central_shock"]["combined"]
-    assert package["gross_outlay_bn"] == 54.10
-    assert package["household_protection_bn"] == 37.03
-    assert package["residual_impact_bn"] == 4.77
+    # Raised from 54.10 in the PR that corrected the CPI adders (#37): the
+    # accelerated-uprating leg is sized by cpi_increase_pp, so central's
+    # adder moving 2.5pp -> 3.1pp lifts that leg £2.13bn -> £2.64bn. The
+    # household cost totals are untouched, since the adder never enters them.
+    assert package["gross_outlay_bn"] == 54.62
+    assert package["household_protection_bn"] == 37.08
+    assert package["residual_impact_bn"] == 4.72
 
 
 def test_the_policy_accounting_closes_in_the_committed_output(results):

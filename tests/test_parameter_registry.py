@@ -269,3 +269,34 @@ def test_no_new_literals_of_the_computed_percentage_in_source():
             f"{name} carries a literal +{pct}% in emitted text; format it from "
             "announced_oct_2026_vs_pre_conflict_pct() instead"
         )
+
+
+def test_no_cpi_adder_sits_below_its_own_first_round_effect():
+    """A scenario's CPI adder must not be below the direct basket effect of
+    its own price assumptions unless the derivation says what offsets it.
+
+    Central previously breached this AND its own declared range ceiling: the
+    first-round effect was 3.06pp against a range topping out at 3.0pp, so the
+    midpoint was not conservative but arithmetically impossible (#37). This is
+    checkable in one line by any reader, which is why it matters.
+    """
+    for key in config.SCENARIOS:
+        adder = config.SCENARIOS[key]["cpi_increase_pp"]
+        floor = config.direct_cpi_pp(key)
+        assert adder >= floor, (
+            f"{key}: CPI adder {adder}pp is below the {floor}pp first-round "
+            "direct effect of its own energy, fuel and food assumptions"
+        )
+
+
+def test_each_cpi_range_contains_its_own_first_round_effect():
+    """The declared uncertainty range must be able to contain the arithmetic."""
+    for key in config.SCENARIOS:
+        low, high = config.PARAMETER_REGISTRY[key]["parameters"][
+            "cpi_increase_pp"
+        ]["uncertainty_range"]
+        floor = config.direct_cpi_pp(key)
+        assert low <= floor <= high, (
+            f"{key}: first-round effect {floor}pp falls outside the declared "
+            f"range [{low}, {high}]"
+        )
