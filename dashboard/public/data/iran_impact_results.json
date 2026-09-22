@@ -2,8 +2,8 @@
   "year": 2027,
   "current_energy_cap": 1663,
   "provenance": {
-    "generated_at": "2026-09-22T08:23:33+00:00",
-    "git_revision": "dc5040715879fb0be0bd4959d3d18230b0a9036f",
+    "generated_at": "2026-09-22T08:44:49+00:00",
+    "git_revision": "3d72f271af1aceff889e0a37ef0c1be148aa9d19",
     "git_dirty": false,
     "packages": {
       "policyengine": "5.3.0",
