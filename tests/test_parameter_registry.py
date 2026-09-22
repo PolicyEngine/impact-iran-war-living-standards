@@ -304,3 +304,41 @@ def test_each_cpi_range_contains_its_own_first_round_effect():
             f"{key}: first-round effect {floor}pp falls outside the declared "
             f"range [{low}, {high}]"
         )
+
+
+def test_derivations_quote_the_figures_they_are_derived_from():
+    """Derivation prose that states its own arithmetic must stay in sync
+    with that arithmetic.
+
+    The CPI derivations quote the first-round floor, and the fuel derivations
+    quote the observed pump anchors and slope. Those are computed, so the
+    prose can go stale silently if an input moves — the drift caught twice in
+    #50 and #51, here in the registry rather than in dashboard copy or the
+    results metadata.
+    """
+    for key in config.SCENARIOS:
+        derivation = config.PARAMETER_REGISTRY[key]["parameters"][
+            "cpi_increase_pp"
+        ]["derivation"]
+        floor = config.direct_cpi_pp(key)
+        # Only the scenarios whose derivation cites the floor need to match it.
+        if "first-round" in derivation and "pp on ONS" in derivation:
+            assert f"{floor}pp" in derivation, (
+                f"{key}: the CPI derivation quotes a first-round floor that is "
+                f"no longer {floor}pp"
+            )
+
+    # The fuel derivations quote the observed anchors; they must be the ones
+    # the constants actually hold.
+    for key in ("central_shock", "severe_shock"):
+        derivation = config.PARAMETER_REGISTRY[key]["parameters"]["fuel_pct"][
+            "derivation"
+        ]
+        assert str(config.PRE_CONFLICT_PETROL_PENCE) in derivation, (
+            f"{key}: the fuel derivation quotes a pre-conflict pump price that "
+            "is not the recorded anchor"
+        )
+        assert str(config.AUGUST_2026_PETROL_PENCE) in derivation, (
+            f"{key}: the fuel derivation quotes an August 2026 pump price that "
+            "is not the recorded observation"
+        )
