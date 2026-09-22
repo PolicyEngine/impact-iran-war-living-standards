@@ -14,6 +14,7 @@ from .config import (
     YEAR,
     CURRENT_ENERGY_CAP,
     SCENARIOS,
+    direct_cpi_pp,
     BASE_FUEL_SPEND,
     BASE_FOOD_SPEND,
     FUEL_DECILE_FACTORS,
@@ -1145,6 +1146,10 @@ def _scenario_output(data, scenario_key):
 
     return {
         "params": SCENARIOS[scenario_key],
+        # The first-round direct CPI effect of this scenario's own energy,
+        # fuel and food assumptions on ONS basket weights. Emitted so the
+        # dashboard can quote it rather than hard-coding it (#51).
+        "first_round_floor_pp": direct_cpi_pp(scenario_key),
         "summary": summary,
         "by_quintile": _by_quintile(data, impacts),
         "by_region": _grouped_impacts(

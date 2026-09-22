@@ -177,7 +177,7 @@ FIXED_TARIFF_ACCOUNT_SHARE = 0.40
 #   near ~$85/bbl (4 Aug 2026 spot), pump prices ~161p petrol / ~182p diesel
 #   (DESNZ August 2026 means; the ~187p previously quoted here was diesel's
 #   April 2026 peak, not an August level)
-#   (~+20% on Autumn Budget 2025 levels), cap rise in line with the observed
+#   (+19.5% petrol, +26.5% diesel on Autumn Budget 2025 levels), cap rise in line with the observed
 #   +13.5% July 2026 increase. (An earlier Cornwall Insight Q4 forecast of
 #   ~£1,700 also informed this figure, but has since been superseded by the
 #   announced £1,723 — see the registry derivation.)
@@ -383,8 +383,17 @@ _SCENARIO_SOURCES = {
             "source_date": "2026-07-01",
             "reference_period": "2026 calendar year",
             "derivation": (
-                "Oil-to-pump pass-through per Commons Library CBP-10601 "
-                "applied to the Goldman >$100/bbl case, as a judgement"
+                "Observed pump slope applied to the Goldman >$100/bbl case, "
+                "on the same basis as the severe scenario so one registry "
+                "gives one basis for this channel. DESNZ pump prices moved "
+                "135.04p to 161.42p between November 2025 and August 2026 "
+                "while Brent moved from about $64 to about $85, a slope of "
+                "~1.26p/litre per $1/bbl that embeds this episode's "
+                "refining-margin widening as well as crude cost. On that "
+                "slope +45% corresponds to about 196p, i.e. Brent near "
+                "$112 - inside Goldman's >$100/bbl extended-closure case. "
+                "Commons Library CBP-10601 informed the pass-through "
+                "framing; the coefficient is this study's"
             ),
             "uncertainty_range": [30, 60],
         },
@@ -448,16 +457,15 @@ _SCENARIO_SOURCES = {
                 "pump slope, not a crude-only pass-through: DESNZ pump prices "
                 "moved 135.04p to 161.42p between November 2025 and August "
                 "2026 while Brent moved from about $64 to about $85, i.e. "
-                "~1.2p/litre per $1/bbl. That slope embeds this episode's "
+                "~1.26p/litre per $1/bbl. That slope embeds this episode's "
                 "refining-margin widening as well as the crude cost, which is "
                 "why it exceeds the ~0.56p/litre that $1/bbl contributes "
                 "through crude and VAT alone (fuel duty is a fixed "
                 "52.95p/litre and damps the percentage rise). Carried "
-                "forward, $140/bbl gives roughly 227p/litre, about +68% on "
-                "135.04p; $115/bbl gives roughly 197p, about +46%, which is "
-                "where the central +45% sits. Set at 65%, just below the "
-                "$140 reading, since sustaining that level for a full year is "
-                "a stronger assumption than reaching it. The previous +80% required a further ~45p/"
+                "forward, $140/bbl gives roughly 231p/litre, about +71% on "
+                "135.04p, and $115/bbl about 199p, or +47%. Set at 65%, "
+                "below the $140 reading, since sustaining that level across "
+                "a full year is a stronger assumption than reaching it. The previous +80% required a further ~45p/"
                 "litre refining-margin blowout that neither this file nor "
                 "the source asserted"
             ),

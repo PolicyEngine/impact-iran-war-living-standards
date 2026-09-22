@@ -291,3 +291,20 @@ def test_the_readme_headline_table_matches_the_committed_output(results):
         assert f"{summary['n_newly_below_anchored_line']:,}" in readme, (
             f"README is missing the current newly-below count for {label}"
         )
+        assert f"£{summary['mean_net_impact']:,}" in readme, (
+            f"README is missing the current mean cost for {label}"
+        )
+        assert f"{summary['mean_net_impact_pct']}%" in readme, (
+            f"README is missing the current mean-of-ratios for {label}"
+        )
+
+    # The per-channel sentence, which is quoted as often as the table (#51).
+    channels = results["scenarios"]["central_shock"]["channel_decomposition"]
+    for field in ("energy_shock", "fuel_shock", "food_shock"):
+        assert f"£{channels[field]}" in readme, (
+            f"README's central channel breakdown is stale for {field}: "
+            f"£{channels[field]}"
+        )
+    assert f"£{channels['benefit_uprating_shortfall']}" in readme, (
+        "README's uprating shortfall is stale"
+    )
