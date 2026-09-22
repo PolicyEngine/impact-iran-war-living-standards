@@ -326,3 +326,30 @@ def test_every_quintile_row_reports_a_robust_share_alongside_the_mean(results):
     # The gradient must survive on the robust statistic too, or the
     # regressivity claim rests on the mean alone.
     assert bottom["median_impact_pct"] > top["median_impact_pct"]
+
+
+def test_the_robustness_text_quotes_no_figure_it_cannot_keep_in_sync(results):
+    """The limitation and metadata describe a distribution; they must not
+    restate its numbers.
+
+    An earlier version hard-coded 10.2, 3.4, 5.3 and 10.8 into prose that
+    ships in the results file — the drift #47 removed from dashboard copy,
+    reappearing here. Change a parameter or the data build and the file would
+    describe a distribution it no longer contains (#50).
+    """
+    import re
+
+    texts = [results["metadata"]["share_of_income_robustness"]]
+    texts += [
+        limitation
+        for limitation in results["metadata"]["method_limitations"]
+        if "Share-of-income" in limitation
+    ]
+    assert len(texts) == 2
+
+    for text in texts:
+        # A percentage with a decimal is a measured figure, not a threshold.
+        offenders = re.findall(r"\d+\.\d+\s?(?:%|pp)", text)
+        assert not offenders, (
+            f"robustness text quotes figures it cannot keep in sync: {offenders}"
+        )
