@@ -738,6 +738,39 @@ def _impact_pct(net, income):
     return _safe_div(net, income) * 100
 
 
+def _trimmed_mean_impact_pct(net, income, weights, mask=None):
+    """Mean share of income excluding the bottom 1% of ALL incomes.
+
+    Emitted so the limitation text can point at a computed field instead of
+    quoting a literal that cannot stay in sync with the data (#50).
+    """
+    defined = _positive_income(income)
+    if mask is not None:
+        defined = defined & mask
+    cut = _ms(income, weights).quantile(0.01)
+    defined = defined & (income > cut)
+    if not np.any(defined):
+        return 0.0
+    return weighted_mean(_impact_pct(net, income), weights, defined)
+
+
+def _median_impact_pct(net, income, weights, mask=None):
+    """Weighted MEDIAN impact as a share of income.
+
+    Reported alongside the mean because the mean is not robust here: a small
+    number of households with a very small income denominator pull it up
+    sharply. The three bases on each quintile row differ substantially at the
+    bottom and barely at the top. The gradient is robust; the level is not,
+    so figures are not quoted here - read them from the output (#46).
+    """
+    defined = _positive_income(income)
+    if mask is not None:
+        defined = defined & mask
+    if not np.any(defined):
+        return 0.0
+    return _weighted_median(_impact_pct(net, income)[defined], weights[defined])
+
+
 def _mean_impact_pct(net, income, weights, mask=None):
     """Weighted mean impact as a share of income, over households where that
     share is defined.
@@ -779,6 +812,14 @@ def _by_quintile(data, impacts):
             "quintile": q,
             "mean_impact": round(weighted_mean(net, weights, mask)),
             "mean_impact_pct": round(_mean_impact_pct(net, income, weights, mask), 1),
+            # The mean is sensitive to the bottom income tail; the median is
+            # not. Quote both, or the gradient rather than the level (#46).
+            "median_impact_pct": round(
+                _median_impact_pct(net, income, weights, mask), 1
+            ),
+            "trimmed_mean_impact_pct": round(
+                _trimmed_mean_impact_pct(net, income, weights, mask), 1
+            ),
             "energy": round(weighted_mean(impacts["energy_shock"], weights, mask)),
             "fuel": round(weighted_mean(impacts["fuel_shock"], weights, mask)),
             "food": round(weighted_mean(impacts["food_shock"], weights, mask)),
@@ -1409,6 +1450,16 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
                 "energy channel of the impact results does not already show. "
                 "See issue #22 for the comparison that led to removing it"
             ),
+            "share_of_income_robustness": (
+                    "Each quintile row reports mean_impact_pct, "
+                    "trimmed_mean_impact_pct (excluding the bottom 1% of all "
+                    "incomes) and median_impact_pct. They differ "
+                    "substantially in the bottom quintile and barely at all "
+                    "in the top. The gradient between bottom and top holds "
+                    "on all three; the level does not. Prefer the gradient, "
+                    "and the ratio of mean cost to mean income as its "
+                    "steadiest basis. See METHOD_LIMITATIONS (#46)."
+                ),
             "poverty_definition": (
                 "Baseline: people below 60% of the person-weighted median of "
                 "equiv_hbai_household_net_income (HBAI BHC relative poverty). "

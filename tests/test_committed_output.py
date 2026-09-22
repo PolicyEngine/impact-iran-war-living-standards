@@ -308,3 +308,74 @@ def test_the_readme_headline_table_matches_the_committed_output(results):
     assert f"£{channels['benefit_uprating_shortfall']}" in readme, (
         "README's uprating shortfall is stale"
     )
+
+    # The regressivity sentence, which is the line most likely to be quoted
+    # externally and so the one that must not go stale (#51).
+    central_rows = results["scenarios"]["central_shock"]["by_quintile"]
+    baseline_rows = results["baseline"]["by_quintile"]
+    for row, base in ((central_rows[0], baseline_rows[0]), (central_rows[-1], baseline_rows[-1])):
+        assert f"£{row['mean_impact']:,}" in readme, (
+            f"README's regressivity cash amount is stale: £{row['mean_impact']:,}"
+        )
+        ratio_of_means = round(row["mean_impact"] / base["mean_net_income"] * 100, 1)
+        assert f"{ratio_of_means}%" in readme, (
+            "README's ratio-of-means figure is stale: "
+            f"{ratio_of_means}% for quintile {row['quintile']}"
+        )
+        assert f"{row['mean_impact_pct']}%" in readme, (
+            f"README's mean-of-ratios figure is stale for quintile {row['quintile']}"
+        )
+
+
+def test_every_quintile_row_reports_a_robust_share_alongside_the_mean(results):
+    """The bottom-quintile mean share is driven by the income tail: 10.2%
+    against a 3.4% median, and 5.3% if the bottom 1% of incomes is dropped.
+
+    The gradient is robust, the level is not, so the median must ship
+    alongside the mean and nobody should be able to remove it quietly (#46).
+    """
+    for scenario in results["scenarios"].values():
+        for row in scenario["by_quintile"]:
+            assert "median_impact_pct" in row
+            assert row["median_impact_pct"] >= 0
+
+    central = results["scenarios"]["central_shock"]["by_quintile"]
+    bottom, top = central[0], central[-1]
+    # The limitation says the gradient holds on every basis, so assert it on
+    # every basis rather than on the median alone (#50).
+    for basis in (
+        "mean_impact_pct",
+        "trimmed_mean_impact_pct",
+        "median_impact_pct",
+    ):
+        assert bottom[basis] > top[basis], (
+            f"the regressivity gradient does not hold on {basis}, which the "
+            "limitation text claims it does"
+        )
+
+
+def test_the_robustness_text_quotes_no_figure_it_cannot_keep_in_sync(results):
+    """The limitation and metadata describe a distribution; they must not
+    restate its numbers.
+
+    An earlier version hard-coded 10.2, 3.4, 5.3 and 10.8 into prose that
+    ships in the results file — the drift #47 removed from dashboard copy,
+    reappearing here. Change a parameter or the data build and the file would
+    describe a distribution it no longer contains (#50).
+    """
+    import re
+
+    texts = [results["metadata"]["share_of_income_robustness"]]
+    texts += [
+        limitation
+        for limitation in results["metadata"]["method_limitations"]
+        if "Share-of-income" in limitation
+    ]
+    assert len(texts) == 2
+
+    for text in texts:
+        # A percentage with a decimal is a measured figure, not a threshold.
+        offenders = re.findall(r"\d+\.\d+\s?(?:%|pp)", text)
+        assert not offenders, (
+            f"robustness text quotes figures it cannot keep in sync: {offenders}"
+        )
