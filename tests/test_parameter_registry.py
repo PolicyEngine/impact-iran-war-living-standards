@@ -179,10 +179,14 @@ def test_the_pre_conflict_baseline_is_recorded():
     assert config.PRE_CONFLICT_CAP_NEW_BASIS == 1_465
     assert config.PRE_CONFLICT_CAP_OLD_BASIS == 1_641
     # Observed DESNZ November 2025 monthly means, not back-derived (#37).
-    assert config.PRE_CONFLICT_PETROL_PENCE == 135
-    assert config.PRE_CONFLICT_DIESEL_PENCE == 144
-    assert config.AUGUST_2026_PETROL_PENCE == 161
-    assert config.AUGUST_2026_DIESEL_PENCE == 182
+    # Unrounded DESNZ means: rounding these before dividing gave 19.3%/26.4%
+    # where the observed rises are 19.5%/26.5% (#46).
+    assert config.PRE_CONFLICT_PETROL_PENCE == pytest.approx(135.04)
+    assert config.PRE_CONFLICT_DIESEL_PENCE == pytest.approx(143.82)
+    assert config.AUGUST_2026_PETROL_PENCE == pytest.approx(161.42)
+    assert config.AUGUST_2026_DIESEL_PENCE == pytest.approx(181.98)
+    assert config.observed_petrol_rise_pct() == pytest.approx(19.5, abs=0.05)
+    assert config.observed_diesel_rise_pct() == pytest.approx(26.5, abs=0.05)
     # Diesel rose materially more than petrol, so a single uniform uplift
     # cannot describe both — the error the old back-derivation made.
     assert config.observed_diesel_rise_pct() > config.observed_petrol_rise_pct() + 5
