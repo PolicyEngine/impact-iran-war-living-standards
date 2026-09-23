@@ -102,9 +102,9 @@ def test_committed_headlines_match_the_reviewed_values(results):
     assert baseline["households_with_no_transport_fuel_spend"] == 7_197_973
 
     central = results["scenarios"]["central_shock"]["summary"]
-    assert central["mean_net_impact"] == 1_272
-    assert central["total_impact_bn"] == 40.2
-    assert central["n_newly_below_anchored_line"] == 1_275_745
+    assert central["mean_net_impact"] == 1_334
+    assert central["total_impact_bn"] == 42.1
+    assert central["n_newly_below_anchored_line"] == 1_508_923
 
     package = results["policy_responses"]["central_shock"]["combined"]
     # Central fell to £1,272 / £40.2bn when the oil-to-pump slope was
@@ -115,8 +115,8 @@ def test_committed_headlines_match_the_reviewed_values(results):
     # adder moving 2.5pp -> 3.1pp lifts that leg £2.13bn -> £2.64bn. The
     # household cost totals are untouched, since the adder never enters them.
     assert package["gross_outlay_bn"] == 54.62
-    assert package["household_protection_bn"] == 36.56
-    assert package["residual_impact_bn"] == 3.62
+    assert package["household_protection_bn"] == 37.17
+    assert package["residual_impact_bn"] == 4.96
 
 
 def test_the_policy_accounting_closes_in_the_committed_output(results):

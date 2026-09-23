@@ -304,3 +304,58 @@ def test_each_cpi_range_contains_its_own_first_round_effect():
             f"{key}: first-round effect {floor}pp falls outside the declared "
             f"range [{low}, {high}]"
         )
+
+
+def test_the_pump_slopes_derive_from_same_period_monthly_means():
+    """Both slopes must come from monthly means at BOTH ends.
+
+    The original defect paired DESNZ monthly pump means with a single-day
+    Brent spot, overstating the slope by about 30% (#52 review C2). This
+    reproduces the arithmetic independently of the prose.
+    """
+    petrol = (config.AUGUST_2026_PETROL_PENCE - config.PRE_CONFLICT_PETROL_PENCE) / (
+        config.BRENT_AUG_2026 - config.BRENT_NOV_2025
+    )
+    diesel = (config.AUGUST_2026_DIESEL_PENCE - config.PRE_CONFLICT_DIESEL_PENCE) / (
+        config.BRENT_AUG_2026 - config.BRENT_NOV_2025
+    )
+    assert config.petrol_slope() == pytest.approx(petrol)
+    assert config.diesel_slope() == pytest.approx(diesel)
+    assert petrol == pytest.approx(0.967, abs=0.005)
+    # Diesel cracks widened far more; a petrol-only rate understates the
+    # combined ONS category (#55 review C1).
+    assert diesel == pytest.approx(1.399, abs=0.005)
+    assert diesel > petrol
+
+
+def test_the_fuel_assumptions_are_the_composite_at_their_cited_brent():
+    """Central sits at Goldman's $120 and severe at Oxford's $140, on the
+    expenditure-weighted composite rather than a petrol-only rate (#55 C1)."""
+    assert config.fuel_rise_pct_at_brent(120) == pytest.approx(45.8, abs=0.3)
+    assert config.fuel_rise_pct_at_brent(140) == pytest.approx(62.1, abs=0.3)
+    assert config.SCENARIOS["central_shock"]["fuel_pct"] == 46
+    assert config.SCENARIOS["severe_shock"]["fuel_pct"] == 62
+
+    # Each scenario must sit at its own cited case, within rounding.
+    for key, brent in (("central_shock", 120), ("severe_shock", 140)):
+        assert config.SCENARIOS[key]["fuel_pct"] == pytest.approx(
+            config.fuel_rise_pct_at_brent(brent), abs=0.5
+        ), f"{key} no longer sits at the composite for its cited Brent case"
+
+
+def test_the_petrol_diesel_split_matches_the_ons_table_it_cites():
+    """The shares come from the same ONS release and year as the combined
+    mean the model already uses, so they must sum to it."""
+    total = (
+        config.PETROL_WEEKLY_SPEND
+        + config.DIESEL_WEEKLY_SPEND
+        + config.OTHER_MOTOR_OILS_WEEKLY_SPEND
+    )
+    # The sub-lines sum to £19.90 against A6's £19.80: ONS rounds each line
+    # to 10p, so the two tables do not reconcile exactly. Only the SHARES are
+    # used, and a 10p rounding gap moves them by under half a point.
+    assert total == pytest.approx(config.BASE_FUEL_SPEND / 52, abs=0.15), (
+        "the A1 sub-lines no longer sum to the A6 combined figure the model uses"
+    )
+    petrol_share = config.PETROL_WEEKLY_SPEND / total
+    assert petrol_share == pytest.approx(0.61, abs=0.01)
