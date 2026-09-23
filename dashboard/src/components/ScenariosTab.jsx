@@ -541,7 +541,11 @@ export default function ScenariosTab({ data }) {
     ].every(isPositiveNumber) &&
     typeof preConflict?.pump_price_period === "string" &&
     preConflict.pump_price_period.trim() !== "" &&
-    Number.isInteger(data?.year);
+    // A plausible four-digit year: Number.isInteger alone renders "0-",
+    // "99-0" and "10000-001" (#54 re-review A2).
+    Number.isInteger(data?.year) &&
+    data.year >= 1000 &&
+    data.year <= 9999;
   const [scenario, setScenario] = useState("low_shock");
 
   const scenarioData = getScenario(data, scenario);
@@ -662,7 +666,7 @@ export default function ScenariosTab({ data }) {
               Applied to
             </dt>
             <dd>
-              the whole of <strong>{data.year}-{String(data.year + 1).slice(2)}</strong>, as a flat annual amount. No
+              the whole of <strong>{data.year}-{String((data.year + 1) % 100).padStart(2, "0")}</strong>, as a flat annual amount. No
               time path, quarterly profile or shock duration is modelled, so a
               scenario that a source describes as a few months of disruption is
               being held for twelve.

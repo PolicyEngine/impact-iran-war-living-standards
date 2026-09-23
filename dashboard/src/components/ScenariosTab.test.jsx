@@ -74,6 +74,11 @@ describe("scenario baseline callout", () => {
       ["metadata.pre_conflict_baseline.pump_price_period", "   "],
       ["year", "2027"],
       ["year", 2027.5],
+      ["year", 0],
+      ["year", -1],
+      ["year", 99],
+      ["year", 999],
+      ["year", 10000],
     ];
 
     for (const [path, value] of invalid) {
