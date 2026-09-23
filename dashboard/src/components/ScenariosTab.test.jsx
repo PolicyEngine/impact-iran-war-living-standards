@@ -62,6 +62,34 @@ describe("scenario baseline callout", () => {
     expect(text).not.toContain("What the percentages are measured from");
   });
 
+  it("omits the callout for present but invalid values", () => {
+    // Presence checks let "£oops", "NaNp a litre" and "2027-271" publish
+    // (#54 re-review A2). Each of these is present and non-null.
+    const invalid = [
+      ["metadata.pre_conflict_baseline.petrol_pence_per_litre", "oops"],
+      ["metadata.pre_conflict_baseline.energy_price_cap_old_basis_gbp", "1641"],
+      ["metadata.pre_conflict_baseline.diesel_pence_per_litre", 0],
+      ["metadata.pre_conflict_baseline.energy_price_cap_new_basis_gbp", -5],
+      ["metadata.pre_conflict_baseline.petrol_pence_per_litre", NaN],
+      ["metadata.pre_conflict_baseline.pump_price_period", "   "],
+      ["year", "2027"],
+      ["year", 2027.5],
+    ];
+
+    for (const [path, value] of invalid) {
+      const broken = structuredClone(data);
+      const parts = path.split(".");
+      let node = broken;
+      for (const part of parts.slice(0, -1)) node = node[part];
+      node[parts[parts.length - 1]] = value;
+
+      const text = textOf(broken);
+      expect(text, `${path}=${String(value)} still rendered the callout`)
+        .not.toContain("What the percentages are measured from");
+      expect(text).not.toContain("NaN");
+    }
+  });
+
   it("follows the data rather than hard-coding the anchors", () => {
     const moved = structuredClone(data);
     moved.metadata.pre_conflict_baseline.petrol_pence_per_litre = 200.4;

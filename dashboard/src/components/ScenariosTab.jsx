@@ -527,14 +527,21 @@ export default function ScenariosTab({ data }) {
   const preConflict = data?.metadata?.pre_conflict_baseline;
   // Every field the baseline callout renders. A missing one would publish a
   // blank or NaN rather than failing, so the block is omitted instead (#54).
-  const baselineCalloutReady = [
-    preConflict?.energy_price_cap_old_basis_gbp,
-    preConflict?.energy_price_cap_new_basis_gbp,
-    preConflict?.pump_price_period,
-    preConflict?.petrol_pence_per_litre,
-    preConflict?.diesel_pence_per_litre,
-    data?.year,
-  ].every((value) => value !== undefined && value !== null && value !== "");
+  // Presence is not enough: a present but invalid value still publishes
+  // "£oops", "NaNp" or "2027-271" (#54 re-review A2). Numbers must be finite
+  // and positive, the period a non-blank string, the year a real integer.
+  const isPositiveNumber = (value) =>
+    typeof value === "number" && Number.isFinite(value) && value > 0;
+  const baselineCalloutReady =
+    [
+      preConflict?.energy_price_cap_old_basis_gbp,
+      preConflict?.energy_price_cap_new_basis_gbp,
+      preConflict?.petrol_pence_per_litre,
+      preConflict?.diesel_pence_per_litre,
+    ].every(isPositiveNumber) &&
+    typeof preConflict?.pump_price_period === "string" &&
+    preConflict.pump_price_period.trim() !== "" &&
+    Number.isInteger(data?.year);
   const [scenario, setScenario] = useState("low_shock");
 
   const scenarioData = getScenario(data, scenario);
