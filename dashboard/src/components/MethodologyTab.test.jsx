@@ -108,8 +108,12 @@ describe("MethodologyTab headline figures", () => {
         8.88,
         `–£${sensitivity.uprating_shortfall_bn_high}bn`,
       ],
-      // Both operands of the regressivity ratio, one at a time.
+      // ALL FOUR operands of the regressivity ratio, one at a time. Moving
+      // only two let a formula with the other two hard-coded still pass
+      // (#53 re-review A2).
       ["scenarios.central_shock.by_quintile.0.mean_impact", 50, `${ratioOfMeans}×`],
+      ["baseline.by_quintile.0.mean_net_income", 250000, `${ratioOfMeans}×`],
+      ["scenarios.central_shock.by_quintile.4.mean_impact", 90000, `${ratioOfMeans}×`],
       ["baseline.by_quintile.4.mean_net_income", 20000, `${ratioOfMeans}×`],
     ];
 
