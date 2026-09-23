@@ -424,7 +424,7 @@ _SCENARIO_SOURCES = {
                 "about 2% pre-conflict, i.e. roughly +1pp. Raised to 1.3pp so "
                 "the adder is not below the first-round direct effect of this "
                 "scenario's own price assumptions, which ONS 2026 basket "
-                "weights put at 1.23pp (#37)"
+                f"weights put at {direct_cpi_pp('low_shock')}pp (#37)"
             ),
             "uncertainty_range": [1.0, 1.8],
         },
@@ -507,7 +507,8 @@ _SCENARIO_SOURCES = {
                 "pre-conflict, whose +1pp to +3pp range was previously taken "
                 "at the middle. Raised to 3.1pp because the first-round "
                 "direct effect of this scenario's own price assumptions is "
-                "3.06pp on ONS 2026 basket weights, above the whole of that "
+                f"{direct_cpi_pp('central_shock')}pp on ONS 2026 basket "
+                "weights, above the whole of that "
                 "range — so the midpoint was not merely conservative but "
                 "arithmetically impossible without a demand-destruction "
                 "offset the derivation never stated (#37)"
@@ -582,9 +583,10 @@ _SCENARIO_SOURCES = {
             "reference_period": "two-month $140/bbl case",
             "derivation": (
                 "The source reports a 5.8% peak in WORLD CPI, roughly 3pp "
-                "above its baseline. Set to 5.3pp for UK CPI: the "
+                "above its baseline. Set to 5.3pp for UK CPI, at the "
                 "first-round direct effect of this scenario's own price "
-                "assumptions on ONS 2026 basket weights, which exceeds the "
+                f"assumptions, which ONS 2026 basket weights put at "
+                f"{direct_cpi_pp('severe_shock')}pp and which exceeds the "
                 "~3pp world figure, consistent with the UK's higher energy "
                 "import share. The source "
                 "does not publish a UK figure, and does not report the 7.7% "

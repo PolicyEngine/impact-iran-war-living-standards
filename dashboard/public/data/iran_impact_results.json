@@ -2,9 +2,9 @@
   "year": 2027,
   "current_energy_cap": 1663,
   "provenance": {
-    "generated_at": "2026-09-23T14:02:11+00:00",
-    "git_revision": "2a5596a8b0d2026c39846996e9a7e10b10d35315",
-    "git_dirty": false,
+    "generated_at": "2026-09-23T14:43:36+00:00",
+    "git_revision": "50ede7a3d92bfad636c0d7848fab0c43494f5c61",
+    "git_dirty": true,
     "packages": {
       "policyengine": "5.3.0",
       "policyengine-uk": "2.90.2",
@@ -13,7 +13,7 @@
       "microdf-python": "1.3.0"
     },
     "source_hashes": {
-      "config.py": "179698f80bbc6ae8c60ebffc43f23b707f9cc440d3e5a2fe1a44e36cda2442ca",
+      "config.py": "e4377559aea25a657eb0a0cab3a1e4722399681c025d133ed06b93852b2b2aae",
       "pipeline.py": "bcae022258090aa260b9946850465962e7dfcfa6503d5f3fc4fb851461e0d6dc",
       "provenance.py": "956bcc99b7f9c3f796082ae19edf451310fe6e14ea93deda16bc665455d75541",
       "pyproject.toml": "67312746740b8f3fa072d28c40905bfcdbbdc7d089876e5c6814ac0f102cb161",
@@ -3628,7 +3628,7 @@
             "source_url": "https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/june-2026",
             "source_date": "2026-06-01",
             "reference_period": "2026-27",
-            "derivation": "Bank of England June 2026 projection of CPI near 3% against about 2% pre-conflict, i.e. roughly +1pp. Raised to 1.3pp so the adder is not below the first-round direct effect of this scenario's own price assumptions, which ONS 2026 basket weights put at 1.23pp (#37)",
+            "derivation": "Bank of England June 2026 projection of CPI near 3% against about 2% pre-conflict, i.e. roughly +1pp. Raised to 1.3pp so the adder is not below the first-round direct effect of this scenario's own price assumptions, which ONS 2026 basket weights put at 1.28pp (#37)",
             "uncertainty_range": [
               1.0,
               1.8
@@ -3703,7 +3703,7 @@
             "source_url": "https://niesr.ac.uk/blog/possible-effects-uk-inflation-2026-us-iran-conflict",
             "source_date": "2026-06-01",
             "reference_period": "2026-27",
-            "derivation": "NIESR central case of about 4% CPI against about 2% pre-conflict, whose +1pp to +3pp range was previously taken at the middle. Raised to 3.1pp because the first-round direct effect of this scenario's own price assumptions is 3.06pp on ONS 2026 basket weights, above the whole of that range \u2014 so the midpoint was not merely conservative but arithmetically impossible without a demand-destruction offset the derivation never stated (#37)",
+            "derivation": "NIESR central case of about 4% CPI against about 2% pre-conflict, whose +1pp to +3pp range was previously taken at the middle. Raised to 3.1pp because the first-round direct effect of this scenario's own price assumptions is 3.09pp on ONS 2026 basket weights, above the whole of that range \u2014 so the midpoint was not merely conservative but arithmetically impossible without a demand-destruction offset the derivation never stated (#37)",
             "uncertainty_range": [
               2.5,
               4.1
@@ -3778,7 +3778,7 @@
             "source_url": "https://www.oxfordeconomics.com/resource/iran-war-scenarios-the-oil-price-that-breaks-parts-of-the-economy/",
             "source_date": "2026-06-01",
             "reference_period": "two-month $140/bbl case",
-            "derivation": "The source reports a 5.8% peak in WORLD CPI, roughly 3pp above its baseline. Set to 5.3pp for UK CPI: the first-round direct effect of this scenario's own price assumptions on ONS 2026 basket weights, which exceeds the ~3pp world figure, consistent with the UK's higher energy import share. The source does not publish a UK figure, and does not report the 7.7% this file previously attributed to it",
+            "derivation": "The source reports a 5.8% peak in WORLD CPI, roughly 3pp above its baseline. Set to 5.3pp for UK CPI, at the first-round direct effect of this scenario's own price assumptions, which ONS 2026 basket weights put at 5.23pp and which exceeds the ~3pp world figure, consistent with the UK's higher energy import share. The source does not publish a UK figure, and does not report the 7.7% this file previously attributed to it",
             "uncertainty_range": [
               4.5,
               7.0

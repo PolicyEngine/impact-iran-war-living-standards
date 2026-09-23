@@ -359,3 +359,41 @@ def test_the_petrol_diesel_split_matches_the_ons_table_it_cites():
     )
     petrol_share = config.PETROL_WEEKLY_SPEND / total
     assert petrol_share == pytest.approx(0.61, abs=0.01)
+
+
+def test_the_low_fuel_value_is_the_observed_weighted_composite():
+    """Low claims "the observed change" for the combined ONS category, so it
+    must be the expenditure-weighted composite of the observed petrol and
+    diesel moves, not the petrol figure alone (#55 review A4).
+
+    That was the original defect: 20% was petrol's 19.5% applied to a
+    category that is 39% diesel.
+    """
+    observed = config.fuel_rise_pct_at_brent(config.BRENT_AUG_2026)
+    assert config.SCENARIOS["low_shock"]["fuel_pct"] == pytest.approx(
+        observed, abs=0.5
+    ), (
+        "low no longer sits at the observed composite "
+        f"({observed}%); it may have reverted to the petrol-only figure"
+    )
+    # And it must sit between the two products' observed moves.
+    assert (
+        config.observed_petrol_rise_pct()
+        < observed
+        < config.observed_diesel_rise_pct()
+    )
+
+
+def test_every_cpi_derivation_quotes_its_own_computed_floor():
+    """The registry prose ships publicly, so a floor it quotes must be the
+    floor the model computes (#55 review A1)."""
+    for key in config.SCENARIOS:
+        derivation = config.PARAMETER_REGISTRY[key]["parameters"][
+            "cpi_increase_pp"
+        ]["derivation"]
+        floor = config.direct_cpi_pp(key)
+        if "on ONS 2026 basket" in derivation or "ONS 2026 basket" in derivation:
+            assert f"{floor}pp" in derivation, (
+                f"{key}: the CPI derivation quotes a floor that is no longer "
+                f"{floor}pp"
+            )
