@@ -45,7 +45,7 @@ jobs:
           diff -u <(grep -v '^#' requirements.lock) <(grep -v '^#' /tmp/requirements.lock)
 
   dashboard:
-    name: Dashboard lint and build
+    name: Dashboard lint, test and build
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -57,5 +57,7 @@ jobs:
         run: bun install --frozen-lockfile
       - name: Lint
         run: bun run lint
+      - name: Test
+        run: bun run test
       - name: Build
         run: bun run build
