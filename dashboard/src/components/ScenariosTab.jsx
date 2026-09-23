@@ -525,6 +525,16 @@ function DistributionalBreakdown({ quintileData, countryData, tenureData, hhType
 
 export default function ScenariosTab({ data }) {
   const preConflict = data?.metadata?.pre_conflict_baseline;
+  // Every field the baseline callout renders. A missing one would publish a
+  // blank or NaN rather than failing, so the block is omitted instead (#54).
+  const baselineCalloutReady = [
+    preConflict?.energy_price_cap_old_basis_gbp,
+    preConflict?.energy_price_cap_new_basis_gbp,
+    preConflict?.pump_price_period,
+    preConflict?.petrol_pence_per_litre,
+    preConflict?.diesel_pence_per_litre,
+    data?.year,
+  ].every((value) => value !== undefined && value !== null && value !== "");
   const [scenario, setScenario] = useState("low_shock");
 
   const scenarioData = getScenario(data, scenario);
@@ -603,7 +613,11 @@ export default function ScenariosTab({ data }) {
       <ScenarioSelector data={data} selected={scenario} onSelect={setScenario} />
 
       {/* What each percentage is measured FROM, and applied TO. The two
-          channels use different reference periods, so state both (#42). */}
+          channels use different reference periods, so state both (#42).
+          Rendered only when every field is present: optional chaining stops
+          an exception but would still publish "£ on…" or "NaNp a litre"
+          (#54 review A2). */}
+      {baselineCalloutReady && (
       <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-600">
         <div className="font-semibold text-slate-900">
           What the percentages are measured from
@@ -614,10 +628,15 @@ export default function ScenariosTab({ data }) {
               Energy spending
             </dt>
             <dd>
-              measured from the <strong>pre-conflict April&ndash;June 2026</strong>{" "}
-              level &mdash; an Ofgem cap of &pound;
-              {preConflict?.energy_price_cap_new_basis_gbp?.toLocaleString("en-GB")} on
-              the typical-consumption basis.
+              measured from each household&apos;s own modelled gas and electricity
+              spending at pre-conflict levels. For context only, Ofgem&apos;s
+              published cap for April&ndash;June 2026 was &pound;
+              {preConflict?.energy_price_cap_old_basis_gbp?.toLocaleString("en-GB")} on
+              the typical-consumption basis then in use; the &pound;
+              {preConflict?.energy_price_cap_new_basis_gbp?.toLocaleString("en-GB")}{" "}
+              like-for-like figure on the basis Ofgem adopted in July is{" "}
+              <em>inferred by this study</em>, not published. No cap value enters the
+              calculation.
             </dd>
           </div>
           <div className="sm:flex sm:gap-3">
@@ -636,7 +655,7 @@ export default function ScenariosTab({ data }) {
               Applied to
             </dt>
             <dd>
-              the whole of <strong>2027-28</strong>, as a flat annual amount. No
+              the whole of <strong>{data.year}-{String(data.year + 1).slice(2)}</strong>, as a flat annual amount. No
               time path, quarterly profile or shock duration is modelled, so a
               scenario that a source describes as a few months of disruption is
               being held for twelve.
@@ -644,6 +663,7 @@ export default function ScenariosTab({ data }) {
           </div>
         </dl>
       </div>
+      )}
 
       {/* ================================================================ */}
       {/* HEADLINE METRICS                                                  */}
