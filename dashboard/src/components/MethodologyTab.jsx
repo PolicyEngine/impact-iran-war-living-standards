@@ -41,10 +41,12 @@ export default function MethodologyTab({ data }) {
           <div>
             <dt className="font-semibold text-slate-900">How</dt>
             <dd className="mt-1 leading-6 text-slate-600">
-              Three price channels applied to each household&apos;s own modelled
-              spending across {data.baseline.n_households_m}m households in
-              PolicyEngine UK. A fourth figure, the uprating shortfall, is reported
-              separately and deliberately not added.
+              Three price channels across {data.baseline.n_households_m}m households
+              in PolicyEngine UK. Energy uses each household&apos;s own modelled gas
+              and electricity spending; <strong>fuel and food use ONS spending
+              averages by gross-income decile</strong>, not household-level figures.
+              A fourth figure, the uprating shortfall, is reported separately and
+              deliberately not added.
             </dd>
           </div>
           <div>
