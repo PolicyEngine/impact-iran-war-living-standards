@@ -524,6 +524,7 @@ function DistributionalBreakdown({ quintileData, countryData, tenureData, hhType
 }
 
 export default function ScenariosTab({ data }) {
+  const preConflict = data?.metadata?.pre_conflict_baseline;
   const [scenario, setScenario] = useState("low_shock");
 
   const scenarioData = getScenario(data, scenario);
@@ -600,6 +601,49 @@ export default function ScenariosTab({ data }) {
         description="These are stress tests, not forecasts: none is a prediction of what will happen, and “central” does not mean most likely. Choose a conflict path to see its estimated impact on UK households over the 2027-28 tax year. Each applies a different magnitude of energy, fuel, food and inflation shock, sustained for 12 months."
       />
       <ScenarioSelector data={data} selected={scenario} onSelect={setScenario} />
+
+      {/* What each percentage is measured FROM, and applied TO. The two
+          channels use different reference periods, so state both (#42). */}
+      <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-600">
+        <div className="font-semibold text-slate-900">
+          What the percentages are measured from
+        </div>
+        <dl className="mt-3 space-y-2">
+          <div className="sm:flex sm:gap-3">
+            <dt className="shrink-0 font-medium text-slate-700 sm:w-40">
+              Energy spending
+            </dt>
+            <dd>
+              measured from the <strong>pre-conflict April&ndash;June 2026</strong>{" "}
+              level &mdash; an Ofgem cap of &pound;
+              {preConflict?.energy_price_cap_new_basis_gbp?.toLocaleString("en-GB")} on
+              the typical-consumption basis.
+            </dd>
+          </div>
+          <div className="sm:flex sm:gap-3">
+            <dt className="shrink-0 font-medium text-slate-700 sm:w-40">
+              Fuel prices
+            </dt>
+            <dd>
+              measured from a <strong>different period</strong> &mdash;{" "}
+              {preConflict?.pump_price_period} &mdash; at{" "}
+              {Math.round(preConflict?.petrol_pence_per_litre)}p a litre for petrol
+              and {Math.round(preConflict?.diesel_pence_per_litre)}p for diesel.
+            </dd>
+          </div>
+          <div className="sm:flex sm:gap-3">
+            <dt className="shrink-0 font-medium text-slate-700 sm:w-40">
+              Applied to
+            </dt>
+            <dd>
+              the whole of <strong>2027-28</strong>, as a flat annual amount. No
+              time path, quarterly profile or shock duration is modelled, so a
+              scenario that a source describes as a few months of disruption is
+              being held for twelve.
+            </dd>
+          </div>
+        </dl>
+      </div>
 
       {/* ================================================================ */}
       {/* HEADLINE METRICS                                                  */}
