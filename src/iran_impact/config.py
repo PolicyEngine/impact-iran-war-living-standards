@@ -207,13 +207,13 @@ SCENARIOS = {
     "central_shock": {
         "cap_increase_pct": 45,
         "cpi_increase_pp": 3.1,
-        "fuel_pct": 45,
+        "fuel_pct": 40,
         "food_increase_pct": 4.0,
     },
     "severe_shock": {
         "cap_increase_pct": 90,
         "cpi_increase_pp": 5.3,
-        "fuel_pct": 65,
+        "fuel_pct": 55,
         "food_increase_pct": 6.5,
     },
 }
@@ -383,17 +383,21 @@ _SCENARIO_SOURCES = {
             "source_date": "2026-07-01",
             "reference_period": "2026 calendar year",
             "derivation": (
-                "Observed pump slope applied to the Goldman >$100/bbl case, "
-                "on the same basis as the severe scenario so one registry "
-                "gives one basis for this channel. DESNZ pump prices moved "
-                "135.04p to 161.42p between November 2025 and August 2026 "
-                "while Brent moved from about $64 to about $85, a slope of "
-                "~1.26p/litre per $1/bbl that embeds this episode's "
+                "Observed pump slope applied to the Goldman extended-closure "
+                "case, on the same basis as the severe scenario so one "
+                "registry gives one basis for this channel. DESNZ monthly "
+                "mean pump prices moved 135.04p to 161.42p between November "
+                "2025 and August 2026, while EIA monthly mean Brent moved "
+                "$63.80 to $91.08 over the same months: a slope of "
+                "~0.97p/litre per $1/bbl, which embeds this episode's "
                 "refining-margin widening as well as crude cost. On that "
-                "slope +45% corresponds to about 196p, i.e. Brent near "
-                "$112 - inside Goldman's >$100/bbl extended-closure case. "
-                "Commons Library CBP-10601 informed the pass-through "
-                "framing; the coefficient is this study's"
+                "slope Goldman's $120 Q3 figure gives about 189p, or +40%. "
+                "Both series are monthly means, so the periods match; an "
+                "earlier version of this derivation paired monthly pump "
+                "means with a single-day Brent spot and overstated the slope "
+                "by about 30% (#52 review C2). Commons Library CBP-10601 "
+                "informed the pass-through framing; the coefficient is this "
+                "study's"
             ),
             "uncertainty_range": [30, 60],
         },
@@ -451,23 +455,25 @@ _SCENARIO_SOURCES = {
             "source_date": "2026-06-01",
             "reference_period": "two-month $140/bbl case",
             "derivation": (
-                "Oil-to-pump pass-through applied to Brent of $140/bbl. The "
-                "source publishes no pump-price figure, so the pass-through "
-                "is this study's. The extrapolation used is the OBSERVED "
-                "pump slope, not a crude-only pass-through: DESNZ pump prices "
-                "moved 135.04p to 161.42p between November 2025 and August "
-                "2026 while Brent moved from about $64 to about $85, i.e. "
-                "~1.26p/litre per $1/bbl. That slope embeds this episode's "
-                "refining-margin widening as well as the crude cost, which is "
-                "why it exceeds the ~0.56p/litre that $1/bbl contributes "
+                "Oil-to-pump pass-through applied to Brent of $140/bbl. "
+                "The source publishes no pump-price figure, so the "
+                "pass-through is this study's. The extrapolation used is the "
+                "OBSERVED pump slope, not a crude-only pass-through: DESNZ "
+                "monthly mean pump prices moved 135.04p to 161.42p between "
+                "November 2025 and August 2026, while EIA monthly mean Brent "
+                "moved $63.80 to $91.08 over the same months, i.e. "
+                "~0.97p/litre per $1/bbl. That slope embeds this episode's "
+                "refining-margin widening as well as the crude cost, which "
+                "is why it exceeds the ~0.56p/litre that $1/bbl contributes "
                 "through crude and VAT alone (fuel duty is a fixed "
                 "52.95p/litre and damps the percentage rise). Carried "
-                "forward, $140/bbl gives roughly 231p/litre, about +71% on "
-                "135.04p, and $115/bbl about 199p, or +47%. Set at 65%, "
-                "below the $140 reading, since sustaining that level across "
-                "a full year is a stronger assumption than reaching it. The previous +80% required a further ~45p/"
-                "litre refining-margin blowout that neither this file nor "
-                "the source asserted"
+                "forward, $140/bbl gives about 209p/litre, or +55% on "
+                "135.04p, which is where this is set. Both series are "
+                "monthly means, so the periods match; an earlier version "
+                "paired monthly pump means with a single-day Brent spot, "
+                "overstating the slope by about 30% and putting $140 at "
+                "+71%, which is how this figure came to sit above the case "
+                "it cites (#52 review C2)"
             ),
             "uncertainty_range": [50, 80],
         },

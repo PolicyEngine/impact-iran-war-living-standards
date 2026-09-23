@@ -102,18 +102,21 @@ def test_committed_headlines_match_the_reviewed_values(results):
     assert baseline["households_with_no_transport_fuel_spend"] == 7_197_973
 
     central = results["scenarios"]["central_shock"]["summary"]
-    assert central["mean_net_impact"] == 1_324
-    assert central["total_impact_bn"] == 41.8
-    assert central["n_newly_below_anchored_line"] == 1_505_723
+    assert central["mean_net_impact"] == 1_272
+    assert central["total_impact_bn"] == 40.2
+    assert central["n_newly_below_anchored_line"] == 1_275_745
 
     package = results["policy_responses"]["central_shock"]["combined"]
+    # Central fell to £1,272 / £40.2bn when the oil-to-pump slope was
+    # corrected (#52 review C2): the published slope paired monthly pump
+    # means with a single-day Brent spot and was 30% too steep.
     # Raised from 54.10 in the PR that corrected the CPI adders (#37): the
     # accelerated-uprating leg is sized by cpi_increase_pp, so central's
     # adder moving 2.5pp -> 3.1pp lifts that leg £2.13bn -> £2.64bn. The
     # household cost totals are untouched, since the adder never enters them.
     assert package["gross_outlay_bn"] == 54.62
-    assert package["household_protection_bn"] == 37.08
-    assert package["residual_impact_bn"] == 4.72
+    assert package["household_protection_bn"] == 36.56
+    assert package["residual_impact_bn"] == 3.62
 
 
 def test_the_policy_accounting_closes_in_the_committed_output(results):
