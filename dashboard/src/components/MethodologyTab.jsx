@@ -14,10 +14,75 @@ export default function MethodologyTab({ data }) {
   // `data` is a static import, so the block is always present; read it
   // unconditionally rather than re-hard-coding every value in a fallback.
   const baseline = data.metadata.pre_conflict_baseline;
+  // Read the evaluated ranges rather than restating them, so the prose cannot
+  // drift from the model the way the hard-coded figures here could (#37).
+  const sensitivity = data.scenarios?.central_shock?.sensitivity;
   const scenarioOptions = getScenarioOptions(data);
 
   return (
     <div className="space-y-8">
+      {/* ================================================================ */}
+      {/* AT A GLANCE                                                       */}
+      {/* ================================================================ */}
+      <div className="section-card">
+        <div className="eyebrow text-slate-500">At a glance</div>
+        <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">
+          The short version
+        </h2>
+        <dl className="mt-4 grid gap-x-8 gap-y-4 text-sm sm:grid-cols-2">
+          <div>
+            <dt className="font-semibold text-slate-900">What it estimates</dt>
+            <dd className="mt-1 leading-6 text-slate-600">
+              What energy, motor fuel and food price rises from the Middle East
+              conflict cost UK households in the {data.year}-{String(data.year + 1).slice(2)} tax
+              year, and who bears them.
+            </dd>
+          </div>
+          <div>
+            <dt className="font-semibold text-slate-900">How</dt>
+            <dd className="mt-1 leading-6 text-slate-600">
+              Three price channels applied to each household&apos;s own modelled
+              spending across {data.baseline.n_households_m}m households in
+              PolicyEngine UK. A fourth figure, the uprating shortfall, is reported
+              separately and deliberately not added.
+            </dd>
+          </div>
+          <div>
+            <dt className="font-semibold text-slate-900">Central result</dt>
+            <dd className="mt-1 leading-6 text-slate-600">
+              <strong>
+                &pound;{data.scenarios.central_shock.summary.mean_net_impact.toLocaleString("en-GB")}
+              </strong>{" "}
+              per household a year,{" "}
+              <strong>&pound;{data.scenarios.central_shock.summary.total_impact_bn}bn</strong>{" "}
+              in total.
+            </dd>
+          </div>
+          <div>
+            <dt className="font-semibold text-slate-900">Who it hits</dt>
+            <dd className="mt-1 leading-6 text-slate-600">
+              The poorest fifth lose roughly{" "}
+              <strong>
+                {Math.round(
+                  data.scenarios.central_shock.by_quintile[0].mean_impact /
+                    data.baseline.by_quintile[0].mean_net_income /
+                    (data.scenarios.central_shock.by_quintile[4].mean_impact /
+                      data.baseline.by_quintile[4].mean_net_income),
+                )}
+                &times;
+              </strong>{" "}
+              the share of income the richest fifth lose, even though the cash
+              amounts run the other way.
+            </dd>
+          </div>
+        </dl>
+        <p className="mt-5 rounded-lg bg-amber-50 p-4 text-sm leading-7 text-slate-700">
+          <strong>These are stress tests, not forecasts.</strong> Each scenario holds a
+          set of prices at a stated level for a full year. Nothing here predicts which
+          path the conflict takes, or when.
+        </p>
+      </div>
+
       {/* ================================================================ */}
       {/* OVERVIEW                                                          */}
       {/* ================================================================ */}
@@ -52,24 +117,30 @@ export default function MethodologyTab({ data }) {
         <h3 className="mt-2 text-lg font-semibold text-slate-900">
           Scenario assumptions
         </h3>
-        <p className="mt-4 rounded-lg bg-amber-50 p-4 text-sm leading-7 text-slate-700">
-          <strong>These are stress tests, not forecasts.</strong> Each scenario applies a
-          set of price assumptions as full-year 2027-28 amounts, including where the
-          cited source describes a 2026 disruption lasting a few months. No time path,
-          quarterly profile or shock duration is modelled. The pass-through coefficients
-          and lags implied by the percentages below are judgements anchored to the cited
-          sources, not equations derived from them. The results file records the
-          definition, source, reference period, derivation and range of every parameter
-          under <code>parameters.registry</code>. It also evaluates those ranges through
-          the model under <code>scenarios[*].sensitivity</code>, moving every parameter
-          to one end at once and one at a time. On the central scenario the
-          total ranges from &pound;27.7bn to &pound;55.9bn against a &pound;41.8bn
-          point estimate. That spread is not a confidence interval: the ranges are
-          judgements about the price assumptions, not sampling distributions. The CPI
-          assumption moves the uprating compensation shortfall
-          (&pound;0.85bn&ndash;&pound;2.55bn) rather than the household cost, since it
-          is deliberately not a cost channel &mdash; each parameter records which
-          aggregates it affects.
+        <p className="mt-4 text-sm leading-7 text-slate-600">
+          <strong>What the percentages are.</strong> Each scenario applies a set of
+          price assumptions as full-year 2027-28 amounts, including where the cited
+          source describes a 2026 disruption lasting a few months. No time path,
+          quarterly profile or shock duration is modelled, and the pass-through
+          coefficients implied below are judgements anchored to the cited sources
+          rather than equations derived from them.
+        </p>
+        <p className="mt-4 text-sm leading-7 text-slate-600">
+          <strong>How uncertain.</strong> Every parameter carries a range, and the
+          model is re-run across them. On the central scenario the total runs from{" "}
+          &pound;{sensitivity?.combined?.total_impact_bn_low}bn to{" "}
+          &pound;{sensitivity?.combined?.total_impact_bn_high}bn against a{" "}
+          &pound;{data.scenarios.central_shock.summary.total_impact_bn}bn point
+          estimate. That spread is <em>not</em> a confidence interval: the ranges are
+          judgements about prices, not sampling distributions.
+        </p>
+        <p className="mt-4 text-sm leading-7 text-slate-600">
+          <strong>Where CPI acts.</strong> The CPI assumption moves the uprating
+          compensation shortfall (&pound;{sensitivity?.combined?.uprating_shortfall_bn_low}bn&ndash;&pound;{sensitivity?.combined?.uprating_shortfall_bn_high}bn),
+          not the household cost, because it is deliberately not a cost channel.
+          Every parameter records which aggregates it affects, under{" "}
+          <code>parameters.registry</code> and{" "}
+          <code>scenarios[*].sensitivity</code> in the results file.
         </p>
         <p className="mt-4 text-sm leading-7 text-slate-600">
           The energy percentages below are measured from the <strong>pre-conflict
