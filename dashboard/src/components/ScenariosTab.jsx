@@ -422,7 +422,7 @@ function DistributionalBreakdown({ quintileData, countryData, tenureData, hhType
                 className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
                   m.id === "share" && !shareAvailable
                     ? "cursor-not-allowed bg-slate-100 text-slate-400"
-                    : measure === m.id
+                    : (showingShare ? "share" : "cash") === m.id
                       ? "bg-slate-800 text-white"
                       : "bg-slate-100 text-slate-600 hover:bg-slate-200"
                 }`}

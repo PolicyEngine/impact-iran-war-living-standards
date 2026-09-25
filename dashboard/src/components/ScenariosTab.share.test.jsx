@@ -4,7 +4,7 @@
  * In a separate file from ScenariosTab.test.jsx so this PR and #54 do not
  * collide on the same path; they cover different components' behaviour.
  */
-import { render } from "@testing-library/react";
+import { fireEvent, render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import ScenariosTab from "./ScenariosTab";
@@ -49,5 +49,59 @@ describe("share-of-income mode", () => {
         expect(row.mean_net_income).toBeGreaterThan(0);
       }
     }
+  });
+
+  it("shows Cash as active after falling back from a chosen Share view", () => {
+    // The bug needs Share to have been CHOSEN and then become unavailable:
+    // measure stays "share", showingShare is false, and the styling tested
+    // the stored preference, so neither control described the cash chart
+    // being rendered (#57 review A2). Start on a view where Share works,
+    // select it, then move to a view where it does not.
+    const broken = structuredClone(data);
+    for (const scenario of Object.values(broken.scenarios)) {
+      scenario.by_quintile[0].mean_net_income = 0; // quintile unusable
+    }
+    const { container } = render(<ScenariosTab data={broken} />);
+    const find = (label) =>
+      [...container.querySelectorAll("button")].find(
+        (b) => b.textContent === label,
+      );
+
+    fireEvent.click(find("Country"));
+    expect(find("Share of income").disabled).toBe(false);
+    fireEvent.click(find("Share of income"));
+    expect(find("Share of income").className).toContain("bg-slate-800");
+
+    // Now to the breakdown that cannot support it.
+    fireEvent.click(find("Income quintile"));
+    const cash = find("Cash cost");
+    const share = find("Share of income");
+    expect(share.disabled).toBe(true);
+    expect(cash.className, "cash is displayed but not shown as active")
+      .toContain("bg-slate-800");
+    expect(share.className).not.toContain("bg-slate-800");
+  });
+
+  it("re-enables Share when the user moves to a view that supports it", () => {
+    // Availability is per breakdown, so it must be recomputed on a view
+    // change rather than fixed at first render (#57 review A2).
+    const broken = structuredClone(data);
+    for (const scenario of Object.values(broken.scenarios)) {
+      scenario.by_quintile[0].mean_net_income = 0; // quintile unusable
+    }
+    const { container } = render(<ScenariosTab data={broken} />);
+    const find = (label) =>
+      [...container.querySelectorAll("button")].find(
+        (b) => b.textContent === label,
+      );
+
+    expect(find("Share of income").disabled).toBe(true);
+
+    const country = find("Country");
+    expect(country, "no Country view button").toBeTruthy();
+    fireEvent.click(country);
+
+    // by_country still has usable denominators, so Share returns.
+    expect(find("Share of income").disabled).toBe(false);
   });
 });
