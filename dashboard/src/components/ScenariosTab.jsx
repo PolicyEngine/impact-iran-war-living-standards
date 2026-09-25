@@ -524,6 +524,30 @@ function DistributionalBreakdown({ quintileData, countryData, tenureData, hhType
 }
 
 export default function ScenariosTab({ data }) {
+  const preConflict = data?.metadata?.pre_conflict_baseline;
+  // Every field the baseline callout renders. A missing one would publish a
+  // blank or NaN rather than failing, so the block is omitted instead (#54).
+  // Presence is not enough: a present but invalid value still publishes
+  // "£oops", "NaNp" or "2027-271" (#54 re-review A2). Numbers must be finite
+  // and positive, the period a non-blank string, the year a real integer.
+  const isPositiveNumber = (value) =>
+    typeof value === "number" && Number.isFinite(value) && value > 0;
+  const baselineCalloutReady =
+    [
+      preConflict?.energy_price_cap_old_basis_gbp,
+      preConflict?.energy_price_cap_new_basis_gbp,
+      preConflict?.petrol_pence_per_litre,
+      preConflict?.diesel_pence_per_litre,
+    ].every(isPositiveNumber) &&
+    typeof preConflict?.pump_price_period === "string" &&
+    preConflict.pump_price_period.trim() !== "" &&
+    typeof preConflict?.energy_cap_period === "string" &&
+    preConflict.energy_cap_period.trim() !== "" &&
+    // A plausible four-digit year: Number.isInteger alone renders "0-",
+    // "99-0" and "10000-001" (#54 re-review A2).
+    Number.isInteger(data?.year) &&
+    data.year >= 1000 &&
+    data.year <= 9999;
   const [scenario, setScenario] = useState("low_shock");
 
   const scenarioData = getScenario(data, scenario);
@@ -600,6 +624,60 @@ export default function ScenariosTab({ data }) {
         description="These are stress tests, not forecasts: none is a prediction of what will happen, and “central” does not mean most likely. Choose a conflict path to see its estimated impact on UK households over the 2027-28 tax year. Each applies a different magnitude of energy, fuel, food and inflation shock, sustained for 12 months."
       />
       <ScenarioSelector data={data} selected={scenario} onSelect={setScenario} />
+
+      {/* What each percentage is measured FROM, and applied TO. The two
+          channels use different reference periods, so state both (#42).
+          Rendered only when every field is present: optional chaining stops
+          an exception but would still publish "£ on…" or "NaNp a litre"
+          (#54 review A2). */}
+      {baselineCalloutReady && (
+      <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-600">
+        <div className="font-semibold text-slate-900">
+          What the percentages are measured from
+        </div>
+        <dl className="mt-3 space-y-2">
+          <div className="sm:flex sm:gap-3">
+            <dt className="shrink-0 font-medium text-slate-700 sm:w-40">
+              Energy spending
+            </dt>
+            <dd>
+              measured from each household&apos;s own modelled gas and electricity
+              spending at pre-conflict levels ({preConflict?.energy_cap_period}).
+              For context only, Ofgem&apos;s published cap for that period was
+              &pound;
+              {preConflict?.energy_price_cap_old_basis_gbp?.toLocaleString("en-GB")} on
+              the typical-consumption basis then in use; the &pound;
+              {preConflict?.energy_price_cap_new_basis_gbp?.toLocaleString("en-GB")}{" "}
+              like-for-like figure on the basis Ofgem adopted in July is{" "}
+              <em>inferred by this study</em>, not published. No cap value enters the
+              calculation.
+            </dd>
+          </div>
+          <div className="sm:flex sm:gap-3">
+            <dt className="shrink-0 font-medium text-slate-700 sm:w-40">
+              Fuel prices
+            </dt>
+            <dd>
+              measured from a <strong>different period</strong> &mdash;{" "}
+              {preConflict?.pump_price_period} &mdash; at{" "}
+              {Math.round(preConflict?.petrol_pence_per_litre)}p a litre for petrol
+              and {Math.round(preConflict?.diesel_pence_per_litre)}p for diesel.
+            </dd>
+          </div>
+          <div className="sm:flex sm:gap-3">
+            <dt className="shrink-0 font-medium text-slate-700 sm:w-40">
+              Applied to
+            </dt>
+            <dd>
+              the whole of <strong>{data.year}-{String((data.year + 1) % 100).padStart(2, "0")}</strong>, as a flat annual amount. No
+              time path, quarterly profile or shock duration is modelled, so a
+              scenario that a source describes as a few months of disruption is
+              being held for twelve.
+            </dd>
+          </div>
+        </dl>
+      </div>
+      )}
 
       {/* ================================================================ */}
       {/* HEADLINE METRICS                                                  */}
