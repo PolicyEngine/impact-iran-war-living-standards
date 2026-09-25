@@ -448,9 +448,16 @@ def test_no_text_calls_the_april_june_period_pre_conflict():
     import re
     from pathlib import Path
 
+    sources = [Path(config.__file__).with_name(n) for n in ("config.py", "pipeline.py")]
+    # The rendered copy too: fixing only the generated strings left the
+    # methodology tab saying "pre-conflict April-June 2026" (#55 review A10).
+    components = Path(config.__file__).parents[2] / "dashboard" / "src"
+    sources += sorted(components.rglob("*.jsx"))
+
     offenders = []
-    for name in ("config.py", "pipeline.py"):
-        source = (Path(config.__file__).with_name(name)).read_text()
+    for path in sources:
+        name = path.name
+        source = path.read_text()
         for match in re.finditer(r"pre-conflict[^\"']{0,40}April", source):
             offenders.append(f"{name}: ...{match.group(0)}...")
         for match in re.finditer(r"April[^\"']{0,60}immediately before the conflict\b(?! began)", source):

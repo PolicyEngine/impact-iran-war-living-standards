@@ -145,8 +145,10 @@ export default function MethodologyTab({ data }) {
           <code>scenarios[*].sensitivity</code> in the results file.
         </p>
         <p className="mt-4 text-sm leading-7 text-slate-600">
-          The energy percentages below are measured from the <strong>pre-conflict
-          April&ndash;June 2026 level</strong>: an Ofgem cap of &pound;{baseline.energy_price_cap_new_basis_gbp.toLocaleString("en-GB")} on
+          The energy percentages below are measured from the{" "}
+          <strong>April&ndash;June 2026 level</strong> &mdash; the cap Ofgem announced on
+          25 February 2026, immediately before the conflict began, though the period it
+          covers is not itself pre-conflict. That was an Ofgem cap of &pound;{baseline.energy_price_cap_new_basis_gbp.toLocaleString("en-GB")} on
           the new typical-consumption basis (&pound;{baseline.energy_price_cap_old_basis_gbp.toLocaleString("en-GB")} on
           the pre-July basis, which is PolicyEngine UK&apos;s own cap parameter). Pump
           prices are anchored to a different period &mdash; {baseline.pump_price_period} &mdash;
