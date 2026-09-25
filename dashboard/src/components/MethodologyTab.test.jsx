@@ -127,6 +127,22 @@ describe("MethodologyTab headline figures", () => {
       const { container } = render(<MethodologyTab data={moved} />);
       const text = container.textContent.replace(/\s+/g, " ");
       expect(text, `${path} appears to be hard-coded`).not.toContain(oldPhrase);
+
+      // Asserting only that the old value vanished admits a wrong rounding
+      // rule: ceil renders 1× for every ratio mutation below, so all four
+      // pass while the formatting semantics are wrong (#53 re-review A3).
+      // Recompute the expected ratio from the moved fixture and require it.
+      if (path.includes("by_quintile")) {
+        const expected = Math.round(
+          moved.scenarios.central_shock.by_quintile[0].mean_impact /
+            moved.baseline.by_quintile[0].mean_net_income /
+            (moved.scenarios.central_shock.by_quintile[4].mean_impact /
+              moved.baseline.by_quintile[4].mean_net_income),
+        );
+        expect(text, `${path} does not render the round() ratio`).toContain(
+          `${expected}×`,
+        );
+      }
     }
   });
 });
