@@ -397,3 +397,41 @@ def test_every_cpi_derivation_quotes_its_own_computed_floor():
                 f"{key}: the CPI derivation quotes a floor that is no longer "
                 f"{floor}pp"
             )
+
+
+# Each source's own publication date, so an entry cannot cite one source and
+# date it from another (#55 review A6).
+SOURCE_DATES = {
+    "kpler.com": "2026-03-10",
+    "oxfordeconomics.com": "2026-03-13",
+}
+
+
+def test_each_entry_is_dated_by_the_source_it_cites():
+    """A registry entry that points at one source and carries another's date
+    sends an auditor to the wrong page. That happened when a metadata edit
+    crossed parameters (#55 review A6)."""
+    mismatched = []
+    for key, scenario in config.PARAMETER_REGISTRY.items():
+        for name, parameter in scenario["parameters"].items():
+            for host, published in SOURCE_DATES.items():
+                if host in parameter["source_url"]:
+                    if parameter["source_date"] != published:
+                        mismatched.append(
+                            f"{key}.{name} cites {host} but is dated "
+                            f"{parameter['source_date']}, not {published}"
+                        )
+    assert not mismatched, mismatched
+
+
+def test_the_gas_driven_cap_entries_do_not_cite_an_oil_reference_period():
+    """The energy channel is gas-driven — crude enters the cap nowhere (#44).
+    A cap entry labelled with a Brent case contradicts its own derivation."""
+    for key in ("central_shock", "severe_shock"):
+        period = config.PARAMETER_REGISTRY[key]["parameters"][
+            "cap_increase_pct"
+        ]["reference_period"]
+        assert "bbl" not in period and "Brent" not in period, (
+            f"{key}: the cap reference_period names an oil case ({period!r}), "
+            "but the cap derivation says crude enters it nowhere"
+        )

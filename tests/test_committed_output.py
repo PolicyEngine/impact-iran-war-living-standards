@@ -382,3 +382,43 @@ def test_the_robustness_text_quotes_no_figure_it_cannot_keep_in_sync(results):
         assert not offenders, (
             f"robustness text quotes figures it cannot keep in sync: {offenders}"
         )
+
+
+def test_the_recorded_provenance_revision_is_reachable(results):
+    """A clean-tree result must name a commit a reviewer can actually resolve.
+
+    Regenerating, committing, then rebasing strands the recorded SHA: it was
+    valid when written and unreachable afterwards, so the provenance block
+    cannot lead anyone back to the source that produced the file (#55 review
+    A7). Skipped where full history is unavailable, e.g. a shallow clone.
+    """
+    import subprocess
+
+    revision = results["provenance"]["git_revision"]
+    assert revision
+
+    shallow = subprocess.run(
+        ["git", "rev-parse", "--is-shallow-repository"],
+        capture_output=True,
+        text=True,
+    )
+    if shallow.returncode != 0 or shallow.stdout.strip() == "true":
+        pytest.skip("full git history unavailable")
+
+    exists = subprocess.run(
+        ["git", "cat-file", "-e", f"{revision}^{{commit}}"],
+        capture_output=True,
+    )
+    assert exists.returncode == 0, (
+        f"the provenance records {revision[:12]}, which does not resolve. "
+        "Regenerate after the final rebase so the recorded commit is reachable."
+    )
+
+    reachable = subprocess.run(
+        ["git", "merge-base", "--is-ancestor", revision, "HEAD"],
+        capture_output=True,
+    )
+    assert reachable.returncode == 0, (
+        f"the provenance records {revision[:12]}, which is not an ancestor of "
+        "HEAD — it was probably orphaned by a rebase after regeneration."
+    )

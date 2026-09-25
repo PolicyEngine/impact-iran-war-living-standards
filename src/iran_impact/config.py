@@ -318,10 +318,10 @@ _PARAMETER_DEFINITIONS = {
     "cap_increase_pct": {
         "definition": (
             "Percentage increase in household domestic gas and electricity "
-            "expenditure relative to its own stated pre-conflict "
-            "baseline: April-June 2026 for energy, and the Autumn Budget "
-            "2025 pump prices for fuel. The two differ, which each "
-            "parameter's reference_period records"
+            "expenditure, measured from the pre-conflict April-June 2026 "
+            "level. The fuel channel uses a different baseline, the Autumn "
+            "Budget 2025 pump prices; each parameter's reference_period "
+            "states its own"
         ),
         "unit": "per cent",
         "geography": "United Kingdom",
@@ -444,8 +444,8 @@ _SCENARIO_SOURCES = {
         ),
         "cap_increase_pct": {
             "source_url": KPLER_HORMUZ_LNG,
-            "source_date": "2026-07-01",
-            "reference_period": "Goldman Q3 2026 Brent of $120/bbl",
+            "source_date": "2026-03-10",  # Kpler LNG page
+            "reference_period": "NBP/TTF sustained at ~2x pre-conflict",
             "derivation": (
                 "Judgement: NBP/TTF gas sustained at roughly twice "
                 "pre-conflict levels across the 2027-28 cap assessment "
@@ -531,8 +531,8 @@ _SCENARIO_SOURCES = {
         ),
         "cap_increase_pct": {
             "source_url": KPLER_HORMUZ_LNG,
-            "source_date": "2026-03-13",  # Oxford page datePublished
-            "reference_period": "two-month $140/bbl case",
+            "source_date": "2026-03-10",  # Kpler LNG page
+            "reference_period": "NBP/TTF sustained at ~3x pre-conflict",
             "derivation": (
                 "Judgement: NBP/TTF gas sustained at roughly triple "
                 "pre-conflict levels across the 2027-28 assessment windows "
@@ -577,7 +577,7 @@ _SCENARIO_SOURCES = {
         },
         "food_increase_pct": {
             "source_url": OXFORD_ECONOMICS,
-            "source_date": "2026-06-01",
+            "source_date": "2026-03-13",  # Oxford page datePublished
             "reference_period": "2027-28",
             "derivation": (
                 "Judgement: food price response under a global recession "
