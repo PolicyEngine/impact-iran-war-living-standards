@@ -437,33 +437,39 @@ def test_the_gas_driven_cap_entries_do_not_cite_an_oil_reference_period():
         )
 
 
-def test_no_text_calls_the_april_june_period_pre_conflict():
+def test_april_june_is_never_tied_to_the_conflict_without_the_announcement():
     """Ofgem announced the April-June 2026 cap on 25 February; the conflict
-    began in late February. So the ANNOUNCEMENT is pre-conflict, not the
-    period it covers.
+    began in late February. So the ANNOUNCEMENT precedes the conflict, and
+    the period it covers does not.
 
-    I have written this the wrong way round four times in different words
-    (#37, #54 A1, #55 A8), so it is a test rather than a note.
+    I wrote this the wrong way round four times (#37, #54 A1, #55 A8, A10),
+    so it is a test. An earlier version tried to match the wrong phrasings
+    with regexes; that could not tell whether "before the conflict" attached
+    to the period or to the announcement, so it missed real variants and
+    flagged a valid reordered one (#55 review A10).
+
+    This asserts the positive instead: wherever April-June 2026 appears near
+    the conflict, the announcement must appear too.
     """
     import re
     from pathlib import Path
 
     sources = [Path(config.__file__).with_name(n) for n in ("config.py", "pipeline.py")]
-    # The rendered copy too: fixing only the generated strings left the
-    # methodology tab saying "pre-conflict April-June 2026" (#55 review A10).
-    components = Path(config.__file__).parents[2] / "dashboard" / "src"
-    sources += sorted(components.rglob("*.jsx"))
+    sources += sorted((Path(config.__file__).parents[2] / "dashboard" / "src").rglob("*.jsx"))
 
+    period = re.compile(r"April[-–—\s]*(?:June|&ndash;June)\s*2026", re.I)
     offenders = []
     for path in sources:
-        name = path.name
-        source = path.read_text()
-        for match in re.finditer(r"pre-conflict[^\"']{0,40}April", source):
-            offenders.append(f"{name}: ...{match.group(0)}...")
-        for match in re.finditer(r"April[^\"']{0,60}immediately before the conflict\b(?! began)", source):
-            offenders.append(f"{name}: ...{match.group(0)}...")
-
+        text = path.read_text()
+        for match in period.finditer(text):
+            window = text[max(0, match.start() - 200) : match.end() + 200]
+            if not re.search(r"\bconflict\b", window, re.I):
+                continue
+            if not re.search(r"announc", window, re.I):
+                offenders.append(
+                    f"{path.name}: ...{window[max(0,match.start()-60-max(0,match.start()-200)):][:150]}..."
+                )
     assert not offenders, (
-        "these describe the April-June period itself as pre-conflict; the "
-        f"announcement is what precedes the conflict: {offenders}"
+        "these tie April-June 2026 to the conflict without saying the cap was "
+        f"ANNOUNCED before it; the period itself is not pre-conflict: {offenders}"
     )
