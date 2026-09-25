@@ -2,9 +2,9 @@
   "year": 2027,
   "current_energy_cap": 1663,
   "provenance": {
-    "generated_at": "2026-09-25T10:40:38+00:00",
-    "git_revision": "18af9e6cab01746cf4e072d6170c5c16a142a744",
-    "git_dirty": true,
+    "generated_at": "2026-09-25T10:41:15+00:00",
+    "git_revision": "39a5cc1305bba45c8cad56fab3124c40275545b0",
+    "git_dirty": false,
     "packages": {
       "policyengine": "5.3.0",
       "policyengine-uk": "2.90.2",
