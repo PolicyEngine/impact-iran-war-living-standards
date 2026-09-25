@@ -316,17 +316,24 @@ function DistributionalBreakdown({ quintileData, countryData, tenureData, hhType
   const [measure, setMeasure] = useState("cash");
   const asShare = measure === "share";
 
+  // A row is convertible only with a finite positive denominator. Returning
+  // the row unchanged, as an earlier version did, left pound values to be
+  // formatted as percentages: energy £100 rendered as "100.00%", and a
+  // denominator of -1 as "-10000.00%" (#57 review A1).
+  const canShare = (r) =>
+    typeof r.mean_net_income === "number" &&
+    Number.isFinite(r.mean_net_income) &&
+    r.mean_net_income > 0;
+
+  const shareable = (rows) => rows.every(canShare);
+
   const toShare = (rows) =>
-    rows.map((r) => {
-      const income = r.mean_net_income;
-      if (!income) return r;
-      return {
-        ...r,
-        energy: (r.energy / income) * 100,
-        fuel: (r.fuel / income) * 100,
-        food: (r.food / income) * 100,
-      };
-    });
+    rows.map((r) => ({
+      ...r,
+      energy: (r.energy / r.mean_net_income) * 100,
+      fuel: (r.fuel / r.mean_net_income) * 100,
+      food: (r.food / r.mean_net_income) * 100,
+    }));
 
   const labelled = (rows, key, labels) =>
     rows
@@ -365,7 +372,11 @@ function DistributionalBreakdown({ quintileData, countryData, tenureData, hhType
     chartHeight = Math.max(300, sortedHhType.length * 80 + 60);
   }
 
-  if (asShare) chartData = toShare(chartData);
+  // If any row lacks a usable denominator, stay in cash rather than publish
+  // pounds labelled as percentages.
+  const shareAvailable = chartData.length > 0 && shareable(chartData);
+  const showingShare = asShare && shareAvailable;
+  if (showingShare) chartData = toShare(chartData);
 
   const hasData = chartData.length > 0;
 
@@ -402,10 +413,18 @@ function DistributionalBreakdown({ quintileData, countryData, tenureData, hhType
             ].map((m) => (
               <button
                 key={m.id}
+                disabled={m.id === "share" && !shareAvailable}
+                title={
+                  m.id === "share" && !shareAvailable
+                    ? "Share of income is unavailable: this breakdown has no usable income figure"
+                    : undefined
+                }
                 className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
-                  measure === m.id
-                    ? "bg-slate-800 text-white"
-                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                  m.id === "share" && !shareAvailable
+                    ? "cursor-not-allowed bg-slate-100 text-slate-400"
+                    : measure === m.id
+                      ? "bg-slate-800 text-white"
+                      : "bg-slate-100 text-slate-600 hover:bg-slate-200"
                 }`}
                 onClick={() => setMeasure(m.id)}
               >
@@ -429,14 +448,14 @@ function DistributionalBreakdown({ quintileData, countryData, tenureData, hhType
                     tickLine={false}
                     axisLine={false}
                     tickFormatter={(v) =>
-                      asShare ? `${v.toFixed(1)}%` : `\u00A3${v}`
+                      showingShare ? `${v.toFixed(1)}%` : `\u00A3${v}`
                     }
                   />
                   <Tooltip
                     content={
                       <CustomTooltip
                         formatter={(v) =>
-                          asShare ? `${v.toFixed(2)}%` : formatCurrency(v)
+                          showingShare ? `${v.toFixed(2)}%` : formatCurrency(v)
                         }
                       />
                     }
@@ -468,7 +487,7 @@ function DistributionalBreakdown({ quintileData, countryData, tenureData, hhType
                     type="number"
                     tick={AXIS_STYLE}
                     tickLine={false}
-                    tickFormatter={(v) => (asShare ? `${v.toFixed(1)}%` : `\u00A3${v}`)}
+                    tickFormatter={(v) => (showingShare ? `${v.toFixed(1)}%` : `\u00A3${v}`)}
                   />
                   <YAxis
                     type="category"
@@ -478,7 +497,7 @@ function DistributionalBreakdown({ quintileData, countryData, tenureData, hhType
                     axisLine={false}
                     width={180}
                   />
-                  <Tooltip content={<CustomTooltip formatter={(v) => (asShare ? `${v.toFixed(2)}%` : formatCurrency(v))} />} />
+                  <Tooltip content={<CustomTooltip formatter={(v) => (showingShare ? `${v.toFixed(2)}%` : formatCurrency(v))} />} />
                   <Legend />
                   {CHANNEL_STACK.map((ch) => (
                     <Bar
