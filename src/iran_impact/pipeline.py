@@ -811,6 +811,7 @@ def _by_quintile(data, impacts):
         rows.append({
             "quintile": q,
             "mean_impact": round(weighted_mean(net, weights, mask)),
+            "mean_net_income": round(weighted_mean(income, weights, mask)),
             "mean_impact_pct": round(_mean_impact_pct(net, income, weights, mask), 1),
             # The mean is sensitive to the bottom income tail; the median is
             # not. Quote both, or the gradient rather than the level (#46).
@@ -848,6 +849,10 @@ def _grouped_impacts(data, impacts, group_key, label_key):
             label_key: group_str,
             "mean_impact": round(weighted_mean(net, weights, mask)),
             "mean_impact_pct": round(_mean_impact_pct(net, income, weights, mask), 1),
+            # Group mean income, so the dashboard can show each channel as a
+            # share of income on the ratio-of-means basis rather than only in
+            # cash. The mean-of-ratios above cannot be decomposed by channel.
+            "mean_net_income": round(weighted_mean(income, weights, mask)),
             "energy": round(weighted_mean(impacts["energy_shock"], weights, mask)),
             "fuel": round(weighted_mean(impacts["fuel_shock"], weights, mask)),
             "food": round(weighted_mean(impacts["food_shock"], weights, mask)),
