@@ -2,9 +2,9 @@
   "year": 2027,
   "current_energy_cap": 1663,
   "provenance": {
-    "generated_at": "2026-09-23T14:44:32+00:00",
-    "git_revision": "d0c125f7836a529fb0abbc7f95ae08b453ae5ef7",
-    "git_dirty": false,
+    "generated_at": "2026-09-25T09:06:18+00:00",
+    "git_revision": "ec3e657dbeb2ed2e2ee86afa2ac74699a7fa5883",
+    "git_dirty": true,
     "packages": {
       "policyengine": "5.3.0",
       "policyengine-uk": "2.90.2",
@@ -13,7 +13,7 @@
       "microdf-python": "1.3.0"
     },
     "source_hashes": {
-      "config.py": "e4377559aea25a657eb0a0cab3a1e4722399681c025d133ed06b93852b2b2aae",
+      "config.py": "2ba4c81f70036f32e3bc56348165c458dd22a3a1d791cb5f3c4c1cb094adb5a8",
       "pipeline.py": "bcae022258090aa260b9946850465962e7dfcfa6503d5f3fc4fb851461e0d6dc",
       "provenance.py": "956bcc99b7f9c3f796082ae19edf451310fe6e14ea93deda16bc665455d75541",
       "pyproject.toml": "67312746740b8f3fa072d28c40905bfcdbbdc7d089876e5c6814ac0f102cb161",
@@ -3568,7 +3568,7 @@
         "parameters": {
           "cap_increase_pct": {
             "value": 15,
-            "definition": "Percentage increase in household domestic gas and electricity expenditure relative to the pre-conflict early-2026 baseline",
+            "definition": "Percentage increase in household domestic gas and electricity expenditure relative to its own stated pre-conflict baseline: April-June 2026 for energy, and the Autumn Budget 2025 pump prices for fuel. The two differ, which each parameter's reference_period records",
             "unit": "per cent",
             "geography": "United Kingdom",
             "applies_to": "each household's own baseline gas + electricity expenditure",
@@ -3584,14 +3584,14 @@
           },
           "fuel_pct": {
             "value": 22,
-            "definition": "Percentage increase in the pump price of petrol and diesel relative to the pre-conflict early-2026 baseline",
+            "definition": "Percentage increase in household spending on the combined ONS category (petrol, diesel and other motor oils), measured from the Autumn Budget 2025 pump prices this file records. The energy channel uses a different baseline, April-June 2026; each parameter's reference_period states its own",
             "unit": "per cent",
             "geography": "United Kingdom",
             "applies_to": "modelled household transport-fuel expenditure (ONS Table A6)",
             "lag": "none \u2014 applied as a full-year 2027-28 amount",
             "source_url": "https://commonslibrary.parliament.uk/research-briefings/cbp-10601/",
             "source_date": "2026-08-04",
-            "reference_period": "August 2026 spot prices",
+            "reference_period": "November 2025 to August 2026 monthly means",
             "derivation": "Observed change in the combined ONS fuel category between Autumn Budget 2025 and August 2026, on DESNZ monthly means: petrol rose 19.5% and diesel 26.5%, which on the FYE2024 Table A1 expenditure shares of 61% petrol and 39% diesel is a 22% composite. Set to that. An earlier version used the petrol figure alone, which understates a category that is 39% diesel (#55 review C1)",
             "supporting_source_urls": [
               "https://www.gov.uk/government/statistics/weekly-road-fuel-prices",
@@ -3641,14 +3641,14 @@
         "parameters": {
           "cap_increase_pct": {
             "value": 45,
-            "definition": "Percentage increase in household domestic gas and electricity expenditure relative to the pre-conflict early-2026 baseline",
+            "definition": "Percentage increase in household domestic gas and electricity expenditure relative to its own stated pre-conflict baseline: April-June 2026 for energy, and the Autumn Budget 2025 pump prices for fuel. The two differ, which each parameter's reference_period records",
             "unit": "per cent",
             "geography": "United Kingdom",
             "applies_to": "each household's own baseline gas + electricity expenditure",
             "lag": "none \u2014 applied as a full-year 2027-28 amount",
             "source_url": "https://www.kpler.com/blog/hormuz-strait-disruptions-trigger-a-price-spike-in-ttf-and-asian-lng-while-middle-east-exports-come-to-a-halt",
             "source_date": "2026-07-01",
-            "reference_period": "2026 calendar year",
+            "reference_period": "Goldman Q3 2026 Brent of $120/bbl",
             "derivation": "Judgement: NBP/TTF gas sustained at roughly twice pre-conflict levels across the 2027-28 cap assessment windows, as the Hormuz closure halts Qatari LNG (~19% of global LNG exports). Wholesale is ~40-45% of the cap, so a doubling of wholesale implies ~+45% on the retail bill. Anchored to gas rather than to Brent because Ofgem's wholesale allowance is built from NBP gas and UK baseload power forwards and crude oil enters it nowhere; in this episode oil flows recovered to about two-thirds of pre-war levels while LNG stayed halted, so an oil anchor would if anything understate the gas shock. The pass-through coefficient and hedging lag remain judgements",
             "uncertainty_range": [
               30,
@@ -3657,14 +3657,14 @@
           },
           "fuel_pct": {
             "value": 46,
-            "definition": "Percentage increase in the pump price of petrol and diesel relative to the pre-conflict early-2026 baseline",
+            "definition": "Percentage increase in household spending on the combined ONS category (petrol, diesel and other motor oils), measured from the Autumn Budget 2025 pump prices this file records. The energy channel uses a different baseline, April-June 2026; each parameter's reference_period states its own",
             "unit": "per cent",
             "geography": "United Kingdom",
             "applies_to": "modelled household transport-fuel expenditure (ONS Table A6)",
             "lag": "none \u2014 applied as a full-year 2027-28 amount",
             "source_url": "https://commonslibrary.parliament.uk/research-briefings/cbp-10601/",
             "source_date": "2026-07-01",
-            "reference_period": "2026 calendar year",
+            "reference_period": "Goldman Q3 2026 Brent of $120/bbl",
             "derivation": "Expenditure-weighted pump response to the Goldman extended-closure case, on the same basis as the severe scenario so one registry gives one basis for this channel. Petrol and diesel are derived separately and combined by their shares of ONS Family Spending FYE2024 Table A1 lines 7.2.2.1 and 7.2.2.2 (\u00a312.10 petrol, \u00a37.70 diesel of the \u00a319.80 category this model already uses), because A6 gives one combined figure and the two products moved very differently. DESNZ monthly mean pump prices moved 135.04p to 161.42p for petrol and 143.82p to 181.98p for diesel between November 2025 and August 2026, while EIA monthly mean Brent moved $63.80 to $91.08 over the same months: slopes of ~0.97 and ~1.40p/litre per $1/bbl. At Goldman's $120 Q3 figure that gives +40% petrol, +55% diesel and a +46% composite. Both series are monthly means, so the periods match; earlier versions paired monthly pump means with a single-day Brent spot, and then applied a petrol-only slope to the combined category (#52 review C2, #55 review C1). Commons Library CBP-10601 informed the pass-through framing; the coefficients are this study's",
             "supporting_source_urls": [
               "https://www.gov.uk/government/statistics/weekly-road-fuel-prices",
@@ -3716,13 +3716,13 @@
         "parameters": {
           "cap_increase_pct": {
             "value": 90,
-            "definition": "Percentage increase in household domestic gas and electricity expenditure relative to the pre-conflict early-2026 baseline",
+            "definition": "Percentage increase in household domestic gas and electricity expenditure relative to its own stated pre-conflict baseline: April-June 2026 for energy, and the Autumn Budget 2025 pump prices for fuel. The two differ, which each parameter's reference_period records",
             "unit": "per cent",
             "geography": "United Kingdom",
             "applies_to": "each household's own baseline gas + electricity expenditure",
             "lag": "none \u2014 applied as a full-year 2027-28 amount",
             "source_url": "https://www.kpler.com/blog/hormuz-strait-disruptions-trigger-a-price-spike-in-ttf-and-asian-lng-while-middle-east-exports-come-to-a-halt",
-            "source_date": "2026-06-01",
+            "source_date": "2026-03-13",
             "reference_period": "two-month $140/bbl case",
             "derivation": "Judgement: NBP/TTF gas sustained at roughly triple pre-conflict levels across the 2027-28 assessment windows (~+200% wholesale on a ~40-45% share), under the Oxford Economics escalation case. Not derived from a published cap projection. For precedent, the announced October 2022 cap of \u00a33,549 was +178% year-on-year on October 2021's \u00a31,277 under a comparable gas-supply shock, so a tripling of wholesale is within recent experience. Anchored to gas rather than Brent, for the reason given on the central scenario",
             "uncertainty_range": [
@@ -3732,13 +3732,13 @@
           },
           "fuel_pct": {
             "value": 62,
-            "definition": "Percentage increase in the pump price of petrol and diesel relative to the pre-conflict early-2026 baseline",
+            "definition": "Percentage increase in household spending on the combined ONS category (petrol, diesel and other motor oils), measured from the Autumn Budget 2025 pump prices this file records. The energy channel uses a different baseline, April-June 2026; each parameter's reference_period states its own",
             "unit": "per cent",
             "geography": "United Kingdom",
             "applies_to": "modelled household transport-fuel expenditure (ONS Table A6)",
             "lag": "none \u2014 applied as a full-year 2027-28 amount",
             "source_url": "https://www.oxfordeconomics.com/resource/iran-war-scenarios-the-oil-price-that-breaks-parts-of-the-economy/",
-            "source_date": "2026-06-01",
+            "source_date": "2026-03-13",
             "reference_period": "two-month $140/bbl case",
             "derivation": "Expenditure-weighted pump response at Brent of $140/bbl. The source publishes no pump-price figure, so the pass-through is this study's. Petrol and diesel are derived separately from DESNZ monthly means against EIA monthly mean Brent (slopes ~0.97 and ~1.40p/litre per $1/bbl) and combined by their ONS Family Spending FYE2024 Table A1 expenditure shares, 61% petrol and 39% diesel. At $140 that gives +55% petrol, +74% diesel and a +62% composite, which is where this is set. Diesel cracks widened far more than gasoline in this episode, which is why a petrol-only rate understated the combined category (#55 review C1). The slopes embed that widening as well as crude cost, which is why they exceed the ~0.56p/litre that $1/bbl contributes through crude and VAT alone; fuel duty is a fixed 52.95p/litre and damps the percentage rise",
             "supporting_source_urls": [
@@ -3776,7 +3776,7 @@
             "applies_to": "CPI-linked benefit income, excluding the state pension",
             "lag": "none \u2014 applied as a full-year 2027-28 amount",
             "source_url": "https://www.oxfordeconomics.com/resource/iran-war-scenarios-the-oil-price-that-breaks-parts-of-the-economy/",
-            "source_date": "2026-06-01",
+            "source_date": "2026-03-13",
             "reference_period": "two-month $140/bbl case",
             "derivation": "The source reports a 5.8% peak in WORLD CPI, roughly 3pp above its baseline. Set to 5.3pp for UK CPI, at the first-round direct effect of this scenario's own price assumptions, which ONS 2026 basket weights put at 5.23pp and which exceeds the ~3pp world figure, consistent with the UK's higher energy import share. The source does not publish a UK figure, and does not report the 7.7% this file previously attributed to it",
             "uncertainty_range": [

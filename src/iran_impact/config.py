@@ -318,7 +318,10 @@ _PARAMETER_DEFINITIONS = {
     "cap_increase_pct": {
         "definition": (
             "Percentage increase in household domestic gas and electricity "
-            "expenditure relative to the pre-conflict early-2026 baseline"
+            "expenditure relative to its own stated pre-conflict "
+            "baseline: April-June 2026 for energy, and the Autumn Budget "
+            "2025 pump prices for fuel. The two differ, which each "
+            "parameter's reference_period records"
         ),
         "unit": "per cent",
         "geography": "United Kingdom",
@@ -327,8 +330,11 @@ _PARAMETER_DEFINITIONS = {
     },
     "fuel_pct": {
         "definition": (
-            "Percentage increase in the pump price of petrol and diesel "
-            "relative to the pre-conflict early-2026 baseline"
+            "Percentage increase in household spending on the combined ONS "
+            "category (petrol, diesel and other motor oils), measured from "
+            "the Autumn Budget 2025 pump prices this file records. The "
+            "energy channel uses a different baseline, April-June 2026; "
+            "each parameter's reference_period states its own"
         ),
         "unit": "per cent",
         "geography": "United Kingdom",
@@ -389,7 +395,9 @@ _SCENARIO_SOURCES = {
         "fuel_pct": {
             "source_url": COMMONS_FUEL_PRICES,
             "source_date": "2026-08-04",
-            "reference_period": "August 2026 spot prices",
+            "reference_period": (
+                "November 2025 to August 2026 monthly means"
+            ),
             "derivation": (
                 "Observed change in the combined ONS fuel category between "
                 "Autumn Budget 2025 and August 2026, on DESNZ monthly means: "
@@ -437,7 +445,7 @@ _SCENARIO_SOURCES = {
         "cap_increase_pct": {
             "source_url": KPLER_HORMUZ_LNG,
             "source_date": "2026-07-01",
-            "reference_period": "2026 calendar year",
+            "reference_period": "Goldman Q3 2026 Brent of $120/bbl",
             "derivation": (
                 "Judgement: NBP/TTF gas sustained at roughly twice "
                 "pre-conflict levels across the 2027-28 cap assessment "
@@ -457,7 +465,7 @@ _SCENARIO_SOURCES = {
         "fuel_pct": {
             "source_url": COMMONS_FUEL_PRICES,
             "source_date": "2026-07-01",
-            "reference_period": "2026 calendar year",
+            "reference_period": "Goldman Q3 2026 Brent of $120/bbl",
             "derivation": (
                 "Expenditure-weighted pump response to the Goldman "
                 "extended-closure case, on the same basis as the severe "
@@ -523,7 +531,7 @@ _SCENARIO_SOURCES = {
         ),
         "cap_increase_pct": {
             "source_url": KPLER_HORMUZ_LNG,
-            "source_date": "2026-06-01",
+            "source_date": "2026-03-13",  # Oxford page datePublished
             "reference_period": "two-month $140/bbl case",
             "derivation": (
                 "Judgement: NBP/TTF gas sustained at roughly triple "
@@ -540,7 +548,7 @@ _SCENARIO_SOURCES = {
         },
         "fuel_pct": {
             "source_url": OXFORD_ECONOMICS,
-            "source_date": "2026-06-01",
+            "source_date": "2026-03-13",  # Oxford page datePublished
             "reference_period": "two-month $140/bbl case",
             "derivation": (
                 "Expenditure-weighted pump response at Brent of $140/bbl. "
@@ -579,7 +587,7 @@ _SCENARIO_SOURCES = {
         },
         "cpi_increase_pp": {
             "source_url": OXFORD_ECONOMICS,
-            "source_date": "2026-06-01",
+            "source_date": "2026-03-13",  # Oxford page datePublished
             "reference_period": "two-month $140/bbl case",
             "derivation": (
                 "The source reports a 5.8% peak in WORLD CPI, roughly 3pp "
