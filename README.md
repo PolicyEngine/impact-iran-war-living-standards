@@ -12,9 +12,9 @@ Calibrated to conditions as of August 2026 (Brent ~$85/bbl after a ~$109 peak). 
 
 | Scenario | Energy bills | Fuel price | Food price | CPI |
 |---|---|---|---|---|
-| Low | +15% | +20% | +2.0% | +1.3pp |
-| Central | +45% | +45% | +4.0% | +3.1pp |
-| High | +90% | +65% | +6.5% | +5.3pp |
+| Low | +15% | +22% | +2.0% | +1.3pp |
+| Central | +45% | +46% | +4.0% | +3.1pp |
+| High | +90% | +62% | +6.5% | +5.3pp |
 
 The Ofgem cap (£1,663 for July–September 2026 on the new typical-consumption basis, £1,723 for October–December) is reported as context and **does not enter the calculation**: the energy percentage is applied to each household's own baseline gas and electricity expenditure in the microdata. The model does not represent unit rates, standing charges, the gas/electricity split, region, payment method, quarterly cap periods or fixed-tariff coverage.
 
@@ -40,17 +40,17 @@ All three scenarios, 2027-28, across 31.6 million weighted households. Regenerat
 
 | | Low | Central | High |
 |---|---:|---:|---:|
-| Mean cost per household | £517 | **£1,324** | £2,335 |
-| Total cost | £16.3bn | **£41.8bn** | £73.7bn |
-| People newly below the anchored poverty line | 359,642 | **1,505,723** | 2,386,354 |
-| Mean of per-household cost/income ratios | 1.7% | **4.5%** | 8.0% |
-| Total cost ÷ total net income | 0.9% | **2.3%** | 4.1% |
+| Mean cost per household | £538 | **£1,334** | £2,304 |
+| Total cost | £17.0bn | **£42.1bn** | £72.7bn |
+| People newly below the anchored poverty line | 379,109 | **1,508,923** | 2,337,905 |
+| Mean of per-household cost/income ratios | 1.8% | **4.5%** | 7.9% |
+| Total cost ÷ total net income | 0.9% | **2.3%** | 4.0% |
 
 The last two rows are different statistics, not two estimates of one thing. The mean of ratios weights every household equally and so is pulled up by households with very low incomes; it is the figure the dashboard reports as `mean_net_impact_pct`, and it excludes households with non-positive income, for whom the ratio is undefined. The aggregate ratio is total cost divided by total income.
 
-Central-scenario cost by channel, per household: energy £713, fuel £464, food £147. The uprating compensation shortfall is a further £84, reported separately rather than added (see above).
+Central-scenario cost by channel, per household: energy £713, fuel £474, food £147. The uprating compensation shortfall is a further £84, reported separately rather than added (see above).
 
-The shock is regressive on either basis. Under the central scenario the poorest fifth of households bear a cost equal to 4.2% of their mean net income against 1.4% for the richest fifth (10.2% against 1.7% as a mean of ratios), even though the cash amounts run the other way — £974 against £1,598.
+The shock is regressive on either basis. Under the central scenario the poorest fifth of households bear a cost equal to 4.2% of their mean net income against 1.5% for the richest fifth (10.3% against 1.7% as a mean of ratios), even though the cash amounts run the other way — £981 against £1,613.
 
 Only the central column's cost, total and poverty count, plus the baseline aggregates and the combined package, are pinned as a regression test in `tests/test_committed_output.py`. The other figures here are read from the generated output and are not test-guarded.
 

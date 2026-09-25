@@ -129,6 +129,70 @@ def direct_cpi_pp(scenario_key):
     )
 
 
+# Petrol and diesel move differently, and ONS Table A6's fuel category is
+# "Petrol, diesel and other motor oils" — one combined figure that the model
+# multiplies by one percentage. Applying a petrol-only rate to it understates
+# the shock for diesel, whose cracks widened far more in this episode (#55
+# review C1).
+#
+# The split comes from the SAME ONS release and year as the £19.80 combined
+# mean the model already uses: Family Spending FYE2024 Workbook 1 Table A1,
+# sub-lines 7.2.2.1 and 7.2.2.2. It is an expenditure split, not a proxy.
+PETROL_WEEKLY_SPEND = 12.10  # ONS A1 FYE2024, 7.2.2.1
+DIESEL_WEEKLY_SPEND = 7.70  # ONS A1 FYE2024, 7.2.2.2
+OTHER_MOTOR_OILS_WEEKLY_SPEND = 0.10  # 7.2.2.3, half a percent
+# The sub-lines sum to £19.90 against A6's £19.80, because ONS rounds each to
+# 10p. Only the shares are used, and the gap moves them by under half a point.
+
+# Observed monthly means, both series on the same months so the periods match.
+BRENT_NOV_2025 = 63.80  # EIA RBRTE monthly mean
+BRENT_AUG_2026 = 91.08  # EIA RBRTE monthly mean
+AUGUST_2026_DIESEL_OBSERVED = 181.98  # DESNZ August 2026 mean
+
+
+def _pump_slope(pre_pence, aug_pence):
+    """Pence per litre per $1/bbl, from monthly means at both ends."""
+    return (aug_pence - pre_pence) / (BRENT_AUG_2026 - BRENT_NOV_2025)
+
+
+def petrol_slope():
+    return _pump_slope(PRE_CONFLICT_PETROL_PENCE, AUGUST_2026_PETROL_PENCE)
+
+
+def diesel_slope():
+    return _pump_slope(PRE_CONFLICT_DIESEL_PENCE, AUGUST_2026_DIESEL_PENCE)
+
+
+def fuel_rise_pct_at_brent(brent_usd):
+    """Expenditure-weighted rise in the combined A6 fuel category.
+
+    Fixed-weight: the shares are baseline expenditure shares, so this is the
+    percentage change in total category spend at unchanged volumes. No
+    substitution and no volume response are modelled.
+    """
+    total = (
+        PETROL_WEEKLY_SPEND
+        + DIESEL_WEEKLY_SPEND
+        + OTHER_MOTOR_OILS_WEEKLY_SPEND
+    )
+    moves = (
+        (PETROL_WEEKLY_SPEND, PRE_CONFLICT_PETROL_PENCE, petrol_slope()),
+        (DIESEL_WEEKLY_SPEND, PRE_CONFLICT_DIESEL_PENCE, diesel_slope()),
+        # Other motor oils follow petrol; at 0.5% of the category the choice
+        # moves the composite by under a tenth of a point.
+        (
+            OTHER_MOTOR_OILS_WEEKLY_SPEND,
+            PRE_CONFLICT_PETROL_PENCE,
+            petrol_slope(),
+        ),
+    )
+    composite = 0.0
+    for spend, base, slope in moves:
+        rise = (base + slope * (brent_usd - BRENT_NOV_2025)) / base - 1
+        composite += (spend / total) * rise
+    return round(composite * 100, 1)
+
+
 # Cornwall Insight's Q4 2026 forecast, superseded by the announced cap but
 # still cited in the low-scenario derivation as what it was anchored to.
 CORNWALL_Q4_FORECAST = 1_700
@@ -201,19 +265,19 @@ SCENARIOS = {
     "low_shock": {
         "cap_increase_pct": 15,
         "cpi_increase_pp": 1.3,
-        "fuel_pct": 20,
+        "fuel_pct": 22,
         "food_increase_pct": 2.0,
     },
     "central_shock": {
         "cap_increase_pct": 45,
         "cpi_increase_pp": 3.1,
-        "fuel_pct": 45,
+        "fuel_pct": 46,
         "food_increase_pct": 4.0,
     },
     "severe_shock": {
         "cap_increase_pct": 90,
         "cpi_increase_pp": 5.3,
-        "fuel_pct": 65,
+        "fuel_pct": 62,
         "food_increase_pct": 6.5,
     },
 }
@@ -237,6 +301,9 @@ SCENARIOS = {
 
 OFGEM_JULY_2026 = "https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-july-and-30-september-2026"
 OFGEM_OCTOBER_2026 = "https://www.ofgem.gov.uk/press-release/energy-price-cap-will-rise-4-october-2026"
+DESNZ_ROAD_FUEL = "https://www.gov.uk/government/statistics/weekly-road-fuel-prices"
+EIA_BRENT_MONTHLY = "https://www.eia.gov/dnav/pet/hist/RBRTEm.htm"
+ONS_FAMILY_SPENDING_W1 = "https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/expenditure/datasets/familyspendingworkbook1detailedexpenditureandtrends"
 GOLDMAN_HORMUZ = "https://oilprice.com/Latest-Energy-News/World-News/Goldman-Another-Month-of-Hormuz-Closure-Means-Over-100-Brent-Throughout-2026.html"
 # The energy channel transmits through GAS, not oil, so it cites gas sources.
 # Ofgem's wholesale allowance is built from NBP gas and UK baseload power
@@ -251,7 +318,13 @@ _PARAMETER_DEFINITIONS = {
     "cap_increase_pct": {
         "definition": (
             "Percentage increase in household domestic gas and electricity "
-            "expenditure relative to the pre-conflict early-2026 baseline"
+            "expenditure, measured from its April-June 2026 level - the "
+            "cap Ofgem announced on 25 February 2026, immediately before the "
+            "conflict began. The period itself is not pre-conflict; the "
+            "announcement is. The fuel channel uses a different baseline, "
+            "the Autumn "
+            "Budget 2025 pump prices; each parameter's reference_period "
+            "states its own"
         ),
         "unit": "per cent",
         "geography": "United Kingdom",
@@ -260,8 +333,11 @@ _PARAMETER_DEFINITIONS = {
     },
     "fuel_pct": {
         "definition": (
-            "Percentage increase in the pump price of petrol and diesel "
-            "relative to the pre-conflict early-2026 baseline"
+            "Percentage increase in household spending on the combined ONS "
+            "category (petrol, diesel and other motor oils), measured from "
+            "the Autumn Budget 2025 pump prices this file records. The "
+            "energy channel uses a different baseline, April-June 2026; "
+            "each parameter's reference_period states its own"
         ),
         "unit": "per cent",
         "geography": "United Kingdom",
@@ -322,11 +398,22 @@ _SCENARIO_SOURCES = {
         "fuel_pct": {
             "source_url": COMMONS_FUEL_PRICES,
             "source_date": "2026-08-04",
-            "reference_period": "August 2026 spot prices",
-            "derivation": (
-                "Observed pump prices are roughly 20% above Autumn Budget 2025 "
-                "levels. Set to the observed change"
+            "reference_period": (
+                "November 2025 to August 2026 monthly means"
             ),
+            "derivation": (
+                "Observed change in the combined ONS fuel category between "
+                "Autumn Budget 2025 and August 2026, on DESNZ monthly means: "
+                "petrol rose 19.5% and diesel 26.5%, which on the FYE2024 "
+                "Table A1 expenditure shares of 61% petrol and 39% diesel is "
+                "a 22% composite. Set to that. An earlier version used the "
+                "petrol figure alone, which understates a category that is "
+                "39% diesel (#55 review C1)"
+            ),
+            "supporting_source_urls": [
+                DESNZ_ROAD_FUEL,
+                ONS_FAMILY_SPENDING_W1,
+            ],
             "uncertainty_range": [15, 25],
         },
         "food_increase_pct": {
@@ -348,7 +435,7 @@ _SCENARIO_SOURCES = {
                 "about 2% pre-conflict, i.e. roughly +1pp. Raised to 1.3pp so "
                 "the adder is not below the first-round direct effect of this "
                 "scenario's own price assumptions, which ONS 2026 basket "
-                "weights put at 1.23pp (#37)"
+                f"weights put at {direct_cpi_pp('low_shock')}pp (#37)"
             ),
             "uncertainty_range": [1.0, 1.8],
         },
@@ -360,8 +447,8 @@ _SCENARIO_SOURCES = {
         ),
         "cap_increase_pct": {
             "source_url": KPLER_HORMUZ_LNG,
-            "source_date": "2026-07-01",
-            "reference_period": "2026 calendar year",
+            "source_date": "2026-03-10",  # Kpler LNG page
+            "reference_period": "NBP/TTF sustained at ~2x pre-conflict",
             "derivation": (
                 "Judgement: NBP/TTF gas sustained at roughly twice "
                 "pre-conflict levels across the 2027-28 cap assessment "
@@ -381,20 +468,35 @@ _SCENARIO_SOURCES = {
         "fuel_pct": {
             "source_url": COMMONS_FUEL_PRICES,
             "source_date": "2026-07-01",
-            "reference_period": "2026 calendar year",
+            "reference_period": "Goldman Q3 2026 Brent of $120/bbl",
             "derivation": (
-                "Observed pump slope applied to the Goldman >$100/bbl case, "
-                "on the same basis as the severe scenario so one registry "
-                "gives one basis for this channel. DESNZ pump prices moved "
-                "135.04p to 161.42p between November 2025 and August 2026 "
-                "while Brent moved from about $64 to about $85, a slope of "
-                "~1.26p/litre per $1/bbl that embeds this episode's "
-                "refining-margin widening as well as crude cost. On that "
-                "slope +45% corresponds to about 196p, i.e. Brent near "
-                "$112 - inside Goldman's >$100/bbl extended-closure case. "
-                "Commons Library CBP-10601 informed the pass-through "
-                "framing; the coefficient is this study's"
+                "Expenditure-weighted pump response to the Goldman "
+                "extended-closure case, on the same basis as the severe "
+                "scenario so one registry gives one basis for this channel. "
+                "Petrol and diesel are derived separately and combined by "
+                "their shares of ONS Family Spending FYE2024 Table A1 lines "
+                "7.2.2.1 and 7.2.2.2 (£12.10 petrol, £7.70 diesel of the "
+                "£19.80 category this model already uses), because A6 gives "
+                "one combined figure and the two products moved very "
+                "differently. DESNZ monthly mean pump prices moved 135.04p "
+                "to 161.42p for petrol and 143.82p to 181.98p for diesel "
+                "between November 2025 and August 2026, while EIA monthly "
+                "mean Brent moved $63.80 to $91.08 over the same months: "
+                "slopes of ~0.97 and ~1.40p/litre per $1/bbl. At Goldman's "
+                "$120 Q3 figure that gives +40% petrol, +55% diesel and a "
+                "+46% composite. Both series are monthly means, so the "
+                "periods match; earlier versions paired monthly pump means "
+                "with a single-day Brent spot, and then applied a "
+                "petrol-only slope to the combined category (#52 review C2, "
+                "#55 review C1). Commons Library CBP-10601 informed the "
+                "pass-through framing; the coefficients are this study's"
             ),
+            "supporting_source_urls": [
+                DESNZ_ROAD_FUEL,
+                EIA_BRENT_MONTHLY,
+                ONS_FAMILY_SPENDING_W1,
+                GOLDMAN_HORMUZ,
+            ],
             "uncertainty_range": [30, 60],
         },
         "food_increase_pct": {
@@ -416,7 +518,8 @@ _SCENARIO_SOURCES = {
                 "pre-conflict, whose +1pp to +3pp range was previously taken "
                 "at the middle. Raised to 3.1pp because the first-round "
                 "direct effect of this scenario's own price assumptions is "
-                "3.06pp on ONS 2026 basket weights, above the whole of that "
+                f"{direct_cpi_pp('central_shock')}pp on ONS 2026 basket "
+                "weights, above the whole of that "
                 "range — so the midpoint was not merely conservative but "
                 "arithmetically impossible without a demand-destruction "
                 "offset the derivation never stated (#37)"
@@ -431,8 +534,8 @@ _SCENARIO_SOURCES = {
         ),
         "cap_increase_pct": {
             "source_url": KPLER_HORMUZ_LNG,
-            "source_date": "2026-06-01",
-            "reference_period": "two-month $140/bbl case",
+            "source_date": "2026-03-10",  # Kpler LNG page
+            "reference_period": "NBP/TTF sustained at ~3x pre-conflict",
             "derivation": (
                 "Judgement: NBP/TTF gas sustained at roughly triple "
                 "pre-conflict levels across the 2027-28 assessment windows "
@@ -448,32 +551,36 @@ _SCENARIO_SOURCES = {
         },
         "fuel_pct": {
             "source_url": OXFORD_ECONOMICS,
-            "source_date": "2026-06-01",
+            "source_date": "2026-03-13",  # Oxford page datePublished
             "reference_period": "two-month $140/bbl case",
             "derivation": (
-                "Oil-to-pump pass-through applied to Brent of $140/bbl. The "
-                "source publishes no pump-price figure, so the pass-through "
-                "is this study's. The extrapolation used is the OBSERVED "
-                "pump slope, not a crude-only pass-through: DESNZ pump prices "
-                "moved 135.04p to 161.42p between November 2025 and August "
-                "2026 while Brent moved from about $64 to about $85, i.e. "
-                "~1.26p/litre per $1/bbl. That slope embeds this episode's "
-                "refining-margin widening as well as the crude cost, which is "
-                "why it exceeds the ~0.56p/litre that $1/bbl contributes "
-                "through crude and VAT alone (fuel duty is a fixed "
-                "52.95p/litre and damps the percentage rise). Carried "
-                "forward, $140/bbl gives roughly 231p/litre, about +71% on "
-                "135.04p, and $115/bbl about 199p, or +47%. Set at 65%, "
-                "below the $140 reading, since sustaining that level across "
-                "a full year is a stronger assumption than reaching it. The previous +80% required a further ~45p/"
-                "litre refining-margin blowout that neither this file nor "
-                "the source asserted"
+                "Expenditure-weighted pump response at Brent of $140/bbl. "
+                "The source publishes no pump-price figure, so the "
+                "pass-through is this study's. Petrol and diesel are derived "
+                "separately from DESNZ monthly means against EIA monthly "
+                "mean Brent (slopes ~0.97 and ~1.40p/litre per $1/bbl) and "
+                "combined by their ONS Family Spending FYE2024 Table A1 "
+                "expenditure shares, 61% petrol and 39% diesel. At $140 that "
+                "gives +55% petrol, +74% diesel and a +62% composite, which "
+                "is where this is set. Diesel cracks widened far more than "
+                "gasoline in this episode, which is why a petrol-only rate "
+                "understated the combined category (#55 review C1). The "
+                "slopes embed that widening as well as crude cost, which is "
+                "why they exceed the ~0.56p/litre that $1/bbl contributes "
+                "through crude and VAT alone; fuel duty is a fixed "
+                "52.95p/litre and damps the percentage rise"
             ),
+            "supporting_source_urls": [
+                DESNZ_ROAD_FUEL,
+                EIA_BRENT_MONTHLY,
+                ONS_FAMILY_SPENDING_W1,
+                GOLDMAN_HORMUZ,
+            ],
             "uncertainty_range": [50, 80],
         },
         "food_increase_pct": {
             "source_url": OXFORD_ECONOMICS,
-            "source_date": "2026-06-01",
+            "source_date": "2026-03-13",  # Oxford page datePublished
             "reference_period": "2027-28",
             "derivation": (
                 "Judgement: food price response under a global recession "
@@ -483,13 +590,14 @@ _SCENARIO_SOURCES = {
         },
         "cpi_increase_pp": {
             "source_url": OXFORD_ECONOMICS,
-            "source_date": "2026-06-01",
+            "source_date": "2026-03-13",  # Oxford page datePublished
             "reference_period": "two-month $140/bbl case",
             "derivation": (
                 "The source reports a 5.8% peak in WORLD CPI, roughly 3pp "
-                "above its baseline. Set to 5.3pp for UK CPI: the "
+                "above its baseline. Set to 5.3pp for UK CPI, at the "
                 "first-round direct effect of this scenario's own price "
-                "assumptions on ONS 2026 basket weights, which exceeds the "
+                f"assumptions, which ONS 2026 basket weights put at "
+                f"{direct_cpi_pp('severe_shock')}pp and which exceeds the "
                 "~3pp world figure, consistent with the UK's higher energy "
                 "import share. The source "
                 "does not publish a UK figure, and does not report the 7.7% "
@@ -576,6 +684,17 @@ METHOD_LIMITATIONS = [
     "pre-war levels while LNG stayed halted — so an oil-anchored energy "
     "calibration would if anything understate the gas shock. See "
     "PARAMETER_REGISTRY for the derivation of each figure.",
+    "Fuel product mix: ONS Table A6 gives one combined figure for petrol, "
+    "diesel and other motor oils, and the model multiplies it by one "
+    "percentage. That percentage is an expenditure-weighted composite of "
+    "separately derived petrol and diesel responses, using the FYE2024 Table "
+    "A1 shares (61% petrol, 39% diesel). It is a fixed-weight calculation: no "
+    "substitution between fuels and no volume response is modelled, and a "
+    "household's own mix is not represented, so a diesel-only household's "
+    "shock is understated and a petrol-only household's overstated. The "
+    "shares are two years older than the modelled year and the diesel car "
+    "fleet share has been falling, which biases the composite very slightly "
+    "high.",
     "Share-of-income statistics: the MEAN share is not robust in the bottom "
     "quintile, because a small number of households with a defined but very "
     "small income denominator pull it up sharply. Each quintile row therefore "

@@ -10,7 +10,11 @@ jobs:
     name: Python tests
     runs-on: ubuntu-latest
     steps:
+      # Full history: the provenance-reachability test needs to resolve the
+      # recorded commit, and skips itself on a shallow clone (#55 review A9).
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"

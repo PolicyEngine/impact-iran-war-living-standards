@@ -102,18 +102,21 @@ def test_committed_headlines_match_the_reviewed_values(results):
     assert baseline["households_with_no_transport_fuel_spend"] == 7_197_973
 
     central = results["scenarios"]["central_shock"]["summary"]
-    assert central["mean_net_impact"] == 1_324
-    assert central["total_impact_bn"] == 41.8
-    assert central["n_newly_below_anchored_line"] == 1_505_723
+    assert central["mean_net_impact"] == 1_334
+    assert central["total_impact_bn"] == 42.1
+    assert central["n_newly_below_anchored_line"] == 1_508_923
 
     package = results["policy_responses"]["central_shock"]["combined"]
+    # Central fell to £1,272 / £40.2bn when the oil-to-pump slope was
+    # corrected (#52 review C2): the published slope paired monthly pump
+    # means with a single-day Brent spot and was 30% too steep.
     # Raised from 54.10 in the PR that corrected the CPI adders (#37): the
     # accelerated-uprating leg is sized by cpi_increase_pp, so central's
     # adder moving 2.5pp -> 3.1pp lifts that leg £2.13bn -> £2.64bn. The
     # household cost totals are untouched, since the adder never enters them.
     assert package["gross_outlay_bn"] == 54.62
-    assert package["household_protection_bn"] == 37.08
-    assert package["residual_impact_bn"] == 4.72
+    assert package["household_protection_bn"] == 37.17
+    assert package["residual_impact_bn"] == 4.96
 
 
 def test_the_policy_accounting_closes_in_the_committed_output(results):
@@ -379,3 +382,43 @@ def test_the_robustness_text_quotes_no_figure_it_cannot_keep_in_sync(results):
         assert not offenders, (
             f"robustness text quotes figures it cannot keep in sync: {offenders}"
         )
+
+
+def test_the_recorded_provenance_revision_is_reachable(results):
+    """A clean-tree result must name a commit a reviewer can actually resolve.
+
+    Regenerating, committing, then rebasing strands the recorded SHA: it was
+    valid when written and unreachable afterwards, so the provenance block
+    cannot lead anyone back to the source that produced the file (#55 review
+    A7). Skipped where full history is unavailable, e.g. a shallow clone.
+    """
+    import subprocess
+
+    revision = results["provenance"]["git_revision"]
+    assert revision
+
+    shallow = subprocess.run(
+        ["git", "rev-parse", "--is-shallow-repository"],
+        capture_output=True,
+        text=True,
+    )
+    if shallow.returncode != 0 or shallow.stdout.strip() == "true":
+        pytest.skip("full git history unavailable")
+
+    exists = subprocess.run(
+        ["git", "cat-file", "-e", f"{revision}^{{commit}}"],
+        capture_output=True,
+    )
+    assert exists.returncode == 0, (
+        f"the provenance records {revision[:12]}, which does not resolve. "
+        "Regenerate after the final rebase so the recorded commit is reachable."
+    )
+
+    reachable = subprocess.run(
+        ["git", "merge-base", "--is-ancestor", revision, "HEAD"],
+        capture_output=True,
+    )
+    assert reachable.returncode == 0, (
+        f"the provenance records {revision[:12]}, which is not an ancestor of "
+        "HEAD — it was probably orphaned by a rebase after regeneration."
+    )
