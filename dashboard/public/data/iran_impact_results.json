@@ -2,8 +2,8 @@
   "year": 2027,
   "current_energy_cap": 1663,
   "provenance": {
-    "generated_at": "2026-09-25T09:07:07+00:00",
-    "git_revision": "09390554bdfc8c2f3caaaf3a2f442f63d0ebdad1",
+    "generated_at": "2026-09-25T10:02:44+00:00",
+    "git_revision": "f19e3d066de6961bd2358a0d83c884d1e2464a53",
     "git_dirty": false,
     "packages": {
       "policyengine": "5.3.0",
@@ -13,7 +13,7 @@
       "microdf-python": "1.3.0"
     },
     "source_hashes": {
-      "config.py": "2ba4c81f70036f32e3bc56348165c458dd22a3a1d791cb5f3c4c1cb094adb5a8",
+      "config.py": "f1d56addae6ef49a5fa83d8c227b9ee3299dbea33426630cde71f3c4117c0e12",
       "pipeline.py": "bcae022258090aa260b9946850465962e7dfcfa6503d5f3fc4fb851461e0d6dc",
       "provenance.py": "956bcc99b7f9c3f796082ae19edf451310fe6e14ea93deda16bc665455d75541",
       "pyproject.toml": "67312746740b8f3fa072d28c40905bfcdbbdc7d089876e5c6814ac0f102cb161",
@@ -3568,7 +3568,7 @@
         "parameters": {
           "cap_increase_pct": {
             "value": 15,
-            "definition": "Percentage increase in household domestic gas and electricity expenditure relative to its own stated pre-conflict baseline: April-June 2026 for energy, and the Autumn Budget 2025 pump prices for fuel. The two differ, which each parameter's reference_period records",
+            "definition": "Percentage increase in household domestic gas and electricity expenditure, measured from the pre-conflict April-June 2026 level. The fuel channel uses a different baseline, the Autumn Budget 2025 pump prices; each parameter's reference_period states its own",
             "unit": "per cent",
             "geography": "United Kingdom",
             "applies_to": "each household's own baseline gas + electricity expenditure",
@@ -3641,14 +3641,14 @@
         "parameters": {
           "cap_increase_pct": {
             "value": 45,
-            "definition": "Percentage increase in household domestic gas and electricity expenditure relative to its own stated pre-conflict baseline: April-June 2026 for energy, and the Autumn Budget 2025 pump prices for fuel. The two differ, which each parameter's reference_period records",
+            "definition": "Percentage increase in household domestic gas and electricity expenditure, measured from the pre-conflict April-June 2026 level. The fuel channel uses a different baseline, the Autumn Budget 2025 pump prices; each parameter's reference_period states its own",
             "unit": "per cent",
             "geography": "United Kingdom",
             "applies_to": "each household's own baseline gas + electricity expenditure",
             "lag": "none \u2014 applied as a full-year 2027-28 amount",
             "source_url": "https://www.kpler.com/blog/hormuz-strait-disruptions-trigger-a-price-spike-in-ttf-and-asian-lng-while-middle-east-exports-come-to-a-halt",
-            "source_date": "2026-07-01",
-            "reference_period": "Goldman Q3 2026 Brent of $120/bbl",
+            "source_date": "2026-03-10",
+            "reference_period": "NBP/TTF sustained at ~2x pre-conflict",
             "derivation": "Judgement: NBP/TTF gas sustained at roughly twice pre-conflict levels across the 2027-28 cap assessment windows, as the Hormuz closure halts Qatari LNG (~19% of global LNG exports). Wholesale is ~40-45% of the cap, so a doubling of wholesale implies ~+45% on the retail bill. Anchored to gas rather than to Brent because Ofgem's wholesale allowance is built from NBP gas and UK baseload power forwards and crude oil enters it nowhere; in this episode oil flows recovered to about two-thirds of pre-war levels while LNG stayed halted, so an oil anchor would if anything understate the gas shock. The pass-through coefficient and hedging lag remain judgements",
             "uncertainty_range": [
               30,
@@ -3716,14 +3716,14 @@
         "parameters": {
           "cap_increase_pct": {
             "value": 90,
-            "definition": "Percentage increase in household domestic gas and electricity expenditure relative to its own stated pre-conflict baseline: April-June 2026 for energy, and the Autumn Budget 2025 pump prices for fuel. The two differ, which each parameter's reference_period records",
+            "definition": "Percentage increase in household domestic gas and electricity expenditure, measured from the pre-conflict April-June 2026 level. The fuel channel uses a different baseline, the Autumn Budget 2025 pump prices; each parameter's reference_period states its own",
             "unit": "per cent",
             "geography": "United Kingdom",
             "applies_to": "each household's own baseline gas + electricity expenditure",
             "lag": "none \u2014 applied as a full-year 2027-28 amount",
             "source_url": "https://www.kpler.com/blog/hormuz-strait-disruptions-trigger-a-price-spike-in-ttf-and-asian-lng-while-middle-east-exports-come-to-a-halt",
-            "source_date": "2026-03-13",
-            "reference_period": "two-month $140/bbl case",
+            "source_date": "2026-03-10",
+            "reference_period": "NBP/TTF sustained at ~3x pre-conflict",
             "derivation": "Judgement: NBP/TTF gas sustained at roughly triple pre-conflict levels across the 2027-28 assessment windows (~+200% wholesale on a ~40-45% share), under the Oxford Economics escalation case. Not derived from a published cap projection. For precedent, the announced October 2022 cap of \u00a33,549 was +178% year-on-year on October 2021's \u00a31,277 under a comparable gas-supply shock, so a tripling of wholesale is within recent experience. Anchored to gas rather than Brent, for the reason given on the central scenario",
             "uncertainty_range": [
               60,
@@ -3760,7 +3760,7 @@
             "applies_to": "modelled household food expenditure (ONS Table A6)",
             "lag": "none \u2014 applied as a full-year 2027-28 amount",
             "source_url": "https://www.oxfordeconomics.com/resource/iran-war-scenarios-the-oil-price-that-breaks-parts-of-the-economy/",
-            "source_date": "2026-06-01",
+            "source_date": "2026-03-13",
             "reference_period": "2027-28",
             "derivation": "Judgement: food price response under a global recession scenario, no published figure for UK food prices",
             "uncertainty_range": [
