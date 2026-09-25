@@ -1381,7 +1381,8 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
                 "energy_price_cap_new_basis_gbp": PRE_CONFLICT_CAP_NEW_BASIS,
                 "energy_price_cap_old_basis_gbp": PRE_CONFLICT_CAP_OLD_BASIS,
                 "energy_cap_period": (
-                    "April-June 2026, immediately before the conflict"
+                    "April-June 2026, the cap Ofgem announced on 25 "
+                    "February 2026, immediately before the conflict began"
                 ),
                 "petrol_pence_per_litre": PRE_CONFLICT_PETROL_PENCE,
                 "diesel_pence_per_litre": PRE_CONFLICT_DIESEL_PENCE,

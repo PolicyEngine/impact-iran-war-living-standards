@@ -2,9 +2,9 @@
   "year": 2027,
   "current_energy_cap": 1663,
   "provenance": {
-    "generated_at": "2026-09-25T10:02:44+00:00",
-    "git_revision": "f19e3d066de6961bd2358a0d83c884d1e2464a53",
-    "git_dirty": false,
+    "generated_at": "2026-09-25T10:04:22+00:00",
+    "git_revision": "d2eff58c8e9bc21f931424f4ab9d3bceb022750d",
+    "git_dirty": true,
     "packages": {
       "policyengine": "5.3.0",
       "policyengine-uk": "2.90.2",
@@ -14,7 +14,7 @@
     },
     "source_hashes": {
       "config.py": "f1d56addae6ef49a5fa83d8c227b9ee3299dbea33426630cde71f3c4117c0e12",
-      "pipeline.py": "bcae022258090aa260b9946850465962e7dfcfa6503d5f3fc4fb851461e0d6dc",
+      "pipeline.py": "01fa1987ab38dc3ae020aae3ddd705fb33f7131e3621ef7ed105bee4ec1150e9",
       "provenance.py": "956bcc99b7f9c3f796082ae19edf451310fe6e14ea93deda16bc665455d75541",
       "pyproject.toml": "67312746740b8f3fa072d28c40905bfcdbbdc7d089876e5c6814ac0f102cb161",
       "requirements.lock": "eb6a3b253777a9c501b13cad26e2e847c52b3f58168a3928dd9aaff075e0835a"
@@ -3871,7 +3871,7 @@
     "pre_conflict_baseline": {
       "energy_price_cap_new_basis_gbp": 1465,
       "energy_price_cap_old_basis_gbp": 1641,
-      "energy_cap_period": "April-June 2026, immediately before the conflict",
+      "energy_cap_period": "April-June 2026, the cap Ofgem announced on 25 February 2026, immediately before the conflict began",
       "petrol_pence_per_litre": 135.04,
       "diesel_pence_per_litre": 143.82,
       "august_2026_petrol_pence_per_litre": 161.42,
