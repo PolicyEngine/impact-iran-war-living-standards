@@ -318,8 +318,11 @@ _PARAMETER_DEFINITIONS = {
     "cap_increase_pct": {
         "definition": (
             "Percentage increase in household domestic gas and electricity "
-            "expenditure, measured from the pre-conflict April-June 2026 "
-            "level. The fuel channel uses a different baseline, the Autumn "
+            "expenditure, measured from its April-June 2026 level - the "
+            "cap Ofgem announced on 25 February 2026, immediately before the "
+            "conflict began. The period itself is not pre-conflict; the "
+            "announcement is. The fuel channel uses a different baseline, "
+            "the Autumn "
             "Budget 2025 pump prices; each parameter's reference_period "
             "states its own"
         ),

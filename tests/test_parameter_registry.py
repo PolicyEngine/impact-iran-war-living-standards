@@ -435,3 +435,28 @@ def test_the_gas_driven_cap_entries_do_not_cite_an_oil_reference_period():
             f"{key}: the cap reference_period names an oil case ({period!r}), "
             "but the cap derivation says crude enters it nowhere"
         )
+
+
+def test_no_text_calls_the_april_june_period_pre_conflict():
+    """Ofgem announced the April-June 2026 cap on 25 February; the conflict
+    began in late February. So the ANNOUNCEMENT is pre-conflict, not the
+    period it covers.
+
+    I have written this the wrong way round four times in different words
+    (#37, #54 A1, #55 A8), so it is a test rather than a note.
+    """
+    import re
+    from pathlib import Path
+
+    offenders = []
+    for name in ("config.py", "pipeline.py"):
+        source = (Path(config.__file__).with_name(name)).read_text()
+        for match in re.finditer(r"pre-conflict[^\"']{0,40}April", source):
+            offenders.append(f"{name}: ...{match.group(0)}...")
+        for match in re.finditer(r"April[^\"']{0,60}immediately before the conflict\b(?! began)", source):
+            offenders.append(f"{name}: ...{match.group(0)}...")
+
+    assert not offenders, (
+        "these describe the April-June period itself as pre-conflict; the "
+        f"announcement is what precedes the conflict: {offenders}"
+    )
