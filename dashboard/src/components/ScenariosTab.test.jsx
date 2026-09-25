@@ -25,7 +25,7 @@ function textOf(withData) {
 describe("scenario baseline callout", () => {
   it("states both reference periods and the application year", () => {
     const text = textOf(data);
-    expect(text).toContain("April–June 2026");
+    expect(text).toContain(preConflict.energy_cap_period);
     expect(text).toContain(preConflict.pump_price_period);
     expect(text).toContain(`${data.year}-${String(data.year + 1).slice(2)}`);
   });
@@ -72,6 +72,7 @@ describe("scenario baseline callout", () => {
       ["metadata.pre_conflict_baseline.energy_price_cap_new_basis_gbp", -5],
       ["metadata.pre_conflict_baseline.petrol_pence_per_litre", NaN],
       ["metadata.pre_conflict_baseline.pump_price_period", "   "],
+      ["metadata.pre_conflict_baseline.energy_cap_period", "   "],
       ["year", "2027"],
       ["year", 2027.5],
       ["year", 0],
@@ -99,8 +100,11 @@ describe("scenario baseline callout", () => {
     const moved = structuredClone(data);
     moved.metadata.pre_conflict_baseline.petrol_pence_per_litre = 200.4;
     moved.metadata.pre_conflict_baseline.energy_price_cap_old_basis_gbp = 9999;
+    moved.metadata.pre_conflict_baseline.energy_cap_period = "a different period";
     const text = textOf(moved);
     expect(text).toContain("200p");
     expect(text).toContain("£9,999");
+    expect(text).toContain("a different period");
+    expect(text).not.toContain(preConflict.energy_cap_period);
   });
 });

@@ -541,6 +541,8 @@ export default function ScenariosTab({ data }) {
     ].every(isPositiveNumber) &&
     typeof preConflict?.pump_price_period === "string" &&
     preConflict.pump_price_period.trim() !== "" &&
+    typeof preConflict?.energy_cap_period === "string" &&
+    preConflict.energy_cap_period.trim() !== "" &&
     // A plausible four-digit year: Number.isInteger alone renders "0-",
     // "99-0" and "10000-001" (#54 re-review A2).
     Number.isInteger(data?.year) &&
@@ -640,8 +642,9 @@ export default function ScenariosTab({ data }) {
             </dt>
             <dd>
               measured from each household&apos;s own modelled gas and electricity
-              spending at pre-conflict levels. For context only, Ofgem&apos;s
-              published cap for April&ndash;June 2026 was &pound;
+              spending at pre-conflict levels ({preConflict?.energy_cap_period}).
+              For context only, Ofgem&apos;s published cap for that period was
+              &pound;
               {preConflict?.energy_price_cap_old_basis_gbp?.toLocaleString("en-GB")} on
               the typical-consumption basis then in use; the &pound;
               {preConflict?.energy_price_cap_new_basis_gbp?.toLocaleString("en-GB")}{" "}
