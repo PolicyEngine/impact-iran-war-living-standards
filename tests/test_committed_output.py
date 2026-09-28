@@ -114,9 +114,13 @@ def test_committed_headlines_match_the_reviewed_values(results):
     # accelerated-uprating leg is sized by cpi_increase_pp, so central's
     # adder moving 2.5pp -> 3.1pp lifts that leg £2.13bn -> £2.64bn. The
     # household cost totals are untouched, since the adder never enters them.
-    assert package["gross_outlay_bn"] == 54.62
-    assert package["household_protection_bn"] == 37.17
-    assert package["residual_impact_bn"] == 4.96
+    # Moved again when the shortfall was sized on the residual CPI addition
+    # that September 2026 CPI misses, at a full-year factor: central's
+    # accelerated-uprating leg rose £2.64bn -> £3.54bn. Household cost totals
+    # are untouched.
+    assert package["gross_outlay_bn"] == 55.52
+    assert package["household_protection_bn"] == 37.26
+    assert package["residual_impact_bn"] == 4.86
 
 
 def test_the_policy_accounting_closes_in_the_committed_output(results):
