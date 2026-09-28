@@ -598,26 +598,26 @@ export default function ScenariosTab({ data }) {
           { label: `JRF: +${formatCurrency(288)} predicted`, url: "https://www.jrf.org.uk/cost-of-living/addressing-the-2026-energy-price-crisis" },
           { label: `Resolution Foundation: ~+${formatCurrency(500)} if rises are sustained`, url: "https://www.resolutionfoundation.org/press-releases/poorest-households-are-set-to-see-inflation-nearly-a-third-higher-than-the-richest/" },
         ],
-        ours: `${formatCurrency(low.channel_decomposition.energy_shock)} (low) to ${formatCurrency(central.channel_decomposition.energy_shock)} (central)`,
-        note: "Our low scenario matches the observed cap rise; the Resolution Foundation sustained case sits between our low and central.",
+        ours: `${formatCurrency(low.channel_decomposition.energy_shock)} (prices so far) to ${formatCurrency(central.channel_decomposition.energy_shock)} (sustained escalation)`,
+        note: "Our prices-so-far scenario matches the observed cap rise; the Resolution Foundation sustained case sits between it and sustained escalation.",
       },
       {
         metric: "Newly below the anchored poverty line in 2027-28",
         external: [
-          { label: "NIESR: 200,000 additional UK households", url: "https://www.gbnews.com/money/iran-war-british-households-poverty-cost-of-living" },
+          { label: "NIESR Economic Outlook, Spring 2026: ~200,000 additional households in absolute poverty", url: "https://niesr.ac.uk/reports/economic-outlook-spring-2026" },
         ],
-        ours: `${formatCount(low.summary.n_pushed_into_poverty)} people (low) to ${formatCount(central.summary.n_pushed_into_poverty)} people (central)`,
-        note: `NIESR counts households; we count people, so our low scenario (${formatCount(low.summary.n_pushed_into_poverty)} people \u2248 ${formatCount(Math.round(low.summary.n_pushed_into_poverty / meanHHSize))} households) is close to NIESR's estimate.`,
+        ours: `${formatCount(low.summary.n_pushed_into_poverty)} people (prices so far) to ${formatCount(central.summary.n_pushed_into_poverty)} people (sustained escalation)`,
+        note: `NIESR counts households below an absolute poverty line; we count people below a line held at its pre-shock level, which is also fixed in real terms, so our prices-so-far scenario (${formatCount(low.summary.n_pushed_into_poverty)} people \u2248 ${formatCount(Math.round(low.summary.n_pushed_into_poverty / meanHHSize))} households) is close to NIESR's estimate.`,
       },
       {
         metric: "CPI addition implied by scenario prices (not a forecast)",
         external: [
-          { label: "OBR: ~+1pp (CPI to 3% by end-2026 vs 2% anticipated)", url: "https://www.investmentweek.co.uk/news/4526778/obr-warns-iran-conflict-force-uk-inflation-end-2026" },
+          { label: "OBR (David Miles, Treasury Committee, 10 March 2026): ~+1pp, CPI nearer 3% than 2% by end-2026", url: "https://committees.parliament.uk/oralevidence/17299/html/" },
           { label: "NIESR: +1pp to +3pp (central ~4% CPI, pessimistic ~5%)", url: "https://niesr.ac.uk/blog/possible-effects-uk-inflation-2026-us-iran-conflict" },
           { label: "Bank of England: ~3% Q3, ~3¼% Q4 2026", url: "https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/june-2026" },
         ],
-        ours: `+${low.params.cpi_increase_pp}pp (low), +${central.params.cpi_increase_pp}pp (central), +${severe.params.cpi_increase_pp}pp (high)`,
-        note: `These are not CPI forecasts: each is the addition that scenario's own energy, fuel and food prices imply, and it is used only to size the benefit uprating gap and the accelerated-uprating option, never the household cost. ${getUpratingInputs(central) && Number.isFinite(observed?.observed_energy_rise_by_sept_2026_pct) && Number.isFinite(observed?.observed_fuel_rise_by_sept_2026_pct) ? `Prices so far are energy +${observed.observed_energy_rise_by_sept_2026_pct}% (July cap) and fuel +${observed.observed_fuel_rise_by_sept_2026_pct}% (mid-September pumps), close to the low scenario. The latest ONS indices put the conflict's contribution to the annual CPI rate at about ${central.cpi_captured_by_sept_2026_pp}pp (August data, a proxy until the September figures on 21 October). ` : ""}Central assumes energy +${central.params.cap_increase_pct}% and fuel +${central.params.fuel_pct}%, well beyond that. Our figures are additions to CPI, so they compare with the shock-addition estimates above (OBR, NIESR) rather than with total-CPI levels. Our low (+${low.params.cpi_increase_pp}pp) matches the OBR view of the shock as it stands. Our central (+${central.params.cpi_increase_pp}pp) sits just above the top of NIESR's +1pp to +3pp range, and our high (+${severe.params.cpi_increase_pp}pp) well above it, because each adder is set to at least the first-round effect of that scenario's own energy, fuel and food assumptions on ONS basket weights — for central that floor is ${central.first_round_floor_pp}pp, above the whole NIESR range. A scenario cannot assume less inflation than its own prices mechanically imply. The high figure is a judgemental tail-risk assumption rather than a published UK figure, extrapolated from the Oxford Economics escalation case, which reports a 5.8% peak in world CPI with no stated equation linking that to a UK addition. Other severe published scenarios exist on a total-CPI basis and are not directly comparable with an addition.`,
+        ours: `+${low.params.cpi_increase_pp}pp (prices so far), +${central.params.cpi_increase_pp}pp (sustained escalation), +${severe.params.cpi_increase_pp}pp (severe escalation)`,
+        note: `These are not CPI forecasts: each is the addition that scenario's own energy, fuel and food prices imply, and it is used only to size the benefit uprating gap and the accelerated-uprating option, never the household cost. ${getUpratingInputs(central) && Number.isFinite(observed?.observed_energy_rise_by_sept_2026_pct) && Number.isFinite(observed?.observed_fuel_rise_by_sept_2026_pct) ? `Prices so far are energy +${observed.observed_energy_rise_by_sept_2026_pct}% (July cap) and fuel +${observed.observed_fuel_rise_by_sept_2026_pct}% (mid-September pumps), close to the prices-so-far scenario. The latest ONS indices put the conflict's contribution to the annual CPI rate at about ${central.cpi_captured_by_sept_2026_pp}pp (August data, a proxy until the September figures on 21 October). ` : ""}Sustained escalation assumes energy +${central.params.cap_increase_pct}% and fuel +${central.params.fuel_pct}%, well beyond that. Our figures are additions to CPI against a no-conflict path, so they compare with the shock-addition estimates above (OBR, NIESR) rather than with total-CPI levels. Prices so far (+${low.params.cpi_increase_pp}pp) matches the OBR view of the shock as it stands. Each figure is the first-round effect of that scenario's own energy, fuel and food price rises on ONS 2026 basket weights: a price-level effect over the stress-test year, not a floor on annual inflation, which also depends on timing, second-round effects and demand. For sustained escalation that effect is ${central.first_round_floor_pp}pp, just above the top of NIESR's +1pp to +3pp range, because its price rises are larger than those NIESR modelled. The severe escalation figure is a judgemental tail-risk assumption rather than a published UK figure, extrapolated from the Oxford Economics escalation case, which reports a 5.8% peak in world CPI with no stated equation linking that to a UK addition. Other severe published scenarios exist on a total-CPI basis and are not directly comparable with an addition.`,
       },
     ];
   }, [data]);
@@ -639,7 +639,7 @@ export default function ScenariosTab({ data }) {
       {/* Scenario selector */}
       <SectionHeading
         title="Select a scenario"
-        description="These are stress tests, not forecasts: none is a prediction of what will happen, and “central” does not mean most likely. Choose a conflict path to see its estimated impact on UK households over the 2027-28 tax year. Each applies a different magnitude of energy, fuel, food and inflation shock, sustained for 12 months."
+        description="These are stress tests, not forecasts: none is a prediction of what will happen. Prices so far holds today's observed price rises; the two escalation paths assume prices rise well beyond them. Choose a path to see its estimated impact on UK households over the 2027-28 tax year. Each applies a different magnitude of energy, fuel, food and inflation shock, sustained for 12 months."
       />
       <ScenarioSelector data={data} selected={scenario} onSelect={setScenario} />
 
@@ -736,14 +736,14 @@ export default function ScenariosTab({ data }) {
           </div>
           <div className="mt-2 text-3xl font-bold tracking-tight" style={{ color: colors.primary[800] }}>
             {povertyBaseline != null && povertyShocked != null
-              ? `${povertyBaseline.toFixed(2)}% → ${povertyShocked.toFixed(2)}%`
+              ? `+${(povertyShocked - povertyBaseline).toFixed(2)}pp`
               : "--"}
           </div>
           <div className="mt-1 text-sm text-slate-500">
-            Share of people below the poverty line, before the shock and after modelled
-            costs are netted off income
+            Change in the share of people below the poverty line once modelled costs
+            are netted off income
             {povertyBaseline != null && povertyShocked != null
-              ? ` (+${(povertyShocked - povertyBaseline).toFixed(2)}pp)`
+              ? ` (${povertyBaseline.toFixed(2)}% to ${povertyShocked.toFixed(2)}%; the modelled baseline level is above DWP's published rate, so the change is the more reliable figure)`
               : ""}
           </div>
         </div>

@@ -1,8 +1,8 @@
-# Impact of the Middle East War on UK Living Standards
+# Energy, fuel and food price rises and UK households, 2027-28
 
-Microsimulation-based analysis of how energy price rises from the ongoing Middle East conflict (active since late February 2026, with recurrent Strait of Hormuz disruption) affect UK households in 2027-28 — modelling impacts through energy bills, fuel costs and food inflation across 31.6 million weighted households using [policyengine.py](https://github.com/PolicyEngine/policyengine.py) 5.3.0.
+Microsimulation-based analysis of what energy, motor fuel and food price rises would cost UK households in 2027-28, with the ongoing Middle East conflict (active since late February 2026, with recurrent Strait of Hormuz disruption) as the context — modelling impacts through energy bills, fuel costs and food inflation across 31.6 million weighted households using [policyengine.py](https://github.com/PolicyEngine/policyengine.py) 5.3.0.
 
-**[Live Dashboard](https://uk-energy-shock-impact.vercel.app)**
+**[Live Dashboard](https://www.policyengine.org/uk/middle-east-war-living-standards)**
 
 ## Scenarios
 
@@ -12,9 +12,9 @@ Calibrated to conditions as of August 2026 (Brent ~$85/bbl after a ~$109 peak). 
 
 | Scenario | Energy bills | Fuel price | Food price | CPI |
 |---|---|---|---|---|
-| Low | +15% | +22% | +2.0% | +1.3pp |
-| Central | +45% | +46% | +4.0% | +3.1pp |
-| High | +90% | +62% | +6.5% | +5.3pp |
+| Prices so far | +15% | +22% | +2.0% | +1.3pp |
+| Sustained escalation | +45% | +46% | +4.0% | +3.1pp |
+| Severe escalation | +90% | +62% | +6.5% | +5.3pp |
 
 The CPI column is not a forecast of inflation. It is the addition each scenario's own energy, fuel and food prices imply on ONS 2026 basket weights, measured against a no-conflict path, and it is used only to size the benefit uprating shortfall and the accelerated-uprating option. It never enters the household cost.
 
@@ -40,21 +40,23 @@ The results file breaks impacts down by income quintile, region, country, tenure
 
 All three scenarios, 2027-28, across 31.6 million weighted households. Regenerate with `iran-impact-build --sync-dashboard`; these figures are pinned as a regression test in `tests/test_committed_output.py`.
 
-| | Low | Central | High |
+At prices seen so far, the direct cost is **£538 a household** (£17.0bn). If gas stayed at about twice its pre-conflict price through 2027-28, as in sustained escalation, it would be £1,334 a household (£42.1bn). Quote the escalation figures as conditionals, not as the estimate of the war's effect.
+
+| | Prices so far | Sustained escalation | Severe escalation |
 |---|---:|---:|---:|
-| Mean cost per household | £538 | **£1,334** | £2,304 |
-| Total cost | £17.0bn | **£42.1bn** | £72.7bn |
-| People newly below the anchored poverty line | 379,109 | **1,508,923** | 2,337,905 |
-| Mean of per-household cost/income ratios | 1.8% | **4.5%** | 7.9% |
-| Total cost ÷ total net income | 0.9% | **2.3%** | 4.0% |
+| Mean cost per household | **£538** | £1,334 | £2,304 |
+| Total cost | **£17.0bn** | £42.1bn | £72.7bn |
+| People newly below the anchored poverty line | **379,109** | 1,508,923 | 2,337,905 |
+| Mean of per-household cost/income ratios | **1.8%** | 4.5% | 7.9% |
+| Total cost ÷ total net income | **0.9%** | 2.3% | 4.0% |
 
 The last two rows are different statistics, not two estimates of one thing. The mean of ratios weights every household equally and so is pulled up by households with very low incomes; it is the figure the dashboard reports as `mean_net_impact_pct`, and it excludes households with non-positive income, for whom the ratio is undefined. The aggregate ratio is total cost divided by total income.
 
-Central-scenario cost by channel, per household: energy £713, fuel £474, food £147. The uprating compensation shortfall is a further £95, reported separately rather than added (see above).
+Sustained-escalation cost by channel, per household: energy £713, fuel £474, food £147. The uprating compensation shortfall is a further £95, reported separately rather than added (see above).
 
-The shock is regressive on either basis. Under the central scenario the poorest fifth of households bear a cost equal to 4.2% of their mean net income against 1.5% for the richest fifth (10.3% against 1.7% as a mean of ratios), even though the cash amounts run the other way — £981 against £1,613.
+The shock is regressive on either basis. Under sustained escalation the poorest fifth of households bear a cost equal to 4.2% of their mean net income against 1.5% for the richest fifth (10.3% against 1.7% as a mean of ratios), even though the cash amounts run the other way — £981 against £1,613.
 
-Only the central column's cost, total and poverty count, plus the baseline aggregates and the combined package, are pinned as a regression test in `tests/test_committed_output.py`. The other figures here are read from the generated output and are not test-guarded.
+Only the sustained-escalation column's cost, total and poverty count, plus the baseline aggregates and the combined package, are pinned as a regression test in `tests/test_committed_output.py`. The other figures here are read from the generated output and are not test-guarded.
 
 ## Policy responses evaluated
 

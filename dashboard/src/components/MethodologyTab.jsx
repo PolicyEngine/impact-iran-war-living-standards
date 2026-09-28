@@ -54,20 +54,25 @@ export default function MethodologyTab({ data }) {
             </dd>
           </div>
           <div>
-            <dt className="font-semibold text-slate-900">Central result</dt>
+            <dt className="font-semibold text-slate-900">Result</dt>
             <dd className="mt-1 leading-6 text-slate-600">
+              At prices seen so far,{" "}
+              <strong>
+                &pound;{data.scenarios.low_shock.summary.mean_net_impact.toLocaleString("en-GB")}
+              </strong>{" "}
+              per household a year (&pound;{data.scenarios.low_shock.summary.total_impact_bn}bn).
+              If gas stayed at about twice its pre-conflict price through{" "}
+              {data.year}-{String(data.year + 1).slice(2)}, as in sustained escalation,{" "}
               <strong>
                 &pound;{data.scenarios.central_shock.summary.mean_net_impact.toLocaleString("en-GB")}
               </strong>{" "}
-              per household a year,{" "}
-              <strong>&pound;{data.scenarios.central_shock.summary.total_impact_bn}bn</strong>{" "}
-              in total.
+              (<strong>&pound;{data.scenarios.central_shock.summary.total_impact_bn}bn</strong>).
             </dd>
           </div>
           <div>
             <dt className="font-semibold text-slate-900">Who it hits</dt>
             <dd className="mt-1 leading-6 text-slate-600">
-              The poorest fifth lose roughly{" "}
+              Under sustained escalation, the poorest fifth lose roughly{" "}
               <strong>
                 {Math.round(
                   data.scenarios.central_shock.by_quintile[0].mean_impact /
@@ -133,7 +138,7 @@ export default function MethodologyTab({ data }) {
         </p>
         <p className="mt-4 text-sm leading-7 text-slate-600">
           <strong>How uncertain.</strong> Every price parameter carries a range, and
-          the model is re-run across them. On the central scenario the total runs from{" "}
+          the model is re-run across them. Under sustained escalation the total runs from{" "}
           &pound;{sensitivity?.combined?.total_impact_bn_low}bn to{" "}
           &pound;{sensitivity?.combined?.total_impact_bn_high}bn against a{" "}
           &pound;{data.scenarios.central_shock.summary.total_impact_bn}bn point
@@ -161,7 +166,7 @@ export default function MethodologyTab({ data }) {
           {" "}{Math.round(baseline.diesel_pence_per_litre)}p for diesel. For scale, the
           announced October&ndash;December 2026 cap of &pound;{baseline.announced_oct_2026_cap_gbp.toLocaleString("en-GB")} is
           +{baseline.announced_oct_2026_vs_pre_conflict_pct}% on that cap
-          baseline, so the low scenario&apos;s
+          baseline, so the prices-so-far scenario&apos;s
           +{data.scenarios.low_shock.params.cap_increase_pct}% represents that premium partially
           unwinding through 2027-28 rather than prices falling back below current levels.
         </p>
@@ -170,10 +175,10 @@ export default function MethodologyTab({ data }) {
           position. <strong>The energy channel is gas-driven, not oil-driven</strong>: Ofgem&apos;s
           wholesale allowance is built from NBP gas and UK baseload power forwards, and a
           Strait of Hormuz closure reaches UK bills through Qatari LNG &mdash; about 19% of
-          global exports &mdash; rather than through crude. The low scenario tracks the
+          global exports &mdash; rather than through crude. Prices so far tracks the
           observed path assuming the Q4-2026 premium partially unwinds (<a href="https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-july-and-30-september-2026" target="_blank" rel="noreferrer" className="underline">Ofgem cap +13.5% in July 2026</a>).
-          Central assumes gas sustained at roughly twice pre-conflict levels and high at
-          roughly triple; for scale, the announced October 2022 cap rose 178% year on year
+          Sustained escalation assumes gas sustained at roughly twice pre-conflict levels
+          and severe escalation roughly triple; for scale, the announced October 2022 cap rose 178% year on year
           under a comparable gas-supply shock. In this episode oil and gas diverged &mdash;
           oil flows recovered while LNG stayed halted &mdash; so an oil-anchored calibration
           would if anything understate the energy shock.
@@ -181,16 +186,18 @@ export default function MethodologyTab({ data }) {
         <p className="mt-4 text-sm leading-7 text-slate-600">
           The <em>fuel</em> channel is oil-driven, and follows{" "}
           <a href="https://oilprice.com/Latest-Energy-News/World-News/Goldman-Another-Month-of-Hormuz-Closure-Means-Over-100-Brent-Throughout-2026.html" target="_blank" rel="noreferrer" className="underline">Goldman Sachs&apos; extended Strait of Hormuz closure case</a>{" "}
-          (Brent above $100/bbl) for central, and{" "}
+          (a client note, reported by OilPrice; Goldman has not published it)
+          (Brent above $100/bbl) for sustained escalation, and{" "}
           <a href="https://www.oxfordeconomics.com/resource/iran-war-scenarios-the-oil-price-that-breaks-parts-of-the-economy/" target="_blank" rel="noreferrer" className="underline">Oxford Economics&apos; escalation scenario</a>{" "}
-          (a two-month $140/bbl case) for high. That source publishes no pump-price figure,
+          (a two-month $140/bbl case) for severe escalation. That source publishes no pump-price figure,
           so the pass-through is ours: fuel duty is a fixed 52.95p a litre and damps the
           percentage rise, which puts $140/bbl at roughly +60% to +70% against the observed
           pre-conflict pump price. The CPI adders are not inflation forecasts: each is
-          set to at least the first-round effect of that scenario&apos;s own energy, fuel
-          and food assumptions on ONS 2026 basket weights, and is used only to size the
+          the first-round effect of that scenario&apos;s own energy, fuel and food price
+          rises on ONS 2026 basket weights, a price-level effect over the stress-test
+          year rather than a floor on annual inflation, and is used only to size the
           benefit uprating gap.
-          {upr ? ` Observed prices so far imply about ${upr.captured}pp, close to the low scenario.` : null}
+          {upr ? ` The latest ONS indices put the conflict's contribution to the annual CPI rate at about ${upr.captured}pp, below the prices-so-far scenario's addition.` : null}
           CPI transmission draws on{" "}
           <a href="https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/june-2026" target="_blank" rel="noreferrer" className="underline">Bank of England June 2026 projections</a>{" "}
           and the{" "}
@@ -286,8 +293,8 @@ export default function MethodologyTab({ data }) {
             &pound;38.10/wk in the lowest gross-income decile to &pound;100.90/wk in the
             highest &mdash; the published decile gradient rather than an assumed one. As
             with fuel, these are
-            decile-level spending estimates rather than household-level microdata. The
-            high scenario is anchored to IGD&apos;s severe 2026 food-inflation warning
+            decile-level spending estimates rather than household-level microdata.
+            Severe escalation is anchored to IGD&apos;s severe 2026 food-inflation warning
             reported in March 2026.
           </div>
           <div>

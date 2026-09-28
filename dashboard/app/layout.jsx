@@ -4,7 +4,7 @@ import PolicyEngineHeader from "../src/components/PolicyEngineHeader";
 import "./globals.css";
 
 export const metadata = {
-  title: "Impact of the Middle East war on UK living standards | PolicyEngine",
+  title: "Energy, fuel and food price rises and UK households, 2027-28 | PolicyEngine",
   description:
     "Interactive dashboard modelling the impact of energy price shocks from Middle East supply disruption on UK household living standards using PolicyEngine microsimulation.",
 };

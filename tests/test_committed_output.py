@@ -280,9 +280,9 @@ def test_the_readme_headline_table_matches_the_committed_output(results):
     readme = (Path(__file__).parents[1] / "README.md").read_text()
 
     for key, label in (
-        ("low_shock", "Low"),
-        ("central_shock", "Central"),
-        ("severe_shock", "High"),
+        ("low_shock", "Prices so far"),
+        ("central_shock", "Sustained escalation"),
+        ("severe_shock", "Severe escalation"),
     ):
         params = config.SCENARIOS[key]
         summary = results["scenarios"][key]["summary"]

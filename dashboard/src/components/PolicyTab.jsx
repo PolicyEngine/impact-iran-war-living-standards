@@ -161,7 +161,7 @@ export default function PolicyTab({ data }) {
         <div className="section-card flex h-full flex-col">
           <SectionHeading
             title="Select a scenario"
-            description="Stress tests, not forecasts: “central” does not mean most likely. Choose a scenario to evaluate policy responses against it."
+            description="Stress tests, not forecasts: prices so far holds today's observed price rises; the escalation paths assume prices rise well beyond them. Choose a scenario to evaluate policy responses against it."
           />
           <div className="mt-4 flex flex-wrap gap-2">
             {scenarioOptions.map((s) => (

@@ -399,6 +399,8 @@ OFGEM_OCTOBER_2026 = "https://www.ofgem.gov.uk/press-release/energy-price-cap-wi
 DESNZ_ROAD_FUEL = "https://www.gov.uk/government/statistics/weekly-road-fuel-prices"
 EIA_BRENT_MONTHLY = "https://www.eia.gov/dnav/pet/hist/RBRTEm.htm"
 ONS_FAMILY_SPENDING_W1 = "https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/expenditure/datasets/familyspendingworkbook1detailedexpenditureandtrends"
+# Goldman's 8-9 April 2026 client note is not public; this is the report of
+# it. No goldmansachs.com page carries the $120 Q3 / $115 Q4 figures.
 GOLDMAN_HORMUZ = "https://oilprice.com/Latest-Energy-News/World-News/Goldman-Another-Month-of-Hormuz-Closure-Means-Over-100-Brent-Throughout-2026.html"
 # The energy channel transmits through GAS, not oil, so it cites gas sources.
 # Ofgem's wholesale allowance is built from NBP gas and UK baseload power
