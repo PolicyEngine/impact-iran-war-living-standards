@@ -158,8 +158,8 @@ export default function MethodologyTab({ data }) {
             never the household cost.
           </li>
           <li>
-            <strong>Energy baseline.</strong>{" "}April&ndash;June 2026, the cap Ofgem set
-            before the conflict:{" "}
+            <strong>Energy baseline.</strong>{" "}April&ndash;June 2026, the cap Ofgem
+            announced on 25 February 2026, before the conflict began:{" "}
             {`£${baseline.energy_price_cap_new_basis_gbp.toLocaleString("en-GB")}`} on
             the new basis ({`£${baseline.energy_price_cap_old_basis_gbp.toLocaleString("en-GB")}`}{" "}
             on the old). The October cap of{" "}
