@@ -323,9 +323,45 @@ def _uprating_gain(sim, residual_pp, year=YEAR, simulation_factory=None):
     factor = 1 + residual_pp / 100
     for var in CPI_UPRATED_REPORTED_INPUTS:
         reform_sim.set_input(var, year, _vals(sim, var, year) * factor)
-    return _vals(reform_sim, "household_benefits", year) - _vals(
+    gain = _vals(reform_sim, "household_benefits", year) - _vals(
         sim, "household_benefits", year
     )
+    # policyengine-uk 2.90.2 lists jsa_contrib twice in household_benefits,
+    # so a change in it would be counted twice. Remove the extra copies of
+    # any duplicated component (#61 fourth review C2).
+    from policyengine_uk.variables.household.income.household_benefits import (
+        HOUSEHOLD_BENEFIT_VARIABLES,
+    )
+
+    for var in set(HOUSEHOLD_BENEFIT_VARIABLES):
+        extra = HOUSEHOLD_BENEFIT_VARIABLES.count(var) - 1
+        if extra > 0:
+            delta = _vals(reform_sim, var, year, map_to="household") - _vals(
+                sim, var, year, map_to="household"
+            )
+            gain = gain - extra * delta
+    return gain
+
+
+def _savings_credit_max_total(sim, year=YEAR):
+    """Weighted total of the maximum savings credit across eligible benefit
+    units: 60% of the standard minimum guarantee above the threshold.
+
+    Raising the maximum by r% raises an award by at most r% of that maximum,
+    including awards it creates, so r% of this total bounds what leaving the
+    maximum out of the reform omits. Bounding it on current tapered awards
+    understated it (#61 fourth review C2).
+    """
+    from policyengine_uk.model_api import WEEKS_IN_YEAR
+
+    sc = sim.tax_benefit_system.parameters(f"{year}-04-01").gov.dwp.pension_credit.savings_credit
+    relation = np.asarray(sim.calculate("relation_type", year).values).astype(str)
+    threshold = np.where(relation == "COUPLE", sc.threshold.COUPLE, sc.threshold.SINGLE)
+    smg = _vals(sim, "standard_minimum_guarantee", year)
+    eligible = _vals(sim, "is_savings_credit_eligible", year).astype(bool)
+    maximum = sc.rate.phase_in * np.maximum(smg - threshold * WEEKS_IN_YEAR, 0)
+    weights = _vals(sim, "benunit_weight", year, unweighted=True)
+    return float(np.sum(maximum * eligible * weights))
 
 
 def _build_uprating_gains(sim, year=YEAR):
@@ -507,7 +543,7 @@ def run_baseline(year=YEAR):
         "ct_band": ct_band,
         "uprating_gains": uprating_gains,
         # Not raised by the reform: see savings_credit_not_uprated below.
-        "savings_credit": _vals(sim, "savings_credit", year, map_to="household"),
+        "savings_credit_max_total": _savings_credit_max_total(sim, year),
         "gross_income": gross_income,
         "gross_decile": gross_decile,
         "owns_vehicle": owns_vehicle,
@@ -1415,13 +1451,23 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
             # (#61 third review C2). Savings credit has been closed to new
             # claimants since April 2016.
             "savings_credit_not_uprated": {
-                "total_bn": round(
-                    weighted_sum(data["savings_credit"], data["weights"]) / 1e9, 3
-                ),
+                "maximum_total_bn": round(data["savings_credit_max_total"] / 1e9, 3),
+                "upper_bound_bn": {
+                    key: round(
+                        data["savings_credit_max_total"]
+                        * residual_cpi_pp(key)
+                        / 100
+                        / 1e9,
+                        3,
+                    )
+                    for key in SCENARIOS
+                },
                 "basis": (
-                    "Savings credit is not raised by the uprating reform. At "
-                    "a residual of r percent the omitted gain is at most r% "
-                    "of this total"
+                    "The savings credit maximum is not a model parameter, so "
+                    "the uprating reform does not raise it. Raising it by r% "
+                    "raises any award, including one it creates, by at most "
+                    "r% of the maximum, so r% of the maximum summed over "
+                    "eligible benefit units bounds the omission"
                 ),
             },
             # The baseline every scenario percentage is measured from, so the

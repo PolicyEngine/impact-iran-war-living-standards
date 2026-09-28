@@ -828,9 +828,14 @@ METHOD_LIMITATIONS = [
     "is to the income tail rather than the energy tail; those households are "
     "over-represented in the bottom two quintiles, which hold about three "
     "fifths of them (#46).",
-    "Benefit uprating: a single expected-coverage factor is applied to a broad "
-    "set of CPI-linked benefit income, rather than modelling each benefit's "
-    "own uprating rule and April 2027 timing against the price path. The "
+    "Benefit uprating: the gain from an accelerated uprating is modelled by "
+    "running a PolicyEngine UK reform at each scenario's residual CPI "
+    "addition, raising every CPI-uprated benefit rate and the reported ESA "
+    "and contribution-based JSA awards, with tapers, award floors and the "
+    "benefit cap applied. Not covered: the Pension Credit savings credit "
+    "maximum, which is not a model parameter (an upper bound on the omission "
+    "is published under metadata.savings_credit_not_uprated); the captured "
+    "September 2026 CPI is a proxy on August data with food omitted. The "
     "amount is reported as the compensation an immediate uprating would "
     "deliver and is not counted as a cost, so the household loss is the price "
     "rise alone.",
@@ -965,10 +970,14 @@ CPI_UPRATED_BENEFIT_PARAMETERS = [
     "gov.social_security_scotland.carer_support_payment.rate",
 ]
 
-# ESA is paid from survey-reported awards that PolicyEngine uprates by the
-# CPI index rather than from rate parameters, so the reform scales these
-# inputs directly (#61 third review C2).
-CPI_UPRATED_REPORTED_INPUTS = ["esa_income_reported", "esa_contrib_reported"]
+# ESA and contribution-based JSA are paid from survey-reported awards that
+# PolicyEngine uprates by the CPI index rather than from rate parameters, so
+# the reform scales these inputs directly (#61 third and fourth reviews C2).
+CPI_UPRATED_REPORTED_INPUTS = [
+    "esa_income_reported",
+    "esa_contrib_reported",
+    "jsa_contrib_reported",
+]
 
 
 def uprating_residuals_needed():

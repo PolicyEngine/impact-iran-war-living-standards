@@ -216,7 +216,7 @@ def _household_gain(sit, residual_pp):
     return base, _uprating_gain(base, residual_pp, 2027, simulation_factory=factory)[0]
 
 
-def _single(age, earnings, rent=0, **person):
+def _single(age, earnings, rent=0, claims_uc=True, **person):
     household = {"members": ["a"]}
     if rent:
         household.update(
@@ -228,7 +228,7 @@ def _single(age, earnings, rent=0, **person):
         "people": {
             "a": {"age": {2027: age}, "employment_income": {2027: earnings}, **person}
         },
-        "benunits": {"b": {"members": ["a"], "would_claim_uc": {2027: True}}},
+        "benunits": {"b": {"members": ["a"], "would_claim_uc": {2027: claims_uc}}},
         "households": {"h": household},
     }
 
@@ -254,8 +254,18 @@ def test_the_reform_is_run_at_the_residual_not_scaled_from_one_percent():
 
 
 def test_the_reform_uprates_reported_esa():
-    """#61 third review C2: ESA is paid from reported awards the model
-    uprates by index, so it must move with the reform."""
-    sit = _single(50, 0, esa_income_reported={2027: 5_000})
+    """#61 third and fourth reviews: ESA is paid from reported awards the
+    model uprates by index. The claimant does not claim UC, so the gain is
+    ESA's alone and the test fails if ESA scaling is removed."""
+    sit = _single(50, 0, claims_uc=False, esa_income_reported={2027: 5_000})
     _, gain = _household_gain(sit, 2.2)
-    assert gain >= 5_000 * 0.022 - 0.01
+    assert gain == pytest.approx(5_000 * 0.022, abs=0.01)
+
+
+def test_the_reform_uprates_reported_jsa_once():
+    """#61 fourth review C2: contribution-based JSA is CPI-uprated and paid
+    from its reported award. policyengine-uk lists jsa_contrib twice in
+    household_benefits, so the gain must be counted once, not twice."""
+    sit = _single(50, 0, claims_uc=False, jsa_contrib_reported={2027: 5_000})
+    _, gain = _household_gain(sit, 2.2)
+    assert gain == pytest.approx(5_000 * 0.022, abs=0.01)
