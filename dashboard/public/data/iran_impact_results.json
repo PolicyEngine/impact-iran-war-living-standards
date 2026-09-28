@@ -2,8 +2,8 @@
   "year": 2027,
   "current_energy_cap": 1663,
   "provenance": {
-    "generated_at": "2026-09-28T12:15:07+00:00",
-    "git_revision": "d9104c223e906389cfb00f1d23ee11541e5da248",
+    "generated_at": "2026-09-28T12:48:26+00:00",
+    "git_revision": "427e3f83b96b8c1f2d93fbc7ee102e6630b5c023",
     "git_dirty": false,
     "packages": {
       "policyengine": "5.3.0",
@@ -13,8 +13,8 @@
       "microdf-python": "1.3.0"
     },
     "source_hashes": {
-      "config.py": "10c5cfd325aba312de8476d727963970b590ef5ec63a9ea2b516f4b9f0aa8678",
-      "pipeline.py": "4377c6211acf9e2dda45953136be61974d4fffe103bac5390d1563d0398f9482",
+      "config.py": "5d7cb2fa1c384852c4c7dfbbabd5f9f1d4bd69693c093584371d162f0f123ac0",
+      "pipeline.py": "4fef424456f324f9d83b976b08c119f88b4e409b345e2f952e2e1e6617902b81",
       "provenance.py": "956bcc99b7f9c3f796082ae19edf451310fe6e14ea93deda16bc665455d75541",
       "pyproject.toml": "67312746740b8f3fa072d28c40905bfcdbbdc7d089876e5c6814ac0f102cb161",
       "requirements.lock": "eb6a3b253777a9c501b13cad26e2e847c52b3f58168a3928dd9aaff075e0835a"
@@ -3732,7 +3732,7 @@
             "lag": "none \u2014 applied as a full-year 2027-28 amount",
             "source_url": "https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/june-2026",
             "source_date": "2026-06-01",
-            "reference_period": "2026-27",
+            "reference_period": "2027-28 level against a no-conflict path (source figure is 2026-27)",
             "derivation": "Bank of England June 2026 projection of CPI near 3% against about 2% pre-conflict, i.e. roughly +1pp. Raised to 1.3pp so the adder is not below the first-round direct effect of this scenario's own price assumptions, which ONS 2026 basket weights put at 1.28pp (#37)",
             "uncertainty_range": [
               1.0,
@@ -3807,7 +3807,7 @@
             "lag": "none \u2014 applied as a full-year 2027-28 amount",
             "source_url": "https://niesr.ac.uk/blog/possible-effects-uk-inflation-2026-us-iran-conflict",
             "source_date": "2026-06-01",
-            "reference_period": "2026-27",
+            "reference_period": "2027-28 level against a no-conflict path (source figure is 2026-27)",
             "derivation": "NIESR central case of about 4% CPI against about 2% pre-conflict, whose +1pp to +3pp range was previously taken at the middle. Raised to 3.1pp because the first-round direct effect of this scenario's own price assumptions is 3.09pp on ONS 2026 basket weights, above the whole of that range \u2014 so the midpoint was not merely conservative but arithmetically impossible without a demand-destruction offset the derivation never stated (#37)",
             "uncertainty_range": [
               2.5,
@@ -3979,6 +3979,8 @@
       "energy_price_cap_new_basis_gbp": 1465,
       "energy_price_cap_old_basis_gbp": 1641,
       "energy_cap_period": "April-June 2026, the cap Ofgem announced on 25 February 2026, immediately before the conflict began",
+      "observed_energy_rise_by_sept_2026_pct": 13.5,
+      "observed_fuel_rise_by_sept_2026_pct": 22.2,
       "petrol_pence_per_litre": 135.04,
       "diesel_pence_per_litre": 143.82,
       "august_2026_petrol_pence_per_litre": 161.42,
