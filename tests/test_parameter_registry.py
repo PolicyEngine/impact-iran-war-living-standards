@@ -473,3 +473,36 @@ def test_april_june_is_never_tied_to_the_conflict_without_the_announcement():
         "these tie April-June 2026 to the conflict without saying the cap was "
         f"ANNOUNCED before it; the period itself is not pre-conflict: {offenders}"
     )
+
+
+def test_captured_cpi_is_derived_from_the_observed_price_constants():
+    """The captured figure must follow the cap and pump-price constants, not
+    be typed: review rounds kept finding numbers drifting from their
+    source."""
+    w = config.CPI_BASKET_WEIGHTS_2026
+    energy = (config.CURRENT_ENERGY_CAP / config.PRE_CONFLICT_CAP_NEW_BASIS - 1) * 100
+    fuel = config.fuel_rise_pct_at_brent(config.BRENT_AUG_2026)
+    expected = round(round(energy, 1) * w["energy"] + fuel * w["fuel"], 2)
+    assert config.captured_in_sept_2026_cpi_pp() == expected
+
+
+def test_captured_cpi_uses_the_july_cap_not_the_october_cap():
+    """September 2026 CPI covers the July-September cap. The October cap
+    starts after the reference month and must not enter."""
+    assert config.observed_energy_rise_by_sept_2026_pct() < (
+        config.announced_oct_2026_vs_pre_conflict_pct()
+    )
+
+
+def test_every_residual_is_non_negative_and_below_the_addition():
+    for key, params in config.SCENARIOS.items():
+        residual = config.residual_cpi_pp(key)
+        assert 0 <= residual <= params["cpi_increase_pp"], key
+
+
+def test_uprating_registry_quotes_the_computed_capture():
+    derivation = config.UPRATING_LAG_REGISTRY["derivation"]
+    assert f"{config.captured_in_sept_2026_cpi_pp()}pp" in derivation
+    assert "does not reflect a shock arriving after" not in (
+        config.UPRATING_LAG_REGISTRY["counterfactual"]
+    )

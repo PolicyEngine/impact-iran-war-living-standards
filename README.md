@@ -16,6 +16,8 @@ Calibrated to conditions as of August 2026 (Brent ~$85/bbl after a ~$109 peak). 
 | Central | +45% | +46% | +4.0% | +3.1pp |
 | High | +90% | +62% | +6.5% | +5.3pp |
 
+The CPI column is not a forecast of inflation. It is the addition each scenario's own energy, fuel and food prices imply on ONS 2026 basket weights, measured against a no-conflict path, and it is used only to size the benefit uprating shortfall and the accelerated-uprating option. It never enters the household cost.
+
 The Ofgem cap (£1,663 for July–September 2026 on the new typical-consumption basis, £1,723 for October–December) is reported as context and **does not enter the calculation**: the energy percentage is applied to each household's own baseline gas and electricity expenditure in the microdata. The model does not represent unit rates, standing charges, the gas/electricity split, region, payment method, quarterly cap periods or fixed-tariff coverage.
 
 ## How it works
@@ -26,7 +28,7 @@ The pipeline applies price increases through three transmission channels and com
 2. **Fuel** — Petrol and diesel spending (ONS Family Spending Table A6, allocated to vehicle-owning households only), raised by the scenario percentage
 3. **Food** — Food and non-alcoholic drink spending (ONS Family Spending Table A6), raised by the scenario percentage
 
-Plus a separately reported **uprating compensation shortfall** — CPI-linked benefits (state pension excluded: triple lock) are uprated each April from the previous September's CPI, so no offset arrives during the shock year. This is reported as the compensation an immediate uprating would deliver, and is *not* added to the cost channels: the household's loss is the price rise itself, and adding an uprating term on top would count the same shock twice. It is what the accelerated-uprating policy pays.
+Plus a separately reported **uprating compensation shortfall** — CPI-linked benefits (state pension excluded: triple lock) are uprated each April from the previous September's CPI. The conflict began in late February 2026, so September 2026 CPI already carries part of the shock (about 1.02pp on observed energy and fuel prices, food omitted, so a lower bound) and April 2027 uprating passes it on. Only the residual addition goes unindexed, for the whole of 2027-28. This is reported as the compensation an immediate uprating would deliver, and is *not* added to the cost channels: the household's loss is the price rise itself, and adding an uprating term on top would count the same shock twice. It is what the accelerated-uprating policy pays.
 
 Poverty is measured as people below 60% of the person-weighted median of equivalised HBAI household net income (BHC); the post-shock figure holds that baseline line fixed and nets modelled costs off income, so it is an anchored, consumption-adjusted measure rather than official HBAI poverty.
 

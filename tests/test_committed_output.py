@@ -311,6 +311,10 @@ def test_the_readme_headline_table_matches_the_committed_output(results):
     assert f"£{channels['benefit_uprating_shortfall']}" in readme, (
         "README's uprating shortfall is stale"
     )
+    captured = results["scenarios"]["central_shock"]["cpi_captured_by_sept_2026_pp"]
+    assert f"about {captured}pp on observed energy and fuel" in readme, (
+        "README's figure for the CPI already in September 2026 is stale"
+    )
 
     # The regressivity sentence, which is the line most likely to be quoted
     # externally and so the one that must not go stale (#51).

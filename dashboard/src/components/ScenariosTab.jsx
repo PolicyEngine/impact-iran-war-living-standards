@@ -188,15 +188,21 @@ function ExampleHousehold({ data, scenario }) {
   const [foodSpend, setFoodSpend] = useState(3666);
   const [benefitIncome, setBenefitIncome] = useState(0);
 
-  const params = data?.scenarios?.[scenario]?.params;
+  const scenarioData = data?.scenarios?.[scenario];
+  const params = scenarioData?.params;
   if (!params) return null;
 
   const energy = energyBill * (params.cap_increase_pct / 100);
   const fuel = fuelSpend * (params.fuel_pct / 100);
   const food = foodSpend * (params.food_increase_pct / 100);
   // The uprating shortfall is what an immediate uprating would pay, not a
-  // fourth cost — adding it would count the same price shock twice.
-  const upratingShortfall = benefitIncome * (params.cpi_increase_pp / 100) * 0.5;
+  // fourth cost — adding it would count the same price shock twice. It is
+  // sized on the residual CPI addition that September 2026 CPI misses, read
+  // from the results file so it cannot drift from the pipeline.
+  const upratingShortfall =
+    benefitIncome *
+    ((scenarioData.cpi_residual_unindexed_pp ?? 0) / 100) *
+    (scenarioData.uprating_lag_factor ?? 0);
   const total = energy + fuel + food;
   const pctIncome = income > 0 ? (total / income) * 100 : null;
 
@@ -268,11 +274,12 @@ function ExampleHousehold({ data, scenario }) {
             {upratingShortfall > 0 ? (
               <div className="mt-4 border-t pt-3 text-xs leading-5" style={{ borderColor: colors.primary[200], color: colors.primary[800] }}>
                 An immediate benefit uprating would offset about{" "}
-                <strong>{formatCurrency(upratingShortfall)}</strong> of this. The
-                scheduled April uprating is set from the previous September&apos;s CPI,
-                so that offset does not arrive during the shock year. That is why the
-                cost above is the full price rise, rather than the price rise plus a
-                separate uprating loss.
+                <strong>{formatCurrency(upratingShortfall)}</strong> of this. April
+                2027 uprating is set from September 2026 CPI, which already carries
+                about {scenarioData.cpi_captured_by_sept_2026_pp}pp of the shock; the
+                remaining {scenarioData.cpi_residual_unindexed_pp}pp is not indexed
+                until April 2028. That is why the cost above is the full price rise,
+                rather than the price rise plus a separate uprating loss.
               </div>
             ) : null}
           </div>
@@ -599,7 +606,7 @@ export default function ScenariosTab({ data }) {
           { label: "Bank of England: ~3% Q3, ~3¼% Q4 2026", url: "https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/june-2026" },
         ],
         ours: `+${low.params.cpi_increase_pp}pp (low), +${central.params.cpi_increase_pp}pp (central), +${severe.params.cpi_increase_pp}pp (high)`,
-        note: `Our figures are additions to CPI, so they compare with the shock-addition estimates above (OBR, NIESR) rather than with total-CPI levels. Our low (+${low.params.cpi_increase_pp}pp) matches the OBR view of the shock as it stands. Our central (+${central.params.cpi_increase_pp}pp) sits just above the top of NIESR's +1pp to +3pp range, and our high (+${severe.params.cpi_increase_pp}pp) well above it, because each adder is set to at least the first-round effect of that scenario's own energy, fuel and food assumptions on ONS basket weights — for central that floor is ${central.first_round_floor_pp}pp, above the whole NIESR range. A scenario cannot assume less inflation than its own prices mechanically imply. The high figure is a judgemental tail-risk assumption rather than a published UK figure, extrapolated from the Oxford Economics escalation case, which reports a 5.8% peak in world CPI with no stated equation linking that to a UK addition. Other severe published scenarios exist on a total-CPI basis and are not directly comparable with an addition.`,
+        note: `These are not CPI forecasts: each is the addition that scenario's own energy, fuel and food prices imply, and it is used only to size the benefit uprating gap and the accelerated-uprating option, never the household cost. Observed prices so far imply about ${central.cpi_captured_by_sept_2026_pp}pp from energy and fuel, which September 2026 CPI will carry. Our figures are additions to CPI, so they compare with the shock-addition estimates above (OBR, NIESR) rather than with total-CPI levels. Our low (+${low.params.cpi_increase_pp}pp) matches the OBR view of the shock as it stands. Our central (+${central.params.cpi_increase_pp}pp) sits just above the top of NIESR's +1pp to +3pp range, and our high (+${severe.params.cpi_increase_pp}pp) well above it, because each adder is set to at least the first-round effect of that scenario's own energy, fuel and food assumptions on ONS basket weights — for central that floor is ${central.first_round_floor_pp}pp, above the whole NIESR range. A scenario cannot assume less inflation than its own prices mechanically imply. The high figure is a judgemental tail-risk assumption rather than a published UK figure, extrapolated from the Oxford Economics escalation case, which reports a 5.8% peak in world CPI with no stated equation linking that to a UK addition. Other severe published scenarios exist on a total-CPI basis and are not directly comparable with an addition.`,
       },
     ];
   }, [data]);
@@ -643,9 +650,8 @@ export default function ScenariosTab({ data }) {
             <dd>
               measured from each household&apos;s own modelled gas and electricity
               spending at pre-conflict levels ({preConflict?.energy_cap_period}).
-              For context only, Ofgem&apos;s published cap for that period was
-              &pound;
-              {preConflict?.energy_price_cap_old_basis_gbp?.toLocaleString("en-GB")} on
+              For context only, Ofgem&apos;s published cap for that period was{" "}
+              {`£${preConflict?.energy_price_cap_old_basis_gbp?.toLocaleString("en-GB")} on`}{" "}
               the typical-consumption basis then in use; the &pound;
               {preConflict?.energy_price_cap_new_basis_gbp?.toLocaleString("en-GB")}{" "}
               like-for-like figure on the basis Ofgem adopted in July is{" "}

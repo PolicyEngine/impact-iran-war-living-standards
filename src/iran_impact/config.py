@@ -129,6 +129,61 @@ def direct_cpi_pp(scenario_key):
     )
 
 
+def observed_energy_rise_by_sept_2026_pct():
+    """The July 2026 cap against the pre-conflict cap, both on the new basis.
+
+    This is what September 2026 CPI carries for household energy: the July-
+    September cap is the one in force in that month, and the October cap
+    (OCTOBER_2026_ENERGY_CAP) starts after it. Derived, so it cannot drift
+    from the two cap constants.
+    """
+    return round((CURRENT_ENERGY_CAP / PRE_CONFLICT_CAP_NEW_BASIS - 1) * 100, 1)
+
+
+def observed_fuel_rise_by_sept_2026_pct():
+    """The spend-weighted petrol/diesel rise at August 2026 prices.
+
+    August 2026 monthly means stand in for September, which is not yet in the
+    repository. Uses the same composite as the fuel channel, so petrol and
+    diesel carry their A1 expenditure shares.
+    """
+    return fuel_rise_pct_at_brent(BRENT_AUG_2026)
+
+
+def captured_in_sept_2026_cpi_pp():
+    """First-round CPI effect of the shock ALREADY in prices by September 2026.
+
+    April 2027 benefit uprating is set from September 2026 CPI. The conflict
+    began in late February 2026, so part of every scenario's CPI addition is
+    already in that figure and reaches claimants in April 2027. Only the rest
+    goes unindexed during 2027-28.
+
+    One observed figure, shared by all three scenarios: it is what has
+    already happened, not a scenario input. Energy and fuel only. The
+    repository holds no observed food-price rise, so food is left out, which
+    makes this a LOWER bound on what is captured and so an UPPER bound on the
+    shortfall. Replace the August pump-price proxy with the outturn once
+    September 2026 CPI is published (about 21 October 2026).
+    """
+    w = CPI_BASKET_WEIGHTS_2026
+    return round(
+        observed_energy_rise_by_sept_2026_pct() * w["energy"]
+        + observed_fuel_rise_by_sept_2026_pct() * w["fuel"],
+        2,
+    )
+
+
+def residual_cpi_pp(scenario_key, cpi_increase_pp=None):
+    """The part of a scenario's CPI addition that April 2027 uprating misses.
+
+    Never negative: a scenario whose addition is below what is already
+    captured has no shortfall, rather than a negative one.
+    """
+    if cpi_increase_pp is None:
+        cpi_increase_pp = SCENARIOS[scenario_key]["cpi_increase_pp"]
+    return round(max(0.0, cpi_increase_pp - captured_in_sept_2026_cpi_pp()), 2)
+
+
 # Petrol and diesel move differently, and ONS Table A6's fuel category is
 # "Petrol, diesel and other motor oils" — one combined figure that the model
 # multiplies by one percentage. Applying a petrol-only rate to it understates
@@ -356,8 +411,13 @@ _PARAMETER_DEFINITIONS = {
     },
     "cpi_increase_pp": {
         "definition": (
-            "Addition to UK CPI inflation, used only to size the real-terms "
-            "erosion of CPI-linked benefits before the next April uprating"
+            "Addition to UK CPI inflation against a no-conflict path, measured "
+            "from pre-conflict prices. Not a forecast of the headline rate: it "
+            "is set from the scenario's own price assumptions (see "
+            "first_round_floor_pp). Used only to size the real-terms erosion "
+            "of CPI-linked benefits, and so the accelerated-uprating policy. "
+            "Part of it is already in September 2026 CPI, which sets April "
+            "2027 uprating; only the residual goes unindexed"
         ),
         "unit": "percentage points",
         "geography": "United Kingdom",
@@ -629,24 +689,41 @@ PARAMETER_REGISTRY = _build_parameter_registry()
 # counterfactual rather than a price.
 UPRATING_LAG_REGISTRY = {
     "definition": (
-        "Fraction of a full year's CPI addition applied to CPI-linked benefit "
-        "income, representing the average real-terms erosion between a "
-        "mid-year shock and the next April uprating"
+        "Fraction of a year for which the residual CPI addition (the part "
+        "not already in September 2026 CPI) goes unindexed, applied to "
+        "CPI-linked benefit income"
     ),
-    "unit": "fraction of the annual CPI addition",
+    "unit": "fraction of the residual CPI addition",
     "geography": "United Kingdom",
     "source_url": COMMONS_UPRATING,
     "source_date": "2026-01-01",
     "reference_period": "April 2027 uprating (normally set by September 2026 CPI)",
     "derivation": (
-        "Expected fraction of the year an accelerated uprating would cover, "
-        "for a shock arriving at a uniformly distributed point in it: 0.5. "
-        "Applied uniformly rather than benefit by benefit"
+        "1.0. The conflict began in late February 2026, so September 2026 "
+        "CPI already carries part of each scenario's addition "
+        f"({captured_in_sept_2026_cpi_pp()}pp first-round on observed prices: "
+        f"energy +{observed_energy_rise_by_sept_2026_pct()}% at the July 2026 "
+        f"cap, fuel +{observed_fuel_rise_by_sept_2026_pct()}% at August 2026 "
+        "pump prices, food omitted for want of an observed figure), and April "
+        "2027 uprating passes that on. The residual is a level held for the "
+        "whole 2027-28 stress-test year and is not indexed until April 2028, "
+        "so it goes unindexed for the full year. The earlier 0.5, for a shock "
+        "arriving at a uniformly distributed point in the year, does not fit "
+        "a shock whose timing is known and which began before the September "
+        "reference month. Applied uniformly rather than benefit by benefit"
+    ),
+    "captured_pp": captured_in_sept_2026_cpi_pp(),
+    "captured_basis": (
+        "Lower bound on what September 2026 CPI captures: energy and fuel "
+        "only, with August 2026 pump prices standing in for September. "
+        "Replace with the outturn once September 2026 CPI is published "
+        "(about 21 October 2026)"
     ),
     "counterfactual": (
-        "The scheduled April uprating is set from the previous September's "
-        "CPI, so it does not reflect a shock arriving after that and no "
-        "offset reaches households during the stress-test year. The "
+        "The scheduled April 2027 uprating is set from September 2026 CPI, "
+        "which reflects the part of the shock already in prices by then. The "
+        "residual addition is not reflected, and no offset for it reaches "
+        "households during the stress-test year. The "
         "household's loss is the price rise itself, which the energy, fuel "
         "and food channels already measure in full. This amount is therefore "
         "NOT added to them — doing so counted the same price shock twice. It "
@@ -764,19 +841,25 @@ FOOD_DECILE_FACTORS = FOOD_SPEND.decile_factors
 ALLOCATE_FUEL_TO_VEHICLE_OWNERS = True
 
 # Benefit uprating: CPI-linked benefits are uprated each April using the
-# previous September's CPI, so a shock arriving after that September is not
-# reflected in the scheduled uprating and no offset arrives during the year.
+# previous September's CPI. The conflict began in late February 2026, so
+# September 2026 CPI already carries part of the shock and April 2027 uprating
+# passes it on. Only the residual — the scenario's CPI addition less
+# captured_in_sept_2026_cpi_pp() — goes unindexed during 2027-28. An earlier
+# version applied the whole addition, on the premise that the shock arrived
+# after September, which it did not.
 #
 # The household's loss is therefore the price rise itself, which the three
 # cost channels already measure. This factor does NOT add a fourth cost — it
 # sizes the compensation that an immediate uprating would deliver, which is
-# what the accelerated-uprating policy provides. Applying it as an
-# expected-value factor of 0.5 reflects an accelerated uprating covering, on
-# average, half of the year.
+# what the accelerated-uprating policy provides. The factor is 1.0: the
+# residual is a level held for the whole stress-test year and is not indexed
+# until April 2028. The previous 0.5 assumed a shock arriving at a random
+# point in the year, which does not fit a shock that began before the
+# September reference month.
 # The April 2026 uprating (+3.8%, Sept 2025 CPI; UC standard allowance +2.3%
 # extra under the Universal Credit Act 2025) predates the conflict shock.
 # Source: https://commonslibrary.parliament.uk/research-briefings/cbp-10403/
-UPRATING_LAG_FACTOR = 0.5
+UPRATING_LAG_FACTOR = 1.0
 
 # Structural constants
 WEEKS_PER_YEAR = 52

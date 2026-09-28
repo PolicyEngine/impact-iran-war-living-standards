@@ -56,7 +56,7 @@ const POLICY_DESCRIPTIONS = {
   },
   accelerated_uprating: {
     mechanism: "Illustrative option. Updates benefit levels immediately for the shock-driven inflation increase instead of waiting for the usual uprating cycle.",
-    model: "The model offsets the estimated real loss from benefit-uprating lag for households receiving uprated benefits.",
+    model: "The model offsets the estimated real loss from benefit-uprating lag for households receiving uprated benefits: the part of the scenario's CPI addition that September 2026 CPI, and so April 2027 uprating, does not already carry.",
   },
   social_tariff: {
     mechanism: "Illustrative option. Offers a discounted energy tariff to low-income and vulnerable households, halving the energy price shock for those on Universal Credit or with household income below \u00A320,000.",

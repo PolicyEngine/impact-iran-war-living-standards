@@ -24,12 +24,27 @@ def test_fuel_and_food_shocks_scale_imputed_spend(synthetic_data):
     )
 
 
-def test_uprating_shortfall_applies_the_expected_coverage_factor(synthetic_data):
+def test_uprating_shortfall_applies_only_the_residual_cpi(synthetic_data):
+    """April 2027 uprating is set from September 2026 CPI, which already
+    carries the part of the shock in prices by then. Only the residual goes
+    unindexed, so the shortfall must not be sized on the whole addition."""
     impacts = compute_scenario(synthetic_data, "central_shock")
-    cpi = config.SCENARIOS["central_shock"]["cpi_increase_pp"] / 100
+    cpi = config.SCENARIOS["central_shock"]["cpi_increase_pp"]
+    residual = cpi - config.captured_in_sept_2026_cpi_pp()
     assert impacts["benefit_uprating_shortfall"] == pytest.approx(
-        synthetic_data["benefit_income"] * cpi * config.UPRATING_LAG_FACTOR
+        synthetic_data["benefit_income"]
+        * (round(residual, 2) / 100)
+        * config.UPRATING_LAG_FACTOR
     )
+
+
+def test_a_cpi_addition_already_captured_leaves_no_shortfall(synthetic_data):
+    """A scenario whose addition is at or below what September 2026 CPI
+    already carries has no shortfall, not a negative one."""
+    params = dict(config.SCENARIOS["low_shock"])
+    params["cpi_increase_pp"] = config.captured_in_sept_2026_cpi_pp() - 0.5
+    impacts = compute_scenario(synthetic_data, "low_shock", params_override=params)
+    assert np.all(impacts["benefit_uprating_shortfall"] == 0)
 
 
 def test_households_without_benefit_income_have_no_shortfall(synthetic_data):

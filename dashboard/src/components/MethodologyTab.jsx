@@ -17,6 +17,7 @@ export default function MethodologyTab({ data }) {
   // Read the evaluated ranges rather than restating them, so the prose cannot
   // drift from the model the way the hard-coded figures here could (#37).
   const sensitivity = data.scenarios?.central_shock?.sensitivity;
+  const central = data.scenarios?.central_shock;
   const scenarioOptions = getScenarioOptions(data);
 
   return (
@@ -137,8 +138,9 @@ export default function MethodologyTab({ data }) {
           judgements about prices, not sampling distributions.
         </p>
         <p className="mt-4 text-sm leading-7 text-slate-600">
-          <strong>Where CPI acts.</strong> The CPI assumption moves the uprating
-          compensation shortfall (&pound;{sensitivity?.combined?.uprating_shortfall_bn_low}bn&ndash;&pound;{sensitivity?.combined?.uprating_shortfall_bn_high}bn),
+          <strong>Where CPI acts.</strong> The CPI assumption is not a forecast of
+          inflation. It moves the uprating compensation shortfall, and so the
+          accelerated-uprating option and the combined package (&pound;{sensitivity?.combined?.uprating_shortfall_bn_low}bn&ndash;&pound;{sensitivity?.combined?.uprating_shortfall_bn_high}bn),
           not the household cost, because it is deliberately not a cost channel.
           Every parameter records which aggregates it affects, under{" "}
           <code>parameters.registry</code> and{" "}
@@ -286,22 +288,31 @@ export default function MethodologyTab({ data }) {
           <div>
             <strong className="text-slate-800">Benefit uprating &mdash; a shortfall, not a fourth cost:</strong>{" "}
             CPI-linked benefits are uprated each April using the previous September&apos;s
-            CPI. For 2027-28 the April 2027 uprating is set from September 2026 CPI, so
-            it does not reflect a conflict shock arriving after that: no offsetting
-            income increase reaches households during the year. The household&apos;s loss
-            is therefore the price rise itself, which the three channels above already
+            CPI. For 2027-28 the April 2027 uprating is set from September 2026 CPI.
+            The conflict began in late February 2026, so that figure already carries
+            the part of the shock in prices by then &mdash; about{" "}
+            {central?.cpi_captured_by_sept_2026_pp}pp on observed energy and fuel
+            prices &mdash; and April 2027 uprating passes it on. The rest of each
+            scenario&apos;s CPI addition is not indexed until April 2028, so no offset
+            for it reaches households during the year. The household&apos;s loss is
+            therefore the price rise itself, which the three channels above already
             measure in full.
             <br /><br />
             The model reports a separate <strong>uprating compensation shortfall</strong>:
-            CPI-linked benefit income &times; CPI increase &times; 0.5, with the state
+            CPI-linked benefit income &times; the residual CPI addition (the scenario&apos;s
+            addition less the {central?.cpi_captured_by_sept_2026_pp}pp already captured)
+            &times; {central?.uprating_lag_factor}, with the state
             pension excluded because it is uprated by the triple lock rather than CPI.
             It does <strong>not</strong> add that shortfall to the cost channels. Doing
             so would count the same price shock twice: the lack of indexation is why no
             offset arrives, not a second cost on top of the prices. What the shortfall
             measures is the size of the compensation an immediate uprating would deliver,
             and it is exactly what the accelerated-uprating policy pays.
-            The 0.5 factor is the expected fraction of the year such an uprating would
-            cover for a shock arriving at an arbitrary point in it. During the 2022
+            The factor is {central?.uprating_lag_factor} because the residual is a
+            level held for the whole stress-test year and goes unindexed until April
+            2028. The captured figure omits food, for want of an observed food-price
+            rise, so it is a lower bound and the shortfall an upper bound; it will be
+            replaced with the outturn once September 2026 CPI is published. During the 2022
             energy crisis the equivalent indexation gap eroded benefit real value by
             about 5% (&pound;12bn), with April 2022 uprating at 3.1% against 9% actual
             inflation (<a href="https://ifs.org.uk/news/many-benefit-recipients-will-be-worse-until-april-2025-because-failure-payments-keep" target="_blank" rel="noreferrer" className="underline">IFS</a>;{" "}
@@ -357,10 +368,11 @@ export default function MethodologyTab({ data }) {
               </tr>
               <tr>
                 <td className="font-medium">Uprating compensation shortfall</td>
-                <td>Expected 6 months&apos; coverage (factor 0.5)</td>
+                <td>Residual CPI addition, full year (factor {central?.uprating_lag_factor})</td>
                 <td className="text-xs text-slate-500">
-                  Benefits uprated each April by prior September CPI, so no offset
-                  arrives during the shock year. Reported as the compensation an
+                  Benefits uprated each April by prior September CPI, which already
+                  carries part of the shock; the residual is not offset during the
+                  shock year. Reported as the compensation an
                   immediate uprating would deliver and <strong>not</strong> counted as a
                   cost. State pension excluded (triple lock). IFS (2022); Commons
                   Library CBP-10403.

@@ -15,6 +15,8 @@ from .config import (
     CURRENT_ENERGY_CAP,
     SCENARIOS,
     direct_cpi_pp,
+    captured_in_sept_2026_cpi_pp,
+    residual_cpi_pp,
     BASE_FUEL_SPEND,
     BASE_FOOD_SPEND,
     FUEL_DECILE_FACTORS,
@@ -506,7 +508,6 @@ def compute_scenario(data, scenario_key, params_override=None):
     """
     params = params_override or SCENARIOS[scenario_key]
     cap_increase_pct = params["cap_increase_pct"] / 100
-    cpi_increase_pp = params["cpi_increase_pp"] / 100
     fuel_pct = params["fuel_pct"] / 100
     food_increase_pct = params["food_increase_pct"] / 100
 
@@ -528,18 +529,20 @@ def compute_scenario(data, scenario_key, params_override=None):
     # the net impact.
     #
     # The three channels above are the household's extra spending. Nominal
-    # benefit income does not rise in response, because CPI-linked benefits
-    # are uprated each April from the previous September's CPI, so the
-    # scheduled uprating does not reflect a shock arriving after that. The
-    # household's loss is therefore the price rise itself.
+    # benefit income does not rise in response to the part of the shock that
+    # September 2026 CPI misses: CPI-linked benefits are uprated each April
+    # from the previous September's CPI, and that figure already carries the
+    # share of the shock in prices by then (captured_in_sept_2026_cpi_pp).
+    # The household's loss is therefore the price rise itself.
     #
     # Adding an uprating term on top counted the same price shock twice: the
     # loss is the absence of an offset, not a second cost (#13 review C1).
     # What the term measures is the size of the compensation that immediate
     # uprating would have delivered — which is exactly what the accelerated
     # uprating policy provides, so it is reported here and used there.
+    residual_pp = residual_cpi_pp(scenario_key, params["cpi_increase_pp"])
     benefit_uprating_shortfall = (
-        benefit_income * cpi_increase_pp * UPRATING_LAG_FACTOR
+        benefit_income * (residual_pp / 100) * UPRATING_LAG_FACTOR
     )
 
     # Net impact (all positive = cost to household)
@@ -1196,6 +1199,9 @@ def _scenario_output(data, scenario_key):
         # fuel and food assumptions on ONS basket weights. Emitted so the
         # dashboard can quote it rather than hard-coding it (#51).
         "first_round_floor_pp": direct_cpi_pp(scenario_key),
+        "cpi_captured_by_sept_2026_pp": captured_in_sept_2026_cpi_pp(),
+        "cpi_residual_unindexed_pp": residual_cpi_pp(scenario_key),
+        "uprating_lag_factor": UPRATING_LAG_FACTOR,
         "summary": summary,
         "by_quintile": _by_quintile(data, impacts),
         "by_region": _grouped_impacts(
