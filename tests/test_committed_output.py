@@ -123,10 +123,12 @@ def test_committed_headlines_match_the_reviewed_values(results):
     # measured on the annual rate (0.9pp) and the gain modelled as a
     # PolicyEngine uprating reform (#61 second review C1, C2), then £3.01bn
     # once the reform ran at each residual and included ESA (third review),
-    # and £3.02bn with contribution-based JSA counted once (fourth review).
-    assert package["gross_outlay_bn"] == 55.0
-    assert package["household_protection_bn"] == 37.37
-    assert package["residual_impact_bn"] == 4.76
+    # and £3.02bn with contribution-based JSA counted once (fourth review),
+    # and £3.10bn once every directly paid reported award was covered
+    # (income JSA, IIDB, incapacity benefit, AFCS; fifth review).
+    assert package["gross_outlay_bn"] == 55.07
+    assert package["household_protection_bn"] == 37.4
+    assert package["residual_impact_bn"] == 4.72
 
 
 def test_the_policy_accounting_closes_in_the_committed_output(results):
