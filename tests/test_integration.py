@@ -202,7 +202,9 @@ def test_the_uprating_reform_raises_uc_pound_for_pound():
     """#61 second review C2: a working UC renter with a positive award gains
     exactly the uprated standard allowance, which a share-of-award rule
     understated by 74%."""
-    from policyengine_uk import Simulation
+    # Same rule as _baseline: skip only when the model is not installed.
+    policyengine_uk = pytest.importorskip("policyengine_uk")
+    Simulation = policyengine_uk.Simulation
 
     from iran_impact.pipeline import _cpi_uprating_reform
 
