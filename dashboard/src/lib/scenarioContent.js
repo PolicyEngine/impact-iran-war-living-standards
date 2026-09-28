@@ -5,7 +5,7 @@ export const SCENARIO_CONTENT = {
     shortLabel: "Summer 2026 prices",
     // The conflict path this scenario represents. Defined once here so a
     // relabel cannot be partial; every tab reads it rather than restating it.
-    pathLabel: "premium partially unwinds",
+    pathLabel: "summer 2026 prices held",
     // Descriptions are built from the generated parameters rather than
     // restating them, so dashboard copy cannot drift from the model the way
     // it did when severe fuel moved 80% -> 65% and the CPI adders were
@@ -14,19 +14,19 @@ export const SCENARIO_CONTENT = {
     // observed prices themselves: food is a judgement and all three are held
     // for a future year (#61 fifth review A8).
     describe: (p, observed) =>
-      `An assumption, anchored to observed prices: prices settle near their current elevated levels rather than falling back, and stay there for all of 2027-28. Energy spending +${p.cap_increase_pct}%, anchored to the observed +13.5% July 2026 cap rise and slightly below the announced October 2026 cap, so it represents the Q4-2026 premium partially unwinding. Fuel +${p.fuel_pct}%, close to the August 2026 pump-price rise${observed ? ` (mid-September prices were +${observed.fuel}%)` : ""}. Food +${p.food_increase_pct}%, a judgement with no published figure behind it. CPI +${p.cpi_increase_pp}pp against a no-conflict path (used only to size the benefit uprating gap, not a CPI forecast).`,
+      `An assumption: summer 2026 prices hold for all of 2027-28. Energy +${p.cap_increase_pct}%, anchored to the July cap rise (+13.5%; October's is higher). Fuel +${p.fuel_pct}%, the August pump-price rise${observed ? ` (mid-September: +${observed.fuel}%)` : ""}. Food +${p.food_increase_pct}%, a judgement. CPI +${p.cpi_increase_pp}pp, used only to size the benefit uprating gap, not a forecast.`,
   },
   central_shock: {
     shortLabel: "Sustained escalation",
-    pathLabel: "sustained disruption",
+    pathLabel: "sustained escalation",
     describe: (p, observed) =>
-      `The Strait of Hormuz constraint persists. The energy channel is gas-driven: NBP/TTF sustained at roughly twice pre-conflict levels as the closure halts Qatari LNG, which on a ~40-45% wholesale share implies energy spending +${p.cap_increase_pct}%. Fuel +${p.fuel_pct}% follows Brent above $100/bbl (Goldman Sachs' extended-closure case); food +${p.food_increase_pct}%, CPI +${p.cpi_increase_pp}pp against a no-conflict path (used only to size the benefit uprating gap, not a CPI forecast), sustained for 12 months. Lower-income households, who spend roughly three times the budget share on energy of the top quintile, bear the largest proportional losses.${observed ? ` For comparison, observed prices are energy +${observed.energy}% (July 2026 cap; +${observed.octoberEnergy}% announced for October) and fuel +${observed.fuel}%,, against the summer-2026-prices scenario's +15% energy and +22% fuel: this is a stress test of prices rising well beyond today's, not a forecast.` : ""}`,
+      `Hormuz stays constrained. Gas stays at about twice its pre-conflict price as Qatari LNG is halted, lifting energy spending +${p.cap_increase_pct}%. Fuel +${p.fuel_pct}% follows Brent above $100/bbl (Goldman Sachs' extended-closure case). Food +${p.food_increase_pct}%. CPI +${p.cpi_increase_pp}pp, used only to size the benefit uprating gap, not a forecast. Held for 12 months.${observed ? ` Observed so far: energy +${observed.energy}% (July cap; +${observed.octoberEnergy}% for October), fuel +${observed.fuel}%. This is a stress test of prices rising well beyond that.` : ""}`,
   },
   severe_shock: {
     shortLabel: "Severe escalation",
-    pathLabel: "prolonged war",
+    pathLabel: "severe escalation",
     describe: (p) =>
-      `A prolonged war with extended Strait of Hormuz closure, as a tail risk. Gas sustained at roughly triple pre-conflict levels gives energy spending +${p.cap_increase_pct}%, comparable to the 2022 crisis, when the announced October 2022 cap rose 178% year on year. Fuel +${p.fuel_pct}% is the oil-to-pump pass-through at Brent near $140/bbl under the Oxford Economics escalation case, which reports a 5.8% peak in world CPI and a global recession. Food +${p.food_increase_pct}%, CPI +${p.cpi_increase_pp}pp against a no-conflict path (used only to size the benefit uprating gap, not a CPI forecast), sustained for 12 months.`,
+      `A tail risk: prolonged war and extended Hormuz closure. Gas at about triple its pre-conflict price lifts energy spending +${p.cap_increase_pct}% (the October 2022 cap rose 178%). Fuel +${p.fuel_pct}% is our pass-through of Brent near $140/bbl (Oxford Economics' escalation case). Food +${p.food_increase_pct}%. CPI +${p.cpi_increase_pp}pp, used only to size the benefit uprating gap, not a forecast. Held for 12 months.`,
   },
 };
 

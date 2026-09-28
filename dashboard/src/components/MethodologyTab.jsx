@@ -108,22 +108,26 @@ export default function MethodologyTab({ data }) {
         <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">
           How the model works
         </h2>
-        <p className="mt-4 text-sm leading-7 text-slate-600">
-          This dashboard estimates how energy price rises from the ongoing Middle East
-          conflict — active since late February 2026, with recurrent Strait of Hormuz
-          disruption — affect UK household living standards. We model three forward
-          paths for the conflict ({getScenarioPathLabels().join(", ")}),
-          each transmitted to households through three cost channels &mdash; higher
-          energy spending, increased fuel costs and food price inflation &mdash; plus a
-          separately reported uprating compensation shortfall. The analysis covers the 2027-28 tax year. The model
-          is built on{" "}
-          <a href="https://policyengine.org" target="_blank" rel="noreferrer" className="underline">PolicyEngine UK</a>{" "}
-          microsimulation using the Enhanced Family Resources Survey, covering approximately
-          {householdCount ? ` ${householdCount.toFixed(1)} million ` : " "}
-          UK households. Ten policy responses are evaluated for their fiscal
-          cost and distributional impact — including the
-          decisions facing the government at the Autumn Budget on 28 October 2026.
-        </p>
+        <ul className="mt-4 list-disc space-y-2 pl-5 text-sm leading-7 text-slate-600">
+          <li>
+            <strong>What:</strong> the cost to UK households in 2027-28 of higher
+            energy, pump fuel and food prices, with the Middle East conflict (since late
+            February 2026) as the context.
+          </li>
+          <li>
+            <strong>Scenarios:</strong> three price paths ({getScenarioPathLabels().join(", ")}).
+          </li>
+          <li>
+            <strong>Model:</strong>{" "}
+            <a href="https://policyengine.org" target="_blank" rel="noreferrer" className="underline">PolicyEngine UK</a>{" "}
+            on the Enhanced Family Resources Survey
+            {householdCount ? `, about ${householdCount.toFixed(1)} million households` : ""}.
+          </li>
+          <li>
+            <strong>Policies:</strong> ten responses, including two Autumn Budget
+            decisions due on 28 October 2026.
+          </li>
+        </ul>
       </div>
 
       {/* ================================================================ */}
@@ -134,81 +138,66 @@ export default function MethodologyTab({ data }) {
         <h3 className="mt-2 text-lg font-semibold text-slate-900">
           Scenario assumptions
         </h3>
-        <p className="mt-4 text-sm leading-7 text-slate-600">
-          <strong>What the percentages are.</strong> Each scenario applies a set of
-          price assumptions as full-year 2027-28 amounts, including where the cited
-          source describes a 2026 disruption lasting a few months. No time path,
-          quarterly profile or shock duration is modelled, and the pass-through
-          coefficients implied below are judgements anchored to the cited sources
-          rather than equations derived from them.
-        </p>
-        <p className="mt-4 text-sm leading-7 text-slate-600">
-          <strong>How uncertain.</strong> Every price parameter carries a range, and
-          the model is re-run across them. Under sustained escalation the total runs from{" "}
-          &pound;{sensitivity?.combined?.total_impact_bn_low}bn to{" "}
-          &pound;{sensitivity?.combined?.total_impact_bn_high}bn against a{" "}
-          &pound;{data.scenarios.central_shock.summary.total_impact_bn}bn point
-          estimate. That spread is <em>not</em> a confidence interval: the ranges are
-          judgements about prices, not sampling distributions.
-        </p>
-        <p className="mt-4 text-sm leading-7 text-slate-600">
-          <strong>Where CPI acts.</strong> The CPI assumption is not a forecast of
-          inflation. It moves the uprating compensation shortfall, and so the
-          accelerated-uprating option and the combined package (&pound;{sensitivity?.combined?.uprating_shortfall_bn_low}bn&ndash;&pound;{sensitivity?.combined?.uprating_shortfall_bn_high}bn),
-          not the household cost, because it is deliberately not a cost channel.
-          Every parameter records which aggregates it affects, under{" "}
-          <code>parameters.registry</code> and{" "}
-          <code>scenarios[*].sensitivity</code> in the results file.
-        </p>
-        <p className="mt-4 text-sm leading-7 text-slate-600">
-          The energy percentages below are measured from the{" "}
-          <strong>April&ndash;June 2026 level</strong> &mdash; the cap Ofgem announced on
-          25 February 2026, immediately before the conflict began, though the period it
-          covers is not itself pre-conflict. That was an Ofgem cap of &pound;{baseline.energy_price_cap_new_basis_gbp.toLocaleString("en-GB")} on
-          the new typical-consumption basis (&pound;{baseline.energy_price_cap_old_basis_gbp.toLocaleString("en-GB")} on
-          the pre-July basis, which is PolicyEngine UK&apos;s own cap parameter). Pump
-          prices are anchored to a different period &mdash; {baseline.pump_price_period} &mdash;
-          at about {Math.round(baseline.petrol_pence_per_litre)}p a litre for petrol and
-          {" "}{Math.round(baseline.diesel_pence_per_litre)}p for diesel. For scale, the
-          announced October&ndash;December 2026 cap of &pound;{baseline.announced_oct_2026_cap_gbp.toLocaleString("en-GB")} is
-          +{baseline.announced_oct_2026_vs_pre_conflict_pct}% on that cap
-          baseline, so the summer-2026-prices scenario&apos;s
-          +{data.scenarios.low_shock.params.cap_increase_pct}% represents that premium partially
-          unwinding through 2027-28 rather than prices falling back below current levels.
-        </p>
-        <p className="mt-4 text-sm leading-7 text-slate-600">
-          Each scenario represents a forward path for the conflict from the August 2026
-          position. <strong>The energy channel is gas-driven, not oil-driven</strong>: Ofgem&apos;s
-          wholesale allowance is built from NBP gas and UK baseload power forwards, and a
-          Strait of Hormuz closure reaches UK bills through Qatari LNG &mdash; about 19% of
-          global exports &mdash; rather than through crude. Summer 2026 prices tracks the
-          observed path assuming the Q4-2026 premium partially unwinds (<a href="https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-july-and-30-september-2026" target="_blank" rel="noreferrer" className="underline">Ofgem cap +13.5% in July 2026</a>).
-          Sustained escalation assumes gas sustained at roughly twice pre-conflict levels
-          and severe escalation roughly triple; for scale, the announced October 2022 cap rose 178% year on year
-          under a comparable gas-supply shock. In this episode oil and gas diverged &mdash;
-          oil flows recovered while LNG stayed halted &mdash; so an oil-anchored calibration
-          would if anything understate the energy shock.
-        </p>
-        <p className="mt-4 text-sm leading-7 text-slate-600">
-          The <em>fuel</em> channel is oil-driven, and follows{" "}
-          <a href="https://oilprice.com/Latest-Energy-News/World-News/Goldman-Another-Month-of-Hormuz-Closure-Means-Over-100-Brent-Throughout-2026.html" target="_blank" rel="noreferrer" className="underline">Goldman Sachs&apos; extended Strait of Hormuz closure case</a>{" "}
-          (a client note, reported by OilPrice; Goldman has not published it)
-          (Brent above $100/bbl) for sustained escalation, and{" "}
-          <a href="https://www.oxfordeconomics.com/resource/iran-war-scenarios-the-oil-price-that-breaks-parts-of-the-economy/" target="_blank" rel="noreferrer" className="underline">Oxford Economics&apos; escalation scenario</a>{" "}
-          (a two-month $140/bbl case) for severe escalation. That source publishes no pump-price figure,
-          so the pass-through is ours: fuel duty is a fixed 52.95p a litre and damps the
-          percentage rise, which puts $140/bbl at roughly +60% to +70% against the observed
-          pre-conflict pump price. The CPI adders are not inflation forecasts: each is
-          the first-round effect of that scenario&apos;s own energy, fuel and food price
-          rises on ONS 2026 basket weights, a price-level effect over the stress-test
-          year rather than a floor on annual inflation, and is used only to size the
-          benefit uprating gap.
-          {upr ? ` The latest ONS indices put the conflict's contribution to the annual CPI rate at about ${upr.captured}pp, below the summer-2026-prices scenario's addition.` : null}
-          CPI transmission draws on{" "}
-          <a href="https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/june-2026" target="_blank" rel="noreferrer" className="underline">Bank of England June 2026 projections</a>{" "}
-          and the{" "}
-          <a href="https://commonslibrary.parliament.uk/research-briefings/cbp-10601/" target="_blank" rel="noreferrer" className="underline">Commons Library briefing on the conflict and the UK economy</a>.
-        </p>
+        <ul className="mt-4 list-disc space-y-3 pl-5 text-sm leading-7 text-slate-600">
+          <li>
+            <strong>What the percentages are.</strong> Full-year 2027-28 price rises. No
+            time path or shock duration is modelled, and pass-through rates are
+            judgements anchored to the cited sources.
+          </li>
+          <li>
+            <strong>How uncertain.</strong> Each price assumption has a range. Under
+            sustained escalation the total runs from{" "}
+            {`£${sensitivity?.combined?.total_impact_bn_low}bn to £${sensitivity?.combined?.total_impact_bn_high}bn`}{" "}
+            around &pound;{data.scenarios.central_shock.summary.total_impact_bn}bn. This is
+            a spread of judgements, <em>not</em> a confidence interval.
+          </li>
+          <li>
+            <strong>Where CPI acts.</strong> Not an inflation forecast. It only sizes the
+            uprating shortfall, and so the accelerated-uprating option and combined
+            package ({`£${sensitivity?.combined?.uprating_shortfall_bn_low}bn–£${sensitivity?.combined?.uprating_shortfall_bn_high}bn`}),
+            never the household cost.
+          </li>
+          <li>
+            <strong>Energy baseline.</strong>{" "}April&ndash;June 2026, the cap Ofgem set
+            before the conflict:{" "}
+            {`£${baseline.energy_price_cap_new_basis_gbp.toLocaleString("en-GB")}`} on
+            the new basis ({`£${baseline.energy_price_cap_old_basis_gbp.toLocaleString("en-GB")}`}{" "}
+            on the old). The October cap of{" "}
+            {`£${baseline.announced_oct_2026_cap_gbp.toLocaleString("en-GB")}`} is +
+            {baseline.announced_oct_2026_vs_pre_conflict_pct}% on it, so summer 2026
+            prices&apos; +{data.scenarios.low_shock.params.cap_increase_pct}% is that premium
+            partly unwinding.
+          </li>
+          <li>
+            <strong>Fuel baseline.</strong> {baseline.pump_price_period}: about{" "}
+            {Math.round(baseline.petrol_pence_per_litre)}p petrol,{" "}
+            {Math.round(baseline.diesel_pence_per_litre)}p diesel.
+          </li>
+          <li>
+            <strong>Energy is gas-driven.</strong> Hormuz reaches UK bills through Qatari
+            LNG (about 19% of global exports), not crude. Summer 2026 prices follows the{" "}
+            <a href="https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-july-and-30-september-2026" target="_blank" rel="noreferrer" className="underline">July cap rise (+13.5%)</a>;
+            sustained escalation assumes gas at about twice pre-conflict levels, severe
+            about triple (the October 2022 cap rose 178%).
+          </li>
+          <li>
+            <strong>Fuel is oil-driven.</strong> Sustained escalation follows{" "}
+            <a href="https://oilprice.com/Latest-Energy-News/World-News/Goldman-Another-Month-of-Hormuz-Closure-Means-Over-100-Brent-Throughout-2026.html" target="_blank" rel="noreferrer" className="underline">Goldman Sachs&apos; extended-closure case</a>{" "}
+            (Brent above $100; a client note reported by OilPrice); severe follows{" "}
+            <a href="https://www.oxfordeconomics.com/resource/iran-war-scenarios-the-oil-price-that-breaks-parts-of-the-economy/" target="_blank" rel="noreferrer" className="underline">Oxford Economics&apos; $140 case</a>.
+            Fixed fuel duty (52.95p) damps the percentage rise, putting $140 at about +60%
+            to +70% on pre-conflict pump prices.
+          </li>
+          <li>
+            <strong>CPI figures.</strong>{" "}The first-round effect of each scenario&apos;s
+            own price rises on ONS 2026 basket weights: a price-level effect, not a floor
+            on inflation.
+            {upr ? ` The latest ONS indices put the conflict's contribution to the annual CPI rate at about ${upr.captured}pp.` : null}{" "}
+            Sources:{" "}
+            <a href="https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/june-2026" target="_blank" rel="noreferrer" className="underline">Bank of England, June 2026</a>;{" "}
+            <a href="https://commonslibrary.parliament.uk/research-briefings/cbp-10601/" target="_blank" rel="noreferrer" className="underline">Commons Library CBP-10601</a>.
+          </li>
+        </ul>
         <div className="mt-4 overflow-x-auto">
           <table className="data-table" style={{ tableLayout: "fixed" }}>
             {/* The description carries most of the content, so it gets most
@@ -269,7 +258,7 @@ export default function MethodologyTab({ data }) {
             July&ndash;September 2026 on Ofgem&apos;s new typical-consumption basis,
             equivalent to ~&pound;1,862 on the pre-July basis; &pound;1,723 for
             October&ndash;December 2026). The scenario percentage is applied to each
-            household&apos;s <strong>own baseline gas and electricity expenditure</strong>
+            household&apos;s <strong>own baseline gas and electricity expenditure</strong>{" "}
             in the microdata &mdash; the cap figures above are context and do not enter
             the calculation. The model does not represent unit rates, standing charges,
             the gas/electricity split, region, payment method, quarterly cap periods or
@@ -305,56 +294,48 @@ export default function MethodologyTab({ data }) {
           </div>
           <div>
             <strong className="text-slate-800">Benefit uprating &mdash; a shortfall, not a fourth cost:</strong>{" "}
-            {upr ? (<>
-            CPI-linked benefits are uprated each April using the previous September&apos;s
-            CPI. For 2027-28 the April 2027 uprating is set from September 2026 CPI.
-            The conflict began in late February 2026, so that figure already carries
-            the part of the shock in prices by then &mdash; about{" "}
-            {upr.captured}pp from the conflict to the annual rate on ONS energy and fuel
-            indices, a proxy on August 2026 data &mdash; and April 2027 uprating passes it on. The rest of each
-            scenario&apos;s CPI addition is not indexed until April 2028, so no offset
-            for it reaches households during the year. The household&apos;s loss is
-            therefore the price rise itself, which the three channels above already
-            measure in full.
-            <br /><br />
-            The model reports a separate <strong>uprating compensation shortfall</strong>:
-            CPI-linked benefit income &times; the residual CPI addition (the scenario&apos;s
-            addition less the {upr.captured}pp already captured)
-            &times; {upr.factor}, where the gain is modelled by raising every
-            CPI-uprated benefit rate in PolicyEngine UK by the scenario&apos;s own
-            residual, and the reported ESA, contribution-based JSA, industrial injuries,
-            incapacity benefit and armed forces compensation awards and the CPI-uprated
-            additional State Pension with them, and letting the benefit
-            rules (earnings tapers, award floors, the benefit cap, housing costs) work
-            out each household&apos;s award. A working UC claimant with a positive award gains
-            the uprated standard allowance pound for pound. Amounts not uprated by CPI
-            are left alone: the triple-locked basic and new State Pension, the Pension Credit
-            minimum guarantee (earnings), UC&apos;s LCWRA element (frozen by the
-            Universal Credit Act 2025), and caps, thresholds and deductions. The
-            Pension Credit savings credit maximum is CPI-uprated but is not a
-            parameter in the model, so it is not raised; nor are maternity allowance and
-            statutory maternity and sick pay, which are only partly CPI-linked. Together
-            they put the omission under sustained escalation at no more than
-            {Number.isFinite(notCoveredBoundBn) ? ` £${notCoveredBoundBn}bn` : " a published bound"}.
-            It does <strong>not</strong> add that shortfall to the cost channels. Doing
-            so would count the same price shock twice: the lack of indexation is why no
-            offset arrives, not a second cost on top of the prices. What the shortfall
-            measures is the size of the compensation an immediate uprating would deliver,
-            and it is exactly what the accelerated-uprating policy pays.
-            The factor is {upr.factor} because the residual is a
-            level held for the whole stress-test year and goes unindexed until April
-            2028. The captured figure omits food, for want of an observed food-price
-            rise, so it is a lower bound and the shortfall an upper bound; it will be
-            replaced with the outturn once September 2026 CPI is published. The price
-            ranges above do not vary the captured figure or the factor, which are
-            point assumptions: at the factor&apos;s registered floor of 0 the
-            accelerated-uprating option would cost nothing, and at 1.0 it is the
-            figure shown. During the 2022
-            energy crisis the equivalent indexation gap eroded benefit real value by
-            about 5% (&pound;12bn), with April 2022 uprating at 3.1% against 9% actual
-            inflation (<a href="https://ifs.org.uk/news/many-benefit-recipients-will-be-worse-until-april-2025-because-failure-payments-keep" target="_blank" rel="noreferrer" className="underline">IFS</a>;{" "}
-            <a href="https://commonslibrary.parliament.uk/research-briefings/cbp-10403/" target="_blank" rel="noreferrer" className="underline">Commons Library CBP-10403</a>).
-            </>) : (
+            {upr ? (<ul className="mt-2 list-disc space-y-2 pl-5">
+              <li>
+                <strong>Timing.</strong> April 2027 uprating uses September 2026 CPI,
+                which already carries about {upr.captured}pp from the conflict to the
+                annual rate (ONS energy and fuel indices, August proxy). Only the rest of
+                each scenario&apos;s addition goes unindexed, until April 2028.
+              </li>
+              <li>
+                <strong>Calculation.</strong> Every CPI-uprated benefit rate, the reported
+                ESA, contribution-based JSA, industrial injuries, incapacity benefit and
+                armed forces awards, and additional State Pension are raised by the
+                residual in PolicyEngine UK, and the benefit rules (tapers, the cap, award
+                floors) set each household&apos;s gain. Factor {upr.factor}: the residual
+                lasts the whole year.
+              </li>
+              <li>
+                <strong>Left out.</strong> Amounts not CPI-uprated: basic and new State
+                Pension (triple lock), the Pension Credit minimum guarantee (earnings),
+                UC&apos;s LCWRA element (frozen), caps and thresholds. The savings credit
+                maximum and partly linked maternity and sick pay are also not raised: at
+                most
+                {Number.isFinite(notCoveredBoundBn) ? ` £${notCoveredBoundBn}bn` : " a published bound"}{" "}
+                under sustained escalation.
+              </li>
+              <li>
+                <strong>Not a cost.</strong> The shortfall is what an immediate uprating
+                would pay, which is the accelerated-uprating option. Adding it to the price
+                rises would count the shock twice.
+              </li>
+              <li>
+                <strong>Caveats.</strong> The captured figure omits food, so the shortfall
+                is an upper bound; it will use the September outturn once published. The
+                factor and captured figure are not varied in the ranges above (at a factor
+                of 0 the option would cost nothing).
+              </li>
+              <li>
+                <strong>Precedent.</strong> In 2022 the indexation gap cut benefits&apos;
+                real value by about 5% (&pound;12bn): April uprating of 3.1% against 9%
+                inflation (<a href="https://ifs.org.uk/news/many-benefit-recipients-will-be-worse-until-april-2025-because-failure-payments-keep" target="_blank" rel="noreferrer" className="underline">IFS</a>;{" "}
+                <a href="https://commonslibrary.parliament.uk/research-briefings/cbp-10403/" target="_blank" rel="noreferrer" className="underline">Commons Library CBP-10403</a>).
+              </li>
+            </ul>) : (
               "The uprating figures are unavailable in this results file."
             )}
           </div>

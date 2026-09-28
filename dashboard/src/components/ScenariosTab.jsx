@@ -622,7 +622,7 @@ export default function ScenariosTab({ data }) {
           { label: "Bank of England (June 2026): total CPI a little under 3% in Q3 and a little over 3¼% in Q4 2026, on mid-June energy prices", url: "https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/june-2026" },
         ],
         ours: `+${low.params.cpi_increase_pp}pp (summer 2026 prices), +${central.params.cpi_increase_pp}pp (sustained escalation), +${severe.params.cpi_increase_pp}pp (severe escalation)`,
-        note: `These are not CPI forecasts: each is the addition that scenario's own energy, fuel and food prices imply, and it is used only to size the benefit uprating gap and the accelerated-uprating option, never the household cost. ${getUpratingInputs(central) && Number.isFinite(observed?.observed_energy_rise_by_sept_2026_pct) && Number.isFinite(observed?.observed_fuel_rise_by_sept_2026_pct) ? `Observed prices are energy +${observed.observed_energy_rise_by_sept_2026_pct}% (July cap) and fuel +${observed.observed_fuel_rise_by_sept_2026_pct}% (mid-September pumps). Summer 2026 prices assumes +${low.params.cap_increase_pct}% and +${low.params.fuel_pct}%, anchored to the July cap and the August pump-price rise; mid-September pump prices and the October cap are higher. The latest ONS indices put the conflict's contribution to the annual CPI rate at about ${central.cpi_captured_by_sept_2026_pp}pp (August data, a proxy until the September figures on 21 October). ` : ""}Sustained escalation assumes energy +${central.params.cap_increase_pct}% and fuel +${central.params.fuel_pct}%, well beyond that. Our figures are additions to CPI against a no-conflict path. The OBR's is also an addition, conditional on 10 March energy prices persisting; summer 2026 prices (+${low.params.cpi_increase_pp}pp) is similar in size. NIESR and the Bank of England publish total CPI rates, not additions. NIESR's include its own assumption of 3-4% inflation from other sources, so they do not convert into a conflict addition by subtracting a 2% baseline. Each figure is the first-round effect of that scenario's own energy, fuel and food price rises on ONS 2026 basket weights: a price-level effect over the stress-test year, not a floor on annual inflation, which also depends on timing, second-round effects and demand. For sustained escalation that effect is ${central.first_round_floor_pp}pp. The severe escalation figure is a judgemental tail-risk assumption rather than a published UK figure, extrapolated from the Oxford Economics escalation case, which reports a 5.8% peak in world CPI with no stated equation linking that to a UK addition. Other severe published scenarios exist on a total-CPI basis and are not directly comparable with an addition.`,
+        note: `Not CPI forecasts: each is the first-round effect of that scenario's energy, fuel and food rises on ONS 2026 basket weights (${central.first_round_floor_pp}pp for sustained escalation), used only to size the benefit uprating gap, never the household cost. ${getUpratingInputs(central) && Number.isFinite(observed?.observed_energy_rise_by_sept_2026_pct) && Number.isFinite(observed?.observed_fuel_rise_by_sept_2026_pct) ? `Observed so far: energy +${observed.observed_energy_rise_by_sept_2026_pct}% (July cap), fuel +${observed.observed_fuel_rise_by_sept_2026_pct}% (mid-September). The latest ONS indices put the conflict's share of annual CPI at about ${central.cpi_captured_by_sept_2026_pp}pp (August data; September's figures are due 21 October). ` : ""}The OBR's figure is also an addition, conditional on 10 March prices. NIESR and the Bank of England publish total CPI rates; NIESR's include 3-4% inflation from other sources, so they do not convert into a conflict addition by subtracting a 2% baseline. The severe escalation figure is a judgement, extrapolated from Oxford Economics' 5.8% peak in world CPI.`,
       },
     ];
   }, [data]);
@@ -664,14 +664,11 @@ export default function ScenariosTab({ data }) {
               Energy spending
             </dt>
             <dd>
-              measured from each household&apos;s own modelled gas and electricity
-              spending at pre-conflict levels ({preConflict?.energy_cap_period}).
-              For context only, Ofgem&apos;s published cap for that period was{" "}
-              {`£${preConflict?.energy_price_cap_old_basis_gbp?.toLocaleString("en-GB")} on`}{" "}
-              the typical-consumption basis then in use; the &pound;
-              {preConflict?.energy_price_cap_new_basis_gbp?.toLocaleString("en-GB")}{" "}
-              like-for-like figure on the basis Ofgem adopted in July is{" "}
-              <em>inferred by this study</em>, not published. No cap value enters the
+              each household&apos;s own modelled gas and electricity spending before the
+              conflict ({preConflict?.energy_cap_period}). Ofgem&apos;s cap then was{" "}
+              {`£${preConflict?.energy_price_cap_old_basis_gbp?.toLocaleString("en-GB")}`};
+              the &pound;{preConflict?.energy_price_cap_new_basis_gbp?.toLocaleString("en-GB")}{" "}
+              on its July basis is <em>inferred by this study</em>. No cap value enters the
               calculation.
             </dd>
           </div>
@@ -765,7 +762,7 @@ export default function ScenariosTab({ data }) {
       <div className="border-t border-slate-200 pt-10">
         <SectionHeading
           title="Cost breakdown by transmission channel"
-          description="How the average household cost in 2027-28 splits across the three routes through which the shock reaches households: energy spending, fuel at the pump, and food prices (energy is a major input cost). The uprating compensation shortfall is reported separately rather than as a fourth cost. April 2027 uprating is set from September 2026 CPI, which already carries part of the shock; no offset arrives during the shock year for the residual, so the household's loss is the price rise itself. The shortfall is the size of the compensation an immediate uprating would deliver, and is what the accelerated-uprating policy pays."
+          description="How the average 2027-28 cost splits between energy, pump fuel and food. The uprating shortfall is shown separately, not as a fourth cost: April 2027 uprating already carries part of the shock, and the shortfall is what an immediate uprating would pay for the residual."
         />
       </div>
 

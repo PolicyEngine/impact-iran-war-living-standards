@@ -1509,8 +1509,8 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
                 "energy_price_cap_new_basis_gbp": PRE_CONFLICT_CAP_NEW_BASIS,
                 "energy_price_cap_old_basis_gbp": PRE_CONFLICT_CAP_OLD_BASIS,
                 "energy_cap_period": (
-                    "April-June 2026, the cap Ofgem announced on 25 "
-                    "February 2026, immediately before the conflict began"
+                    "April-June 2026, announced by Ofgem on 25 February, "
+                    "before the conflict began"
                 ),
                 # Observed so far, on the same bases as the scenario
                 # percentages, so the dashboard can set each scenario against

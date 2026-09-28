@@ -144,17 +144,13 @@ export default function PolicyTab({ data }) {
       {/* SCENARIO SELECTOR                                                 */}
       {/* ================================================================ */}
       <p className="text-sm leading-7 text-slate-600">
-        This tab compares the government support options for the 2027-28 tax year — including
-        two decisions due at the Autumn Budget on 28 October 2026: extending the
-        electricity VAT cut, and extending the 5p fuel duty cut. The other measures are
-        modelled as illustrative options. The baseline for every comparison is
-        the selected shock scenario before any policy response; the reform case is the same
-        scenario with the selected policy applied. Gross outlay is the full unclipped government payment in 2027-28. It is a
-        gross modelled household transfer, not an Exchequer costing: it excludes tax and
-        benefit interactions, take-up, behavioural responses, administration,
-        non-household fuel use and financing. Average household benefit is the reduction
-        in annual household impact from the energy price shock. The dashboard reports both gross outlay and the share of
-        spending reaching the bottom two quintiles; policies differ on both dimensions.
+        Support options for 2027-28, including two Autumn Budget decisions on 28
+        October 2026: extending the electricity VAT cut and the 5p fuel duty cut. The
+        rest are illustrative. Each is measured against the selected scenario with no
+        policy response. Gross outlay is the full modelled payment to households, not an
+        Exchequer costing: it leaves out tax and benefit interactions, take-up,
+        behaviour, administration, non-household fuel use and financing. Average
+        household benefit is how much the policy cuts the shock&apos;s annual cost.
       </p>
 
       <div className="grid items-stretch gap-6 lg:grid-cols-2">
@@ -186,7 +182,7 @@ export default function PolicyTab({ data }) {
           {scenarioDescription ? (
             <p className="mt-5 text-sm leading-7 text-slate-600">
               <strong className="text-slate-800">{scenarioDescription.shortLabel}:</strong>{" "}
-              {scenarioDescription.description} The policy comparison treats this selected scenario as the baseline before government support.
+              {scenarioDescription.description} Policies are measured against this scenario.
             </p>
           ) : null}
         </div>
@@ -252,7 +248,7 @@ export default function PolicyTab({ data }) {
                 {policy.gross_outlay_bn != null ? formatBn(policy.gross_outlay_bn) : "--"}
               </div>
               <div className="mt-2 text-sm leading-6 text-slate-500">
-                Gross modelled household transfer from applying {policyLabel} in the selected shock scenario over 2027-28. <strong>Not an Exchequer costing</strong> &mdash; it excludes tax and benefit interactions, take-up, behavioural responses, administration, non-household fuel use and financing.
+                Modelled payment to households in 2027-28. <strong>Not an Exchequer costing</strong>: it leaves out tax and benefit interactions, take-up, behaviour, administration and financing.
               </div>
             </div>
             <div className="metric-card">
@@ -333,7 +329,7 @@ export default function PolicyTab({ data }) {
                   <div className="min-h-[132px]">
                     <SectionHeading
                       title="Who receives support"
-                      description={`Share of households whose annual residual impact falls by more than £1 when ${policyLabel} is applied to the selected shock scenario. No household can be made worse off: support is non-negative and residual impact is floored at zero, so a "worse off" category would report a model identity rather than a finding.`}
+                      description={`Share of households whose annual cost falls by more than £1 under ${policyLabel}. None can be worse off, as support is never negative.`}
                     />
                   </div>
                   <div className="min-h-0 flex-1 w-full">
