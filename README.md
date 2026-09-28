@@ -28,7 +28,7 @@ The pipeline applies price increases through three transmission channels and com
 2. **Fuel** — Petrol and diesel spending (ONS Family Spending Table A6, allocated to vehicle-owning households only), raised by the scenario percentage
 3. **Food** — Food and non-alcoholic drink spending (ONS Family Spending Table A6), raised by the scenario percentage
 
-Plus a separately reported **uprating compensation shortfall** — CPI-linked benefits (state pension excluded: triple lock) are uprated each April from the previous September's CPI. The conflict began in late February 2026, so September 2026 CPI already carries part of the shock (about 1.02pp on observed energy and fuel prices, food omitted, so a lower bound) and April 2027 uprating passes it on. Only the residual addition goes unindexed, for the whole of 2027-28. This is reported as the compensation an immediate uprating would deliver, and is *not* added to the cost channels: the household's loss is the price rise itself, and adding an uprating term on top would count the same shock twice. It is what the accelerated-uprating policy pays.
+Plus a separately reported **uprating compensation shortfall** — CPI-uprated benefit amounts (excluding the state pension, Pension Credit, Housing Benefit and UC's housing and childcare elements, none of which is uprated by CPI) are uprated each April from the previous September's CPI. The conflict began in late February 2026, so September 2026 CPI already carries part of the shock (about 1.16pp on observed energy and fuel prices, food omitted, so a lower bound) and April 2027 uprating passes it on. Only the residual addition goes unindexed, for the whole of 2027-28. This is reported as the compensation an immediate uprating would deliver, and is *not* added to the cost channels: the household's loss is the price rise itself, and adding an uprating term on top would count the same shock twice. It is what the accelerated-uprating policy pays.
 
 Poverty is measured as people below 60% of the person-weighted median of equivalised HBAI household net income (BHC); the post-shock figure holds that baseline line fixed and nets modelled costs off income, so it is an anchored, consumption-adjusted measure rather than official HBAI poverty.
 
@@ -50,7 +50,7 @@ All three scenarios, 2027-28, across 31.6 million weighted households. Regenerat
 
 The last two rows are different statistics, not two estimates of one thing. The mean of ratios weights every household equally and so is pulled up by households with very low incomes; it is the figure the dashboard reports as `mean_net_impact_pct`, and it excludes households with non-positive income, for whom the ratio is undefined. The aggregate ratio is total cost divided by total income.
 
-Central-scenario cost by channel, per household: energy £713, fuel £474, food £147. The uprating compensation shortfall is a further £112, reported separately rather than added (see above).
+Central-scenario cost by channel, per household: energy £713, fuel £474, food £147. The uprating compensation shortfall is a further £74, reported separately rather than added (see above).
 
 The shock is regressive on either basis. Under the central scenario the poorest fifth of households bear a cost equal to 4.2% of their mean net income against 1.5% for the richest fifth (10.3% against 1.7% as a mean of ratios), even though the cash amounts run the other way — £981 against £1,613.
 
