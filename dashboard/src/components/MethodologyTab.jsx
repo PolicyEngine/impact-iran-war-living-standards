@@ -183,9 +183,11 @@ export default function MethodologyTab({ data }) {
           (a two-month $140/bbl case) for high. That source publishes no pump-price figure,
           so the pass-through is ours: fuel duty is a fixed 52.95p a litre and damps the
           percentage rise, which puts $140/bbl at roughly +60% to +70% against the observed
-          pre-conflict pump price. The CPI adders are set to at least the first-round
-          effect of each scenario&apos;s own energy, fuel and food assumptions on ONS 2026
-          basket weights, so no scenario assumes less inflation than its own prices imply.
+          pre-conflict pump price. The CPI adders are not inflation forecasts: each is
+          set to at least the first-round effect of that scenario&apos;s own energy, fuel
+          and food assumptions on ONS 2026 basket weights, and is used only to size the
+          benefit uprating gap. Observed prices so far imply about{" "}
+          {central?.cpi_captured_by_sept_2026_pp}pp, close to the low scenario.
           CPI transmission draws on{" "}
           <a href="https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/june-2026" target="_blank" rel="noreferrer" className="underline">Bank of England June 2026 projections</a>{" "}
           and the{" "}
@@ -312,7 +314,9 @@ export default function MethodologyTab({ data }) {
             level held for the whole stress-test year and goes unindexed until April
             2028. The captured figure omits food, for want of an observed food-price
             rise, so it is a lower bound and the shortfall an upper bound; it will be
-            replaced with the outturn once September 2026 CPI is published. During the 2022
+            replaced with the outturn once September 2026 CPI is published. Neither the
+            captured figure nor the factor is varied in the sensitivity ranges above,
+            which move the CPI addition only. During the 2022
             energy crisis the equivalent indexation gap eroded benefit real value by
             about 5% (&pound;12bn), with April 2022 uprating at 3.1% against 9% actual
             inflation (<a href="https://ifs.org.uk/news/many-benefit-recipients-will-be-worse-until-april-2025-because-failure-payments-keep" target="_blank" rel="noreferrer" className="underline">IFS</a>;{" "}

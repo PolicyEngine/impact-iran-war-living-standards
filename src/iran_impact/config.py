@@ -489,7 +489,7 @@ _SCENARIO_SOURCES = {
         "cpi_increase_pp": {
             "source_url": "https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/june-2026",
             "source_date": "2026-06-01",
-            "reference_period": "2026-27",
+            "reference_period": "2027-28 level against a no-conflict path (source figure is 2026-27)",
             "derivation": (
                 "Bank of England June 2026 projection of CPI near 3% against "
                 "about 2% pre-conflict, i.e. roughly +1pp. Raised to 1.3pp so "
@@ -572,7 +572,7 @@ _SCENARIO_SOURCES = {
         "cpi_increase_pp": {
             "source_url": "https://niesr.ac.uk/blog/possible-effects-uk-inflation-2026-us-iran-conflict",
             "source_date": "2026-06-01",
-            "reference_period": "2026-27",
+            "reference_period": "2027-28 level against a no-conflict path (source figure is 2026-27)",
             "derivation": (
                 "NIESR central case of about 4% CPI against about 2% "
                 "pre-conflict, whose +1pp to +3pp range was previously taken "

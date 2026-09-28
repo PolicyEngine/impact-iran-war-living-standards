@@ -430,3 +430,16 @@ def test_the_recorded_provenance_revision_is_reachable(results):
         f"the provenance records {revision[:12]}, which is not an ancestor of "
         "HEAD — it was probably orphaned by a rebase after regeneration."
     )
+
+
+def test_observed_price_rises_are_published_for_the_dashboard(results):
+    """The dashboard sets the central scenario against what has actually
+    happened, which is the comparison Alex's CPI question asked for. The
+    figures must come from the same derivation as the captured CPI."""
+    baseline = results["metadata"]["pre_conflict_baseline"]
+    assert baseline["observed_energy_rise_by_sept_2026_pct"] == (
+        config.observed_energy_rise_by_sept_2026_pct()
+    )
+    assert baseline["observed_fuel_rise_by_sept_2026_pct"] == (
+        config.observed_fuel_rise_by_sept_2026_pct()
+    )

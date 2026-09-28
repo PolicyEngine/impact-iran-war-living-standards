@@ -14,8 +14,8 @@ export const SCENARIO_CONTENT = {
   central_shock: {
     shortLabel: "Central",
     pathLabel: "sustained disruption",
-    describe: (p) =>
-      `The Strait of Hormuz constraint persists. The energy channel is gas-driven: NBP/TTF sustained at roughly twice pre-conflict levels as the closure halts Qatari LNG, which on a ~40-45% wholesale share implies energy spending +${p.cap_increase_pct}%. Fuel +${p.fuel_pct}% follows Brent above $100/bbl (Goldman Sachs' extended-closure case); food +${p.food_increase_pct}%, CPI +${p.cpi_increase_pp}pp against a no-conflict path (used only to size the benefit uprating gap, not a CPI forecast), sustained for 12 months. Lower-income households, who spend roughly three times the budget share on energy of the top quintile, bear the largest proportional losses.`,
+    describe: (p, observed) =>
+      `The Strait of Hormuz constraint persists. The energy channel is gas-driven: NBP/TTF sustained at roughly twice pre-conflict levels as the closure halts Qatari LNG, which on a ~40-45% wholesale share implies energy spending +${p.cap_increase_pct}%. Fuel +${p.fuel_pct}% follows Brent above $100/bbl (Goldman Sachs' extended-closure case); food +${p.food_increase_pct}%, CPI +${p.cpi_increase_pp}pp against a no-conflict path (used only to size the benefit uprating gap, not a CPI forecast), sustained for 12 months. Lower-income households, who spend roughly three times the budget share on energy of the top quintile, bear the largest proportional losses.${observed ? ` For comparison, observed prices so far are energy +${observed.energy}% (July 2026 cap; +${observed.octoberEnergy}% announced for October) and fuel +${observed.fuel}%, close to the low scenario: this is a stress test of prices rising well beyond today's, not a forecast.` : ""}`,
   },
   severe_shock: {
     shortLabel: "High",
@@ -55,10 +55,19 @@ export function getScenarioNarrative(scenarioKey, data) {
   const content = SCENARIO_CONTENT[scenarioKey];
   if (!content) return null;
   const params = data?.scenarios?.[scenarioKey]?.params;
+  const baseline = data?.metadata?.pre_conflict_baseline;
+  const observed =
+    baseline?.observed_energy_rise_by_sept_2026_pct != null
+      ? {
+          energy: baseline.observed_energy_rise_by_sept_2026_pct,
+          fuel: baseline.observed_fuel_rise_by_sept_2026_pct,
+          octoberEnergy: baseline.announced_oct_2026_vs_pre_conflict_pct,
+        }
+      : null;
   return {
     ...content,
     selectorLabel: buildSelectorLabel(scenarioKey, params),
-    description: params ? content.describe(params) : "",
+    description: params ? content.describe(params, observed) : "",
   };
 }
 

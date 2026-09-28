@@ -16,6 +16,8 @@ from .config import (
     SCENARIOS,
     direct_cpi_pp,
     captured_in_sept_2026_cpi_pp,
+    observed_energy_rise_by_sept_2026_pct,
+    observed_fuel_rise_by_sept_2026_pct,
     residual_cpi_pp,
     BASE_FUEL_SPEND,
     BASE_FOOD_SPEND,
@@ -1389,6 +1391,15 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
                 "energy_cap_period": (
                     "April-June 2026, the cap Ofgem announced on 25 "
                     "February 2026, immediately before the conflict began"
+                ),
+                # Observed so far, on the same bases as the scenario
+                # percentages, so the dashboard can set each scenario against
+                # what has actually happened (Alex's CPI question).
+                "observed_energy_rise_by_sept_2026_pct": (
+                    observed_energy_rise_by_sept_2026_pct()
+                ),
+                "observed_fuel_rise_by_sept_2026_pct": (
+                    observed_fuel_rise_by_sept_2026_pct()
                 ),
                 "petrol_pence_per_litre": PRE_CONFLICT_PETROL_PENCE,
                 "diesel_pence_per_litre": PRE_CONFLICT_DIESEL_PENCE,
