@@ -125,10 +125,11 @@ def test_committed_headlines_match_the_reviewed_values(results):
     # once the reform ran at each residual and included ESA (third review),
     # and £3.02bn with contribution-based JSA counted once (fourth review),
     # and £3.10bn once every directly paid reported award was covered
-    # (income JSA, IIDB, incapacity benefit, AFCS; fifth review).
-    assert package["gross_outlay_bn"] == 55.07
-    assert package["household_protection_bn"] == 37.4
-    assert package["residual_impact_bn"] == 4.72
+    # (IIDB, incapacity benefit, AFCS; fifth review), then £3.48bn with the
+    # CPI-uprated additional State Pension and Scottish Child Payment.
+    assert package["gross_outlay_bn"] == 55.45
+    assert package["household_protection_bn"] == 37.59
+    assert package["residual_impact_bn"] == 4.54
 
 
 def test_the_policy_accounting_closes_in_the_committed_output(results):
