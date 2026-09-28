@@ -25,6 +25,7 @@ from .config import (
     FOOD_DECILE_FACTORS,
     UPRATING_LAG_FACTOR,
     CPI_UPRATED_REPORTED_INPUTS,
+    BENEFITS_OUTSIDE_HOUSEHOLD_BENEFITS,
     CPI_UPRATED_COMPUTED_AMOUNTS,
     PARTLY_CPI_LINKED_INPUTS,
     NOT_SCALED_REPORTED_INPUTS,
@@ -343,6 +344,10 @@ def _uprating_gain(sim, residual_pp, year=YEAR, simulation_factory=None):
                 sim, var, year, map_to="household"
             )
             gain = gain - extra * delta
+    for var in BENEFITS_OUTSIDE_HOUSEHOLD_BENEFITS:
+        gain = gain + _vals(reform_sim, var, year, map_to="household") - _vals(
+            sim, var, year, map_to="household"
+        )
     return gain
 
 
@@ -1494,7 +1499,7 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
                     "The reform does not raise the Pension Credit savings "
                     "credit maximum, which is not a model parameter, or the "
                     "partly CPI-linked maternity allowance and statutory "
-                    "maternity and sick pay. Raising the maximum "
+                    "maternity, paternity and sick pay. Raising the maximum "
                     "by r% raises any savings credit award, including one it "
                     "creates, by at most r% of the maximum; each partly "
                     "linked payment rises by at most r% of itself. So r% of "

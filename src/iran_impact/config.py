@@ -835,12 +835,14 @@ METHOD_LIMITATIONS = [
     "addition, raising every CPI-uprated benefit rate, with tapers, award "
     "floors and the benefit cap applied, the reported ESA, contribution-based "
     "JSA, IIDB, incapacity benefit and AFCS awards scaled, and the "
-    "CPI-uprated additional State Pension raised. Not covered, each with a "
+    "CPI-uprated additional State Pension raised, including UC work "
+    "allowances, the childcare cap, the non-dependant deduction (which lowers "
+    "awards) and Pension Age Winter Heating Payment. Not covered, each with a "
     "published "
     "upper bound on the omission under metadata.uprating_not_covered: the "
     "Pension Credit savings credit maximum, which is not a model parameter, "
-    "and the partly CPI-linked maternity allowance and statutory maternity "
-    "and sick pay; the captured "
+    "and the partly CPI-linked maternity allowance and statutory maternity, "
+    "paternity and sick pay; the captured "
     "September 2026 CPI is a proxy on August data with food omitted. The "
     "amount is reported as the compensation an immediate uprating would "
     "deliver and is not counted as a cost, so the household loss is the price "
@@ -975,7 +977,20 @@ CPI_UPRATED_BENEFIT_PARAMETERS = [
     "gov.hmrc.child_benefit.amount.eldest",
     "gov.social_security_scotland.carer_support_payment.rate",
     "gov.social_security_scotland.scottish_child_payment.amount",
+    # Uprated in the official 2026-27 tables and live in the UC formula; each
+    # passes through the benefit rules with its own sign (#61 sixth review
+    # C2). Higher work allowances and childcare cap raise UC; a higher
+    # non-dependant deduction lowers the housing element.
+    "gov.dwp.universal_credit.means_test.work_allowance",
+    "gov.dwp.universal_credit.elements.childcare.cap",
+    "gov.dwp.universal_credit.elements.housing.non_dep_deduction.amount",
+    "gov.social_security_scotland.pawhp.amount",
 ]
+
+# Benefits the model computes that policyengine-uk 2.90.2 leaves out of
+# household_benefits. Their change is added to the gain explicitly, or an
+# uprating of their parameters would register as zero (#61 sixth review C2).
+BENEFITS_OUTSIDE_HOUSEHOLD_BENEFITS = ["pawhp"]
 
 # Every other currency parameter under the benefit branches that PolicyEngine
 # UK tags with a CPI index, and why the reform leaves it alone. A test sweeps
@@ -984,15 +999,11 @@ CPI_UPRATED_BENEFIT_PARAMETERS = [
 # gov.benefit_uprating_cpi.
 CPI_PARAMETER_EXCLUSIONS = {
     "gov.dwp.IIDB.maximum": "not used by the model; IIDB is paid from the reported award, which the reform scales",
-    "gov.dwp.housing_benefit.means_test.income_disregard": "an income disregard, not a benefit rate",
+    "gov.dwp.housing_benefit.means_test.income_disregard": "earnings disregards are frozen in cash terms, not uprated",
     "gov.dwp.pension_credit.guarantee_credit.minimum_guarantee": "uprated at least in line with earnings, not CPI",
-    "gov.dwp.pension_credit.savings_credit.threshold": "a threshold; the savings credit maximum is bounded separately",
+    "gov.dwp.pension_credit.savings_credit.threshold": "set by ministerial discretion, not CPI (+7.8% in 2026-27); the savings credit maximum is bounded separately",
     "gov.dwp.tax_credits": "tax credits were abolished in April 2025",
-    "gov.dwp.universal_credit.elements.childcare.cap": "a cap on reimbursed childcare costs, not a benefit rate",
     "gov.dwp.universal_credit.elements.disabled.amount": "the LCWRA element, frozen by the Universal Credit Act 2025",
-    "gov.dwp.universal_credit.elements.housing.non_dep_deduction": "a deduction, not a benefit rate",
-    "gov.dwp.universal_credit.means_test.work_allowance": "an earnings threshold, not a benefit rate",
-    "gov.social_security_scotland.pawhp": "not used by any benefit the model counts in household benefits",
 }
 
 # ESA and contribution-based JSA are paid from survey-reported awards that
@@ -1027,11 +1038,11 @@ CPI_UPRATED_COMPUTED_AMOUNTS = ["additional_state_pension"]
 PARTLY_CPI_LINKED_INPUTS = [
     "maternity_allowance_reported",
     "statutory_maternity_pay",
+    "statutory_paternity_pay",
     "statutory_sick_pay",
 ]
 NOT_SCALED_REPORTED_INPUTS = {
     "jsa_income_reported": "income-based JSA is inactive in the model from 2027 (gov.dwp.JSA.income.active), so it pays nothing to scale",
-    "statutory_paternity_pay": "not counted in household benefits in the model",
     "bsp_reported": "Bereavement Support Payment rates are not uprated",
     "winter_fuel_allowance_reported": "Winter Fuel Payment is a fixed sum, not CPI-uprated",
     "carers_allowance_reported": "receipt flag only; the amount is a reformed rate parameter",

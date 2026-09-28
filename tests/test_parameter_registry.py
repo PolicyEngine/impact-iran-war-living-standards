@@ -504,10 +504,9 @@ def test_the_uprating_list_leaves_out_non_cpi_amounts():
     for excluded in (
         "minimum_guarantee",  # earnings-linked
         "elements.disabled.amount",  # LCWRA, frozen
-        "childcare",
-        "work_allowance",
-        "tax_credits",
-        "state_pension",
+        "income_disregard",  # frozen in cash terms
+        "tax_credits",  # abolished
+        "state_pension",  # triple lock; additional pension is handled separately
     ):
         assert excluded not in listed, excluded
 

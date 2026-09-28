@@ -304,17 +304,19 @@ export default function MethodologyTab({ data }) {
               <li>
                 <strong>Calculation.</strong> Every CPI-uprated benefit rate, the reported
                 ESA, contribution-based JSA, industrial injuries, incapacity benefit and
-                armed forces awards, and additional State Pension are raised by the
-                residual in PolicyEngine UK, and the benefit rules (tapers, the cap, award
+                armed forces awards, additional State Pension, UC work allowances,
+                childcare cap and non-dependant deduction (which lowers awards), and
+                Scotland&apos;s winter heating payment are raised by the residual in
+                PolicyEngine UK, and the benefit rules (tapers, the cap, award
                 floors) set each household&apos;s gain. Factor {upr.factor}: the residual
                 lasts the whole year.
               </li>
               <li>
                 <strong>Left out.</strong> Amounts not CPI-uprated: basic and new State
                 Pension (triple lock), the Pension Credit minimum guarantee (earnings),
-                UC&apos;s LCWRA element (frozen), caps and thresholds. The savings credit
-                maximum and partly linked maternity and sick pay are also not raised: at
-                most
+                UC&apos;s LCWRA element (frozen), frozen earnings disregards and tax
+                credits. The savings credit maximum and partly linked maternity, paternity
+                and sick pay are also not raised: at most
                 {Number.isFinite(notCoveredBoundBn) ? ` £${notCoveredBoundBn}bn` : " a published bound"}{" "}
                 under sustained escalation.
               </li>

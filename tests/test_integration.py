@@ -337,21 +337,99 @@ def test_uprating_reform_raises_additional_state_pension():
     assert gain == pytest.approx(additional * 0.022, abs=0.01)
 
 
-def test_uprating_reform_raises_scottish_child_payment():
-    """Scottish Child Payment carries the OBR CPI tag rather than
-    gov.benefit_uprating_cpi, and was missed before the parameter sweep."""
+def _reform_pair(sit, residual_pp):
     policyengine_uk = pytest.importorskip("policyengine_uk")
-    from iran_impact.pipeline import _cpi_uprating_reform
+    from iran_impact.pipeline import _cpi_uprating_reform, _uprating_gain
 
-    base = policyengine_uk.Simulation(situation={})
-    reform = _cpi_uprating_reform(base, 2.2, 2027)
-    leaf = "gov.social_security_scotland.scottish_child_payment.amount"
-    assert leaf in reform
-    before = base.tax_benefit_system.parameters(f"2027-04-01")
-    for part in leaf.split("."):
-        before = getattr(before, part)
-    assert reform[leaf]["2027-04-01.2028-03-31"] == pytest.approx(before * 1.022)
+    base = policyengine_uk.Simulation(situation=sit)
 
+    def factory(reform):
+        return policyengine_uk.Simulation(situation=sit, reform=reform)
+
+    reform = factory(_cpi_uprating_reform(base, residual_pp, 2027))
+    gain = _uprating_gain(base, residual_pp, 2027, simulation_factory=factory)[0]
+    return base, reform, gain
+
+
+def _scottish_working_parent():
+    return {
+        "people": {
+            "p": {"age": {2027: 35}, "employment_income": {2027: 15_000}},
+            "c": {"age": {2027: 5}},
+        },
+        "benunits": {
+            "b": {
+                "members": ["p", "c"],
+                "would_claim_uc": {2027: True},
+                "would_claim_child_benefit": {2027: False},
+            }
+        },
+        "households": {"h": {"members": ["p", "c"], "region": {2027: "SCOTLAND"}}},
+    }
+
+
+def test_uprating_reform_raises_scottish_child_payment_once():
+    """#61 sixth review A11: end to end. The gain is the UC change plus the
+    Scottish Child Payment change, counted exactly once; it fails if SCP is
+    dropped from the reform or from the benefits total, or counted twice."""
+    base, reform, gain = _reform_pair(_scottish_working_parent(), 2.2)
+    scp = base.calculate("scottish_child_payment", 2027).sum()
+    uc_change = (
+        reform.calculate("universal_credit", 2027).sum()
+        - base.calculate("universal_credit", 2027).sum()
+    )
+    assert scp > 0
+    assert gain - uc_change == pytest.approx(scp * 0.022, abs=0.01)
+
+
+def test_uprating_reform_raises_the_uc_work_allowance():
+    """#61 sixth review C2: work allowances are uprated in the official
+    tables and raise UC for working claimants."""
+    base, reform, _ = _reform_pair(_scottish_working_parent(), 2.2)
+    before = base.calculate("uc_work_allowance", 2027).sum()
+    after = reform.calculate("uc_work_allowance", 2027).sum()
+    assert after == pytest.approx(before * 1.022, rel=1e-6)
+
+
+def test_uprating_reform_counts_pension_age_winter_heating_payment():
+    """#61 sixth review C2: PAWHP is outside policyengine-uk's
+    household_benefits, so its change must be added explicitly."""
+    sit = {
+        "people": {"a": {"age": {2027: 82}}},
+        "benunits": {"b": {"members": ["a"], "would_claim_pc": {2027: True}}},
+        "households": {"h": {"members": ["a"], "region": {2027: "SCOTLAND"}}},
+    }
+    base, _, gain = _reform_pair(sit, 2.2)
+    pawhp = base.calculate("pawhp", 2027).sum()
+    assert pawhp > 0
+    assert gain == pytest.approx(pawhp * 0.022, abs=0.01)
+
+
+def test_uprating_known_live_paths_have_the_right_disposition():
+    """#61 sixth review C2: membership in some list is not enough. The paths
+    the official 2026-27 tables uprate must be in the reform, and the
+    exclusions must be only those that are genuinely not CPI-uprated."""
+    from iran_impact import config
+
+    for path in (
+        "gov.dwp.universal_credit.means_test.work_allowance",
+        "gov.dwp.universal_credit.elements.childcare.cap",
+        "gov.dwp.universal_credit.elements.housing.non_dep_deduction.amount",
+        "gov.social_security_scotland.pawhp.amount",
+        "gov.social_security_scotland.scottish_child_payment.amount",
+    ):
+        assert path in config.CPI_UPRATED_BENEFIT_PARAMETERS, path
+        assert not any(path.startswith(k) for k in config.CPI_PARAMETER_EXCLUSIONS), path
+    assert "pawhp" in config.BENEFITS_OUTSIDE_HOUSEHOLD_BENEFITS
+    assert "statutory_paternity_pay" in config.PARTLY_CPI_LINKED_INPUTS
+    assert set(config.CPI_PARAMETER_EXCLUSIONS) == {
+        "gov.dwp.IIDB.maximum",
+        "gov.dwp.housing_benefit.means_test.income_disregard",
+        "gov.dwp.pension_credit.guarantee_credit.minimum_guarantee",
+        "gov.dwp.pension_credit.savings_credit.threshold",
+        "gov.dwp.tax_credits",
+        "gov.dwp.universal_credit.elements.disabled.amount",
+    }
 
 def test_uprating_every_cpi_tagged_benefit_parameter_is_classified():
     """Every currency parameter under the benefit branches that the model
