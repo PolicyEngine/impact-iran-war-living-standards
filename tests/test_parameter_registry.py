@@ -142,6 +142,7 @@ def test_compute_scenario_accepts_a_parameter_override():
     rather than reimplementing the arithmetic."""
     import numpy as np
 
+    from conftest import LinearGains
     from iran_impact.pipeline import compute_scenario
 
     decile = np.arange(1, 11)
@@ -149,7 +150,7 @@ def test_compute_scenario_accepts_a_parameter_override():
         "energy": np.full(10, 1_000.0),
         "fuel_cost": np.full(10, 500.0),
         "food_cost": np.full(10, 2_000.0),
-        "uprating_gain_per_pp": np.zeros(10),
+        "uprating_gains": LinearGains(np.zeros(10)),
     }
     base = compute_scenario(data, "central_shock")
     doubled = dict(config.SCENARIOS["central_shock"])
@@ -531,3 +532,14 @@ def test_uprating_registry_quotes_the_computed_capture():
 
 def test_uprating_registry_carries_the_briefing_publication_date():
     assert config.UPRATING_LAG_REGISTRY["source_date"] == "2025-12-01"
+
+
+def test_the_reform_runs_at_every_residual_the_pipeline_evaluates():
+    """Each scenario's residual and both range ends get their own reform run
+    rather than a scaled 1% run (#61 third review C2)."""
+    needed = config.uprating_residuals_needed()
+    for key, params in config.SCENARIOS.items():
+        residual = config.residual_cpi_pp(key)
+        if residual > 0:
+            assert residual in needed, key
+    assert "esa_income_reported" in config.CPI_UPRATED_REPORTED_INPUTS

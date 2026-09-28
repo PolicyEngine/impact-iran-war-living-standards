@@ -20,6 +20,7 @@ export default function MethodologyTab({ data }) {
   const sensitivity = data.scenarios?.central_shock?.sensitivity;
   const central = data.scenarios?.central_shock;
   const upr = getUpratingInputs(central);
+  const savingsCreditBn = data.metadata?.savings_credit_not_uprated?.total_bn;
   const scenarioOptions = getScenarioOptions(data);
 
   return (
@@ -307,13 +308,19 @@ export default function MethodologyTab({ data }) {
             CPI-linked benefit income &times; the residual CPI addition (the scenario&apos;s
             addition less the {upr.captured}pp already captured)
             &times; {upr.factor}, where the gain is modelled by raising every
-            CPI-uprated benefit rate in PolicyEngine UK and letting the benefit rules
-            (earnings tapers, the benefit cap, housing costs) work out each
-            household&apos;s award. A working UC claimant with a positive award gains
+            CPI-uprated benefit rate in PolicyEngine UK by the scenario&apos;s own
+            residual, and ESA&apos;s reported awards with them, and letting the benefit
+            rules (earnings tapers, award floors, the benefit cap, housing costs) work
+            out each household&apos;s award. A working UC claimant with a positive award gains
             the uprated standard allowance pound for pound. Amounts not uprated by CPI
             are left alone: the state pension (triple lock), the Pension Credit
             minimum guarantee (earnings), UC&apos;s LCWRA element (frozen by the
-            Universal Credit Act 2025), and caps, thresholds and deductions.
+            Universal Credit Act 2025), and caps, thresholds and deductions. The
+            Pension Credit savings credit maximum is CPI-uprated but is not a
+            parameter in the model, so it is not raised; savings credit totals
+            {savingsCreditBn ? ` £${savingsCreditBn}bn` : " a small sum"} and has been closed to
+            new claimants since 2016, so the omission is at most the residual share of
+            that.
             It does <strong>not</strong> add that shortfall to the cost channels. Doing
             so would count the same price shock twice: the lack of indexation is why no
             offset arrives, not a second cost on top of the prices. What the shortfall

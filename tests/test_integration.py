@@ -88,9 +88,13 @@ def test_every_household_array_is_the_same_length(baseline):
     lengths = {
         key: len(value)
         for key, value in baseline.items()
-        if key != "bundle" and hasattr(value, "__len__")
+        if key not in ("bundle", "uprating_gains") and hasattr(value, "__len__")
     }
     assert len(set(lengths.values())) == 1, lengths
+    # The reform gains are one household array per residual.
+    (n,) = set(lengths.values())
+    for residual, gain in baseline["uprating_gains"].items():
+        assert len(gain) == n, residual
 
 
 def test_deciles_are_clipped_into_range(baseline):
@@ -198,33 +202,60 @@ def test_the_reform_actually_changes_the_parameter():
     assert observed_share == pytest.approx(cut_share, rel=0.02)
 
 
+def _household_gain(sit, residual_pp):
+    """Run the pipeline's own reform on one household, the way the population
+    run does, and return its change in household benefits."""
+    policyengine_uk = pytest.importorskip("policyengine_uk")
+    from iran_impact.pipeline import _uprating_gain
+
+    base = policyengine_uk.Simulation(situation=sit)
+
+    def factory(reform):
+        return policyengine_uk.Simulation(situation=sit, reform=reform)
+
+    return base, _uprating_gain(base, residual_pp, 2027, simulation_factory=factory)[0]
+
+
+def _single(age, earnings, rent=0, **person):
+    household = {"members": ["a"]}
+    if rent:
+        household.update(
+            rent={2027: rent},
+            region={2027: "LONDON"},
+            tenure_type={2027: "RENT_PRIVATELY"},
+        )
+    return {
+        "people": {
+            "a": {"age": {2027: age}, "employment_income": {2027: earnings}, **person}
+        },
+        "benunits": {"b": {"members": ["a"], "would_claim_uc": {2027: True}}},
+        "households": {"h": household},
+    }
+
+
 def test_the_uprating_reform_raises_uc_pound_for_pound():
     """#61 second review C2: a working UC renter with a positive award gains
     exactly the uprated standard allowance, which a share-of-award rule
     understated by 74%."""
-    # Same rule as _baseline: skip only when the model is not installed.
-    policyengine_uk = pytest.importorskip("policyengine_uk")
-    Simulation = policyengine_uk.Simulation
-
-    from iran_impact.pipeline import _cpi_uprating_reform
-
-    sit = {
-        "people": {"a": {"age": {2027: 30}, "employment_income": {2027: 15_000}}},
-        "benunits": {"b": {"members": ["a"], "would_claim_uc": {2027: True}}},
-        "households": {
-            "h": {
-                "members": ["a"],
-                "rent": {2027: 12_000},
-                "region": {2027: "LONDON"},
-                "tenure_type": {2027: "RENT_PRIVATELY"},
-            }
-        },
-    }
-    base = Simulation(situation=sit)
-    reform = Simulation(situation=sit, reform=_cpi_uprating_reform(base, 2027))
+    base, gain = _household_gain(_single(30, 15_000, rent=12_000), 1.94)
     standard_allowance = base.calculate("uc_standard_allowance", 2027)[0]
-    gain = (
-        reform.calculate("universal_credit", 2027)[0]
-        - base.calculate("universal_credit", 2027)[0]
-    )
-    assert gain == pytest.approx(standard_allowance * 0.01, abs=0.01)
+    assert gain == pytest.approx(standard_allowance * 0.0194, abs=0.01)
+
+
+def test_the_reform_is_run_at_the_residual_not_scaled_from_one_percent():
+    """#61 third review C2: a claimant just above the zero-award boundary
+    gains nothing at 1% but something at the central 2.2%, which scaling a
+    1% run cannot see."""
+    sit = _single(30, 9_600)
+    _, at_one = _household_gain(sit, 1.0)
+    _, at_central = _household_gain(sit, 2.2)
+    assert at_one == pytest.approx(0, abs=0.01)
+    assert at_central > 0
+
+
+def test_the_reform_uprates_reported_esa():
+    """#61 third review C2: ESA is paid from reported awards the model
+    uprates by index, so it must move with the reform."""
+    sit = _single(50, 0, esa_income_reported={2027: 5_000})
+    _, gain = _household_gain(sit, 2.2)
+    assert gain >= 5_000 * 0.022 - 0.01

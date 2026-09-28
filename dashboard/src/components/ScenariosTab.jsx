@@ -279,13 +279,17 @@ function ExampleHousehold({ data, scenario }) {
             ) : null}
             {upr && upratingShortfall > 0 ? (
               <div className="mt-4 border-t pt-3 text-xs leading-5" style={{ borderColor: colors.primary[200], color: colors.primary[800] }}>
-                An immediate benefit uprating would offset about{" "}
-                <strong>{formatCurrency(upratingShortfall)}</strong> of this. April
+                Uprating your CPI-linked rates immediately would raise them by up to
+                about <strong>{formatCurrency(upratingShortfall)}</strong> a year. April
                 2027 uprating is set from September 2026 CPI, which already carries
                 about {upr.captured}pp of the shock; the
                 remaining {upr.residual}pp is not indexed
                 until April 2028. That is why the cost above is the full price rise,
-                rather than the price rise plus a separate uprating loss.
+                rather than the price rise plus a separate uprating loss. This is a
+                maximum-rate illustration: your actual award can change by less once
+                earnings, housing costs and the benefit cap apply, or by more if the
+                uprating brings you into entitlement. The population figures run the
+                full benefit rules at each scenario&apos;s residual.
               </div>
             ) : null}
           </div>

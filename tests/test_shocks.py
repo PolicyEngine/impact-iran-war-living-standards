@@ -32,7 +32,7 @@ def test_uprating_shortfall_applies_only_the_residual_cpi(synthetic_data):
     cpi = config.SCENARIOS["central_shock"]["cpi_increase_pp"]
     residual = cpi - config.captured_in_sept_2026_cpi_pp()
     assert impacts["benefit_uprating_shortfall"] == pytest.approx(
-        synthetic_data["uprating_gain_per_pp"]
+        synthetic_data["uprating_gains"].per_pp
         * round(residual, 2)
         * config.UPRATING_LAG_FACTOR
     )
@@ -49,7 +49,7 @@ def test_a_cpi_addition_already_captured_leaves_no_shortfall(synthetic_data):
 
 def test_households_with_no_cpi_linked_benefit_have_no_shortfall(synthetic_data):
     impacts = compute_scenario(synthetic_data, "central_shock")
-    no_benefits = synthetic_data["uprating_gain_per_pp"] == 0
+    no_benefits = synthetic_data["uprating_gains"].per_pp == 0
     assert np.all(impacts["benefit_uprating_shortfall"][no_benefits] == 0)
 
 

@@ -963,11 +963,28 @@ CPI_UPRATED_BENEFIT_PARAMETERS = [
     "gov.social_security_scotland.carer_support_payment.rate",
 ]
 
-# The reform raises every listed amount by this much, and the per-household
-# gain is scaled linearly to each scenario's residual. Benefit rules are
-# piecewise linear, so a small uprating is close to linear until a boundary
-# (the benefit cap, an award reaching zero) binds.
-UPRATING_REFORM_PCT = 1.0
+# ESA is paid from survey-reported awards that PolicyEngine uprates by the
+# CPI index rather than from rate parameters, so the reform scales these
+# inputs directly (#61 third review C2).
+CPI_UPRATED_REPORTED_INPUTS = ["esa_income_reported", "esa_contrib_reported"]
+
+
+def uprating_residuals_needed():
+    """Every residual the pipeline evaluates: each scenario's point value and
+    both ends of its CPI uncertainty range, which the sensitivity analysis
+    walks. The reform is run at each, not scaled from one run, because award
+    floors and the benefit cap make the gain non-linear (#61 third review
+    C2)."""
+    needed = set()
+    for key, params in SCENARIOS.items():
+        low, high = PARAMETER_REGISTRY[key]["parameters"]["cpi_increase_pp"][
+            "uncertainty_range"
+        ]
+        for cpi in (params["cpi_increase_pp"], low, high):
+            residual = residual_cpi_pp(key, cpi)
+            if residual > 0:
+                needed.add(residual)
+    return sorted(needed)
 
 # Structural constants
 WEEKS_PER_YEAR = 52
