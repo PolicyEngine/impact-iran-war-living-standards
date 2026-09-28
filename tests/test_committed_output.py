@@ -119,10 +119,12 @@ def test_committed_headlines_match_the_reviewed_values(results):
     # accelerated-uprating leg rose £2.64bn -> £3.54bn. It then fell to
     # £2.35bn when the base was restricted to CPI-uprated amounts and the
     # captured CPI used September pump prices (#61 review C1, A1). Household
-    # cost totals are untouched.
-    assert package["gross_outlay_bn"] == 54.32
-    assert package["household_protection_bn"] == 37.24
-    assert package["residual_impact_bn"] == 4.89
+    # cost totals are untouched. It settled at £2.85bn once captured CPI was
+    # measured on the annual rate (0.9pp) and the gain modelled as a
+    # PolicyEngine uprating reform (#61 second review C1, C2).
+    assert package["gross_outlay_bn"] == 54.83
+    assert package["household_protection_bn"] == 37.33
+    assert package["residual_impact_bn"] == 4.79
 
 
 def test_the_policy_accounting_closes_in_the_committed_output(results):
