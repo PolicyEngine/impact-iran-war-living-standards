@@ -140,14 +140,30 @@ def observed_energy_rise_by_sept_2026_pct():
     return round((CURRENT_ENERGY_CAP / PRE_CONFLICT_CAP_NEW_BASIS - 1) * 100, 1)
 
 
-def observed_fuel_rise_by_sept_2026_pct():
-    """The spend-weighted petrol/diesel rise at August 2026 prices.
+# DESNZ weekly road fuel prices, 14 September 2026: the observation nearest
+# ONS's mid-month index day for September 2026 CPI (#61 review A1).
+# Source: https://www.gov.uk/government/statistics/weekly-road-fuel-prices
+SEPTEMBER_2026_PETROL_PENCE = 168.14
+SEPTEMBER_2026_DIESEL_PENCE = 190.72
 
-    August 2026 monthly means stand in for September, which is not yet in the
-    repository. Uses the same composite as the fuel channel, so petrol and
-    diesel carry their A1 expenditure shares.
+
+def observed_fuel_rise_by_sept_2026_pct():
+    """The spend-weighted petrol/diesel rise at the September 2026 index week.
+
+    Same A1 expenditure shares as the fuel channel's composite, applied to the
+    observed mid-September prices against November 2025. Other motor oils
+    follow petrol, as in fuel_rise_pct_at_brent.
     """
-    return fuel_rise_pct_at_brent(BRENT_AUG_2026)
+    total = (
+        PETROL_WEEKLY_SPEND + DIESEL_WEEKLY_SPEND + OTHER_MOTOR_OILS_WEEKLY_SPEND
+    )
+    petrol = SEPTEMBER_2026_PETROL_PENCE / PRE_CONFLICT_PETROL_PENCE - 1
+    diesel = SEPTEMBER_2026_DIESEL_PENCE / PRE_CONFLICT_DIESEL_PENCE - 1
+    rise = (
+        (PETROL_WEEKLY_SPEND + OTHER_MOTOR_OILS_WEEKLY_SPEND) * petrol
+        + DIESEL_WEEKLY_SPEND * diesel
+    ) / total
+    return round(rise * 100, 1)
 
 
 def captured_in_sept_2026_cpi_pp():
@@ -162,8 +178,8 @@ def captured_in_sept_2026_cpi_pp():
     already happened, not a scenario input. Energy and fuel only. The
     repository holds no observed food-price rise, so food is left out, which
     makes this a LOWER bound on what is captured and so an UPPER bound on the
-    shortfall. Replace the August pump-price proxy with the outturn once
-    September 2026 CPI is published (about 21 October 2026).
+    shortfall. Replace with the outturn once September 2026 CPI is published
+    (about 21 October 2026).
     """
     w = CPI_BASKET_WEIGHTS_2026
     return round(
@@ -696,15 +712,15 @@ UPRATING_LAG_REGISTRY = {
     "unit": "fraction of the residual CPI addition",
     "geography": "United Kingdom",
     "source_url": COMMONS_UPRATING,
-    "source_date": "2026-01-01",
+    "source_date": "2025-12-01",  # CBP-10403 published 1 Dec 2025, updated 24 Mar 2026
     "reference_period": "April 2027 uprating (normally set by September 2026 CPI)",
     "derivation": (
         "1.0. The conflict began in late February 2026, so September 2026 "
         "CPI already carries part of each scenario's addition "
         f"({captured_in_sept_2026_cpi_pp()}pp first-round on observed prices: "
         f"energy +{observed_energy_rise_by_sept_2026_pct()}% at the July 2026 "
-        f"cap, fuel +{observed_fuel_rise_by_sept_2026_pct()}% at August 2026 "
-        "pump prices, food omitted for want of an observed figure), and April "
+        f"cap, fuel +{observed_fuel_rise_by_sept_2026_pct()}% at mid-September "
+        "2026 pump prices, food omitted for want of an observed figure), and April "
         "2027 uprating passes that on. The residual is a level held for the "
         "whole 2027-28 stress-test year and is not indexed until April 2028, "
         "so it goes unindexed for the full year. The earlier 0.5, for a shock "
@@ -715,7 +731,7 @@ UPRATING_LAG_REGISTRY = {
     "captured_pp": captured_in_sept_2026_cpi_pp(),
     "captured_basis": (
         "Lower bound on what September 2026 CPI captures: energy and fuel "
-        "only, with August 2026 pump prices standing in for September. "
+        "only, fuel at the 14 September 2026 DESNZ observation. "
         "Replace with the outturn once September 2026 CPI is published "
         "(about 21 October 2026)"
     ),

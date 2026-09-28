@@ -481,7 +481,7 @@ def test_captured_cpi_is_derived_from_the_observed_price_constants():
     source."""
     w = config.CPI_BASKET_WEIGHTS_2026
     energy = (config.CURRENT_ENERGY_CAP / config.PRE_CONFLICT_CAP_NEW_BASIS - 1) * 100
-    fuel = config.fuel_rise_pct_at_brent(config.BRENT_AUG_2026)
+    fuel = config.observed_fuel_rise_by_sept_2026_pct()
     expected = round(round(energy, 1) * w["energy"] + fuel * w["fuel"], 2)
     assert config.captured_in_sept_2026_cpi_pp() == expected
 
@@ -506,3 +506,16 @@ def test_uprating_registry_quotes_the_computed_capture():
     assert "does not reflect a shock arriving after" not in (
         config.UPRATING_LAG_REGISTRY["counterfactual"]
     )
+
+
+def test_captured_fuel_uses_the_september_index_week_prices():
+    """September 2026 prices were published before this figure was set; the
+    August means are not a proxy for the CPI reference month (#61 A1)."""
+    assert config.SEPTEMBER_2026_PETROL_PENCE > config.AUGUST_2026_PETROL_PENCE
+    assert config.observed_fuel_rise_by_sept_2026_pct() > (
+        config.fuel_rise_pct_at_brent(config.BRENT_AUG_2026)
+    )
+
+
+def test_uprating_registry_carries_the_briefing_publication_date():
+    assert config.UPRATING_LAG_REGISTRY["source_date"] == "2025-12-01"

@@ -108,3 +108,11 @@ describe("scenario baseline callout", () => {
     expect(text).not.toContain(preConflict.energy_cap_period);
   });
 });
+
+describe("uprating wording (#61 review A2)", () => {
+  it("no longer says no offset arrives at all during the shock year", () => {
+    const text = textOf(data);
+    expect(text).not.toContain("so no offset arrives during the shock year");
+    expect(text).toContain("for the residual");
+  });
+});

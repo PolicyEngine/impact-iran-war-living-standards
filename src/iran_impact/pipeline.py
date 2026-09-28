@@ -274,20 +274,24 @@ def _build_ct_band(sim, year=YEAR):
 def _build_benefit_income(sim, year=YEAR):
     """Aggregate CPI-uprated benefit income per household.
 
-    Deliberately EXCLUDES the state pension: it is uprated by the triple lock
-    (April 2026: +4.8% via earnings), so it is not subject to the CPI uprating
-    lag modelled in channel 4. Includes the major CPI-linked working-age and
-    disability benefits available in PolicyEngine UK.
+    Only amounts actually uprated by CPI enter, because the result sizes the
+    CPI uprating gap (#61 review C1). Excluded:
+    - the state pension (triple lock);
+    - Pension Credit, whose Standard Minimum Guarantee is uprated at least in
+      line with earnings, not CPI;
+    - Housing Benefit, which follows eligible rent and Local Housing
+      Allowance rather than CPI;
+    - UC's housing costs and childcare elements, for the same reason. The UC
+      award is scaled by the share of its maximum amount that the
+      CPI-uprated elements (standard allowance, child, disability and carer
+      elements) make up.
     """
     hh_id_hh = _vals(sim, "household_id", year)
     hh_id_bu = _vals(sim, "household_id", year, map_to="benunit")
     hh_id_person = _vals(sim, "household_id", year, map_to="person")
 
     benunit_vars = [
-        "universal_credit",
         "child_benefit",
-        "housing_benefit",
-        "pension_credit",
         "income_support",
         "esa_income",
         "jsa_income",
@@ -309,6 +313,20 @@ def _build_benefit_income(sim, year=YEAR):
         values = _vals(sim, var, year)
         for i, hid in enumerate(hh_id_person):
             hh_ben[hid] += float(values[i])
+
+    uc = _vals(sim, "universal_credit", year)
+    uc_max = _vals(sim, "uc_maximum_amount", year)
+    uc_not_cpi = _vals(sim, "uc_housing_costs_element", year) + _vals(
+        sim, "uc_childcare_element", year
+    )
+    cpi_share = np.divide(
+        np.clip(uc_max - uc_not_cpi, 0, None),
+        uc_max,
+        out=np.zeros_like(uc_max, dtype=float),
+        where=uc_max > 0,
+    )
+    for i, hid in enumerate(hh_id_bu):
+        hh_ben[hid] += float(uc[i] * min(cpi_share[i], 1.0))
 
     return np.array([hh_ben.get(hid, 0.0) for hid in hh_id_hh])
 

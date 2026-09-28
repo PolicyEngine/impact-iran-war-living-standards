@@ -57,7 +57,9 @@ export function getScenarioNarrative(scenarioKey, data) {
   const params = data?.scenarios?.[scenarioKey]?.params;
   const baseline = data?.metadata?.pre_conflict_baseline;
   const observed =
-    baseline?.observed_energy_rise_by_sept_2026_pct != null
+    Number.isFinite(baseline?.observed_energy_rise_by_sept_2026_pct) &&
+    Number.isFinite(baseline?.observed_fuel_rise_by_sept_2026_pct) &&
+    Number.isFinite(baseline?.announced_oct_2026_vs_pre_conflict_pct)
       ? {
           energy: baseline.observed_energy_rise_by_sept_2026_pct,
           fuel: baseline.observed_fuel_rise_by_sept_2026_pct,

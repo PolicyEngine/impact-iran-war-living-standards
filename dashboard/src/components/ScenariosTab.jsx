@@ -21,6 +21,7 @@ import {
   getTenureBreakdown,
   getChannelDecomposition,
   getHouseholdTypeBreakdown,
+  getUpratingInputs,
 } from "../lib/dataHelpers";
 import { formatCurrency, formatCount } from "../lib/formatters";
 import ChartLogo from "./ChartLogo";
@@ -199,10 +200,10 @@ function ExampleHousehold({ data, scenario }) {
   // fourth cost — adding it would count the same price shock twice. It is
   // sized on the residual CPI addition that September 2026 CPI misses, read
   // from the results file so it cannot drift from the pipeline.
-  const upratingShortfall =
-    benefitIncome *
-    ((scenarioData.cpi_residual_unindexed_pp ?? 0) / 100) *
-    (scenarioData.uprating_lag_factor ?? 0);
+  const upr = getUpratingInputs(scenarioData);
+  const upratingShortfall = upr
+    ? benefitIncome * (upr.residual / 100) * upr.factor
+    : null;
   const total = energy + fuel + food;
   const pctIncome = income > 0 ? (total / income) * 100 : null;
 
@@ -271,13 +272,18 @@ function ExampleHousehold({ data, scenario }) {
                 {pctIncome.toFixed(1)}% of your net income
               </div>
             ) : null}
-            {upratingShortfall > 0 ? (
+            {benefitIncome > 0 && !upr ? (
+              <div className="mt-4 border-t pt-3 text-xs leading-5" style={{ borderColor: colors.primary[200], color: colors.primary[800] }}>
+                The benefit uprating figures are unavailable in this results file.
+              </div>
+            ) : null}
+            {upr && upratingShortfall > 0 ? (
               <div className="mt-4 border-t pt-3 text-xs leading-5" style={{ borderColor: colors.primary[200], color: colors.primary[800] }}>
                 An immediate benefit uprating would offset about{" "}
                 <strong>{formatCurrency(upratingShortfall)}</strong> of this. April
                 2027 uprating is set from September 2026 CPI, which already carries
-                about {scenarioData.cpi_captured_by_sept_2026_pp}pp of the shock; the
-                remaining {scenarioData.cpi_residual_unindexed_pp}pp is not indexed
+                about {upr.captured}pp of the shock; the
+                remaining {upr.residual}pp is not indexed
                 until April 2028. That is why the cost above is the full price rise,
                 rather than the price rise plus a separate uprating loss.
               </div>
@@ -606,7 +612,7 @@ export default function ScenariosTab({ data }) {
           { label: "Bank of England: ~3% Q3, ~3¼% Q4 2026", url: "https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/june-2026" },
         ],
         ours: `+${low.params.cpi_increase_pp}pp (low), +${central.params.cpi_increase_pp}pp (central), +${severe.params.cpi_increase_pp}pp (high)`,
-        note: `These are not CPI forecasts: each is the addition that scenario's own energy, fuel and food prices imply, and it is used only to size the benefit uprating gap and the accelerated-uprating option, never the household cost. Observed prices so far (energy +${preConflict?.observed_energy_rise_by_sept_2026_pct}%, fuel +${preConflict?.observed_fuel_rise_by_sept_2026_pct}%) imply about ${central.cpi_captured_by_sept_2026_pp}pp from energy and fuel, which September 2026 CPI will carry, close to the low scenario. Central assumes energy +${central.params.cap_increase_pct}% and fuel +${central.params.fuel_pct}%, well beyond that. Our figures are additions to CPI, so they compare with the shock-addition estimates above (OBR, NIESR) rather than with total-CPI levels. Our low (+${low.params.cpi_increase_pp}pp) matches the OBR view of the shock as it stands. Our central (+${central.params.cpi_increase_pp}pp) sits just above the top of NIESR's +1pp to +3pp range, and our high (+${severe.params.cpi_increase_pp}pp) well above it, because each adder is set to at least the first-round effect of that scenario's own energy, fuel and food assumptions on ONS basket weights — for central that floor is ${central.first_round_floor_pp}pp, above the whole NIESR range. A scenario cannot assume less inflation than its own prices mechanically imply. The high figure is a judgemental tail-risk assumption rather than a published UK figure, extrapolated from the Oxford Economics escalation case, which reports a 5.8% peak in world CPI with no stated equation linking that to a UK addition. Other severe published scenarios exist on a total-CPI basis and are not directly comparable with an addition.`,
+        note: `These are not CPI forecasts: each is the addition that scenario's own energy, fuel and food prices imply, and it is used only to size the benefit uprating gap and the accelerated-uprating option, never the household cost. ${getUpratingInputs(central) && Number.isFinite(preConflict?.observed_energy_rise_by_sept_2026_pct) && Number.isFinite(preConflict?.observed_fuel_rise_by_sept_2026_pct) ? `Observed prices so far (energy +${preConflict.observed_energy_rise_by_sept_2026_pct}%, fuel +${preConflict.observed_fuel_rise_by_sept_2026_pct}%) imply about ${central.cpi_captured_by_sept_2026_pp}pp from energy and fuel, which September 2026 CPI will carry, close to the low scenario. ` : ""}Central assumes energy +${central.params.cap_increase_pct}% and fuel +${central.params.fuel_pct}%, well beyond that. Our figures are additions to CPI, so they compare with the shock-addition estimates above (OBR, NIESR) rather than with total-CPI levels. Our low (+${low.params.cpi_increase_pp}pp) matches the OBR view of the shock as it stands. Our central (+${central.params.cpi_increase_pp}pp) sits just above the top of NIESR's +1pp to +3pp range, and our high (+${severe.params.cpi_increase_pp}pp) well above it, because each adder is set to at least the first-round effect of that scenario's own energy, fuel and food assumptions on ONS basket weights — for central that floor is ${central.first_round_floor_pp}pp, above the whole NIESR range. A scenario cannot assume less inflation than its own prices mechanically imply. The high figure is a judgemental tail-risk assumption rather than a published UK figure, extrapolated from the Oxford Economics escalation case, which reports a 5.8% peak in world CPI with no stated equation linking that to a UK addition. Other severe published scenarios exist on a total-CPI basis and are not directly comparable with an addition.`,
       },
     ];
   }, [data]);
@@ -749,7 +755,7 @@ export default function ScenariosTab({ data }) {
       <div className="border-t border-slate-200 pt-10">
         <SectionHeading
           title="Cost breakdown by transmission channel"
-          description="How the average household cost in 2027-28 splits across the three routes through which the shock reaches households: energy spending, fuel at the pump, and food prices (energy is a major input cost). The uprating compensation shortfall is reported separately rather than as a fourth cost. The scheduled April uprating is set from the previous September's CPI, so no offset arrives during the shock year and the household's loss is the price rise itself. The shortfall is the size of the compensation an immediate uprating would deliver, and is what the accelerated-uprating policy pays."
+          description="How the average household cost in 2027-28 splits across the three routes through which the shock reaches households: energy spending, fuel at the pump, and food prices (energy is a major input cost). The uprating compensation shortfall is reported separately rather than as a fourth cost. April 2027 uprating is set from September 2026 CPI, which already carries part of the shock; no offset arrives during the shock year for the residual, so the household's loss is the price rise itself. The shortfall is the size of the compensation an immediate uprating would deliver, and is what the accelerated-uprating policy pays."
         />
       </div>
 
