@@ -52,7 +52,7 @@ At prices seen so far, the direct cost is **£538 a household** (£17.0bn). If g
 
 The last two rows are different statistics, not two estimates of one thing. The mean of ratios weights every household equally and so is pulled up by households with very low incomes; it is the figure the dashboard reports as `mean_net_impact_pct`, and it excludes households with non-positive income, for whom the ratio is undefined. The aggregate ratio is total cost divided by total income.
 
-Sustained-escalation cost by channel, per household: energy £713, fuel £474, food £147. The uprating compensation shortfall is a further £95, reported separately rather than added (see above).
+Sustained-escalation cost by channel, per household: energy £713, fuel £474, food £147. The uprating compensation shortfall is a further £96, reported separately rather than added (see above).
 
 The shock is regressive on either basis. Under sustained escalation the poorest fifth of households bear a cost equal to 4.2% of their mean net income against 1.5% for the richest fifth (10.3% against 1.7% as a mean of ratios), even though the cash amounts run the other way — £981 against £1,613.
 

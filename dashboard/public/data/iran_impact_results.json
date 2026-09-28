@@ -2,8 +2,8 @@
   "year": 2027,
   "current_energy_cap": 1663,
   "provenance": {
-    "generated_at": "2026-09-28T15:04:57+00:00",
-    "git_revision": "a95ffb5b59c5976b67442af7acf5208ac1ea22c1",
+    "generated_at": "2026-09-28T15:16:03+00:00",
+    "git_revision": "25b8c16a2a5d732c9c7ecb52df5b509bef950bd7",
     "git_dirty": false,
     "packages": {
       "policyengine": "5.3.0",
@@ -13,8 +13,8 @@
       "microdf-python": "1.3.0"
     },
     "source_hashes": {
-      "config.py": "aa720d34fb3f2d3e7ddd3ba362175beece222a1e1c37085662fda3f7a384c068",
-      "pipeline.py": "dc5dee42c89701bd11c4c82d2c7148f9a09b11bd65de00fa453385dc98d478d8",
+      "config.py": "86ae7b07d875722329cae525525906ad4a9bb15133fe811de625b31eae08df1d",
+      "pipeline.py": "a1ccc739bdaf976716e42804a7119682fb944302fb9918b9a6d7e5be1d2751eb",
       "provenance.py": "956bcc99b7f9c3f796082ae19edf451310fe6e14ea93deda16bc665455d75541",
       "pyproject.toml": "67312746740b8f3fa072d28c40905bfcdbbdc7d089876e5c6814ac0f102cb161",
       "requirements.lock": "eb6a3b253777a9c501b13cad26e2e847c52b3f58168a3928dd9aaff075e0835a"
@@ -115,7 +115,7 @@
           "energy": 197,
           "fuel": 137,
           "food": 51,
-          "benefit_uprating_shortfall": 17
+          "benefit_uprating_shortfall": 18
         },
         {
           "quintile": 2,
@@ -464,7 +464,7 @@
           "total_impact_bn_low": 12.5,
           "total_impact_bn_high": 21.6,
           "uprating_shortfall_bn_low": 0.14,
-          "uprating_shortfall_bn_high": 1.23
+          "uprating_shortfall_bn_high": 1.24
         },
         "by_parameter": {
           "cap_increase_pct": {
@@ -488,7 +488,7 @@
             "total_impact_bn_low": 17.0,
             "total_impact_bn_high": 17.0,
             "uprating_shortfall_bn_low": 0.14,
-            "uprating_shortfall_bn_high": 1.23,
+            "uprating_shortfall_bn_high": 1.24,
             "moves": [
               "uprating_shortfall"
             ]
@@ -566,7 +566,7 @@
           "energy": 690,
           "fuel": 400,
           "food": 130,
-          "benefit_uprating_shortfall": 138
+          "benefit_uprating_shortfall": 139
         },
         {
           "quintile": 3,
@@ -674,7 +674,7 @@
           "energy": 806,
           "fuel": 458,
           "food": 143,
-          "benefit_uprating_shortfall": 75
+          "benefit_uprating_shortfall": 76
         },
         {
           "region": "SOUTH_EAST",
@@ -746,7 +746,7 @@
           "energy": 734,
           "fuel": 600,
           "food": 166,
-          "benefit_uprating_shortfall": 55
+          "benefit_uprating_shortfall": 56
         },
         {
           "tenure": "RENT_FROM_COUNCIL",
@@ -776,7 +776,7 @@
           "energy": 612,
           "fuel": 426,
           "food": 145,
-          "benefit_uprating_shortfall": 125
+          "benefit_uprating_shortfall": 126
         }
       ],
       "by_country": [
@@ -808,7 +808,7 @@
           "energy": 806,
           "fuel": 458,
           "food": 143,
-          "benefit_uprating_shortfall": 75
+          "benefit_uprating_shortfall": 76
         },
         {
           "country": "WALES",
@@ -830,7 +830,7 @@
           "energy": 772,
           "fuel": 589,
           "food": 165,
-          "benefit_uprating_shortfall": 24
+          "benefit_uprating_shortfall": 25
         },
         {
           "hh_type": "COUPLE_PENSIONER",
@@ -888,7 +888,7 @@
         "fuel_shock": 474,
         "food_shock": 147,
         "net_impact": 1334,
-        "benefit_uprating_shortfall": 95,
+        "benefit_uprating_shortfall": 96,
         "cost_channels": [
           "energy_shock",
           "fuel_shock",
@@ -898,12 +898,12 @@
       "sensitivity": {
         "basis": "Each parameter's uncertainty_range in parameters.registry, evaluated through the model. NOT a confidence interval: the ranges are judgements about the price assumptions, not sampling distributions, and the combined case moves every parameter together. Two aggregates are reported per point, because cpi_increase_pp moves the uprating shortfall rather than the household cost \u2014 `moves` names which aggregates each parameter affects",
         "central_total_impact_bn": 42.1,
-        "central_uprating_shortfall_bn": 3.01,
+        "central_uprating_shortfall_bn": 3.02,
         "combined": {
           "total_impact_bn_low": 27.7,
           "total_impact_bn_high": 55.9,
-          "uprating_shortfall_bn_low": 2.19,
-          "uprating_shortfall_bn_high": 4.38
+          "uprating_shortfall_bn_low": 2.2,
+          "uprating_shortfall_bn_high": 4.39
         },
         "by_parameter": {
           "cap_increase_pct": {
@@ -913,8 +913,8 @@
             ],
             "total_impact_bn_low": 34.6,
             "total_impact_bn_high": 49.6,
-            "uprating_shortfall_bn_low": 3.01,
-            "uprating_shortfall_bn_high": 3.01,
+            "uprating_shortfall_bn_low": 3.02,
+            "uprating_shortfall_bn_high": 3.02,
             "moves": [
               "total_impact"
             ]
@@ -926,8 +926,8 @@
             ],
             "total_impact_bn_low": 42.1,
             "total_impact_bn_high": 42.1,
-            "uprating_shortfall_bn_low": 2.19,
-            "uprating_shortfall_bn_high": 4.38,
+            "uprating_shortfall_bn_low": 2.2,
+            "uprating_shortfall_bn_high": 4.39,
             "moves": [
               "uprating_shortfall"
             ]
@@ -939,8 +939,8 @@
             ],
             "total_impact_bn_low": 36.9,
             "total_impact_bn_high": 46.7,
-            "uprating_shortfall_bn_low": 3.01,
-            "uprating_shortfall_bn_high": 3.01,
+            "uprating_shortfall_bn_low": 3.02,
+            "uprating_shortfall_bn_high": 3.02,
             "moves": [
               "total_impact"
             ]
@@ -952,8 +952,8 @@
             ],
             "total_impact_bn_low": 40.4,
             "total_impact_bn_high": 43.9,
-            "uprating_shortfall_bn_low": 3.01,
-            "uprating_shortfall_bn_high": 3.01,
+            "uprating_shortfall_bn_low": 3.02,
+            "uprating_shortfall_bn_high": 3.02,
             "moves": [
               "total_impact"
             ]
@@ -993,7 +993,7 @@
           "energy": 1185,
           "fuel": 386,
           "food": 165,
-          "benefit_uprating_shortfall": 190
+          "benefit_uprating_shortfall": 191
         },
         {
           "quintile": 2,
@@ -1005,7 +1005,7 @@
           "energy": 1380,
           "fuel": 539,
           "food": 211,
-          "benefit_uprating_shortfall": 277
+          "benefit_uprating_shortfall": 278
         },
         {
           "quintile": 3,
@@ -1063,7 +1063,7 @@
           "energy": 1220,
           "fuel": 731,
           "food": 249,
-          "benefit_uprating_shortfall": 152
+          "benefit_uprating_shortfall": 153
         },
         {
           "region": "LONDON",
@@ -1073,7 +1073,7 @@
           "energy": 957,
           "fuel": 546,
           "food": 257,
-          "benefit_uprating_shortfall": 191
+          "benefit_uprating_shortfall": 192
         },
         {
           "region": "NORTHERN_IRELAND",
@@ -1103,7 +1103,7 @@
           "energy": 1447,
           "fuel": 625,
           "food": 231,
-          "benefit_uprating_shortfall": 220
+          "benefit_uprating_shortfall": 221
         },
         {
           "region": "SCOTLAND",
@@ -1113,7 +1113,7 @@
           "energy": 1612,
           "fuel": 617,
           "food": 232,
-          "benefit_uprating_shortfall": 149
+          "benefit_uprating_shortfall": 152
         },
         {
           "region": "SOUTH_EAST",
@@ -1123,7 +1123,7 @@
           "energy": 1456,
           "fuel": 683,
           "food": 242,
-          "benefit_uprating_shortfall": 169
+          "benefit_uprating_shortfall": 170
         },
         {
           "region": "SOUTH_WEST",
@@ -1215,7 +1215,7 @@
           "energy": 1224,
           "fuel": 574,
           "food": 235,
-          "benefit_uprating_shortfall": 250
+          "benefit_uprating_shortfall": 251
         }
       ],
       "by_country": [
@@ -1247,7 +1247,7 @@
           "energy": 1612,
           "fuel": 617,
           "food": 232,
-          "benefit_uprating_shortfall": 149
+          "benefit_uprating_shortfall": 152
         },
         {
           "country": "WALES",
@@ -1269,7 +1269,7 @@
           "energy": 1543,
           "fuel": 794,
           "food": 268,
-          "benefit_uprating_shortfall": 48
+          "benefit_uprating_shortfall": 49
         },
         {
           "hh_type": "COUPLE_PENSIONER",
@@ -1289,7 +1289,7 @@
           "energy": 1548,
           "fuel": 851,
           "food": 282,
-          "benefit_uprating_shortfall": 279
+          "benefit_uprating_shortfall": 280
         },
         {
           "hh_type": "LONE_PARENT",
@@ -1337,12 +1337,12 @@
       "sensitivity": {
         "basis": "Each parameter's uncertainty_range in parameters.registry, evaluated through the model. NOT a confidence interval: the ranges are judgements about the price assumptions, not sampling distributions, and the combined case moves every parameter together. Two aggregates are reported per point, because cpi_increase_pp moves the uprating shortfall rather than the household cost \u2014 `moves` names which aggregates each parameter affects",
         "central_total_impact_bn": 72.7,
-        "central_uprating_shortfall_bn": 6.03,
+        "central_uprating_shortfall_bn": 6.04,
         "combined": {
           "total_impact_bn_low": 50.9,
           "total_impact_bn_high": 96.5,
-          "uprating_shortfall_bn_low": 4.93,
-          "uprating_shortfall_bn_high": 8.36
+          "uprating_shortfall_bn_low": 4.94,
+          "uprating_shortfall_bn_high": 8.37
         },
         "by_parameter": {
           "cap_increase_pct": {
@@ -1352,8 +1352,8 @@
             ],
             "total_impact_bn_low": 57.7,
             "total_impact_bn_high": 87.8,
-            "uprating_shortfall_bn_low": 6.03,
-            "uprating_shortfall_bn_high": 6.03,
+            "uprating_shortfall_bn_low": 6.04,
+            "uprating_shortfall_bn_high": 6.04,
             "moves": [
               "total_impact"
             ]
@@ -1365,8 +1365,8 @@
             ],
             "total_impact_bn_low": 72.7,
             "total_impact_bn_high": 72.7,
-            "uprating_shortfall_bn_low": 4.93,
-            "uprating_shortfall_bn_high": 8.36,
+            "uprating_shortfall_bn_low": 4.94,
+            "uprating_shortfall_bn_high": 8.37,
             "moves": [
               "uprating_shortfall"
             ]
@@ -1378,8 +1378,8 @@
             ],
             "total_impact_bn_low": 68.8,
             "total_impact_bn_high": 78.6,
-            "uprating_shortfall_bn_low": 6.03,
-            "uprating_shortfall_bn_high": 6.03,
+            "uprating_shortfall_bn_low": 6.04,
+            "uprating_shortfall_bn_high": 6.04,
             "moves": [
               "total_impact"
             ]
@@ -1391,8 +1391,8 @@
             ],
             "total_impact_bn_low": 69.8,
             "total_impact_bn_high": 75.6,
-            "uprating_shortfall_bn_low": 6.03,
-            "uprating_shortfall_bn_high": 6.03,
+            "uprating_shortfall_bn_low": 6.04,
+            "uprating_shortfall_bn_high": 6.04,
             "moves": [
               "total_impact"
             ]
@@ -1936,7 +1936,7 @@
         "household_protection_bn": 0.54,
         "residual_impact_bn": 16.44,
         "avg_benefit_per_hh": 17,
-        "targeting_bottom40": 52.3,
+        "targeting_bottom40": 52.4,
         "n_lifted_from_poverty": 63424,
         "by_quintile": [
           {
@@ -1944,21 +1944,21 @@
             "mean_benefit": 17,
             "mean_residual_impact": 368,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 22.5
+            "benefit_share_pct": 22.7
           },
           {
             "quintile": 2,
             "mean_benefit": 25,
             "mean_residual_impact": 461,
             "mean_benefit_pct_income": 0.1,
-            "benefit_share_pct": 29.8
+            "benefit_share_pct": 29.7
           },
           {
             "quintile": 3,
             "mean_benefit": 22,
             "mean_residual_impact": 529,
             "mean_benefit_pct_income": 0.0,
-            "benefit_share_pct": 24.9
+            "benefit_share_pct": 24.8
           },
           {
             "quintile": 4,
@@ -1978,8 +1978,8 @@
         "support_shares": [
           {
             "quintile": 1,
-            "pct_supported": 49.9,
-            "pct_unsupported": 50.1
+            "pct_supported": 50.6,
+            "pct_unsupported": 49.4
           },
           {
             "quintile": 2,
@@ -1988,8 +1988,8 @@
           },
           {
             "quintile": 3,
-            "pct_supported": 53.4,
-            "pct_unsupported": 46.6
+            "pct_supported": 53.5,
+            "pct_unsupported": 46.5
           },
           {
             "quintile": 4,
@@ -2683,27 +2683,27 @@
       "accelerated_uprating": {
         "name": "Accelerated benefit uprating",
         "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
-        "gross_outlay_bn": 3.01,
-        "fiscal_cost_bn": 3.01,
-        "household_protection_bn": 2.78,
+        "gross_outlay_bn": 3.02,
+        "fiscal_cost_bn": 3.02,
+        "household_protection_bn": 2.79,
         "residual_impact_bn": 39.34,
         "avg_benefit_per_hh": 88,
-        "targeting_bottom40": 52.2,
+        "targeting_bottom40": 52.3,
         "n_lifted_from_poverty": 422296,
         "by_quintile": [
           {
             "quintile": 1,
-            "mean_benefit": 89,
-            "mean_residual_impact": 892,
+            "mean_benefit": 90,
+            "mean_residual_impact": 891,
             "mean_benefit_pct_income": 0.4,
-            "benefit_share_pct": 22.5
+            "benefit_share_pct": 22.6
           },
           {
             "quintile": 2,
             "mean_benefit": 124,
-            "mean_residual_impact": 1096,
+            "mean_residual_impact": 1095,
             "mean_benefit_pct_income": 0.3,
-            "benefit_share_pct": 29.8
+            "benefit_share_pct": 29.7
           },
           {
             "quintile": 3,
@@ -2730,8 +2730,8 @@
         "support_shares": [
           {
             "quintile": 1,
-            "pct_supported": 49.9,
-            "pct_unsupported": 50.1
+            "pct_supported": 50.6,
+            "pct_unsupported": 49.4
           },
           {
             "quintile": 2,
@@ -2740,8 +2740,8 @@
           },
           {
             "quintile": 3,
-            "pct_supported": 53.4,
-            "pct_unsupported": 46.6
+            "pct_supported": 53.5,
+            "pct_unsupported": 46.5
           },
           {
             "quintile": 4,
@@ -2833,17 +2833,17 @@
       "combined": {
         "name": "Combined package",
         "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
-        "gross_outlay_bn": 54.99,
-        "fiscal_cost_bn": 54.99,
+        "gross_outlay_bn": 55.0,
+        "fiscal_cost_bn": 55.0,
         "household_protection_bn": 37.37,
         "residual_impact_bn": 4.76,
-        "avg_benefit_per_hh": 1183,
+        "avg_benefit_per_hh": 1184,
         "targeting_bottom40": 47.7,
         "n_lifted_from_poverty": 1481383,
         "by_quintile": [
           {
             "quintile": 1,
-            "mean_benefit": 953,
+            "mean_benefit": 954,
             "mean_residual_impact": 27,
             "mean_benefit_pct_income": 10.2,
             "benefit_share_pct": 25.0
@@ -2857,7 +2857,7 @@
           },
           {
             "quintile": 3,
-            "mean_benefit": 1268,
+            "mean_benefit": 1269,
             "mean_residual_impact": 108,
             "mean_benefit_pct_income": 2.8,
             "benefit_share_pct": 20.8
@@ -3435,20 +3435,20 @@
       "accelerated_uprating": {
         "name": "Accelerated benefit uprating",
         "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
-        "gross_outlay_bn": 6.03,
-        "fiscal_cost_bn": 6.03,
-        "household_protection_bn": 5.45,
-        "residual_impact_bn": 67.29,
+        "gross_outlay_bn": 6.04,
+        "fiscal_cost_bn": 6.04,
+        "household_protection_bn": 5.47,
+        "residual_impact_bn": 67.28,
         "avg_benefit_per_hh": 173,
-        "targeting_bottom40": 52.2,
+        "targeting_bottom40": 52.3,
         "n_lifted_from_poverty": 428820,
         "by_quintile": [
           {
             "quintile": 1,
-            "mean_benefit": 174,
-            "mean_residual_impact": 1562,
+            "mean_benefit": 175,
+            "mean_residual_impact": 1561,
             "mean_benefit_pct_income": 0.8,
-            "benefit_share_pct": 22.4
+            "benefit_share_pct": 22.5
           },
           {
             "quintile": 2,
@@ -3460,7 +3460,7 @@
           {
             "quintile": 3,
             "mean_benefit": 218,
-            "mean_residual_impact": 2178,
+            "mean_residual_impact": 2177,
             "mean_benefit_pct_income": 0.5,
             "benefit_share_pct": 24.9
           },
@@ -3469,7 +3469,7 @@
             "mean_benefit": 131,
             "mean_residual_impact": 2547,
             "mean_benefit_pct_income": 0.2,
-            "benefit_share_pct": 14.1
+            "benefit_share_pct": 14.0
           },
           {
             "quintile": 5,
@@ -3482,18 +3482,18 @@
         "support_shares": [
           {
             "quintile": 1,
-            "pct_supported": 49.9,
-            "pct_unsupported": 50.1
+            "pct_supported": 50.6,
+            "pct_unsupported": 49.4
           },
           {
             "quintile": 2,
-            "pct_supported": 54.6,
-            "pct_unsupported": 45.4
+            "pct_supported": 54.7,
+            "pct_unsupported": 45.3
           },
           {
             "quintile": 3,
-            "pct_supported": 53.4,
-            "pct_unsupported": 46.6
+            "pct_supported": 53.5,
+            "pct_unsupported": 46.5
           },
           {
             "quintile": 4,
@@ -3585,18 +3585,18 @@
       "combined": {
         "name": "Combined package",
         "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
-        "gross_outlay_bn": 80.52,
-        "fiscal_cost_bn": 80.52,
-        "household_protection_bn": 62.65,
-        "residual_impact_bn": 10.09,
+        "gross_outlay_bn": 80.53,
+        "fiscal_cost_bn": 80.53,
+        "household_protection_bn": 62.66,
+        "residual_impact_bn": 10.08,
         "avg_benefit_per_hh": 1984,
         "targeting_bottom40": 45.3,
         "n_lifted_from_poverty": 2260188,
         "by_quintile": [
           {
             "quintile": 1,
-            "mean_benefit": 1656,
-            "mean_residual_impact": 81,
+            "mean_benefit": 1657,
+            "mean_residual_impact": 80,
             "mean_benefit_pct_income": 18.2,
             "benefit_share_pct": 23.1
           },
@@ -3609,14 +3609,14 @@
           },
           {
             "quintile": 3,
-            "mean_benefit": 2126,
+            "mean_benefit": 2127,
             "mean_residual_impact": 269,
             "mean_benefit_pct_income": 4.7,
             "benefit_share_pct": 21.1
           },
           {
             "quintile": 4,
-            "mean_benefit": 2204,
+            "mean_benefit": 2205,
             "mean_residual_impact": 474,
             "mean_benefit_pct_income": 3.6,
             "benefit_share_pct": 17.9
@@ -3968,7 +3968,7 @@
       "Pass-through: the coefficients and lags implied by the scenario percentages are judgements anchored to the cited sources, not equations derived from them. The energy channel is gas-to-retail (Ofgem's wholesale allowance is built from NBP gas and UK baseload power forwards, and crude oil enters it nowhere); the fuel channel is oil-to-pump. In this episode oil and gas flows diverged \u2014 oil recovered to roughly two-thirds of pre-war levels while LNG stayed halted \u2014 so an oil-anchored energy calibration would if anything understate the gas shock. See PARAMETER_REGISTRY for the derivation of each figure.",
       "Fuel product mix: ONS Table A6 gives one combined figure for petrol, diesel and other motor oils, and the model multiplies it by one percentage. That percentage is an expenditure-weighted composite of separately derived petrol and diesel responses, using the FYE2024 Table A1 shares (61% petrol, 39% diesel). It is a fixed-weight calculation: no substitution between fuels and no volume response is modelled, and a household's own mix is not represented, so a diesel-only household's shock is understated and a petrol-only household's overstated. The shares are two years older than the modelled year and the diesel car fleet share has been falling, which biases the composite very slightly high.",
       "Share-of-income statistics: the MEAN share is not robust in the bottom quintile, because a small number of households with a defined but very small income denominator pull it up sharply. Each quintile row therefore reports three bases - mean_impact_pct, trimmed_mean_impact_pct (excluding the bottom 1% of all incomes) and median_impact_pct - and they differ substantially at the bottom. The GRADIENT between the bottom and top quintiles holds on every basis; the LEVEL does not, so a single quoted figure should be the gradient, and the ratio of mean cost to mean income is the steadiest basis for it. Excluding households with zero modelled energy spend barely moves any of the three, so the sensitivity is to the income tail rather than the energy tail; those households are over-represented in the bottom two quintiles, which hold about three fifths of them (#46).",
-      "Benefit uprating: a single expected-coverage factor is applied to a broad set of CPI-linked benefit income, rather than modelling each benefit's own uprating rule and April 2027 timing against the price path. The amount is reported as the compensation an immediate uprating would deliver and is not counted as a cost, so the household loss is the price rise alone.",
+      "Benefit uprating: the gain from an accelerated uprating is modelled by running a PolicyEngine UK reform at each scenario's residual CPI addition, raising every CPI-uprated benefit rate and the reported ESA and contribution-based JSA awards, with tapers, award floors and the benefit cap applied. Not covered: the Pension Credit savings credit maximum, which is not a model parameter (an upper bound on the omission is published under metadata.savings_credit_not_uprated); the captured September 2026 CPI is a proxy on August data with food omitted. The amount is reported as the compensation an immediate uprating would deliver and is not counted as a cost, so the household loss is the price rise alone.",
       "Means-tested payment timing: the 2022 scheme paid two separate awards of \u00a3326 and \u00a3324, each conditional on entitlement in its own qualifying window, so a household entitled in only one window received that instalment alone. The annual microdata cannot observe entitlement within a window, so each instalment is paid at an assumed per-window entitlement rate (MEANS_TEST_WINDOW_ENTITLEMENT_RATE), which gives the expected value across all four qualifying states without modelling their joint distribution. That rate is a stated assumption, not a sourced figure, and the modelled cost is proportional to it. Take-up among qualifying households is treated as complete, since the 2022 payments were automatic.",
       "Uncertainty: the ranges in PARAMETER_REGISTRY describe the spread of the price assumptions and are now evaluated through the model \u2014 see scenarios[*].sensitivity. They are judgements, not sampling distributions, so the resulting spread is not a confidence interval. Survey sampling uncertainty on the spending inputs is reported separately under parameters.spending_inputs.sampling_uncertainty and is not propagated, because ONS publishes no decile-level standard errors."
     ],
@@ -3976,8 +3976,13 @@
     "october_2026_energy_cap": 1723,
     "fixed_tariff_account_share": 0.4,
     "savings_credit_not_uprated": {
-      "total_bn": 0.643,
-      "basis": "Savings credit is not raised by the uprating reform. At a residual of r percent the omitted gain is at most r% of this total"
+      "maximum_total_bn": 3.384,
+      "upper_bound_bn": {
+        "low_shock": 0.014,
+        "central_shock": 0.074,
+        "severe_shock": 0.149
+      },
+      "basis": "The savings credit maximum is not a model parameter, so the uprating reform does not raise it. Raising it by r% raises any award, including one it creates, by at most r% of the maximum, so r% of the maximum summed over eligible benefit units bounds the omission"
     },
     "pre_conflict_baseline": {
       "energy_price_cap_new_basis_gbp": 1465,
