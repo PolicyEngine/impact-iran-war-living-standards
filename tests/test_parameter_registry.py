@@ -149,7 +149,7 @@ def test_compute_scenario_accepts_a_parameter_override():
         "energy": np.full(10, 1_000.0),
         "fuel_cost": np.full(10, 500.0),
         "food_cost": np.full(10, 2_000.0),
-        "benefit_income": np.zeros(10),
+        "uprating_gain_per_pp": np.zeros(10),
     }
     base = compute_scenario(data, "central_shock")
     doubled = dict(config.SCENARIOS["central_shock"])
@@ -480,18 +480,37 @@ def test_captured_cpi_is_derived_from_the_observed_price_constants():
     be typed: review rounds kept finding numbers drifting from their
     source."""
     w = config.CPI_BASKET_WEIGHTS_2026
-    energy = (config.CURRENT_ENERGY_CAP / config.PRE_CONFLICT_CAP_NEW_BASIS - 1) * 100
-    fuel = config.observed_fuel_rise_by_sept_2026_pct()
-    expected = round(round(energy, 1) * w["energy"] + fuel * w["fuel"], 2)
+    e, f = config.ONS_CPI_ENERGY_INDEX, config.ONS_CPI_FUEL_INDEX
+    m = config.ONS_CPI_LATEST_MONTH
+    expected = round(
+        (e[m] - e["2026-06"]) / e["2025-09"] * 100 * w["energy"]
+        + (f[m] - f["2026-02"]) / f["2025-09"] * 100 * w["fuel"],
+        2,
+    )
     assert config.captured_in_sept_2026_cpi_pp() == expected
 
 
-def test_captured_cpi_uses_the_july_cap_not_the_october_cap():
-    """September 2026 CPI covers the July-September cap. The October cap
-    starts after the reference month and must not enter."""
-    assert config.observed_energy_rise_by_sept_2026_pct() < (
-        config.announced_oct_2026_vs_pre_conflict_pct()
-    )
+def test_captured_cpi_shares_the_september_2025_annual_reference():
+    """Both legs must be contributions to the Sept-on-Sept annual rate (#61
+    second review C1): each index set carries the September 2025 base."""
+    for index in (config.ONS_CPI_ENERGY_INDEX, config.ONS_CPI_FUEL_INDEX):
+        assert "2025-09" in index
+        assert config.ONS_CPI_LATEST_MONTH in index
+
+
+def test_the_uprating_list_leaves_out_non_cpi_amounts():
+    listed = " ".join(config.CPI_UPRATED_BENEFIT_PARAMETERS)
+    for excluded in (
+        "minimum_guarantee",  # earnings-linked
+        "elements.disabled.amount",  # LCWRA, frozen
+        "childcare",
+        "work_allowance",
+        "tax_credits",
+        "state_pension",
+    ):
+        assert excluded not in listed, excluded
+
+
 
 
 def test_every_residual_is_non_negative_and_below_the_addition():
@@ -508,13 +527,6 @@ def test_uprating_registry_quotes_the_computed_capture():
     )
 
 
-def test_captured_fuel_uses_the_september_index_week_prices():
-    """September 2026 prices were published before this figure was set; the
-    August means are not a proxy for the CPI reference month (#61 A1)."""
-    assert config.SEPTEMBER_2026_PETROL_PENCE > config.AUGUST_2026_PETROL_PENCE
-    assert config.observed_fuel_rise_by_sept_2026_pct() > (
-        config.fuel_rise_pct_at_brent(config.BRENT_AUG_2026)
-    )
 
 
 def test_uprating_registry_carries_the_briefing_publication_date():

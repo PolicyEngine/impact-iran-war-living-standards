@@ -24,6 +24,8 @@ from .config import (
     FUEL_DECILE_FACTORS,
     FOOD_DECILE_FACTORS,
     UPRATING_LAG_FACTOR,
+    UPRATING_REFORM_PCT,
+    CPI_UPRATED_BENEFIT_PARAMETERS,
     FLAT_REBATE,
     CT_REBATE,
     UC_UPLIFT_WEEKLY,
@@ -271,66 +273,55 @@ def _build_ct_band(sim, year=YEAR):
     return _vals(sim, "council_tax_band", year)
 
 
-def _build_benefit_income(sim, year=YEAR):
-    """Aggregate CPI-uprated benefit income per household.
+def _cpi_uprating_reform(sim, year=YEAR):
+    """Raise every CPI-uprated benefit amount by UPRATING_REFORM_PCT.
 
-    Only amounts actually uprated by CPI enter, because the result sizes the
-    CPI uprating gap (#61 review C1). Excluded:
-    - the state pension (triple lock);
-    - Pension Credit, whose Standard Minimum Guarantee is uprated at least in
-      line with earnings, not CPI;
-    - Housing Benefit, which follows eligible rent and Local Housing
-      Allowance rather than CPI;
-    - UC's housing costs and childcare elements, for the same reason. The UC
-      award is scaled by the share of its maximum amount that the
-      CPI-uprated elements (standard allowance, child, disability and carer
-      elements) make up.
+    Two date ranges, because amounts change each April: the reform scales
+    whatever value applies in each part of the year, rather than overwriting
+    the post-April amount with the January one. Non-currency leaves (the
+    Housing Benefit age thresholds sit under the same node) are skipped.
     """
-    hh_id_hh = _vals(sim, "household_id", year)
-    hh_id_bu = _vals(sim, "household_id", year, map_to="benunit")
-    hh_id_person = _vals(sim, "household_id", year, map_to="person")
+    factor = 1 + UPRATING_REFORM_PCT / 100
+    root = sim.tax_benefit_system.parameters
+    reform = {}
+    for path in CPI_UPRATED_BENEFIT_PARAMETERS:
+        node = root
+        for part in path.split("."):
+            node = getattr(node, part)
+        leaves = (
+            [node]
+            if hasattr(node, "values_list")
+            else [x for x in node.get_descendants() if hasattr(x, "values_list")]
+        )
+        for leaf in leaves:
+            unit = str((leaf.metadata or {}).get("unit", ""))
+            if not unit.startswith("currency"):
+                continue
+            reform[leaf.name] = {
+                f"{year}-01-01.{year}-03-31": leaf(f"{year}-01-01") * factor,
+                f"{year}-04-01.{year + 1}-03-31": leaf(f"{year}-04-01") * factor,
+            }
+    return reform
 
-    benunit_vars = [
-        "child_benefit",
-        "income_support",
-        "esa_income",
-        "jsa_income",
-    ]
-    person_vars = [
-        "pip",
-        "dla",
-        "attendance_allowance",
-        "carers_allowance",
-    ]
 
-    hh_ben = defaultdict(float)
-    for var in benunit_vars:
-        values = _vals(sim, var, year)
-        for i, hid in enumerate(hh_id_bu):
-            hh_ben[hid] += float(values[i])
+def _build_uprating_gain_per_pp(sim, year=YEAR):
+    """Household gain from uprating CPI-linked benefit amounts by 1pp.
 
-    for var in person_vars:
-        values = _vals(sim, var, year)
-        for i, hid in enumerate(hh_id_person):
-            hh_ben[hid] += float(values[i])
+    Runs the uprating as a reform through PolicyEngine UK, so earnings
+    tapers, the benefit cap, housing costs and every other rule apply: for a
+    UC claimant with a positive award, a higher standard allowance raises the
+    award pound for pound. An earlier version scaled whole awards, then a
+    proportional share of UC, neither of which is the marginal effect of an
+    uprating (#61 second review C2). Scaled linearly to each scenario's
+    residual; see UPRATING_REFORM_PCT.
+    """
+    from policyengine.tax_benefit_models.uk import managed_microsimulation
 
-    uc = _vals(sim, "universal_credit", year)
-    uc_max = _vals(sim, "uc_maximum_amount", year)
-    uc_not_cpi = _vals(sim, "uc_housing_costs_element", year) + _vals(
-        sim, "uc_childcare_element", year
+    reform_sim = managed_microsimulation(reform=_cpi_uprating_reform(sim, year))
+    gain = _vals(reform_sim, "household_benefits", year) - _vals(
+        sim, "household_benefits", year
     )
-    cpi_share = np.divide(
-        np.clip(uc_max - uc_not_cpi, 0, None),
-        uc_max,
-        out=np.zeros_like(uc_max, dtype=float),
-        where=uc_max > 0,
-    )
-    for i, hid in enumerate(hh_id_bu):
-        hh_ben[hid] += float(uc[i] * min(cpi_share[i], 1.0))
-
-    return np.array([hh_ben.get(hid, 0.0) for hid in hh_id_hh])
-
-
+    return gain / UPRATING_REFORM_PCT
 
 def _fuel_duty_exchequer_cost(year=YEAR):
     """Exchequer cost of the fuel-duty cut, from a real PolicyEngine reform.
@@ -462,7 +453,7 @@ def run_baseline(year=YEAR):
     is_uc, _ = _build_uc_recipients(sim, year)
     is_means_tested = _build_means_tested_receipt(sim, year)
     ct_band = _build_ct_band(sim, year)
-    benefit_income = _build_benefit_income(sim, year)
+    uprating_gain_per_pp = _build_uprating_gain_per_pp(sim, year)
 
     country_arr = np.array(
         [REGION_TO_COUNTRY.get(str(r), "UNKNOWN") for r in region]
@@ -505,7 +496,7 @@ def run_baseline(year=YEAR):
         "is_uc": is_uc,
         "is_means_tested": is_means_tested,
         "ct_band": ct_band,
-        "benefit_income": benefit_income,
+        "uprating_gain_per_pp": uprating_gain_per_pp,
         "gross_income": gross_income,
         "gross_decile": gross_decile,
         "owns_vehicle": owns_vehicle,
@@ -534,7 +525,7 @@ def compute_scenario(data, scenario_key, params_override=None):
     energy = data["energy"]
     fuel_cost = data["fuel_cost"]
     food_cost = data["food_cost"]
-    benefit_income = data["benefit_income"]
+    uprating_gain_per_pp = data["uprating_gain_per_pp"]
 
     # Channel 1: Energy price shock
     energy_shock = energy * cap_increase_pct
@@ -562,7 +553,7 @@ def compute_scenario(data, scenario_key, params_override=None):
     # uprating policy provides, so it is reported here and used there.
     residual_pp = residual_cpi_pp(scenario_key, params["cpi_increase_pp"])
     benefit_uprating_shortfall = (
-        benefit_income * (residual_pp / 100) * UPRATING_LAG_FACTOR
+        uprating_gain_per_pp * residual_pp * UPRATING_LAG_FACTOR
     )
 
     # Net impact (all positive = cost to household)

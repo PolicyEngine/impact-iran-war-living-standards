@@ -156,7 +156,7 @@ describe("uprating inputs (#61 review A4)", () => {
 
   it("renders the captured figure and factor from the data", () => {
     const text = renderTab();
-    expect(text).toContain(`about ${central.cpi_captured_by_sept_2026_pp}pp on observed energy and fuel`);
+    expect(text).toContain(`about ${central.cpi_captured_by_sept_2026_pp}pp from the conflict to the annual rate`);
     expect(text).toContain(`factor ${central.uprating_lag_factor})`);
   });
 

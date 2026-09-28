@@ -43,7 +43,7 @@ def synthetic_data():
         "is_uc": decile <= 2,
         "is_means_tested": decile <= 2,
         "ct_band": np.array(["A", "B", "C", "D", "E", "F", "G", "H", "A", "B"]),
-        "benefit_income": np.where(decile <= 2, 8_000.0, 0.0),
+        "uprating_gain_per_pp": np.where(decile <= 2, 80.0, 0.0),
         # Only vehicle owners have road-fuel volumes; the top eight deciles
         # own one, so the bottom two have none.
         "owns_vehicle": decile > 2,

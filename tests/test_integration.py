@@ -196,3 +196,33 @@ def test_the_reform_actually_changes_the_parameter():
         result["exchequer_cost_bn"] / result["baseline_receipts_bn"]
     )
     assert observed_share == pytest.approx(cut_share, rel=0.02)
+
+
+def test_the_uprating_reform_raises_uc_pound_for_pound():
+    """#61 second review C2: a working UC renter with a positive award gains
+    exactly the uprated standard allowance, which a share-of-award rule
+    understated by 74%."""
+    from policyengine_uk import Simulation
+
+    from iran_impact.pipeline import _cpi_uprating_reform
+
+    sit = {
+        "people": {"a": {"age": {2027: 30}, "employment_income": {2027: 15_000}}},
+        "benunits": {"b": {"members": ["a"], "would_claim_uc": {2027: True}}},
+        "households": {
+            "h": {
+                "members": ["a"],
+                "rent": {2027: 12_000},
+                "region": {2027: "LONDON"},
+                "tenure_type": {2027: "RENT_PRIVATELY"},
+            }
+        },
+    }
+    base = Simulation(situation=sit)
+    reform = Simulation(situation=sit, reform=_cpi_uprating_reform(base, 2027))
+    standard_allowance = base.calculate("uc_standard_allowance", 2027)[0]
+    gain = (
+        reform.calculate("universal_credit", 2027)[0]
+        - base.calculate("universal_credit", 2027)[0]
+    )
+    assert gain == pytest.approx(standard_allowance * 0.01, abs=0.01)

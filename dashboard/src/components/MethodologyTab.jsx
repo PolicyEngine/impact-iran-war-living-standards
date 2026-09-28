@@ -131,8 +131,8 @@ export default function MethodologyTab({ data }) {
           rather than equations derived from them.
         </p>
         <p className="mt-4 text-sm leading-7 text-slate-600">
-          <strong>How uncertain.</strong> Every parameter carries a range, and the
-          model is re-run across them. On the central scenario the total runs from{" "}
+          <strong>How uncertain.</strong> Every price parameter carries a range, and
+          the model is re-run across them. On the central scenario the total runs from{" "}
           &pound;{sensitivity?.combined?.total_impact_bn_low}bn to{" "}
           &pound;{sensitivity?.combined?.total_impact_bn_high}bn against a{" "}
           &pound;{data.scenarios.central_shock.summary.total_impact_bn}bn point
@@ -296,8 +296,8 @@ export default function MethodologyTab({ data }) {
             CPI. For 2027-28 the April 2027 uprating is set from September 2026 CPI.
             The conflict began in late February 2026, so that figure already carries
             the part of the shock in prices by then &mdash; about{" "}
-            {upr.captured}pp on observed energy and fuel
-            prices &mdash; and April 2027 uprating passes it on. The rest of each
+            {upr.captured}pp from the conflict to the annual rate on ONS energy and fuel
+            indices, a proxy on August 2026 data &mdash; and April 2027 uprating passes it on. The rest of each
             scenario&apos;s CPI addition is not indexed until April 2028, so no offset
             for it reaches households during the year. The household&apos;s loss is
             therefore the price rise itself, which the three channels above already
@@ -306,10 +306,14 @@ export default function MethodologyTab({ data }) {
             The model reports a separate <strong>uprating compensation shortfall</strong>:
             CPI-linked benefit income &times; the residual CPI addition (the scenario&apos;s
             addition less the {upr.captured}pp already captured)
-            &times; {upr.factor}. Only CPI-uprated amounts count: the state pension
-            (triple lock), Pension Credit (earnings-linked guarantee), Housing Benefit
-            and UC&apos;s housing and childcare elements (rent- and cost-based) are
-            excluded.
+            &times; {upr.factor}, where the gain is modelled by raising every
+            CPI-uprated benefit rate in PolicyEngine UK and letting the benefit rules
+            (earnings tapers, the benefit cap, housing costs) work out each
+            household&apos;s award. A working UC claimant with a positive award gains
+            the uprated standard allowance pound for pound. Amounts not uprated by CPI
+            are left alone: the state pension (triple lock), the Pension Credit
+            minimum guarantee (earnings), UC&apos;s LCWRA element (frozen by the
+            Universal Credit Act 2025), and caps, thresholds and deductions.
             It does <strong>not</strong> add that shortfall to the cost channels. Doing
             so would count the same price shock twice: the lack of indexation is why no
             offset arrives, not a second cost on top of the prices. What the shortfall
@@ -319,9 +323,11 @@ export default function MethodologyTab({ data }) {
             level held for the whole stress-test year and goes unindexed until April
             2028. The captured figure omits food, for want of an observed food-price
             rise, so it is a lower bound and the shortfall an upper bound; it will be
-            replaced with the outturn once September 2026 CPI is published. Neither the
-            captured figure nor the factor is varied in the sensitivity ranges above,
-            which move the CPI addition only. During the 2022
+            replaced with the outturn once September 2026 CPI is published. The price
+            ranges above do not vary the captured figure or the factor, which are
+            point assumptions: at the factor&apos;s registered floor of 0 the
+            accelerated-uprating option would cost nothing, and at 1.0 it is the
+            figure shown. During the 2022
             energy crisis the equivalent indexation gap eroded benefit real value by
             about 5% (&pound;12bn), with April 2022 uprating at 3.1% against 9% actual
             inflation (<a href="https://ifs.org.uk/news/many-benefit-recipients-will-be-worse-until-april-2025-because-failure-payments-keep" target="_blank" rel="noreferrer" className="underline">IFS</a>;{" "}
