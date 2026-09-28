@@ -126,8 +126,10 @@ def test_committed_headlines_match_the_reviewed_values(results):
     # and £3.02bn with contribution-based JSA counted once (fourth review),
     # and £3.10bn once every directly paid reported award was covered
     # (IIDB, incapacity benefit, AFCS; fifth review), then £3.48bn with the
-    # CPI-uprated additional State Pension and Scottish Child Payment.
-    assert package["gross_outlay_bn"] == 55.45
+    # CPI-uprated additional State Pension and Scottish Child Payment, then
+    # £3.64bn with UC work allowances, childcare cap, non-dependant deduction
+    # and PAWHP (sixth review).
+    assert package["gross_outlay_bn"] == 55.61
     assert package["household_protection_bn"] == 37.59
     assert package["residual_impact_bn"] == 4.54
 
