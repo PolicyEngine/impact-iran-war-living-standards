@@ -2,7 +2,7 @@ export const SCENARIO_CONTENT = {
   low_shock: {
     // Named by what each assumes, not by likelihood: "Central" read as the
     // estimate of the war's effect (Max, #46 comment 5872474615).
-    shortLabel: "Prices so far",
+    shortLabel: "Near current prices",
     // The conflict path this scenario represents. Defined once here so a
     // relabel cannot be partial; every tab reads it rather than restating it.
     pathLabel: "premium partially unwinds",
@@ -10,14 +10,17 @@ export const SCENARIO_CONTENT = {
     // restating them, so dashboard copy cannot drift from the model the way
     // it did when severe fuel moved 80% -> 65% and the CPI adders were
     // corrected (#37). Only the prose that is NOT a number lives here.
-    describe: (p) =>
-      `Prices settle near their current elevated levels rather than falling back. Energy spending +${p.cap_increase_pct}%, anchored to the observed +13.5% July 2026 cap rise. This sits slightly below the announced October 2026 cap, so it represents the Q4-2026 premium partially unwinding through 2027-28, not a return to pre-conflict prices. Fuel +${p.fuel_pct}%, food +${p.food_increase_pct}%, CPI +${p.cpi_increase_pp}pp against a no-conflict path (used only to size the benefit uprating gap, not a CPI forecast). Held at those levels for 12 months.`,
+    // A constructed path anchored to observed energy and fuel prices, not the
+    // observed prices themselves: food is a judgement and all three are held
+    // for a future year (#61 fifth review A8).
+    describe: (p, observed) =>
+      `An assumption, anchored to observed prices: prices settle near their current elevated levels rather than falling back, and stay there for all of 2027-28. Energy spending +${p.cap_increase_pct}%, anchored to the observed +13.5% July 2026 cap rise and slightly below the announced October 2026 cap, so it represents the Q4-2026 premium partially unwinding. Fuel +${p.fuel_pct}%, close to the August 2026 pump-price rise${observed ? ` (mid-September prices were +${observed.fuel}%)` : ""}. Food +${p.food_increase_pct}%, a judgement with no published figure behind it. CPI +${p.cpi_increase_pp}pp against a no-conflict path (used only to size the benefit uprating gap, not a CPI forecast).`,
   },
   central_shock: {
     shortLabel: "Sustained escalation",
     pathLabel: "sustained disruption",
     describe: (p, observed) =>
-      `The Strait of Hormuz constraint persists. The energy channel is gas-driven: NBP/TTF sustained at roughly twice pre-conflict levels as the closure halts Qatari LNG, which on a ~40-45% wholesale share implies energy spending +${p.cap_increase_pct}%. Fuel +${p.fuel_pct}% follows Brent above $100/bbl (Goldman Sachs' extended-closure case); food +${p.food_increase_pct}%, CPI +${p.cpi_increase_pp}pp against a no-conflict path (used only to size the benefit uprating gap, not a CPI forecast), sustained for 12 months. Lower-income households, who spend roughly three times the budget share on energy of the top quintile, bear the largest proportional losses.${observed ? ` For comparison, observed prices so far are energy +${observed.energy}% (July 2026 cap; +${observed.octoberEnergy}% announced for October) and fuel +${observed.fuel}%, close to the prices-so-far scenario: this is a stress test of prices rising well beyond today's, not a forecast.` : ""}`,
+      `The Strait of Hormuz constraint persists. The energy channel is gas-driven: NBP/TTF sustained at roughly twice pre-conflict levels as the closure halts Qatari LNG, which on a ~40-45% wholesale share implies energy spending +${p.cap_increase_pct}%. Fuel +${p.fuel_pct}% follows Brent above $100/bbl (Goldman Sachs' extended-closure case); food +${p.food_increase_pct}%, CPI +${p.cpi_increase_pp}pp against a no-conflict path (used only to size the benefit uprating gap, not a CPI forecast), sustained for 12 months. Lower-income households, who spend roughly three times the budget share on energy of the top quintile, bear the largest proportional losses.${observed ? ` For comparison, observed prices are energy +${observed.energy}% (July 2026 cap; +${observed.octoberEnergy}% announced for October) and fuel +${observed.fuel}%, close to the near-current-prices scenario: this is a stress test of prices rising well beyond today's, not a forecast.` : ""}`,
   },
   severe_shock: {
     shortLabel: "Severe escalation",

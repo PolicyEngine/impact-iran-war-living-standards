@@ -613,18 +613,20 @@ _SCENARIO_SOURCES = {
         },
         "cpi_increase_pp": {
             "source_url": "https://niesr.ac.uk/blog/possible-effects-uk-inflation-2026-us-iran-conflict",
-            "source_date": "2026-06-01",
-            "reference_period": "2027-28 level against a no-conflict path (source figure is 2026-27)",
+            "source_date": "2026-03-23",
+            "reference_period": "2027-28 level against a no-conflict path (NIESR's figures are 2026 annual CPI)",
             "derivation": (
-                "NIESR central case of about 4% CPI against about 2% "
-                "pre-conflict, whose +1pp to +3pp range was previously taken "
-                "at the middle. Raised to 3.1pp because the first-round "
-                "direct effect of this scenario's own price assumptions is "
-                f"{direct_cpi_pp('central_shock')}pp on ONS 2026 basket "
-                "weights, above the whole of that "
-                "range — so the midpoint was not merely conservative but "
-                "arithmetically impossible without a demand-destruction "
-                "offset the derivation never stated (#37)"
+                "Set at the first-round price-level effect of this "
+                "scenario's own energy, fuel and food rises on ONS 2026 "
+                f"basket weights, {direct_cpi_pp('central_shock')}pp, "
+                "rounded. NIESR publishes total 2026 CPI of about 3% "
+                "(optimistic) to 5% (pessimistic), 4% central; against a "
+                "roughly 2% pre-conflict expectation, which is this study's "
+                "assumption, not NIESR's, those totals imply about +1pp to "
+                "+3pp. This scenario's price rises are larger than NIESR's, "
+                "so its effect is larger. Not a floor on annual inflation, "
+                "which also depends on timing, second-round effects and "
+                "demand (#37, #56)"
             ),
             "uncertainty_range": [2.5, 4.1],
         },
@@ -830,11 +832,13 @@ METHOD_LIMITATIONS = [
     "fifths of them (#46).",
     "Benefit uprating: the gain from an accelerated uprating is modelled by "
     "running a PolicyEngine UK reform at each scenario's residual CPI "
-    "addition, raising every CPI-uprated benefit rate and the reported ESA "
-    "and contribution-based JSA awards, with tapers, award floors and the "
-    "benefit cap applied. Not covered: the Pension Credit savings credit "
-    "maximum, which is not a model parameter (an upper bound on the omission "
-    "is published under metadata.savings_credit_not_uprated); the captured "
+    "addition, raising every CPI-uprated benefit rate, with tapers, award "
+    "floors and the benefit cap applied, and the reported ESA, JSA, IIDB, incapacity "
+    "benefit and AFCS awards scaled. Not covered, each with a published "
+    "upper bound on the omission under metadata.uprating_not_covered: the "
+    "Pension Credit savings credit maximum, which is not a model parameter, "
+    "and the partly CPI-linked maternity allowance and statutory maternity "
+    "and sick pay; the captured "
     "September 2026 CPI is a proxy on August data with food omitted. The "
     "amount is reported as the compensation an immediate uprating would "
     "deliver and is not counted as a cost, so the household loss is the price "
@@ -976,8 +980,41 @@ CPI_UPRATED_BENEFIT_PARAMETERS = [
 CPI_UPRATED_REPORTED_INPUTS = [
     "esa_income_reported",
     "esa_contrib_reported",
+    "jsa_income_reported",
     "jsa_contrib_reported",
+    "iidb_reported",
+    "incapacity_benefit_reported",
+    "afcs_reported",
 ]
+
+# Every other input PolicyEngine UK tags for CPI uprating that is a benefit
+# (a `_reported` award or a household_benefits component), with the reason it
+# is not scaled. A test fails if the model gains one that is in neither list,
+# so coverage is checked against the model rather than by inspection (#61
+# fifth review C2).
+#
+# Partly CPI-linked: each pays the lower of a flat CPI-uprated rate and a
+# share of earnings, and is paid by employers or at earnings-related rates the
+# model does not separate. Not raised; r% of their total is published as an
+# upper bound on the omission.
+PARTLY_CPI_LINKED_INPUTS = [
+    "maternity_allowance_reported",
+    "statutory_maternity_pay",
+    "statutory_sick_pay",
+]
+NOT_SCALED_REPORTED_INPUTS = {
+    "bsp_reported": "Bereavement Support Payment rates are not uprated",
+    "winter_fuel_allowance_reported": "Winter Fuel Payment is a fixed sum, not CPI-uprated",
+    "carers_allowance_reported": "receipt flag only; the amount is a reformed rate parameter",
+    "sda_reported": "receipt flag only; the amount is a reformed rate parameter",
+    "child_benefit_reported": "the model pays the entitlement from reformed rate parameters",
+    "housing_benefit_reported": "the model pays the entitlement from reformed rate parameters",
+    "income_support_reported": "the model pays the entitlement from reformed rate parameters",
+    "pension_credit_reported": "the model pays the entitlement from its parameters",
+    "universal_credit_reported": "the model pays the entitlement from reformed rate parameters",
+    "child_tax_credit_reported": "tax credits were abolished in April 2025",
+    "working_tax_credit_reported": "tax credits were abolished in April 2025",
+}
 
 
 def uprating_residuals_needed():

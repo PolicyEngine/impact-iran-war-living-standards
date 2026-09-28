@@ -25,6 +25,8 @@ from .config import (
     FOOD_DECILE_FACTORS,
     UPRATING_LAG_FACTOR,
     CPI_UPRATED_REPORTED_INPUTS,
+    PARTLY_CPI_LINKED_INPUTS,
+    NOT_SCALED_REPORTED_INPUTS,
     uprating_residuals_needed,
     CPI_UPRATED_BENEFIT_PARAMETERS,
     FLAT_REBATE,
@@ -364,6 +366,17 @@ def _savings_credit_max_total(sim, year=YEAR):
     return float(np.sum(maximum * eligible * weights))
 
 
+def _partly_cpi_linked_total(sim, year=YEAR):
+    """Weighted total of the partly CPI-linked payments the reform leaves out
+    (PARTLY_CPI_LINKED_INPUTS). Each is at most wholly CPI-uprated, so r% of
+    this total bounds the omission (#61 fifth review C2)."""
+    weights = _vals(sim, "household_weight", year, unweighted=True)
+    total = sum(
+        _vals(sim, var, year, map_to="household") for var in PARTLY_CPI_LINKED_INPUTS
+    )
+    return float(np.sum(total * weights))
+
+
 def _build_uprating_gains(sim, year=YEAR):
     """The household gain at every residual the pipeline evaluates."""
     return {r: _uprating_gain(sim, r, year) for r in uprating_residuals_needed()}
@@ -544,6 +557,7 @@ def run_baseline(year=YEAR):
         "uprating_gains": uprating_gains,
         # Not raised by the reform: see savings_credit_not_uprated below.
         "savings_credit_max_total": _savings_credit_max_total(sim, year),
+        "partly_cpi_linked_total": _partly_cpi_linked_total(sim, year),
         "gross_income": gross_income,
         "gross_decile": gross_decile,
         "owns_vehicle": owns_vehicle,
@@ -1248,6 +1262,12 @@ def _scenario_output(data, scenario_key):
         "n_newly_below_anchored_line": round(
             weighted_sum(newly_poor.astype(float), person_weights)
         ),
+        # Households, counted directly on household weights rather than by
+        # dividing people by the mean household size, which is not a valid
+        # conversion for the households affected (#61 fifth review A9).
+        "n_households_newly_below_anchored_line": round(
+            weighted_sum(newly_poor.astype(float), weights)
+        ),
         # Retained under its original key so the dashboard and any external
         # reference to it keep working; it is the same figure as
         # `n_newly_below_anchored_line`.
@@ -1450,11 +1470,18 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
             # residual of r percent the omission is at most r% of this
             # (#61 third review C2). Savings credit has been closed to new
             # claimants since April 2016.
-            "savings_credit_not_uprated": {
-                "maximum_total_bn": round(data["savings_credit_max_total"] / 1e9, 3),
+            "uprating_not_covered": {
+                "savings_credit_maximum_total_bn": round(
+                    data["savings_credit_max_total"] / 1e9, 3
+                ),
+                "partly_cpi_linked_total_bn": round(
+                    data["partly_cpi_linked_total"] / 1e9, 3
+                ),
+                "partly_cpi_linked_inputs": PARTLY_CPI_LINKED_INPUTS,
+                "not_scaled_reported_inputs": NOT_SCALED_REPORTED_INPUTS,
                 "upper_bound_bn": {
                     key: round(
-                        data["savings_credit_max_total"]
+                        (data["savings_credit_max_total"] + data["partly_cpi_linked_total"])
                         * residual_cpi_pp(key)
                         / 100
                         / 1e9,
@@ -1463,11 +1490,15 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
                     for key in SCENARIOS
                 },
                 "basis": (
-                    "The savings credit maximum is not a model parameter, so "
-                    "the uprating reform does not raise it. Raising it by r% "
-                    "raises any award, including one it creates, by at most "
-                    "r% of the maximum, so r% of the maximum summed over "
-                    "eligible benefit units bounds the omission"
+                    "The reform does not raise the Pension Credit savings "
+                    "credit maximum, which is not a model parameter, or the "
+                    "partly CPI-linked maternity allowance and statutory "
+                    "maternity and sick pay. Raising the maximum "
+                    "by r% raises any savings credit award, including one it "
+                    "creates, by at most r% of the maximum; each partly "
+                    "linked payment rises by at most r% of itself. So r% of "
+                    "the eligible maximum plus those payments bounds the "
+                    "omission"
                 ),
             },
             # The baseline every scenario percentage is measured from, so the

@@ -61,6 +61,7 @@ def synthetic_data():
         "ct_band": np.array(["A", "B", "C", "D", "E", "F", "G", "H", "A", "B"]),
         "uprating_gains": LinearGains(np.where(decile <= 2, 80.0, 0.0)),
         "savings_credit_max_total": 0.0,
+        "partly_cpi_linked_total": 0.0,
         # Only vehicle owners have road-fuel volumes; the top eight deciles
         # own one, so the bottom two have none.
         "owns_vehicle": decile > 2,

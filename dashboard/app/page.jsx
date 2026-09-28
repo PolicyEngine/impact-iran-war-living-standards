@@ -63,7 +63,7 @@ function Dashboard() {
             price rises would cost UK households in 2027-28, with the ongoing Middle
             East conflict and Strait of Hormuz disruption as the context. The{" "}
             <strong>Household impacts</strong> tab models three price paths, from prices
-            seen so far to severe escalation, and their
+            near current levels to severe escalation, and their
             distributional effects across
             income quintiles, countries, tenures and household types. The{" "}
             <strong>Policy options</strong> tab evaluates ten policy responses with their

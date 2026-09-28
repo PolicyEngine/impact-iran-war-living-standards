@@ -269,3 +269,40 @@ def test_the_reform_uprates_reported_jsa_once():
     sit = _single(50, 0, claims_uc=False, jsa_contrib_reported={2027: 5_000})
     _, gain = _household_gain(sit, 2.2)
     assert gain == pytest.approx(5_000 * 0.022, abs=0.01)
+
+
+def test_every_cpi_tagged_benefit_input_is_classified():
+    """#61 fifth review C2: coverage is checked against the model, not by
+    inspection. Every input PolicyEngine UK tags for CPI uprating that is a
+    benefit — a `_reported` award or a household_benefits component — must be
+    scaled by the reform, bounded as partly CPI-linked, or excluded with a
+    reason. A new one in the model fails this test until it is classified."""
+    policyengine_uk = pytest.importorskip("policyengine_uk")
+    from policyengine_uk.variables.household.income.household_benefits import (
+        HOUSEHOLD_BENEFIT_VARIABLES,
+    )
+
+    from iran_impact import config
+
+    tbs = policyengine_uk.CountryTaxBenefitSystem()
+    tagged = {
+        name
+        for name, var in tbs.variables.items()
+        if not var.formulas
+        and "consumer_price_index" in str(getattr(var, "uprating", "") or "")
+        and (name.endswith("_reported") or name in HOUSEHOLD_BENEFIT_VARIABLES)
+    }
+    classified = (
+        set(config.CPI_UPRATED_REPORTED_INPUTS)
+        | set(config.PARTLY_CPI_LINKED_INPUTS)
+        | set(config.NOT_SCALED_REPORTED_INPUTS)
+    )
+    assert tagged - classified == set(), tagged - classified
+    assert not (set(config.CPI_UPRATED_REPORTED_INPUTS) & set(config.NOT_SCALED_REPORTED_INPUTS))
+
+
+def test_the_reform_uprates_reported_iidb():
+    """#61 fifth review C2: IIDB is paid straight from its reported award."""
+    sit = _single(50, 0, claims_uc=False, iidb_reported={2027: 5_000})
+    _, gain = _household_gain(sit, 2.2)
+    assert gain == pytest.approx(5_000 * 0.022, abs=0.01)

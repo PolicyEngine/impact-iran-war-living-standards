@@ -116,3 +116,24 @@ describe("uprating wording (#61 review A2)", () => {
     expect(text).toContain("for the residual");
   });
 });
+
+describe("comparison and scenario wording (#61 fifth review A8-A10)", () => {
+  it("does not present the near-current-prices path as observed prices", () => {
+    const text = textOf(data);
+    expect(text).toContain("Near current prices");
+    expect(text).not.toMatch(/prices so far|seen so far|holds today's observed/i);
+  });
+
+  it("does not claim the NIESR poverty figure validates ours", () => {
+    const text = textOf(data);
+    expect(text).not.toMatch(/close to NIESR/i);
+    expect(text).toContain("Context, not validation");
+  });
+
+  it("quotes NIESR's CPI as total rates and owns the conversion", () => {
+    const text = textOf(data);
+    expect(text).toContain("NIESR: total 2026 CPI");
+    expect(text).toContain("which is our assumption rather than theirs");
+    expect(text).not.toContain("NIESR: +1pp to +3pp");
+  });
+});
