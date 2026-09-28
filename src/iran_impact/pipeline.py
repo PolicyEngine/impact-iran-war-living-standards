@@ -15,11 +15,22 @@ from .config import (
     CURRENT_ENERGY_CAP,
     SCENARIOS,
     direct_cpi_pp,
+    captured_in_sept_2026_cpi_pp,
+    observed_energy_rise_by_sept_2026_pct,
+    observed_fuel_rise_by_sept_2026_pct,
+    residual_cpi_pp,
     BASE_FUEL_SPEND,
     BASE_FOOD_SPEND,
     FUEL_DECILE_FACTORS,
     FOOD_DECILE_FACTORS,
     UPRATING_LAG_FACTOR,
+    CPI_UPRATED_REPORTED_INPUTS,
+    BENEFITS_OUTSIDE_HOUSEHOLD_BENEFITS,
+    CPI_UPRATED_COMPUTED_AMOUNTS,
+    PARTLY_CPI_LINKED_INPUTS,
+    NOT_SCALED_REPORTED_INPUTS,
+    uprating_residuals_needed,
+    CPI_UPRATED_BENEFIT_PARAMETERS,
     FLAT_REBATE,
     CT_REBATE,
     UC_UPLIFT_WEEKLY,
@@ -267,48 +278,114 @@ def _build_ct_band(sim, year=YEAR):
     return _vals(sim, "council_tax_band", year)
 
 
-def _build_benefit_income(sim, year=YEAR):
-    """Aggregate CPI-uprated benefit income per household.
+def _cpi_uprating_reform(sim, residual_pp, year=YEAR):
+    """Raise every CPI-uprated benefit rate by `residual_pp` per cent.
 
-    Deliberately EXCLUDES the state pension: it is uprated by the triple lock
-    (April 2026: +4.8% via earnings), so it is not subject to the CPI uprating
-    lag modelled in channel 4. Includes the major CPI-linked working-age and
-    disability benefits available in PolicyEngine UK.
+    Two date ranges, because amounts change each April: the reform scales
+    whatever value applies in each part of the year, rather than overwriting
+    the post-April amount with the January one. Non-currency leaves (the
+    Housing Benefit age thresholds sit under the same node) are skipped.
     """
-    hh_id_hh = _vals(sim, "household_id", year)
-    hh_id_bu = _vals(sim, "household_id", year, map_to="benunit")
-    hh_id_person = _vals(sim, "household_id", year, map_to="person")
-
-    benunit_vars = [
-        "universal_credit",
-        "child_benefit",
-        "housing_benefit",
-        "pension_credit",
-        "income_support",
-        "esa_income",
-        "jsa_income",
-    ]
-    person_vars = [
-        "pip",
-        "dla",
-        "attendance_allowance",
-        "carers_allowance",
-    ]
-
-    hh_ben = defaultdict(float)
-    for var in benunit_vars:
-        values = _vals(sim, var, year)
-        for i, hid in enumerate(hh_id_bu):
-            hh_ben[hid] += float(values[i])
-
-    for var in person_vars:
-        values = _vals(sim, var, year)
-        for i, hid in enumerate(hh_id_person):
-            hh_ben[hid] += float(values[i])
-
-    return np.array([hh_ben.get(hid, 0.0) for hid in hh_id_hh])
+    factor = 1 + residual_pp / 100
+    root = sim.tax_benefit_system.parameters
+    reform = {}
+    for path in CPI_UPRATED_BENEFIT_PARAMETERS:
+        node = root
+        for part in path.split("."):
+            node = getattr(node, part)
+        leaves = (
+            [node]
+            if hasattr(node, "values_list")
+            else [x for x in node.get_descendants() if hasattr(x, "values_list")]
+        )
+        for leaf in leaves:
+            unit = str((leaf.metadata or {}).get("unit", ""))
+            if not unit.startswith("currency"):
+                continue
+            reform[leaf.name] = {
+                f"{year}-01-01.{year}-03-31": leaf(f"{year}-01-01") * factor,
+                f"{year}-04-01.{year + 1}-03-31": leaf(f"{year}-04-01") * factor,
+            }
+    return reform
 
 
+def _uprating_gain(sim, residual_pp, year=YEAR, simulation_factory=None):
+    """Household gain from uprating CPI-linked benefits by `residual_pp`.
+
+    Runs the uprating as a reform through PolicyEngine UK at the scenario's
+    own residual, so earnings tapers, award floors, the benefit cap and
+    housing costs apply at that size (#61 third review C2): a claimant just
+    above the zero-award boundary gains nothing at 1% but something at 2.2%,
+    which scaling a 1% run cannot see. ESA's reported awards are scaled
+    directly, since the model uprates them by index rather than parameter.
+    """
+    if simulation_factory is None:
+        from policyengine.tax_benefit_models.uk import managed_microsimulation
+
+        simulation_factory = managed_microsimulation
+    reform_sim = simulation_factory(reform=_cpi_uprating_reform(sim, residual_pp, year))
+    factor = 1 + residual_pp / 100
+    for var in CPI_UPRATED_REPORTED_INPUTS + CPI_UPRATED_COMPUTED_AMOUNTS:
+        reform_sim.set_input(var, year, _vals(sim, var, year) * factor)
+    gain = _vals(reform_sim, "household_benefits", year) - _vals(
+        sim, "household_benefits", year
+    )
+    # policyengine-uk 2.90.2 lists jsa_contrib twice in household_benefits,
+    # so a change in it would be counted twice. Remove the extra copies of
+    # any duplicated component (#61 fourth review C2).
+    from policyengine_uk.variables.household.income.household_benefits import (
+        HOUSEHOLD_BENEFIT_VARIABLES,
+    )
+
+    for var in set(HOUSEHOLD_BENEFIT_VARIABLES):
+        extra = HOUSEHOLD_BENEFIT_VARIABLES.count(var) - 1
+        if extra > 0:
+            delta = _vals(reform_sim, var, year, map_to="household") - _vals(
+                sim, var, year, map_to="household"
+            )
+            gain = gain - extra * delta
+    for var in BENEFITS_OUTSIDE_HOUSEHOLD_BENEFITS:
+        gain = gain + _vals(reform_sim, var, year, map_to="household") - _vals(
+            sim, var, year, map_to="household"
+        )
+    return gain
+
+
+def _savings_credit_max_total(sim, year=YEAR):
+    """Weighted total of the maximum savings credit across eligible benefit
+    units: 60% of the standard minimum guarantee above the threshold.
+
+    Raising the maximum by r% raises an award by at most r% of that maximum,
+    including awards it creates, so r% of this total bounds what leaving the
+    maximum out of the reform omits. Bounding it on current tapered awards
+    understated it (#61 fourth review C2).
+    """
+    from policyengine_uk.model_api import WEEKS_IN_YEAR
+
+    sc = sim.tax_benefit_system.parameters(f"{year}-04-01").gov.dwp.pension_credit.savings_credit
+    relation = np.asarray(sim.calculate("relation_type", year).values).astype(str)
+    threshold = np.where(relation == "COUPLE", sc.threshold.COUPLE, sc.threshold.SINGLE)
+    smg = _vals(sim, "standard_minimum_guarantee", year)
+    eligible = _vals(sim, "is_savings_credit_eligible", year).astype(bool)
+    maximum = sc.rate.phase_in * np.maximum(smg - threshold * WEEKS_IN_YEAR, 0)
+    weights = _vals(sim, "benunit_weight", year, unweighted=True)
+    return float(np.sum(maximum * eligible * weights))
+
+
+def _partly_cpi_linked_total(sim, year=YEAR):
+    """Weighted total of the partly CPI-linked payments the reform leaves out
+    (PARTLY_CPI_LINKED_INPUTS). Each is at most wholly CPI-uprated, so r% of
+    this total bounds the omission (#61 fifth review C2)."""
+    weights = _vals(sim, "household_weight", year, unweighted=True)
+    total = sum(
+        _vals(sim, var, year, map_to="household") for var in PARTLY_CPI_LINKED_INPUTS
+    )
+    return float(np.sum(total * weights))
+
+
+def _build_uprating_gains(sim, year=YEAR):
+    """The household gain at every residual the pipeline evaluates."""
+    return {r: _uprating_gain(sim, r, year) for r in uprating_residuals_needed()}
 
 def _fuel_duty_exchequer_cost(year=YEAR):
     """Exchequer cost of the fuel-duty cut, from a real PolicyEngine reform.
@@ -440,7 +517,7 @@ def run_baseline(year=YEAR):
     is_uc, _ = _build_uc_recipients(sim, year)
     is_means_tested = _build_means_tested_receipt(sim, year)
     ct_band = _build_ct_band(sim, year)
-    benefit_income = _build_benefit_income(sim, year)
+    uprating_gains = _build_uprating_gains(sim, year)
 
     country_arr = np.array(
         [REGION_TO_COUNTRY.get(str(r), "UNKNOWN") for r in region]
@@ -483,7 +560,10 @@ def run_baseline(year=YEAR):
         "is_uc": is_uc,
         "is_means_tested": is_means_tested,
         "ct_band": ct_band,
-        "benefit_income": benefit_income,
+        "uprating_gains": uprating_gains,
+        # Not raised by the reform: see uprating_not_covered below.
+        "savings_credit_max_total": _savings_credit_max_total(sim, year),
+        "partly_cpi_linked_total": _partly_cpi_linked_total(sim, year),
         "gross_income": gross_income,
         "gross_decile": gross_decile,
         "owns_vehicle": owns_vehicle,
@@ -506,14 +586,13 @@ def compute_scenario(data, scenario_key, params_override=None):
     """
     params = params_override or SCENARIOS[scenario_key]
     cap_increase_pct = params["cap_increase_pct"] / 100
-    cpi_increase_pp = params["cpi_increase_pp"] / 100
     fuel_pct = params["fuel_pct"] / 100
     food_increase_pct = params["food_increase_pct"] / 100
 
     energy = data["energy"]
     fuel_cost = data["fuel_cost"]
     food_cost = data["food_cost"]
-    benefit_income = data["benefit_income"]
+    uprating_gains = data["uprating_gains"]
 
     # Channel 1: Energy price shock
     energy_shock = energy * cap_increase_pct
@@ -528,18 +607,25 @@ def compute_scenario(data, scenario_key, params_override=None):
     # the net impact.
     #
     # The three channels above are the household's extra spending. Nominal
-    # benefit income does not rise in response, because CPI-linked benefits
-    # are uprated each April from the previous September's CPI, so the
-    # scheduled uprating does not reflect a shock arriving after that. The
-    # household's loss is therefore the price rise itself.
+    # benefit income does not rise in response to the part of the shock that
+    # September 2026 CPI misses: CPI-linked benefits are uprated each April
+    # from the previous September's CPI, and that figure already carries the
+    # share of the shock in prices by then (captured_in_sept_2026_cpi_pp).
+    # The household's loss is therefore the price rise itself.
     #
     # Adding an uprating term on top counted the same price shock twice: the
     # loss is the absence of an offset, not a second cost (#13 review C1).
     # What the term measures is the size of the compensation that immediate
     # uprating would have delivered — which is exactly what the accelerated
     # uprating policy provides, so it is reported here and used there.
+    residual_pp = residual_cpi_pp(scenario_key, params["cpi_increase_pp"])
     benefit_uprating_shortfall = (
-        benefit_income * cpi_increase_pp * UPRATING_LAG_FACTOR
+        (
+            uprating_gains[residual_pp]
+            if residual_pp > 0
+            else np.zeros_like(energy)
+        )
+        * UPRATING_LAG_FACTOR
     )
 
     # Net impact (all positive = cost to household)
@@ -1182,6 +1268,12 @@ def _scenario_output(data, scenario_key):
         "n_newly_below_anchored_line": round(
             weighted_sum(newly_poor.astype(float), person_weights)
         ),
+        # Households, counted directly on household weights rather than by
+        # dividing people by the mean household size, which is not a valid
+        # conversion for the households affected (#61 fifth review A9).
+        "n_households_newly_below_anchored_line": round(
+            weighted_sum(newly_poor.astype(float), weights)
+        ),
         # Retained under its original key so the dashboard and any external
         # reference to it keep working; it is the same figure as
         # `n_newly_below_anchored_line`.
@@ -1196,6 +1288,9 @@ def _scenario_output(data, scenario_key):
         # fuel and food assumptions on ONS basket weights. Emitted so the
         # dashboard can quote it rather than hard-coding it (#51).
         "first_round_floor_pp": direct_cpi_pp(scenario_key),
+        "cpi_captured_by_sept_2026_pp": captured_in_sept_2026_cpi_pp(),
+        "cpi_residual_unindexed_pp": residual_cpi_pp(scenario_key),
+        "uprating_lag_factor": UPRATING_LAG_FACTOR,
         "summary": summary,
         "by_quintile": _by_quintile(data, impacts),
         "by_region": _grouped_impacts(
@@ -1374,6 +1469,44 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
             ),
             "october_2026_energy_cap": OCTOBER_2026_ENERGY_CAP,
             "fixed_tariff_account_share": FIXED_TARIFF_ACCOUNT_SHARE,
+            # The Pension Credit savings credit maximum is CPI-uprated but is
+            # not a parameter in PolicyEngine UK (it is derived from the
+            # minimum guarantee and the threshold), so the uprating reform
+            # cannot raise it. Its total bounds what that leaves out: at a
+            # residual of r percent the omission is at most r% of this
+            # (#61 third review C2). Savings credit is closed to people reaching
+            # State Pension age on or after 6 April 2016.
+            "uprating_not_covered": {
+                "savings_credit_maximum_total_bn": round(
+                    data["savings_credit_max_total"] / 1e9, 3
+                ),
+                "partly_cpi_linked_total_bn": round(
+                    data["partly_cpi_linked_total"] / 1e9, 3
+                ),
+                "partly_cpi_linked_inputs": PARTLY_CPI_LINKED_INPUTS,
+                "not_scaled_reported_inputs": NOT_SCALED_REPORTED_INPUTS,
+                "upper_bound_bn": {
+                    key: round(
+                        (data["savings_credit_max_total"] + data["partly_cpi_linked_total"])
+                        * residual_cpi_pp(key)
+                        / 100
+                        / 1e9,
+                        3,
+                    )
+                    for key in SCENARIOS
+                },
+                "basis": (
+                    "The reform does not raise the Pension Credit savings "
+                    "credit maximum, which is not a model parameter, or the "
+                    "partly CPI-linked maternity allowance and statutory "
+                    "maternity, paternity and sick pay. Raising the maximum "
+                    "by r% raises any savings credit award, including one it "
+                    "creates, by at most r% of the maximum; each partly "
+                    "linked payment rises by at most r% of itself. So r% of "
+                    "the eligible maximum plus those payments bounds the "
+                    "omission"
+                ),
+            },
             # The baseline every scenario percentage is measured from, so the
             # forcing assumptions can be audited without reading the source
             # (#37).
@@ -1381,8 +1514,17 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
                 "energy_price_cap_new_basis_gbp": PRE_CONFLICT_CAP_NEW_BASIS,
                 "energy_price_cap_old_basis_gbp": PRE_CONFLICT_CAP_OLD_BASIS,
                 "energy_cap_period": (
-                    "April-June 2026, the cap Ofgem announced on 25 "
-                    "February 2026, immediately before the conflict began"
+                    "April-June 2026, announced by Ofgem on 25 February, "
+                    "before the conflict began"
+                ),
+                # Observed so far, on the same bases as the scenario
+                # percentages, so the dashboard can set each scenario against
+                # what has actually happened (Alex's CPI question).
+                "observed_energy_rise_by_sept_2026_pct": (
+                    observed_energy_rise_by_sept_2026_pct()
+                ),
+                "observed_fuel_rise_by_sept_2026_pct": (
+                    observed_fuel_rise_by_sept_2026_pct()
                 ),
                 "petrol_pence_per_litre": PRE_CONFLICT_PETROL_PENCE,
                 "diesel_pence_per_litre": PRE_CONFLICT_DIESEL_PENCE,
@@ -1418,7 +1560,7 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
                     announced_oct_2026_vs_pre_conflict_pct()
                 ),
                 "low_scenario_note": (
-                    "The low scenario's "
+                    "The summer-2026-prices scenario's "
                     f"+{SCENARIOS['low_shock']['cap_increase_pct']}% sits "
                     "slightly below the announced October 2026 cap, which is "
                     f"+{announced_oct_2026_vs_pre_conflict_pct()}% on this "

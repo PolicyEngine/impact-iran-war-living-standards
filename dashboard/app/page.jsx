@@ -48,7 +48,7 @@ function Dashboard() {
     <div className="app-shell min-h-screen">
       <header className="title-row">
         <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-4 md:px-8">
-          <h1>Impact of the Middle East war on UK living standards</h1>
+          <h1>Energy, fuel and food price rises and UK households, 2027-28</h1>
         </div>
       </header>
 
@@ -59,10 +59,11 @@ function Dashboard() {
             <a href="https://policyengine.org" target="_blank" rel="noreferrer" className="underline">
               PolicyEngine UK
             </a>
-            &apos;s microsimulation model to estimate how energy price rises from the
-            ongoing Middle East conflict and Strait of Hormuz disruption affect UK
-            household living standards. The{" "}
-            <strong>Household impacts</strong> tab models three conflict paths and their
+            &apos;s microsimulation model to estimate what energy, motor fuel and food
+            price rises would cost UK households in 2027-28, with the ongoing Middle
+            East conflict and Strait of Hormuz disruption as the context. The{" "}
+            <strong>Household impacts</strong> tab models three price paths, from prices
+            held at summer 2026 levels to severe escalation, and their
             distributional effects across
             income quintiles, countries, tenures and household types. The{" "}
             <strong>Policy options</strong> tab evaluates ten policy responses with their

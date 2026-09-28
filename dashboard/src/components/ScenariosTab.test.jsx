@@ -108,3 +108,32 @@ describe("scenario baseline callout", () => {
     expect(text).not.toContain(preConflict.energy_cap_period);
   });
 });
+
+describe("uprating wording (#61 review A2)", () => {
+  it("no longer says no offset arrives at all during the shock year", () => {
+    const text = textOf(data);
+    expect(text).not.toContain("so no offset arrives during the shock year");
+    expect(text).toContain("for the residual");
+  });
+});
+
+describe("comparison and scenario wording (#61 fifth review A8-A10)", () => {
+  it("does not present the summer-2026-prices path as current prices", () => {
+    const text = textOf(data);
+    expect(text).toContain("Summer 2026 prices");
+    expect(text).not.toMatch(/prices so far|seen so far|holds today's observed|near current|close to the (near|summer)/i);
+  });
+
+  it("does not claim the NIESR poverty figure validates ours", () => {
+    const text = textOf(data);
+    expect(text).not.toMatch(/close to NIESR/i);
+    expect(text).toContain("Context, not validation");
+  });
+
+  it("quotes NIESR's CPI as total rates and owns the conversion", () => {
+    const text = textOf(data);
+    expect(text).toContain("NIESR: CPI reaching");
+    expect(text).toContain("do not convert into a conflict addition");
+    expect(text).not.toContain("NIESR: +1pp to +3pp");
+  });
+});

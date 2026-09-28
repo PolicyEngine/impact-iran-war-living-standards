@@ -12,6 +12,22 @@ import pytest
 from iran_impact import config
 
 
+class LinearGains(dict):
+    """Stand-in for the per-residual reform gains: `per_pp` pounds per
+    household for each percentage point of residual. The real pipeline runs
+    a reform at each residual; synthetic tests only need a known mapping."""
+
+    def __init__(self, per_pp):
+        super().__init__()
+        self.per_pp = np.asarray(per_pp, dtype=float)
+
+    def __getitem__(self, residual_pp):
+        return self.per_pp * residual_pp
+
+    def __contains__(self, residual_pp):
+        return True
+
+
 @pytest.fixture
 def synthetic_data():
     """Ten households, one per income decile, with round numbers.
@@ -43,7 +59,9 @@ def synthetic_data():
         "is_uc": decile <= 2,
         "is_means_tested": decile <= 2,
         "ct_band": np.array(["A", "B", "C", "D", "E", "F", "G", "H", "A", "B"]),
-        "benefit_income": np.where(decile <= 2, 8_000.0, 0.0),
+        "uprating_gains": LinearGains(np.where(decile <= 2, 80.0, 0.0)),
+        "savings_credit_max_total": 0.0,
+        "partly_cpi_linked_total": 0.0,
         # Only vehicle owners have road-fuel volumes; the top eight deciles
         # own one, so the bottom two have none.
         "owns_vehicle": decile > 2,

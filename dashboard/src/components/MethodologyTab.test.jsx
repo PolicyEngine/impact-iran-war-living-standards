@@ -146,3 +146,32 @@ describe("MethodologyTab headline figures", () => {
     }
   });
 });
+
+describe("uprating inputs (#61 review A4)", () => {
+  const fields = [
+    "cpi_captured_by_sept_2026_pp",
+    "cpi_residual_unindexed_pp",
+    "uprating_lag_factor",
+  ];
+
+  it("renders the captured figure and factor from the data", () => {
+    const text = renderTab();
+    expect(text).toContain(`about ${central.cpi_captured_by_sept_2026_pp}pp from the conflict to the annual rate`);
+    expect(text).toContain(`factor ${central.uprating_lag_factor})`);
+  });
+
+  it("fails closed when any uprating field is missing or invalid", () => {
+    for (const field of fields) {
+      for (const value of [undefined, "x", -1]) {
+        const broken = structuredClone(data);
+        broken.scenarios.central_shock[field] = value;
+        const { container } = render(<MethodologyTab data={broken} />);
+        const text = container.textContent.replace(/\s+/g, " ");
+        expect(text, `${field}=${String(value)}`).toContain(
+          "The uprating figures are unavailable in this results file.",
+        );
+        expect(text).not.toMatch(/about\s*pp|less the\s*pp|NaN/);
+      }
+    }
+  });
+});

@@ -129,6 +129,101 @@ def direct_cpi_pp(scenario_key):
     )
 
 
+def observed_energy_rise_by_sept_2026_pct():
+    """The July 2026 cap against the pre-conflict cap, both on the new basis.
+
+    This is what September 2026 CPI carries for household energy: the July-
+    September cap is the one in force in that month, and the October cap
+    (OCTOBER_2026_ENERGY_CAP) starts after it. Derived, so it cannot drift
+    from the two cap constants.
+    """
+    return round((CURRENT_ENERGY_CAP / PRE_CONFLICT_CAP_NEW_BASIS - 1) * 100, 1)
+
+
+# DESNZ weekly road fuel prices, 14 September 2026: the observation nearest
+# ONS's mid-month index day for September 2026 CPI (#61 review A1).
+# Source: https://www.gov.uk/government/statistics/weekly-road-fuel-prices
+SEPTEMBER_2026_PETROL_PENCE = 168.14
+SEPTEMBER_2026_DIESEL_PENCE = 190.72
+
+
+def observed_fuel_rise_by_sept_2026_pct():
+    """The spend-weighted petrol/diesel rise at the September 2026 index week.
+
+    Same A1 expenditure shares as the fuel channel's composite, applied to the
+    observed mid-September prices against November 2025. Other motor oils
+    follow petrol, as in fuel_rise_pct_at_brent.
+    """
+    total = (
+        PETROL_WEEKLY_SPEND + DIESEL_WEEKLY_SPEND + OTHER_MOTOR_OILS_WEEKLY_SPEND
+    )
+    petrol = SEPTEMBER_2026_PETROL_PENCE / PRE_CONFLICT_PETROL_PENCE - 1
+    diesel = SEPTEMBER_2026_DIESEL_PENCE / PRE_CONFLICT_DIESEL_PENCE - 1
+    rise = (
+        (PETROL_WEEKLY_SPEND + OTHER_MOTOR_OILS_WEEKLY_SPEND) * petrol
+        + DIESEL_WEEKLY_SPEND * diesel
+    ) / total
+    return round(rise * 100, 1)
+
+
+# ONS CPI component indices (MM23, 2015=100), from the release of 16 September
+# 2026, the latest before September 2026 CPI (#61 second review C1).
+#   D7CH: 04.5 electricity, gas and other fuels
+#   D7EC: 07.2.2 fuels and lubricants
+# https://www.ons.gov.uk/economy/inflationandpriceindices/timeseries/d7ch/mm23
+# https://www.ons.gov.uk/economy/inflationandpriceindices/timeseries/d7ec/mm23
+# September 2025 is the annual reference for September 2026 CPI. August 2026
+# is the latest published month and stands in for September until the
+# September release (21 October 2026). The no-conflict counterfactual holds
+# each component at its last pre-conflict level: energy at June 2026 (the
+# April-June cap, announced before the conflict, the same baseline the energy
+# scenarios use) and fuel at February 2026 (collected mid-February, before
+# the conflict began).
+ONS_CPI_ENERGY_INDEX = {"2025-09": 171.3, "2026-06": 168.3, "2026-08": 181.8}
+ONS_CPI_FUEL_INDEX = {"2025-09": 122.3, "2026-02": 120.7, "2026-08": 150.6}
+ONS_CPI_LATEST_MONTH = "2026-08"
+CAPTURED_CPI_IS_PROXY = True  # flip when the September 2026 outturn replaces it
+
+
+def captured_in_sept_2026_cpi_pp():
+    """The conflict's contribution to the September 2026 ANNUAL CPI rate.
+
+    April 2027 uprating is set from the September 2026 annual CPI rate, which
+    compares September 2026 with September 2025. The conflict began in late
+    February 2026, so that rate already carries part of the shock and April
+    2027 uprating passes it on. Only the rest goes unindexed during 2027-28.
+
+    Measured as the difference between the actual and the no-conflict
+    contributions of each component to the annual rate:
+        weight x (index_actual - index_counterfactual) / index_Sep2025
+    on ONS component indices, so both legs share the September 2025
+    reference (#61 second review C1). An earlier version multiplied a cap
+    change and a pump-price change, measured from different months, by the
+    basket weights, which is not an annual CPI contribution.
+
+    A PROXY until September 2026 CPI is published: August 2026 stands in for
+    September, and food is omitted for want of a counterfactual, so this is a
+    lower bound on what is captured and the shortfall an upper bound.
+    """
+    w = CPI_BASKET_WEIGHTS_2026
+    e, f = ONS_CPI_ENERGY_INDEX, ONS_CPI_FUEL_INDEX
+    latest = ONS_CPI_LATEST_MONTH
+    energy = (e[latest] - e["2026-06"]) / e["2025-09"] * 100
+    fuel = (f[latest] - f["2026-02"]) / f["2025-09"] * 100
+    return round(energy * w["energy"] + fuel * w["fuel"], 2)
+
+
+def residual_cpi_pp(scenario_key, cpi_increase_pp=None):
+    """The part of a scenario's CPI addition that April 2027 uprating misses.
+
+    Never negative: a scenario whose addition is below what is already
+    captured has no shortfall, rather than a negative one.
+    """
+    if cpi_increase_pp is None:
+        cpi_increase_pp = SCENARIOS[scenario_key]["cpi_increase_pp"]
+    return round(max(0.0, cpi_increase_pp - captured_in_sept_2026_cpi_pp()), 2)
+
+
 # Petrol and diesel move differently, and ONS Table A6's fuel category is
 # "Petrol, diesel and other motor oils" — one combined figure that the model
 # multiplies by one percentage. Applying a petrol-only rate to it understates
@@ -304,6 +399,8 @@ OFGEM_OCTOBER_2026 = "https://www.ofgem.gov.uk/press-release/energy-price-cap-wi
 DESNZ_ROAD_FUEL = "https://www.gov.uk/government/statistics/weekly-road-fuel-prices"
 EIA_BRENT_MONTHLY = "https://www.eia.gov/dnav/pet/hist/RBRTEm.htm"
 ONS_FAMILY_SPENDING_W1 = "https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/expenditure/datasets/familyspendingworkbook1detailedexpenditureandtrends"
+# Goldman's 8-9 April 2026 client note is not public; this is the report of
+# it. No goldmansachs.com page carries the $120 Q3 / $115 Q4 figures.
 GOLDMAN_HORMUZ = "https://oilprice.com/Latest-Energy-News/World-News/Goldman-Another-Month-of-Hormuz-Closure-Means-Over-100-Brent-Throughout-2026.html"
 # The energy channel transmits through GAS, not oil, so it cites gas sources.
 # Ofgem's wholesale allowance is built from NBP gas and UK baseload power
@@ -356,8 +453,13 @@ _PARAMETER_DEFINITIONS = {
     },
     "cpi_increase_pp": {
         "definition": (
-            "Addition to UK CPI inflation, used only to size the real-terms "
-            "erosion of CPI-linked benefits before the next April uprating"
+            "Addition to UK CPI inflation against a no-conflict path, measured "
+            "from pre-conflict prices. Not a forecast of the headline rate: it "
+            "is set from the scenario's own price assumptions (see "
+            "first_round_floor_pp). Used only to size the real-terms erosion "
+            "of CPI-linked benefits, and so the accelerated-uprating policy. "
+            "Part of it is already in September 2026 CPI, which sets April "
+            "2027 uprating; only the residual goes unindexed"
         ),
         "unit": "percentage points",
         "geography": "United Kingdom",
@@ -429,7 +531,7 @@ _SCENARIO_SOURCES = {
         "cpi_increase_pp": {
             "source_url": "https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/june-2026",
             "source_date": "2026-06-01",
-            "reference_period": "2026-27",
+            "reference_period": "2027-28 level against a no-conflict path (source figure is 2026-27)",
             "derivation": (
                 "Bank of England June 2026 projection of CPI near 3% against "
                 "about 2% pre-conflict, i.e. roughly +1pp. Raised to 1.3pp so "
@@ -511,18 +613,20 @@ _SCENARIO_SOURCES = {
         },
         "cpi_increase_pp": {
             "source_url": "https://niesr.ac.uk/blog/possible-effects-uk-inflation-2026-us-iran-conflict",
-            "source_date": "2026-06-01",
-            "reference_period": "2026-27",
+            "source_date": "2026-03-23",
+            "reference_period": "2027-28 level against a no-conflict path (NIESR's figures are CPI rates reached from July 2026)",
             "derivation": (
-                "NIESR central case of about 4% CPI against about 2% "
-                "pre-conflict, whose +1pp to +3pp range was previously taken "
-                "at the middle. Raised to 3.1pp because the first-round "
-                "direct effect of this scenario's own price assumptions is "
-                f"{direct_cpi_pp('central_shock')}pp on ONS 2026 basket "
-                "weights, above the whole of that "
-                "range — so the midpoint was not merely conservative but "
-                "arithmetically impossible without a demand-destruction "
-                "offset the derivation never stated (#37)"
+                "Set at the first-round price-level effect of this "
+                "scenario's own energy, fuel and food rises on ONS 2026 "
+                f"basket weights, {direct_cpi_pp('central_shock')}pp, "
+                "rounded. For context, NIESR's scenarios have CPI reaching "
+                "about 3% (optimistic), 4% (central) or 5% (pessimistic) "
+                "from July 2026; those are total rates that include NIESR's "
+                "own assumption of 3-4% inflation from other sources, so "
+                "they do not convert into a conflict addition by "
+                "subtracting a 2% baseline. Not a floor on annual inflation, "
+                "which also depends on timing, second-round effects and "
+                "demand (#37, #56)"
             ),
             "uncertainty_range": [2.5, 4.1],
         },
@@ -629,24 +733,42 @@ PARAMETER_REGISTRY = _build_parameter_registry()
 # counterfactual rather than a price.
 UPRATING_LAG_REGISTRY = {
     "definition": (
-        "Fraction of a full year's CPI addition applied to CPI-linked benefit "
-        "income, representing the average real-terms erosion between a "
-        "mid-year shock and the next April uprating"
+        "Fraction of a year for which the residual CPI addition (the part "
+        "not already in September 2026 CPI) goes unindexed, applied to "
+        "CPI-linked benefit income"
     ),
-    "unit": "fraction of the annual CPI addition",
+    "unit": "fraction of the residual CPI addition",
     "geography": "United Kingdom",
     "source_url": COMMONS_UPRATING,
-    "source_date": "2026-01-01",
+    "source_date": "2025-12-01",  # CBP-10403 published 1 Dec 2025, updated 24 Mar 2026
     "reference_period": "April 2027 uprating (normally set by September 2026 CPI)",
     "derivation": (
-        "Expected fraction of the year an accelerated uprating would cover, "
-        "for a shock arriving at a uniformly distributed point in it: 0.5. "
-        "Applied uniformly rather than benefit by benefit"
+        "1.0. The conflict began in late February 2026, so the September "
+        "2026 annual CPI rate already carries part of each scenario's "
+        f"addition ({captured_in_sept_2026_cpi_pp()}pp: the conflict's "
+        "contribution on ONS component indices against a September 2025 "
+        "reference, a proxy on August 2026 data with food omitted), and April "
+        "2027 uprating passes that on. The residual is a level held for the "
+        "whole 2027-28 stress-test year and is not indexed until April 2028, "
+        "so it goes unindexed for the full year. The earlier 0.5, for a shock "
+        "arriving at a uniformly distributed point in the year, does not fit "
+        "a shock whose timing is known and which began before the September "
+        "reference month. Applied uniformly rather than benefit by benefit"
+    ),
+    "captured_pp": captured_in_sept_2026_cpi_pp(),
+    "captured_basis": (
+        "Proxy and lower bound on what the September 2026 annual CPI rate "
+        "captures: ONS energy (D7CH) and fuel (D7EC) indices at August 2026 "
+        "against pre-conflict counterfactuals (June 2026 energy, February "
+        "2026 fuel), on a September 2025 reference; food omitted. "
+        "Replace with the outturn once September 2026 CPI is published "
+        "(about 21 October 2026)"
     ),
     "counterfactual": (
-        "The scheduled April uprating is set from the previous September's "
-        "CPI, so it does not reflect a shock arriving after that and no "
-        "offset reaches households during the stress-test year. The "
+        "The scheduled April 2027 uprating is set from September 2026 CPI, "
+        "which reflects the part of the shock already in prices by then. The "
+        "residual addition is not reflected, and no offset for it reaches "
+        "households during the stress-test year. The "
         "household's loss is the price rise itself, which the energy, fuel "
         "and food channels already measure in full. This amount is therefore "
         "NOT added to them — doing so counted the same price shock twice. It "
@@ -708,9 +830,20 @@ METHOD_LIMITATIONS = [
     "is to the income tail rather than the energy tail; those households are "
     "over-represented in the bottom two quintiles, which hold about three "
     "fifths of them (#46).",
-    "Benefit uprating: a single expected-coverage factor is applied to a broad "
-    "set of CPI-linked benefit income, rather than modelling each benefit's "
-    "own uprating rule and April 2027 timing against the price path. The "
+    "Benefit uprating: the gain from an accelerated uprating is modelled by "
+    "running a PolicyEngine UK reform at each scenario's residual CPI "
+    "addition, raising every CPI-uprated benefit rate, with tapers, award "
+    "floors and the benefit cap applied, the reported ESA, contribution-based "
+    "JSA, IIDB, incapacity benefit and AFCS awards scaled, and the "
+    "CPI-uprated additional State Pension raised, including UC work "
+    "allowances, the childcare cap, the non-dependant deduction (which lowers "
+    "awards) and Pension Age Winter Heating Payment. Not covered, each with a "
+    "published "
+    "upper bound on the omission under metadata.uprating_not_covered: the "
+    "Pension Credit savings credit maximum, which is not a model parameter, "
+    "and the partly CPI-linked maternity allowance and statutory maternity, "
+    "paternity and sick pay; the captured "
+    "September 2026 CPI is a proxy on August data with food omitted. The "
     "amount is reported as the compensation an immediate uprating would "
     "deliver and is not counted as a cost, so the household loss is the price "
     "rise alone.",
@@ -764,19 +897,182 @@ FOOD_DECILE_FACTORS = FOOD_SPEND.decile_factors
 ALLOCATE_FUEL_TO_VEHICLE_OWNERS = True
 
 # Benefit uprating: CPI-linked benefits are uprated each April using the
-# previous September's CPI, so a shock arriving after that September is not
-# reflected in the scheduled uprating and no offset arrives during the year.
+# previous September's CPI. The conflict began in late February 2026, so
+# September 2026 CPI already carries part of the shock and April 2027 uprating
+# passes it on. Only the residual — the scenario's CPI addition less
+# captured_in_sept_2026_cpi_pp() — goes unindexed during 2027-28. An earlier
+# version applied the whole addition, on the premise that the shock arrived
+# after September, which it did not.
 #
 # The household's loss is therefore the price rise itself, which the three
 # cost channels already measure. This factor does NOT add a fourth cost — it
 # sizes the compensation that an immediate uprating would deliver, which is
-# what the accelerated-uprating policy provides. Applying it as an
-# expected-value factor of 0.5 reflects an accelerated uprating covering, on
-# average, half of the year.
+# what the accelerated-uprating policy provides. The factor is 1.0: the
+# residual is a level held for the whole stress-test year and is not indexed
+# until April 2028. The previous 0.5 assumed a shock arriving at a random
+# point in the year, which does not fit a shock that began before the
+# September reference month.
 # The April 2026 uprating (+3.8%, Sept 2025 CPI; UC standard allowance +2.3%
 # extra under the Universal Credit Act 2025) predates the conflict shock.
 # Source: https://commonslibrary.parliament.uk/research-briefings/cbp-10403/
-UPRATING_LAG_FACTOR = 0.5
+UPRATING_LAG_FACTOR = 1.0
+
+# The benefit amounts an accelerated CPI uprating would raise (#61 second
+# review C2). Each is a PolicyEngine UK parameter tagged
+# `uprating: gov.benefit_uprating_cpi`, less the legal exceptions:
+#   - Pension Credit minimum guarantee: uprated at least in line with earnings
+#   - UC LCWRA (elements.disabled): frozen by the Universal Credit Act 2025
+#   - UC childcare cap, UC non-dependant deduction, UC work allowance, HB
+#     income disregards, savings credit threshold: caps, deductions and
+#     thresholds, not benefit rates in the annual CPI review
+#   - tax credits: abolished April 2025
+#   - non-benefit parameters PolicyEngine happens to tag with the same index
+# The gain is measured by running the reform through the model, so earnings
+# tapers, the benefit cap and every other interaction apply, rather than by
+# scaling awards by a share.
+CPI_UPRATED_BENEFIT_PARAMETERS = [
+    "gov.dwp.JSA.income.amount_18_24",
+    "gov.dwp.JSA.income.amount_over_25",
+    "gov.dwp.JSA.income.couple",
+    "gov.dwp.attendance_allowance.higher",
+    "gov.dwp.attendance_allowance.lower",
+    "gov.dwp.carer_premium.couple",
+    "gov.dwp.carer_premium.single",
+    "gov.dwp.carers_allowance.rate",
+    "gov.dwp.constant_attendance_allowance.exceptional_rate",
+    "gov.dwp.constant_attendance_allowance.full_day_rate",
+    "gov.dwp.constant_attendance_allowance.intermediate_rate",
+    "gov.dwp.constant_attendance_allowance.part_day_rate",
+    "gov.dwp.disability_premia.disability_couple",
+    "gov.dwp.disability_premia.disability_single",
+    "gov.dwp.disability_premia.enhanced_couple",
+    "gov.dwp.disability_premia.enhanced_single",
+    "gov.dwp.disability_premia.severe_couple",
+    "gov.dwp.disability_premia.severe_single",
+    "gov.dwp.dla.mobility.higher",
+    "gov.dwp.dla.mobility.lower",
+    "gov.dwp.dla.self_care.higher",
+    "gov.dwp.dla.self_care.lower",
+    "gov.dwp.dla.self_care.middle",
+    "gov.dwp.housing_benefit.allowances",
+    "gov.dwp.income_support.amounts",
+    "gov.dwp.pension_credit.guarantee_credit.carer.addition",
+    "gov.dwp.pension_credit.guarantee_credit.child.addition",
+    "gov.dwp.pension_credit.guarantee_credit.child.disability.addition",
+    "gov.dwp.pension_credit.guarantee_credit.child.disability.severe.addition",
+    "gov.dwp.pension_credit.guarantee_credit.child.first.addition",
+    "gov.dwp.pension_credit.guarantee_credit.severe_disability.addition",
+    "gov.dwp.pip.daily_living.enhanced",
+    "gov.dwp.pip.daily_living.standard",
+    "gov.dwp.pip.mobility.enhanced",
+    "gov.dwp.pip.mobility.standard",
+    "gov.dwp.sda.maximum",
+    "gov.dwp.universal_credit.elements.carer.amount",
+    "gov.dwp.universal_credit.elements.child.amount",
+    "gov.dwp.universal_credit.elements.child.disabled.amount",
+    "gov.dwp.universal_credit.elements.child.first.higher_amount",
+    "gov.dwp.universal_credit.elements.child.severely_disabled.amount",
+    "gov.dwp.universal_credit.standard_allowance.amount",
+    "gov.hmrc.child_benefit.amount.additional",
+    "gov.hmrc.child_benefit.amount.eldest",
+    "gov.social_security_scotland.carer_support_payment.rate",
+    "gov.social_security_scotland.scottish_child_payment.amount",
+    # Uprated in the official 2026-27 tables and live in the UC formula; each
+    # passes through the benefit rules with its own sign (#61 sixth review
+    # C2). Higher work allowances and childcare cap raise UC; a higher
+    # non-dependant deduction lowers the housing element.
+    "gov.dwp.universal_credit.means_test.work_allowance",
+    "gov.dwp.universal_credit.elements.childcare.cap",
+    "gov.dwp.universal_credit.elements.housing.non_dep_deduction.amount",
+    "gov.social_security_scotland.pawhp.amount",
+]
+
+# Benefits the model computes that policyengine-uk 2.90.2 leaves out of
+# household_benefits. Their change is added to the gain explicitly, or an
+# uprating of their parameters would register as zero (#61 sixth review C2).
+BENEFITS_OUTSIDE_HOUSEHOLD_BENEFITS = ["pawhp"]
+
+# Every other currency parameter under the benefit branches that PolicyEngine
+# UK tags with a CPI index, and why the reform leaves it alone. A test sweeps
+# the model's parameters and fails on any tagged one in neither list: Scottish
+# Child Payment was missed because it carries the OBR CPI tag rather than
+# gov.benefit_uprating_cpi.
+CPI_PARAMETER_EXCLUSIONS = {
+    "gov.dwp.IIDB.maximum": "not used by the model; IIDB is paid from the reported award, which the reform scales",
+    "gov.dwp.housing_benefit.means_test.income_disregard": "earnings disregards are frozen in cash terms, not uprated",
+    "gov.dwp.pension_credit.guarantee_credit.minimum_guarantee": "uprated at least in line with earnings, not CPI",
+    "gov.dwp.pension_credit.savings_credit.threshold": "set by ministerial discretion, not CPI (+7.8% in 2026-27); the savings credit maximum is bounded separately",
+    "gov.dwp.tax_credits": "tax credits were abolished in April 2025",
+    "gov.dwp.universal_credit.elements.disabled.amount": "the LCWRA element, frozen by the Universal Credit Act 2025",
+}
+
+# ESA and contribution-based JSA are paid from survey-reported awards that
+# PolicyEngine uprates by the CPI index rather than from rate parameters, so
+# the reform scales these inputs directly (#61 third and fourth reviews C2).
+CPI_UPRATED_REPORTED_INPUTS = [
+    "esa_income_reported",
+    "esa_contrib_reported",
+    "jsa_contrib_reported",
+    "iidb_reported",
+    "incapacity_benefit_reported",
+    "afcs_reported",
+]
+
+# Amounts the model computes rather than reads, which are CPI-uprated in law
+# but driven by no rate parameter. Additional State Pension (SERPS/S2P, and
+# the protected payment under the new State Pension) is CPI-uprated, unlike
+# the triple-locked basic and new State Pension; the model derives it from
+# the reported pension above the flat rate. The reform overrides it scaled.
+CPI_UPRATED_COMPUTED_AMOUNTS = ["additional_state_pension"]
+
+# Every other input PolicyEngine UK tags for CPI uprating that is a benefit
+# (a `_reported` award or a household_benefits component), with the reason it
+# is not scaled. A test fails if the model gains one that is in neither list,
+# so coverage is checked against the model rather than by inspection (#61
+# fifth review C2).
+#
+# Partly CPI-linked: each pays the lower of a flat CPI-uprated rate and a
+# share of earnings, and is paid by employers or at earnings-related rates the
+# model does not separate. Not raised; r% of their total is published as an
+# upper bound on the omission.
+PARTLY_CPI_LINKED_INPUTS = [
+    "maternity_allowance_reported",
+    "statutory_maternity_pay",
+    "statutory_paternity_pay",
+    "statutory_sick_pay",
+]
+NOT_SCALED_REPORTED_INPUTS = {
+    "jsa_income_reported": "income-based JSA is inactive in the model from 2027 (gov.dwp.JSA.income.active), so it pays nothing to scale",
+    "bsp_reported": "Bereavement Support Payment rates are not uprated",
+    "winter_fuel_allowance_reported": "Winter Fuel Payment is a fixed sum, not CPI-uprated",
+    "carers_allowance_reported": "receipt flag only; the amount is a reformed rate parameter",
+    "sda_reported": "receipt flag only; the amount is a reformed rate parameter",
+    "child_benefit_reported": "the model pays the entitlement from reformed rate parameters",
+    "housing_benefit_reported": "the model pays the entitlement from reformed rate parameters",
+    "income_support_reported": "the model pays the entitlement from reformed rate parameters",
+    "pension_credit_reported": "the model pays the entitlement from its parameters",
+    "universal_credit_reported": "the model pays the entitlement from reformed rate parameters",
+    "child_tax_credit_reported": "tax credits were abolished in April 2025",
+    "working_tax_credit_reported": "tax credits were abolished in April 2025",
+}
+
+
+def uprating_residuals_needed():
+    """Every residual the pipeline evaluates: each scenario's point value and
+    both ends of its CPI uncertainty range, which the sensitivity analysis
+    walks. The reform is run at each, not scaled from one run, because award
+    floors and the benefit cap make the gain non-linear (#61 third review
+    C2)."""
+    needed = set()
+    for key, params in SCENARIOS.items():
+        low, high = PARAMETER_REGISTRY[key]["parameters"]["cpi_increase_pp"][
+            "uncertainty_range"
+        ]
+        for cpi in (params["cpi_increase_pp"], low, high):
+            residual = residual_cpi_pp(key, cpi)
+            if residual > 0:
+                needed.add(residual)
+    return sorted(needed)
 
 # Structural constants
 WEEKS_PER_YEAR = 52

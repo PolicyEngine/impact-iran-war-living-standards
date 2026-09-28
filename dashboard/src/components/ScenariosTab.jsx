@@ -21,6 +21,7 @@ import {
   getTenureBreakdown,
   getChannelDecomposition,
   getHouseholdTypeBreakdown,
+  getUpratingInputs,
 } from "../lib/dataHelpers";
 import { formatCurrency, formatCount } from "../lib/formatters";
 import ChartLogo from "./ChartLogo";
@@ -188,15 +189,21 @@ function ExampleHousehold({ data, scenario }) {
   const [foodSpend, setFoodSpend] = useState(3666);
   const [benefitIncome, setBenefitIncome] = useState(0);
 
-  const params = data?.scenarios?.[scenario]?.params;
+  const scenarioData = data?.scenarios?.[scenario];
+  const params = scenarioData?.params;
   if (!params) return null;
 
   const energy = energyBill * (params.cap_increase_pct / 100);
   const fuel = fuelSpend * (params.fuel_pct / 100);
   const food = foodSpend * (params.food_increase_pct / 100);
   // The uprating shortfall is what an immediate uprating would pay, not a
-  // fourth cost — adding it would count the same price shock twice.
-  const upratingShortfall = benefitIncome * (params.cpi_increase_pp / 100) * 0.5;
+  // fourth cost — adding it would count the same price shock twice. It is
+  // sized on the residual CPI addition that September 2026 CPI misses, read
+  // from the results file so it cannot drift from the pipeline.
+  const upr = getUpratingInputs(scenarioData);
+  const upratingShortfall = upr
+    ? benefitIncome * (upr.residual / 100) * upr.factor
+    : null;
   const total = energy + fuel + food;
   const pctIncome = income > 0 ? (total / income) * 100 : null;
 
@@ -237,8 +244,8 @@ function ExampleHousehold({ data, scenario }) {
             onChange={setFoodSpend}
           />
           <NumberInput
-            label="CPI-linked benefits / yr"
-            hint="Universal Credit, child benefit, PIP and similar; 0 if none"
+            label="CPI-linked benefit rates / yr"
+            hint="Your maximum rates before earnings or housing adjustments: UC standard allowance, child and carer elements, child benefit, PIP, DLA, carer's allowance. Not your UC payment; 0 if none"
             value={benefitIncome}
             onChange={setBenefitIncome}
           />
@@ -265,14 +272,24 @@ function ExampleHousehold({ data, scenario }) {
                 {pctIncome.toFixed(1)}% of your net income
               </div>
             ) : null}
-            {upratingShortfall > 0 ? (
+            {benefitIncome > 0 && !upr ? (
               <div className="mt-4 border-t pt-3 text-xs leading-5" style={{ borderColor: colors.primary[200], color: colors.primary[800] }}>
-                An immediate benefit uprating would offset about{" "}
-                <strong>{formatCurrency(upratingShortfall)}</strong> of this. The
-                scheduled April uprating is set from the previous September&apos;s CPI,
-                so that offset does not arrive during the shock year. That is why the
-                cost above is the full price rise, rather than the price rise plus a
-                separate uprating loss.
+                The benefit uprating figures are unavailable in this results file.
+              </div>
+            ) : null}
+            {upr && upratingShortfall > 0 ? (
+              <div className="mt-4 border-t pt-3 text-xs leading-5" style={{ borderColor: colors.primary[200], color: colors.primary[800] }}>
+                Uprating your CPI-linked rates immediately would raise them by up to
+                about <strong>{formatCurrency(upratingShortfall)}</strong> a year. April
+                2027 uprating is set from September 2026 CPI, which already carries
+                about {upr.captured}pp of the shock; the
+                remaining {upr.residual}pp is not indexed
+                until April 2028. That is why the cost above is the full price rise,
+                rather than the price rise plus a separate uprating loss. This is a
+                maximum-rate illustration: your actual award can change by less once
+                earnings, housing costs and the benefit cap apply, or by more if the
+                uprating brings you into entitlement. The population figures run the
+                full benefit rules at each scenario&apos;s residual.
               </div>
             ) : null}
           </div>
@@ -565,6 +582,12 @@ export default function ScenariosTab({ data }) {
   // source and our model put a number on, computed live from the pipeline
   // output so it stays in sync when the data regenerates.
   const comparisonRows = useMemo(() => {
+    const observed = data?.metadata?.pre_conflict_baseline;
+    // Omitted, not NaN, if an older results file lacks the household count.
+    const householdsPart = (sc) =>
+      Number.isFinite(sc.summary?.n_households_newly_below_anchored_line)
+        ? `${formatCount(sc.summary.n_households_newly_below_anchored_line)} households, `
+        : "";
     const scen = (key) => data?.scenarios?.[key];
     const low = scen("low_shock");
     const central = scen("central_shock");
@@ -580,26 +603,26 @@ export default function ScenariosTab({ data }) {
           { label: `JRF: +${formatCurrency(288)} predicted`, url: "https://www.jrf.org.uk/cost-of-living/addressing-the-2026-energy-price-crisis" },
           { label: `Resolution Foundation: ~+${formatCurrency(500)} if rises are sustained`, url: "https://www.resolutionfoundation.org/press-releases/poorest-households-are-set-to-see-inflation-nearly-a-third-higher-than-the-richest/" },
         ],
-        ours: `${formatCurrency(low.channel_decomposition.energy_shock)} (low) to ${formatCurrency(central.channel_decomposition.energy_shock)} (central)`,
-        note: "Our low scenario matches the observed cap rise; the Resolution Foundation sustained case sits between our low and central.",
+        ours: `${formatCurrency(low.channel_decomposition.energy_shock)} (summer 2026 prices) to ${formatCurrency(central.channel_decomposition.energy_shock)} (sustained escalation)`,
+        note: "Our summer-2026-prices scenario is anchored to the observed July cap rise; the Resolution Foundation sustained case sits between it and sustained escalation.",
       },
       {
         metric: "Newly below the anchored poverty line in 2027-28",
         external: [
-          { label: "NIESR: 200,000 additional UK households", url: "https://www.gbnews.com/money/iran-war-british-households-poverty-cost-of-living" },
+          { label: "NIESR Economic Outlook, Spring 2026: ~200,000 additional households in absolute poverty", url: "https://niesr.ac.uk/reports/economic-outlook-spring-2026" },
         ],
-        ours: `${formatCount(low.summary.n_pushed_into_poverty)} people (low) to ${formatCount(central.summary.n_pushed_into_poverty)} people (central)`,
-        note: `NIESR counts households; we count people, so our low scenario (${formatCount(low.summary.n_pushed_into_poverty)} people \u2248 ${formatCount(Math.round(low.summary.n_pushed_into_poverty / meanHHSize))} households) is close to NIESR's estimate.`,
+        ours: `${householdsPart(low)}${formatCount(low.summary.n_pushed_into_poverty)} people (summer 2026 prices) to ${householdsPart(central)}${formatCount(central.summary.n_pushed_into_poverty)} people (sustained escalation)`,
+        note: "Context, not validation: the two are not comparable. NIESR counts households below an absolute line at 60% of 2023-24 median income after housing costs, from a model of an oil-price shock. We count below a line at 60% of the 2027-28 pre-shock median income before housing costs, after netting modelled energy, fuel and food costs off income. The income concept, base year, housing-cost treatment and mechanism all differ.",
       },
       {
-        metric: "Conflict impact on CPI inflation",
+        metric: "CPI addition implied by scenario prices (not a forecast)",
         external: [
-          { label: "OBR: ~+1pp (CPI to 3% by end-2026 vs 2% anticipated)", url: "https://www.investmentweek.co.uk/news/4526778/obr-warns-iran-conflict-force-uk-inflation-end-2026" },
-          { label: "NIESR: +1pp to +3pp (central ~4% CPI, pessimistic ~5%)", url: "https://niesr.ac.uk/blog/possible-effects-uk-inflation-2026-us-iran-conflict" },
-          { label: "Bank of England: ~3% Q3, ~3¼% Q4 2026", url: "https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/june-2026" },
+          { label: "OBR (David Miles, Treasury Committee, 10 March 2026): prices about 1% higher by end-2026, inflation nearer 3% than 2%, if that day's energy prices persisted", url: "https://committees.parliament.uk/oralevidence/17299/html/" },
+          { label: "NIESR: CPI reaching ~3% (optimistic), ~4% (central) or ~5% (pessimistic) from July 2026, total rates", url: "https://niesr.ac.uk/blog/possible-effects-uk-inflation-2026-us-iran-conflict" },
+          { label: "Bank of England (June 2026): total CPI a little under 3% in Q3 and a little over 3¼% in Q4 2026, on mid-June energy prices", url: "https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/june-2026" },
         ],
-        ours: `+${low.params.cpi_increase_pp}pp (low), +${central.params.cpi_increase_pp}pp (central), +${severe.params.cpi_increase_pp}pp (high)`,
-        note: `Our figures are additions to CPI, so they compare with the shock-addition estimates above (OBR, NIESR) rather than with total-CPI levels. Our low (+${low.params.cpi_increase_pp}pp) matches the OBR view of the shock as it stands. Our central (+${central.params.cpi_increase_pp}pp) sits just above the top of NIESR's +1pp to +3pp range, and our high (+${severe.params.cpi_increase_pp}pp) well above it, because each adder is set to at least the first-round effect of that scenario's own energy, fuel and food assumptions on ONS basket weights — for central that floor is ${central.first_round_floor_pp}pp, above the whole NIESR range. A scenario cannot assume less inflation than its own prices mechanically imply. The high figure is a judgemental tail-risk assumption rather than a published UK figure, extrapolated from the Oxford Economics escalation case, which reports a 5.8% peak in world CPI with no stated equation linking that to a UK addition. Other severe published scenarios exist on a total-CPI basis and are not directly comparable with an addition.`,
+        ours: `+${low.params.cpi_increase_pp}pp (summer 2026 prices), +${central.params.cpi_increase_pp}pp (sustained escalation), +${severe.params.cpi_increase_pp}pp (severe escalation)`,
+        note: `Not CPI forecasts: each is the first-round effect of that scenario's energy, fuel and food rises on ONS 2026 basket weights (${central.first_round_floor_pp}pp for sustained escalation), used only to size the benefit uprating gap, never the household cost. ${getUpratingInputs(central) && Number.isFinite(observed?.observed_energy_rise_by_sept_2026_pct) && Number.isFinite(observed?.observed_fuel_rise_by_sept_2026_pct) ? `Observed so far: energy +${observed.observed_energy_rise_by_sept_2026_pct}% (July cap), fuel +${observed.observed_fuel_rise_by_sept_2026_pct}% (mid-September). The latest ONS indices put the conflict's share of annual CPI at about ${central.cpi_captured_by_sept_2026_pp}pp (August data; September's figures are due 21 October). ` : ""}The OBR's figure is also an addition, conditional on 10 March prices. NIESR and the Bank of England publish total CPI rates; NIESR's include 3-4% inflation from other sources, so they do not convert into a conflict addition by subtracting a 2% baseline. The severe escalation figure is a judgement, extrapolated from Oxford Economics' 5.8% peak in world CPI.`,
       },
     ];
   }, [data]);
@@ -621,7 +644,7 @@ export default function ScenariosTab({ data }) {
       {/* Scenario selector */}
       <SectionHeading
         title="Select a scenario"
-        description="These are stress tests, not forecasts: none is a prediction of what will happen, and “central” does not mean most likely. Choose a conflict path to see its estimated impact on UK households over the 2027-28 tax year. Each applies a different magnitude of energy, fuel, food and inflation shock, sustained for 12 months."
+        description="These are stress tests, not forecasts: none is a prediction of what will happen. Summer 2026 prices holds energy and fuel near their July cap and August pump-price rises, with a judgement for food, for all of 2027-28; the two escalation paths assume prices rise well beyond them. Choose a path to see its estimated impact on UK households over the 2027-28 tax year. Each applies a different magnitude of energy, fuel, food and inflation shock, sustained for 12 months."
       />
       <ScenarioSelector data={data} selected={scenario} onSelect={setScenario} />
 
@@ -641,15 +664,11 @@ export default function ScenariosTab({ data }) {
               Energy spending
             </dt>
             <dd>
-              measured from each household&apos;s own modelled gas and electricity
-              spending at pre-conflict levels ({preConflict?.energy_cap_period}).
-              For context only, Ofgem&apos;s published cap for that period was
-              &pound;
-              {preConflict?.energy_price_cap_old_basis_gbp?.toLocaleString("en-GB")} on
-              the typical-consumption basis then in use; the &pound;
-              {preConflict?.energy_price_cap_new_basis_gbp?.toLocaleString("en-GB")}{" "}
-              like-for-like figure on the basis Ofgem adopted in July is{" "}
-              <em>inferred by this study</em>, not published. No cap value enters the
+              each household&apos;s own modelled gas and electricity spending before the
+              conflict ({preConflict?.energy_cap_period}). Ofgem&apos;s cap then was{" "}
+              {`£${preConflict?.energy_price_cap_old_basis_gbp?.toLocaleString("en-GB")}`};
+              the &pound;{preConflict?.energy_price_cap_new_basis_gbp?.toLocaleString("en-GB")}{" "}
+              on its July basis is <em>inferred by this study</em>. No cap value enters the
               calculation.
             </dd>
           </div>
@@ -719,14 +738,14 @@ export default function ScenariosTab({ data }) {
           </div>
           <div className="mt-2 text-3xl font-bold tracking-tight" style={{ color: colors.primary[800] }}>
             {povertyBaseline != null && povertyShocked != null
-              ? `${povertyBaseline.toFixed(2)}% → ${povertyShocked.toFixed(2)}%`
+              ? `+${(povertyShocked - povertyBaseline).toFixed(2)}pp`
               : "--"}
           </div>
           <div className="mt-1 text-sm text-slate-500">
-            Share of people below the poverty line, before the shock and after modelled
-            costs are netted off income
+            Change in the share of people below the poverty line once modelled costs
+            are netted off income
             {povertyBaseline != null && povertyShocked != null
-              ? ` (+${(povertyShocked - povertyBaseline).toFixed(2)}pp)`
+              ? ` (${povertyBaseline.toFixed(2)}% to ${povertyShocked.toFixed(2)}%; the modelled baseline level is above DWP's published rate, so the change is the more reliable figure)`
               : ""}
           </div>
         </div>
@@ -743,7 +762,7 @@ export default function ScenariosTab({ data }) {
       <div className="border-t border-slate-200 pt-10">
         <SectionHeading
           title="Cost breakdown by transmission channel"
-          description="How the average household cost in 2027-28 splits across the three routes through which the shock reaches households: energy spending, fuel at the pump, and food prices (energy is a major input cost). The uprating compensation shortfall is reported separately rather than as a fourth cost. The scheduled April uprating is set from the previous September's CPI, so no offset arrives during the shock year and the household's loss is the price rise itself. The shortfall is the size of the compensation an immediate uprating would deliver, and is what the accelerated-uprating policy pays."
+          description="How the average 2027-28 cost splits between energy, pump fuel and food. The uprating shortfall is shown separately, not as a fourth cost: April 2027 uprating already carries part of the shock, and the shortfall is what an immediate uprating would pay for the residual."
         />
       </div>
 

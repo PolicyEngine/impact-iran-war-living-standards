@@ -114,9 +114,24 @@ def test_committed_headlines_match_the_reviewed_values(results):
     # accelerated-uprating leg is sized by cpi_increase_pp, so central's
     # adder moving 2.5pp -> 3.1pp lifts that leg £2.13bn -> £2.64bn. The
     # household cost totals are untouched, since the adder never enters them.
-    assert package["gross_outlay_bn"] == 54.62
-    assert package["household_protection_bn"] == 37.17
-    assert package["residual_impact_bn"] == 4.96
+    # Moved again when the shortfall was sized on the residual CPI addition
+    # that September 2026 CPI misses, at a full-year factor: central's
+    # accelerated-uprating leg rose £2.64bn -> £3.54bn. It then fell to
+    # £2.35bn when the base was restricted to CPI-uprated amounts and the
+    # captured CPI used September pump prices (#61 review C1, A1). Household
+    # cost totals are untouched. It settled at £2.85bn once captured CPI was
+    # measured on the annual rate (0.9pp) and the gain modelled as a
+    # PolicyEngine uprating reform (#61 second review C1, C2), then £3.01bn
+    # once the reform ran at each residual and included ESA (third review),
+    # and £3.02bn with contribution-based JSA counted once (fourth review),
+    # and £3.10bn once every directly paid reported award was covered
+    # (IIDB, incapacity benefit, AFCS; fifth review), then £3.48bn with the
+    # CPI-uprated additional State Pension and Scottish Child Payment, then
+    # £3.64bn with UC work allowances, childcare cap, non-dependant deduction
+    # and PAWHP (sixth review).
+    assert package["gross_outlay_bn"] == 55.61
+    assert package["household_protection_bn"] == 37.59
+    assert package["residual_impact_bn"] == 4.54
 
 
 def test_the_policy_accounting_closes_in_the_committed_output(results):
@@ -271,9 +286,9 @@ def test_the_readme_headline_table_matches_the_committed_output(results):
     readme = (Path(__file__).parents[1] / "README.md").read_text()
 
     for key, label in (
-        ("low_shock", "Low"),
-        ("central_shock", "Central"),
-        ("severe_shock", "High"),
+        ("low_shock", "Summer 2026 prices"),
+        ("central_shock", "Sustained escalation"),
+        ("severe_shock", "Severe escalation"),
     ):
         params = config.SCENARIOS[key]
         summary = results["scenarios"][key]["summary"]
@@ -310,6 +325,10 @@ def test_the_readme_headline_table_matches_the_committed_output(results):
         )
     assert f"£{channels['benefit_uprating_shortfall']}" in readme, (
         "README's uprating shortfall is stale"
+    )
+    captured = results["scenarios"]["central_shock"]["cpi_captured_by_sept_2026_pp"]
+    assert f"about {captured}pp from the conflict to the annual rate" in readme, (
+        "README's figure for the CPI already in September 2026 is stale"
     )
 
     # The regressivity sentence, which is the line most likely to be quoted
@@ -421,4 +440,17 @@ def test_the_recorded_provenance_revision_is_reachable(results):
     assert reachable.returncode == 0, (
         f"the provenance records {revision[:12]}, which is not an ancestor of "
         "HEAD — it was probably orphaned by a rebase after regeneration."
+    )
+
+
+def test_observed_price_rises_are_published_for_the_dashboard(results):
+    """The dashboard sets the central scenario against what has actually
+    happened, which is the comparison Alex's CPI question asked for. The
+    figures must come from the same derivation as the captured CPI."""
+    baseline = results["metadata"]["pre_conflict_baseline"]
+    assert baseline["observed_energy_rise_by_sept_2026_pct"] == (
+        config.observed_energy_rise_by_sept_2026_pct()
+    )
+    assert baseline["observed_fuel_rise_by_sept_2026_pct"] == (
+        config.observed_fuel_rise_by_sept_2026_pct()
     )

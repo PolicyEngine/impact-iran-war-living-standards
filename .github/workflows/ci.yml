@@ -27,6 +27,29 @@ jobs:
       - name: Test
         run: pytest -v
 
+  household-model:
+    name: Household reform tests (PolicyEngine UK)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - uses: astral-sh/setup-uv@v5
+      # The uprating reform is the only model path that needs no private
+      # data: it runs on hand-built households. Install the exact locked
+      # country model so these tests execute rather than skip (#61 third
+      # review A5). The population integration tests still skip here.
+      - name: Install
+        run: |
+          uv venv
+          uv pip sync requirements.lock
+          uv pip install -e . --no-deps
+      - name: Test
+        run: |
+          .venv/bin/python -c "import policyengine_uk"
+          .venv/bin/python -m pytest -v tests/test_integration.py -k "uprating"
+
   lockfile:
     name: Lockfile is current
     runs-on: ubuntu-latest

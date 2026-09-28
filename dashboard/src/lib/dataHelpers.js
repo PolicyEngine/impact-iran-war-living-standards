@@ -156,3 +156,20 @@ export function getPolicyComparison(data, scenarioKey) {
 
   return result;
 }
+
+/**
+ * The uprating inputs a scenario publishes, or null if any is missing or out
+ * of range. Callers render the dependent figures only when this is non-null,
+ * so a stale or partial results file fails closed instead of showing "about
+ * pp" or silently dropping the shortfall (#61 review A4).
+ */
+export function getUpratingInputs(scenarioData) {
+  const captured = scenarioData?.cpi_captured_by_sept_2026_pp;
+  const residual = scenarioData?.cpi_residual_unindexed_pp;
+  const factor = scenarioData?.uprating_lag_factor;
+  const ok =
+    Number.isFinite(captured) && captured >= 0 &&
+    Number.isFinite(residual) && residual >= 0 &&
+    Number.isFinite(factor) && factor >= 0 && factor <= 1;
+  return ok ? { captured, residual, factor } : null;
+}

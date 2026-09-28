@@ -142,6 +142,7 @@ def test_compute_scenario_accepts_a_parameter_override():
     rather than reimplementing the arithmetic."""
     import numpy as np
 
+    from conftest import LinearGains
     from iran_impact.pipeline import compute_scenario
 
     decile = np.arange(1, 11)
@@ -149,7 +150,7 @@ def test_compute_scenario_accepts_a_parameter_override():
         "energy": np.full(10, 1_000.0),
         "fuel_cost": np.full(10, 500.0),
         "food_cost": np.full(10, 2_000.0),
-        "benefit_income": np.zeros(10),
+        "uprating_gains": LinearGains(np.zeros(10)),
     }
     base = compute_scenario(data, "central_shock")
     doubled = dict(config.SCENARIOS["central_shock"])
@@ -473,3 +474,71 @@ def test_april_june_is_never_tied_to_the_conflict_without_the_announcement():
         "these tie April-June 2026 to the conflict without saying the cap was "
         f"ANNOUNCED before it; the period itself is not pre-conflict: {offenders}"
     )
+
+
+def test_captured_cpi_is_derived_from_the_observed_price_constants():
+    """The captured figure must follow the cap and pump-price constants, not
+    be typed: review rounds kept finding numbers drifting from their
+    source."""
+    w = config.CPI_BASKET_WEIGHTS_2026
+    e, f = config.ONS_CPI_ENERGY_INDEX, config.ONS_CPI_FUEL_INDEX
+    m = config.ONS_CPI_LATEST_MONTH
+    expected = round(
+        (e[m] - e["2026-06"]) / e["2025-09"] * 100 * w["energy"]
+        + (f[m] - f["2026-02"]) / f["2025-09"] * 100 * w["fuel"],
+        2,
+    )
+    assert config.captured_in_sept_2026_cpi_pp() == expected
+
+
+def test_captured_cpi_shares_the_september_2025_annual_reference():
+    """Both legs must be contributions to the Sept-on-Sept annual rate (#61
+    second review C1): each index set carries the September 2025 base."""
+    for index in (config.ONS_CPI_ENERGY_INDEX, config.ONS_CPI_FUEL_INDEX):
+        assert "2025-09" in index
+        assert config.ONS_CPI_LATEST_MONTH in index
+
+
+def test_the_uprating_list_leaves_out_non_cpi_amounts():
+    listed = " ".join(config.CPI_UPRATED_BENEFIT_PARAMETERS)
+    for excluded in (
+        "minimum_guarantee",  # earnings-linked
+        "elements.disabled.amount",  # LCWRA, frozen
+        "income_disregard",  # frozen in cash terms
+        "tax_credits",  # abolished
+        "state_pension",  # triple lock; additional pension is handled separately
+    ):
+        assert excluded not in listed, excluded
+
+
+
+
+def test_every_residual_is_non_negative_and_below_the_addition():
+    for key, params in config.SCENARIOS.items():
+        residual = config.residual_cpi_pp(key)
+        assert 0 <= residual <= params["cpi_increase_pp"], key
+
+
+def test_uprating_registry_quotes_the_computed_capture():
+    derivation = config.UPRATING_LAG_REGISTRY["derivation"]
+    assert f"{config.captured_in_sept_2026_cpi_pp()}pp" in derivation
+    assert "does not reflect a shock arriving after" not in (
+        config.UPRATING_LAG_REGISTRY["counterfactual"]
+    )
+
+
+
+
+def test_uprating_registry_carries_the_briefing_publication_date():
+    assert config.UPRATING_LAG_REGISTRY["source_date"] == "2025-12-01"
+
+
+def test_the_reform_runs_at_every_residual_the_pipeline_evaluates():
+    """Each scenario's residual and both range ends get their own reform run
+    rather than a scaled 1% run (#61 third review C2)."""
+    needed = config.uprating_residuals_needed()
+    for key, params in config.SCENARIOS.items():
+        residual = config.residual_cpi_pp(key)
+        if residual > 0:
+            assert residual in needed, key
+    assert "esa_income_reported" in config.CPI_UPRATED_REPORTED_INPUTS

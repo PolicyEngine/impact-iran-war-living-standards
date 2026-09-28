@@ -1,8 +1,8 @@
-# Impact of the Middle East War on UK Living Standards
+# Energy, fuel and food price rises and UK households, 2027-28
 
-Microsimulation-based analysis of how energy price rises from the ongoing Middle East conflict (active since late February 2026, with recurrent Strait of Hormuz disruption) affect UK households in 2027-28 — modelling impacts through energy bills, fuel costs and food inflation across 31.6 million weighted households using [policyengine.py](https://github.com/PolicyEngine/policyengine.py) 5.3.0.
+Microsimulation-based analysis of what energy, motor fuel and food price rises would cost UK households in 2027-28, with the ongoing Middle East conflict (active since late February 2026, with recurrent Strait of Hormuz disruption) as the context — modelling impacts through energy bills, fuel costs and food inflation across 31.6 million weighted households using [policyengine.py](https://github.com/PolicyEngine/policyengine.py) 5.3.0.
 
-**[Live Dashboard](https://uk-energy-shock-impact.vercel.app)**
+**[Live Dashboard](https://www.policyengine.org/uk/middle-east-war-living-standards)**
 
 ## Scenarios
 
@@ -12,9 +12,11 @@ Calibrated to conditions as of August 2026 (Brent ~$85/bbl after a ~$109 peak). 
 
 | Scenario | Energy bills | Fuel price | Food price | CPI |
 |---|---|---|---|---|
-| Low | +15% | +22% | +2.0% | +1.3pp |
-| Central | +45% | +46% | +4.0% | +3.1pp |
-| High | +90% | +62% | +6.5% | +5.3pp |
+| Summer 2026 prices | +15% | +22% | +2.0% | +1.3pp |
+| Sustained escalation | +45% | +46% | +4.0% | +3.1pp |
+| Severe escalation | +90% | +62% | +6.5% | +5.3pp |
+
+The CPI column is not a forecast of inflation. It is the addition each scenario's own energy, fuel and food prices imply on ONS 2026 basket weights, measured against a no-conflict path, and it is used only to size the benefit uprating shortfall and the accelerated-uprating option. It never enters the household cost.
 
 The Ofgem cap (£1,663 for July–September 2026 on the new typical-consumption basis, £1,723 for October–December) is reported as context and **does not enter the calculation**: the energy percentage is applied to each household's own baseline gas and electricity expenditure in the microdata. The model does not represent unit rates, standing charges, the gas/electricity split, region, payment method, quarterly cap periods or fixed-tariff coverage.
 
@@ -26,7 +28,7 @@ The pipeline applies price increases through three transmission channels and com
 2. **Fuel** — Petrol and diesel spending (ONS Family Spending Table A6, allocated to vehicle-owning households only), raised by the scenario percentage
 3. **Food** — Food and non-alcoholic drink spending (ONS Family Spending Table A6), raised by the scenario percentage
 
-Plus a separately reported **uprating compensation shortfall** — CPI-linked benefits (state pension excluded: triple lock) are uprated each April from the previous September's CPI, so no offset arrives during the shock year. This is reported as the compensation an immediate uprating would deliver, and is *not* added to the cost channels: the household's loss is the price rise itself, and adding an uprating term on top would count the same shock twice. It is what the accelerated-uprating policy pays.
+Plus a separately reported **uprating compensation shortfall** — CPI-uprated benefit rates are uprated each April from the previous September's annual CPI rate. The conflict began in late February 2026, so the September 2026 rate already carries part of the shock (about 0.9pp from the conflict to the annual rate on ONS energy and fuel indices, a proxy on August 2026 data with food omitted, so a lower bound) and April 2027 uprating passes it on. The gain from uprating is modelled by raising every CPI-uprated benefit rate, and the reported ESA, contribution-based JSA, industrial injuries, incapacity benefit and armed forces compensation awards, and the CPI-uprated additional State Pension, in PolicyEngine UK at each scenario's residual and running the benefit rules, so tapers, the benefit cap and housing costs apply; UC work allowances, the childcare cap and the non-dependant deduction (which lowers awards) and Scotland's Pension Age Winter Heating Payment are uprated too. Left alone because they are not CPI-uprated: the triple-locked basic and new State Pension, the Pension Credit minimum guarantee, UC's frozen LCWRA element, frozen earnings disregards and tax credits. The savings credit maximum and the partly CPI-linked maternity allowance and statutory maternity, paternity and sick pay are not raised; r% of their total bounds that omission. Only the residual addition goes unindexed, for the whole of 2027-28. This is reported as the compensation an immediate uprating would deliver, and is *not* added to the cost channels: the household's loss is the price rise itself, and adding an uprating term on top would count the same shock twice. It is what the accelerated-uprating policy pays.
 
 Poverty is measured as people below 60% of the person-weighted median of equivalised HBAI household net income (BHC); the post-shock figure holds that baseline line fixed and nets modelled costs off income, so it is an anchored, consumption-adjusted measure rather than official HBAI poverty.
 
@@ -38,21 +40,23 @@ The results file breaks impacts down by income quintile, region, country, tenure
 
 All three scenarios, 2027-28, across 31.6 million weighted households. Regenerate with `iran-impact-build --sync-dashboard`; these figures are pinned as a regression test in `tests/test_committed_output.py`.
 
-| | Low | Central | High |
+If energy and fuel stayed near their summer 2026 levels through 2027-28 (energy +15%, anchored to the July cap; fuel +22%, the August pump-price rise; food +2%, a judgement; mid-September pump prices and the October cap are higher), the direct cost would be **£538 a household** (£17.0bn). If gas stayed at about twice its pre-conflict price through 2027-28, as in sustained escalation, it would be £1,334 a household (£42.1bn). Quote the escalation figures as conditionals, not as the estimate of the war's effect.
+
+| | Summer 2026 prices | Sustained escalation | Severe escalation |
 |---|---:|---:|---:|
-| Mean cost per household | £538 | **£1,334** | £2,304 |
-| Total cost | £17.0bn | **£42.1bn** | £72.7bn |
-| People newly below the anchored poverty line | 379,109 | **1,508,923** | 2,337,905 |
-| Mean of per-household cost/income ratios | 1.8% | **4.5%** | 7.9% |
-| Total cost ÷ total net income | 0.9% | **2.3%** | 4.0% |
+| Mean cost per household | **£538** | £1,334 | £2,304 |
+| Total cost | **£17.0bn** | £42.1bn | £72.7bn |
+| People newly below the anchored poverty line | **379,109** | 1,508,923 | 2,337,905 |
+| Mean of per-household cost/income ratios | **1.8%** | 4.5% | 7.9% |
+| Total cost ÷ total net income | **0.9%** | 2.3% | 4.0% |
 
 The last two rows are different statistics, not two estimates of one thing. The mean of ratios weights every household equally and so is pulled up by households with very low incomes; it is the figure the dashboard reports as `mean_net_impact_pct`, and it excludes households with non-positive income, for whom the ratio is undefined. The aggregate ratio is total cost divided by total income.
 
-Central-scenario cost by channel, per household: energy £713, fuel £474, food £147. The uprating compensation shortfall is a further £84, reported separately rather than added (see above).
+Sustained-escalation cost by channel, per household: energy £713, fuel £474, food £147. The uprating compensation shortfall is a further £115, reported separately rather than added (see above).
 
-The shock is regressive on either basis. Under the central scenario the poorest fifth of households bear a cost equal to 4.2% of their mean net income against 1.5% for the richest fifth (10.3% against 1.7% as a mean of ratios), even though the cash amounts run the other way — £981 against £1,613.
+The shock is regressive on either basis. Under sustained escalation the poorest fifth of households bear a cost equal to 4.2% of their mean net income against 1.5% for the richest fifth (10.3% against 1.7% as a mean of ratios), even though the cash amounts run the other way — £981 against £1,613.
 
-Only the central column's cost, total and poverty count, plus the baseline aggregates and the combined package, are pinned as a regression test in `tests/test_committed_output.py`. The other figures here are read from the generated output and are not test-guarded.
+Only the sustained-escalation column's cost, total and poverty count, plus the baseline aggregates and the combined package, are pinned as a regression test in `tests/test_committed_output.py`. The other figures here are read from the generated output and are not test-guarded.
 
 ## Policy responses evaluated
 
