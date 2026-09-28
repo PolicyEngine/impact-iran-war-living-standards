@@ -12,7 +12,7 @@ Calibrated to conditions as of August 2026 (Brent ~$85/bbl after a ~$109 peak). 
 
 | Scenario | Energy bills | Fuel price | Food price | CPI |
 |---|---|---|---|---|
-| Near current prices | +15% | +22% | +2.0% | +1.3pp |
+| Summer 2026 prices | +15% | +22% | +2.0% | +1.3pp |
 | Sustained escalation | +45% | +46% | +4.0% | +3.1pp |
 | Severe escalation | +90% | +62% | +6.5% | +5.3pp |
 
@@ -28,7 +28,7 @@ The pipeline applies price increases through three transmission channels and com
 2. **Fuel** — Petrol and diesel spending (ONS Family Spending Table A6, allocated to vehicle-owning households only), raised by the scenario percentage
 3. **Food** — Food and non-alcoholic drink spending (ONS Family Spending Table A6), raised by the scenario percentage
 
-Plus a separately reported **uprating compensation shortfall** — CPI-uprated benefit rates are uprated each April from the previous September's annual CPI rate. The conflict began in late February 2026, so the September 2026 rate already carries part of the shock (about 0.9pp from the conflict to the annual rate on ONS energy and fuel indices, a proxy on August 2026 data with food omitted, so a lower bound) and April 2027 uprating passes it on. The gain from uprating is modelled by raising every CPI-uprated benefit rate, and the reported ESA, JSA, industrial injuries, incapacity benefit and armed forces compensation awards, in PolicyEngine UK at each scenario's residual and running the benefit rules, so tapers, the benefit cap and housing costs apply; the state pension, the Pension Credit minimum guarantee, UC's LCWRA element and caps, thresholds and deductions are not CPI-uprated and are left alone. Only the residual addition goes unindexed, for the whole of 2027-28. This is reported as the compensation an immediate uprating would deliver, and is *not* added to the cost channels: the household's loss is the price rise itself, and adding an uprating term on top would count the same shock twice. It is what the accelerated-uprating policy pays.
+Plus a separately reported **uprating compensation shortfall** — CPI-uprated benefit rates are uprated each April from the previous September's annual CPI rate. The conflict began in late February 2026, so the September 2026 rate already carries part of the shock (about 0.9pp from the conflict to the annual rate on ONS energy and fuel indices, a proxy on August 2026 data with food omitted, so a lower bound) and April 2027 uprating passes it on. The gain from uprating is modelled by raising every CPI-uprated benefit rate, and the reported ESA, contribution-based JSA, industrial injuries, incapacity benefit and armed forces compensation awards, and the CPI-uprated additional State Pension, in PolicyEngine UK at each scenario's residual and running the benefit rules, so tapers, the benefit cap and housing costs apply; the triple-locked basic and new State Pension, the Pension Credit minimum guarantee, UC's LCWRA element and caps, thresholds and deductions are not CPI-uprated and are left alone. Only the residual addition goes unindexed, for the whole of 2027-28. This is reported as the compensation an immediate uprating would deliver, and is *not* added to the cost channels: the household's loss is the price rise itself, and adding an uprating term on top would count the same shock twice. It is what the accelerated-uprating policy pays.
 
 Poverty is measured as people below 60% of the person-weighted median of equivalised HBAI household net income (BHC); the post-shock figure holds that baseline line fixed and nets modelled costs off income, so it is an anchored, consumption-adjusted measure rather than official HBAI poverty.
 
@@ -40,9 +40,9 @@ The results file breaks impacts down by income quintile, region, country, tenure
 
 All three scenarios, 2027-28, across 31.6 million weighted households. Regenerate with `iran-impact-build --sync-dashboard`; these figures are pinned as a regression test in `tests/test_committed_output.py`.
 
-If prices stayed near today's levels through 2027-28 (energy +15%, fuel +22%, food +2%, a path anchored to observed energy and fuel prices with a judgement for food), the direct cost would be **£538 a household** (£17.0bn). If gas stayed at about twice its pre-conflict price through 2027-28, as in sustained escalation, it would be £1,334 a household (£42.1bn). Quote the escalation figures as conditionals, not as the estimate of the war's effect.
+If energy and fuel stayed near their summer 2026 levels through 2027-28 (energy +15%, anchored to the July cap; fuel +22%, the August pump-price rise; food +2%, a judgement; mid-September pump prices and the October cap are higher), the direct cost would be **£538 a household** (£17.0bn). If gas stayed at about twice its pre-conflict price through 2027-28, as in sustained escalation, it would be £1,334 a household (£42.1bn). Quote the escalation figures as conditionals, not as the estimate of the war's effect.
 
-| | Near current prices | Sustained escalation | Severe escalation |
+| | Summer 2026 prices | Sustained escalation | Severe escalation |
 |---|---:|---:|---:|
 | Mean cost per household | **£538** | £1,334 | £2,304 |
 | Total cost | **£17.0bn** | £42.1bn | £72.7bn |

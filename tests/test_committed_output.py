@@ -283,7 +283,7 @@ def test_the_readme_headline_table_matches_the_committed_output(results):
     readme = (Path(__file__).parents[1] / "README.md").read_text()
 
     for key, label in (
-        ("low_shock", "Near current prices"),
+        ("low_shock", "Summer 2026 prices"),
         ("central_shock", "Sustained escalation"),
         ("severe_shock", "Severe escalation"),
     ):

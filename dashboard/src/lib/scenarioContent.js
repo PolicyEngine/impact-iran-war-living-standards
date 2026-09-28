@@ -2,7 +2,7 @@ export const SCENARIO_CONTENT = {
   low_shock: {
     // Named by what each assumes, not by likelihood: "Central" read as the
     // estimate of the war's effect (Max, #46 comment 5872474615).
-    shortLabel: "Near current prices",
+    shortLabel: "Summer 2026 prices",
     // The conflict path this scenario represents. Defined once here so a
     // relabel cannot be partial; every tab reads it rather than restating it.
     pathLabel: "premium partially unwinds",
@@ -20,7 +20,7 @@ export const SCENARIO_CONTENT = {
     shortLabel: "Sustained escalation",
     pathLabel: "sustained disruption",
     describe: (p, observed) =>
-      `The Strait of Hormuz constraint persists. The energy channel is gas-driven: NBP/TTF sustained at roughly twice pre-conflict levels as the closure halts Qatari LNG, which on a ~40-45% wholesale share implies energy spending +${p.cap_increase_pct}%. Fuel +${p.fuel_pct}% follows Brent above $100/bbl (Goldman Sachs' extended-closure case); food +${p.food_increase_pct}%, CPI +${p.cpi_increase_pp}pp against a no-conflict path (used only to size the benefit uprating gap, not a CPI forecast), sustained for 12 months. Lower-income households, who spend roughly three times the budget share on energy of the top quintile, bear the largest proportional losses.${observed ? ` For comparison, observed prices are energy +${observed.energy}% (July 2026 cap; +${observed.octoberEnergy}% announced for October) and fuel +${observed.fuel}%, close to the near-current-prices scenario: this is a stress test of prices rising well beyond today's, not a forecast.` : ""}`,
+      `The Strait of Hormuz constraint persists. The energy channel is gas-driven: NBP/TTF sustained at roughly twice pre-conflict levels as the closure halts Qatari LNG, which on a ~40-45% wholesale share implies energy spending +${p.cap_increase_pct}%. Fuel +${p.fuel_pct}% follows Brent above $100/bbl (Goldman Sachs' extended-closure case); food +${p.food_increase_pct}%, CPI +${p.cpi_increase_pp}pp against a no-conflict path (used only to size the benefit uprating gap, not a CPI forecast), sustained for 12 months. Lower-income households, who spend roughly three times the budget share on energy of the top quintile, bear the largest proportional losses.${observed ? ` For comparison, observed prices are energy +${observed.energy}% (July 2026 cap; +${observed.octoberEnergy}% announced for October) and fuel +${observed.fuel}%,, against the summer-2026-prices scenario's +15% energy and +22% fuel: this is a stress test of prices rising well beyond today's, not a forecast.` : ""}`,
   },
   severe_shock: {
     shortLabel: "Severe escalation",

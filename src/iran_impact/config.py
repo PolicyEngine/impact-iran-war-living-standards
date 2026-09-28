@@ -614,17 +614,17 @@ _SCENARIO_SOURCES = {
         "cpi_increase_pp": {
             "source_url": "https://niesr.ac.uk/blog/possible-effects-uk-inflation-2026-us-iran-conflict",
             "source_date": "2026-03-23",
-            "reference_period": "2027-28 level against a no-conflict path (NIESR's figures are 2026 annual CPI)",
+            "reference_period": "2027-28 level against a no-conflict path (NIESR's figures are CPI rates reached from July 2026)",
             "derivation": (
                 "Set at the first-round price-level effect of this "
                 "scenario's own energy, fuel and food rises on ONS 2026 "
                 f"basket weights, {direct_cpi_pp('central_shock')}pp, "
-                "rounded. NIESR publishes total 2026 CPI of about 3% "
-                "(optimistic) to 5% (pessimistic), 4% central; against a "
-                "roughly 2% pre-conflict expectation, which is this study's "
-                "assumption, not NIESR's, those totals imply about +1pp to "
-                "+3pp. This scenario's price rises are larger than NIESR's, "
-                "so its effect is larger. Not a floor on annual inflation, "
+                "rounded. For context, NIESR's scenarios have CPI reaching "
+                "about 3% (optimistic), 4% (central) or 5% (pessimistic) "
+                "from July 2026; those are total rates that include NIESR's "
+                "own assumption of 3-4% inflation from other sources, so "
+                "they do not convert into a conflict addition by "
+                "subtracting a 2% baseline. Not a floor on annual inflation, "
                 "which also depends on timing, second-round effects and "
                 "demand (#37, #56)"
             ),
@@ -833,8 +833,10 @@ METHOD_LIMITATIONS = [
     "Benefit uprating: the gain from an accelerated uprating is modelled by "
     "running a PolicyEngine UK reform at each scenario's residual CPI "
     "addition, raising every CPI-uprated benefit rate, with tapers, award "
-    "floors and the benefit cap applied, and the reported ESA, JSA, IIDB, incapacity "
-    "benefit and AFCS awards scaled. Not covered, each with a published "
+    "floors and the benefit cap applied, the reported ESA, contribution-based "
+    "JSA, IIDB, incapacity benefit and AFCS awards scaled, and the "
+    "CPI-uprated additional State Pension raised. Not covered, each with a "
+    "published "
     "upper bound on the omission under metadata.uprating_not_covered: the "
     "Pension Credit savings credit maximum, which is not a model parameter, "
     "and the partly CPI-linked maternity allowance and statutory maternity "
@@ -972,7 +974,26 @@ CPI_UPRATED_BENEFIT_PARAMETERS = [
     "gov.hmrc.child_benefit.amount.additional",
     "gov.hmrc.child_benefit.amount.eldest",
     "gov.social_security_scotland.carer_support_payment.rate",
+    "gov.social_security_scotland.scottish_child_payment.amount",
 ]
+
+# Every other currency parameter under the benefit branches that PolicyEngine
+# UK tags with a CPI index, and why the reform leaves it alone. A test sweeps
+# the model's parameters and fails on any tagged one in neither list: Scottish
+# Child Payment was missed because it carries the OBR CPI tag rather than
+# gov.benefit_uprating_cpi.
+CPI_PARAMETER_EXCLUSIONS = {
+    "gov.dwp.IIDB.maximum": "not used by the model; IIDB is paid from the reported award, which the reform scales",
+    "gov.dwp.housing_benefit.means_test.income_disregard": "an income disregard, not a benefit rate",
+    "gov.dwp.pension_credit.guarantee_credit.minimum_guarantee": "uprated at least in line with earnings, not CPI",
+    "gov.dwp.pension_credit.savings_credit.threshold": "a threshold; the savings credit maximum is bounded separately",
+    "gov.dwp.tax_credits": "tax credits were abolished in April 2025",
+    "gov.dwp.universal_credit.elements.childcare.cap": "a cap on reimbursed childcare costs, not a benefit rate",
+    "gov.dwp.universal_credit.elements.disabled.amount": "the LCWRA element, frozen by the Universal Credit Act 2025",
+    "gov.dwp.universal_credit.elements.housing.non_dep_deduction": "a deduction, not a benefit rate",
+    "gov.dwp.universal_credit.means_test.work_allowance": "an earnings threshold, not a benefit rate",
+    "gov.social_security_scotland.pawhp": "not used by any benefit the model counts in household benefits",
+}
 
 # ESA and contribution-based JSA are paid from survey-reported awards that
 # PolicyEngine uprates by the CPI index rather than from rate parameters, so
@@ -980,12 +1001,18 @@ CPI_UPRATED_BENEFIT_PARAMETERS = [
 CPI_UPRATED_REPORTED_INPUTS = [
     "esa_income_reported",
     "esa_contrib_reported",
-    "jsa_income_reported",
     "jsa_contrib_reported",
     "iidb_reported",
     "incapacity_benefit_reported",
     "afcs_reported",
 ]
+
+# Amounts the model computes rather than reads, which are CPI-uprated in law
+# but driven by no rate parameter. Additional State Pension (SERPS/S2P, and
+# the protected payment under the new State Pension) is CPI-uprated, unlike
+# the triple-locked basic and new State Pension; the model derives it from
+# the reported pension above the flat rate. The reform overrides it scaled.
+CPI_UPRATED_COMPUTED_AMOUNTS = ["additional_state_pension"]
 
 # Every other input PolicyEngine UK tags for CPI uprating that is a benefit
 # (a `_reported` award or a household_benefits component), with the reason it
@@ -1003,6 +1030,8 @@ PARTLY_CPI_LINKED_INPUTS = [
     "statutory_sick_pay",
 ]
 NOT_SCALED_REPORTED_INPUTS = {
+    "jsa_income_reported": "income-based JSA is inactive in the model from 2027 (gov.dwp.JSA.income.active), so it pays nothing to scale",
+    "statutory_paternity_pay": "not counted in household benefits in the model",
     "bsp_reported": "Bereavement Support Payment rates are not uprated",
     "winter_fuel_allowance_reported": "Winter Fuel Payment is a fixed sum, not CPI-uprated",
     "carers_allowance_reported": "receipt flag only; the amount is a reformed rate parameter",

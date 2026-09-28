@@ -233,7 +233,7 @@ def _single(age, earnings, rent=0, claims_uc=True, **person):
     }
 
 
-def test_the_uprating_reform_raises_uc_pound_for_pound():
+def test_uprating_reform_raises_uc_pound_for_pound():
     """#61 second review C2: a working UC renter with a positive award gains
     exactly the uprated standard allowance, which a share-of-award rule
     understated by 74%."""
@@ -242,7 +242,7 @@ def test_the_uprating_reform_raises_uc_pound_for_pound():
     assert gain == pytest.approx(standard_allowance * 0.0194, abs=0.01)
 
 
-def test_the_reform_is_run_at_the_residual_not_scaled_from_one_percent():
+def test_uprating_reform_is_run_at_the_residual_not_scaled_from_one_percent():
     """#61 third review C2: a claimant just above the zero-award boundary
     gains nothing at 1% but something at the central 2.2%, which scaling a
     1% run cannot see."""
@@ -253,7 +253,7 @@ def test_the_reform_is_run_at_the_residual_not_scaled_from_one_percent():
     assert at_central > 0
 
 
-def test_the_reform_uprates_reported_esa():
+def test_uprating_reform_scales_reported_esa():
     """#61 third and fourth reviews: ESA is paid from reported awards the
     model uprates by index. The claimant does not claim UC, so the gain is
     ESA's alone and the test fails if ESA scaling is removed."""
@@ -262,7 +262,7 @@ def test_the_reform_uprates_reported_esa():
     assert gain == pytest.approx(5_000 * 0.022, abs=0.01)
 
 
-def test_the_reform_uprates_reported_jsa_once():
+def test_uprating_reform_scales_reported_jsa_once():
     """#61 fourth review C2: contribution-based JSA is CPI-uprated and paid
     from its reported award. policyengine-uk lists jsa_contrib twice in
     household_benefits, so the gain must be counted once, not twice."""
@@ -271,7 +271,7 @@ def test_the_reform_uprates_reported_jsa_once():
     assert gain == pytest.approx(5_000 * 0.022, abs=0.01)
 
 
-def test_every_cpi_tagged_benefit_input_is_classified():
+def test_uprating_every_cpi_tagged_benefit_input_is_classified():
     """#61 fifth review C2: coverage is checked against the model, not by
     inspection. Every input PolicyEngine UK tags for CPI uprating that is a
     benefit — a `_reported` award or a household_benefits component — must be
@@ -301,8 +301,85 @@ def test_every_cpi_tagged_benefit_input_is_classified():
     assert not (set(config.CPI_UPRATED_REPORTED_INPUTS) & set(config.NOT_SCALED_REPORTED_INPUTS))
 
 
-def test_the_reform_uprates_reported_iidb():
+def test_uprating_reform_scales_reported_iidb():
     """#61 fifth review C2: IIDB is paid straight from its reported award."""
     sit = _single(50, 0, claims_uc=False, iidb_reported={2027: 5_000})
     _, gain = _household_gain(sit, 2.2)
     assert gain == pytest.approx(5_000 * 0.022, abs=0.01)
+
+
+
+def test_uprating_reform_scales_reported_afcs_and_incapacity_benefit():
+    for var in ("afcs_reported", "incapacity_benefit_reported"):
+        sit = _single(50, 0, claims_uc=False, **{var: {2027: 5_000}})
+        _, gain = _household_gain(sit, 2.2)
+        assert gain == pytest.approx(5_000 * 0.022, abs=0.01), var
+
+
+def test_uprating_reform_raises_additional_state_pension():
+    """Additional State Pension is CPI-uprated, unlike the triple-locked
+    basic and new State Pension; the reform must raise it and nothing else
+    for a pensioner outside Pension Credit."""
+    sit = {
+        "people": {
+            "a": {
+                "age": {2027: 75},
+                "state_pension_type": {2027: "BASIC"},
+                "state_pension_reported": {2027: 16_000},
+            }
+        },
+        "benunits": {"b": {"members": ["a"], "would_claim_pc": {2027: False}}},
+        "households": {"h": {"members": ["a"]}},
+    }
+    base, gain = _household_gain(sit, 2.2)
+    additional = base.calculate("additional_state_pension", 2027)[0]
+    assert additional > 0
+    assert gain == pytest.approx(additional * 0.022, abs=0.01)
+
+
+def test_uprating_reform_raises_scottish_child_payment():
+    """Scottish Child Payment carries the OBR CPI tag rather than
+    gov.benefit_uprating_cpi, and was missed before the parameter sweep."""
+    policyengine_uk = pytest.importorskip("policyengine_uk")
+    from iran_impact.pipeline import _cpi_uprating_reform
+
+    base = policyengine_uk.Simulation(situation={})
+    reform = _cpi_uprating_reform(base, 2.2, 2027)
+    leaf = "gov.social_security_scotland.scottish_child_payment.amount"
+    assert leaf in reform
+    before = base.tax_benefit_system.parameters(f"2027-04-01")
+    for part in leaf.split("."):
+        before = getattr(before, part)
+    assert reform[leaf]["2027-04-01.2028-03-31"] == pytest.approx(before * 1.022)
+
+
+def test_uprating_every_cpi_tagged_benefit_parameter_is_classified():
+    """Every currency parameter under the benefit branches that the model
+    tags with either CPI index is in the reform or excluded with a reason, so
+    a parameter carrying the OBR CPI tag cannot be missed again."""
+    policyengine_uk = pytest.importorskip("policyengine_uk")
+    from iran_impact import config
+
+    params = policyengine_uk.CountryTaxBenefitSystem().parameters
+    unclassified = []
+    for root in ("gov.dwp", "gov.hmrc.child_benefit", "gov.social_security_scotland"):
+        node = params
+        for part in root.split("."):
+            node = getattr(node, part)
+        for leaf in node.get_descendants():
+            if not hasattr(leaf, "values_list"):
+                continue
+            meta, parent = leaf.metadata or {}, leaf.parent
+            uprating, unit = meta.get("uprating"), meta.get("unit")
+            while parent is not None and (uprating is None or unit is None):
+                pm = parent.metadata or {}
+                uprating = uprating or pm.get("uprating")
+                unit = unit or pm.get("unit")
+                parent = getattr(parent, "parent", None)
+            tagged = any(k in str(uprating or "") for k in ("benefit_uprating_cpi", "consumer_price_index"))
+            if not (tagged and str(unit or "").startswith("currency")):
+                continue
+            known = list(config.CPI_UPRATED_BENEFIT_PARAMETERS) + list(config.CPI_PARAMETER_EXCLUSIONS)
+            if not any(leaf.name == k or leaf.name.startswith(k + ".") for k in known):
+                unclassified.append(leaf.name)
+    assert unclassified == [], unclassified

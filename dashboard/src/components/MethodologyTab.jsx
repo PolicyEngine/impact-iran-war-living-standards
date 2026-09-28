@@ -57,7 +57,8 @@ export default function MethodologyTab({ data }) {
           <div>
             <dt className="font-semibold text-slate-900">Result</dt>
             <dd className="mt-1 leading-6 text-slate-600">
-              If prices stayed near today&apos;s levels through{" "}
+              If energy and fuel stayed near their summer 2026 levels (the July cap and
+              August pump prices) through{" "}
               {data.year}-{String(data.year + 1).slice(2)} (energy +
               {data.scenarios.low_shock.params.cap_increase_pct}%, fuel +
               {data.scenarios.low_shock.params.fuel_pct}%, food +
@@ -171,7 +172,7 @@ export default function MethodologyTab({ data }) {
           {" "}{Math.round(baseline.diesel_pence_per_litre)}p for diesel. For scale, the
           announced October&ndash;December 2026 cap of &pound;{baseline.announced_oct_2026_cap_gbp.toLocaleString("en-GB")} is
           +{baseline.announced_oct_2026_vs_pre_conflict_pct}% on that cap
-          baseline, so the near-current-prices scenario&apos;s
+          baseline, so the summer-2026-prices scenario&apos;s
           +{data.scenarios.low_shock.params.cap_increase_pct}% represents that premium partially
           unwinding through 2027-28 rather than prices falling back below current levels.
         </p>
@@ -180,7 +181,7 @@ export default function MethodologyTab({ data }) {
           position. <strong>The energy channel is gas-driven, not oil-driven</strong>: Ofgem&apos;s
           wholesale allowance is built from NBP gas and UK baseload power forwards, and a
           Strait of Hormuz closure reaches UK bills through Qatari LNG &mdash; about 19% of
-          global exports &mdash; rather than through crude. Near current prices tracks the
+          global exports &mdash; rather than through crude. Summer 2026 prices tracks the
           observed path assuming the Q4-2026 premium partially unwinds (<a href="https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-july-and-30-september-2026" target="_blank" rel="noreferrer" className="underline">Ofgem cap +13.5% in July 2026</a>).
           Sustained escalation assumes gas sustained at roughly twice pre-conflict levels
           and severe escalation roughly triple; for scale, the announced October 2022 cap rose 178% year on year
@@ -202,7 +203,7 @@ export default function MethodologyTab({ data }) {
           rises on ONS 2026 basket weights, a price-level effect over the stress-test
           year rather than a floor on annual inflation, and is used only to size the
           benefit uprating gap.
-          {upr ? ` The latest ONS indices put the conflict's contribution to the annual CPI rate at about ${upr.captured}pp, below the near-current-prices scenario's addition.` : null}
+          {upr ? ` The latest ONS indices put the conflict's contribution to the annual CPI rate at about ${upr.captured}pp, below the summer-2026-prices scenario's addition.` : null}
           CPI transmission draws on{" "}
           <a href="https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/june-2026" target="_blank" rel="noreferrer" className="underline">Bank of England June 2026 projections</a>{" "}
           and the{" "}
@@ -321,12 +322,13 @@ export default function MethodologyTab({ data }) {
             addition less the {upr.captured}pp already captured)
             &times; {upr.factor}, where the gain is modelled by raising every
             CPI-uprated benefit rate in PolicyEngine UK by the scenario&apos;s own
-            residual, and the reported ESA, JSA, industrial injuries, incapacity
-            benefit and armed forces compensation awards with them, and letting the benefit
+            residual, and the reported ESA, contribution-based JSA, industrial injuries,
+            incapacity benefit and armed forces compensation awards and the CPI-uprated
+            additional State Pension with them, and letting the benefit
             rules (earnings tapers, award floors, the benefit cap, housing costs) work
             out each household&apos;s award. A working UC claimant with a positive award gains
             the uprated standard allowance pound for pound. Amounts not uprated by CPI
-            are left alone: the state pension (triple lock), the Pension Credit
+            are left alone: the triple-locked basic and new State Pension, the Pension Credit
             minimum guarantee (earnings), UC&apos;s LCWRA element (frozen by the
             Universal Credit Act 2025), and caps, thresholds and deductions. The
             Pension Credit savings credit maximum is CPI-uprated but is not a
@@ -412,7 +414,7 @@ export default function MethodologyTab({ data }) {
                   carries part of the shock; the residual is not offset during the
                   shock year. Reported as the compensation an
                   immediate uprating would deliver and <strong>not</strong> counted as a
-                  cost. State pension excluded (triple lock). IFS (2022); Commons
+                  cost. Basic and new State Pension excluded (triple lock); additional State Pension included (CPI). IFS (2022); Commons
                   Library CBP-10403.
                 </td>
               </tr>

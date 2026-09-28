@@ -161,7 +161,7 @@ export default function PolicyTab({ data }) {
         <div className="section-card flex h-full flex-col">
           <SectionHeading
             title="Select a scenario"
-            description="Stress tests, not forecasts: near current prices assumes energy and fuel stay close to their observed rises for all of 2027-28; the escalation paths assume prices rise well beyond them. Choose a scenario to evaluate policy responses against it."
+            description="Stress tests, not forecasts: summer 2026 prices holds energy and fuel near their July cap and August pump-price rises for all of 2027-28; the escalation paths assume prices rise well beyond them. Choose a scenario to evaluate policy responses against it."
           />
           <div className="mt-4 flex flex-wrap gap-2">
             {scenarioOptions.map((s) => (

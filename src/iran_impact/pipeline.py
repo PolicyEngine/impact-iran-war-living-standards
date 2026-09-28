@@ -25,6 +25,7 @@ from .config import (
     FOOD_DECILE_FACTORS,
     UPRATING_LAG_FACTOR,
     CPI_UPRATED_REPORTED_INPUTS,
+    CPI_UPRATED_COMPUTED_AMOUNTS,
     PARTLY_CPI_LINKED_INPUTS,
     NOT_SCALED_REPORTED_INPUTS,
     uprating_residuals_needed,
@@ -323,7 +324,7 @@ def _uprating_gain(sim, residual_pp, year=YEAR, simulation_factory=None):
         simulation_factory = managed_microsimulation
     reform_sim = simulation_factory(reform=_cpi_uprating_reform(sim, residual_pp, year))
     factor = 1 + residual_pp / 100
-    for var in CPI_UPRATED_REPORTED_INPUTS:
+    for var in CPI_UPRATED_REPORTED_INPUTS + CPI_UPRATED_COMPUTED_AMOUNTS:
         reform_sim.set_input(var, year, _vals(sim, var, year) * factor)
     gain = _vals(reform_sim, "household_benefits", year) - _vals(
         sim, "household_benefits", year
@@ -555,7 +556,7 @@ def run_baseline(year=YEAR):
         "is_means_tested": is_means_tested,
         "ct_band": ct_band,
         "uprating_gains": uprating_gains,
-        # Not raised by the reform: see savings_credit_not_uprated below.
+        # Not raised by the reform: see uprating_not_covered below.
         "savings_credit_max_total": _savings_credit_max_total(sim, year),
         "partly_cpi_linked_total": _partly_cpi_linked_total(sim, year),
         "gross_income": gross_income,
@@ -1468,8 +1469,8 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
             # minimum guarantee and the threshold), so the uprating reform
             # cannot raise it. Its total bounds what that leaves out: at a
             # residual of r percent the omission is at most r% of this
-            # (#61 third review C2). Savings credit has been closed to new
-            # claimants since April 2016.
+            # (#61 third review C2). Savings credit is closed to people reaching
+            # State Pension age on or after 6 April 2016.
             "uprating_not_covered": {
                 "savings_credit_maximum_total_bn": round(
                     data["savings_credit_max_total"] / 1e9, 3
@@ -1554,7 +1555,7 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
                     announced_oct_2026_vs_pre_conflict_pct()
                 ),
                 "low_scenario_note": (
-                    "The low scenario's "
+                    "The summer-2026-prices scenario's "
                     f"+{SCENARIOS['low_shock']['cap_increase_pct']}% sits "
                     "slightly below the announced October 2026 cap, which is "
                     f"+{announced_oct_2026_vs_pre_conflict_pct()}% on this "

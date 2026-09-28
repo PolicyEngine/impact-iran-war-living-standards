@@ -48,7 +48,7 @@ jobs:
       - name: Test
         run: |
           .venv/bin/python -c "import policyengine_uk"
-          .venv/bin/python -m pytest -v tests/test_integration.py -k "uprating_reform or residual_not_scaled or reported_esa or reported_jsa or reported_iidb or classified"
+          .venv/bin/python -m pytest -v tests/test_integration.py -k "uprating"
 
   lockfile:
     name: Lockfile is current
