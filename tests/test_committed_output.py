@@ -286,6 +286,7 @@ def test_the_readme_headline_table_matches_the_committed_output(results):
     readme = (Path(__file__).parents[1] / "README.md").read_text()
 
     for key, label in (
+        ("external_forecast", "Latest forecasts"),
         ("low_shock", "Summer 2026 prices"),
         ("central_shock", "Sustained escalation"),
         ("severe_shock", "Severe escalation"),
@@ -454,3 +455,124 @@ def test_observed_price_rises_are_published_for_the_dashboard(results):
     assert baseline["observed_fuel_rise_by_sept_2026_pct"] == (
         config.observed_fuel_rise_by_sept_2026_pct()
     )
+
+
+# ── The forecast-based scenario (Telegraph, 9 October 2026) ─────────────
+
+
+def test_the_forecast_headlines_match_the_reviewed_values(results):
+    """Regression pins for the forecast-based scenario, as reviewed in the PR
+    that added it. Every figure comes from the microsimulation run of its own
+    parameters, not from scaling another scenario.
+
+    Data build: policyengine-uk-data-1.56.16 (enhanced_frs_2024_25).
+    """
+    forecast = results["scenarios"]["external_forecast"]
+    assert forecast["params"] == config.SCENARIOS["external_forecast"]
+    summary = forecast["summary"]
+    assert summary["mean_net_impact"] == 839
+    assert summary["total_impact_bn"] == 26.5
+    assert summary["n_newly_below_anchored_line"] == 758_617
+    assert summary["n_households_newly_below_anchored_line"] == 394_241
+    channels = forecast["channel_decomposition"]
+    assert (channels["energy_shock"], channels["fuel_shock"], channels["food_shock"]) == (
+        629,
+        126,
+        84,
+    )
+
+
+def test_each_scenario_declares_its_type_in_the_output(results):
+    assert results["metadata"]["scenario_types"] == config.SCENARIO_TYPES
+    assert "scenario_type" not in results["metadata"], (
+        "a single scenario_type stopped being true when the forecast "
+        "scenario was added"
+    )
+    for key, scenario in results["scenarios"].items():
+        assert scenario["scenario_type"] == config.SCENARIO_TYPES[key]
+        assert results["parameters"]["registry"][key]["scenario_type"] == (
+            config.SCENARIO_TYPES[key]
+        )
+
+
+def test_every_published_parameter_carries_its_citation(results):
+    """The dashboard renders source, vintage and basis from these fields, so
+    the committed output must carry them for every scenario."""
+    for key, registered in results["parameters"]["registry"].items():
+        for name, entry in registered["parameters"].items():
+            assert entry["source_url"].startswith("https://"), (key, name)
+            assert entry["source_name"], (key, name)
+            assert len(entry["source_date"]) == 10, (key, name)
+            assert entry["basis_label"] == config.BASIS_LABELS[entry["basis"]]
+
+
+def test_the_forecast_vintage_is_published(results):
+    vintage = results["metadata"]["forecast_vintage"]
+    assert vintage["as_of"] == config.FORECAST_AS_OF
+    assert vintage["gaps"] == config.FORECAST_GAPS
+    assert vintage["next_updates"] == config.FORECAST_NEXT_UPDATES
+
+
+# ── Monotonicity on the real microsimulation output ─────────────────────
+
+PRICES = ("cap_increase_pct", "fuel_pct", "food_increase_pct")
+
+
+def test_a_scenario_with_higher_prices_never_costs_less_or_impoverishes_fewer(
+    results,
+):
+    """Wherever one scenario's prices are at least another's on every
+    channel, its cost and its count below the anchored line must be at least
+    as large. Checked on every such pair of committed scenarios, so it covers
+    the forecast scenario against the stress tests that dominate it."""
+    scenarios = results["scenarios"]
+    compared = 0
+    for high_key, high in scenarios.items():
+        for low_key, low in scenarios.items():
+            if high_key == low_key:
+                continue
+            if not all(high["params"][p] >= low["params"][p] for p in PRICES):
+                continue
+            compared += 1
+            for field in (
+                "mean_net_impact",
+                "total_impact_bn",
+                "n_newly_below_anchored_line",
+                "n_households_newly_below_anchored_line",
+                "mean_net_impact_pct",
+            ):
+                assert high["summary"][field] >= low["summary"][field], (
+                    f"{high_key} has prices at least {low_key}'s on every "
+                    f"channel but a lower {field}"
+                )
+    # low < central < severe, and forecast < central < severe.
+    assert compared >= 5
+
+
+def test_each_price_parameter_raises_cost_and_poverty_through_its_range(results):
+    """The sensitivity runs move one price at a time through the model. Cost
+    and the poverty count must not fall as any price rises, and the central
+    point must sit between the two ends."""
+    for key, scenario in results["scenarios"].items():
+        sensitivity = scenario["sensitivity"]
+        central_cost = sensitivity["central_total_impact_bn"]
+        central_poor = sensitivity["central_n_newly_below_anchored_line"]
+        assert central_poor == scenario["summary"]["n_newly_below_anchored_line"]
+        for name in PRICES:
+            entry = sensitivity["by_parameter"][name]
+            assert (
+                entry["total_impact_bn_low"]
+                <= central_cost
+                <= entry["total_impact_bn_high"]
+            ), (key, name)
+            assert (
+                entry["n_newly_below_anchored_line_low"]
+                <= central_poor
+                <= entry["n_newly_below_anchored_line_high"]
+            ), (key, name)
+        combined = sensitivity["combined"]
+        assert (
+            combined["n_newly_below_anchored_line_low"]
+            <= central_poor
+            <= combined["n_newly_below_anchored_line_high"]
+        ), key

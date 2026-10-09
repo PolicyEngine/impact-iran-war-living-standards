@@ -92,8 +92,21 @@ def test_uprating_lag_registry_states_its_counterfactual():
     assert "immediate uprating" in registry["counterfactual"]
 
 
-def test_scenario_type_is_declared_as_a_stress_test():
-    assert config.SCENARIO_TYPE == "annual stress test"
+def test_every_scenario_declares_its_type():
+    """Three stress tests and one forecast-based scenario. A reporter needs to
+    know which is which, so every scenario must say (Telegraph, 9 Oct 2026)."""
+    assert set(config.SCENARIO_TYPES) == set(config.SCENARIOS)
+    assert set(config.SCENARIO_TYPES.values()) <= {
+        config.STRESS_TEST,
+        config.FORECAST_BASED,
+    }
+    for key in ("low_shock", "central_shock", "severe_shock"):
+        assert config.SCENARIO_TYPES[key] == "annual stress test"
+    assert config.SCENARIO_TYPES["external_forecast"] == (
+        "annual forecast-based scenario"
+    )
+    for key, entry in config.PARAMETER_REGISTRY.items():
+        assert entry["scenario_type"] == config.SCENARIO_TYPES[key]
 
 
 def test_limitations_cover_the_unmodelled_dimensions():

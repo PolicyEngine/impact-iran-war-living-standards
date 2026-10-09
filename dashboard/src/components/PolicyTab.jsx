@@ -18,7 +18,8 @@ import { getPolicyComparison, POLICY_KEYS, POLICY_LABELS } from "../lib/dataHelp
 import { formatCurrency, formatBn, formatCount } from "../lib/formatters";
 import ChartLogo from "./ChartLogo";
 import QuintileTargetingChart from "./QuintileTargetingChart";
-import { getScenarioNarrative, getScenarioOptions } from "../lib/scenarioContent";
+import { getDefaultScenario, getScenarioNarrative } from "../lib/scenarioContent";
+import { ScenarioButtons, ScenarioTypeBadge } from "./ScenarioPicker";
 
 const AXIS_STYLE = {
   fontSize: 12,
@@ -94,7 +95,7 @@ function CustomTooltip({ active, payload, label, formatter }) {
 }
 
 export default function PolicyTab({ data }) {
-  const [scenario, setScenario] = useState("low_shock");
+  const [scenario, setScenario] = useState(() => getDefaultScenario(data));
   const [selectedPolicy, setSelectedPolicy] = useState("epg");
 
   const policies = getPolicyComparison(data, scenario);
@@ -102,7 +103,6 @@ export default function PolicyTab({ data }) {
   const policyLabel = POLICY_LABELS[selectedPolicy] || selectedPolicy;
   const policyDescription = POLICY_DESCRIPTIONS[selectedPolicy];
   const scenarioDescription = getScenarioNarrative(scenario, data);
-  const scenarioOptions = getScenarioOptions(data);
 
   // Quintile data for the selected policy
   const quintileData = useMemo(() => {
@@ -157,30 +157,14 @@ export default function PolicyTab({ data }) {
         <div className="section-card flex h-full flex-col">
           <SectionHeading
             title="Select a scenario"
-            description="Stress tests, not forecasts: summer 2026 prices holds energy and fuel near their July cap and August pump-price rises for all of 2027-28; the escalation paths assume prices rise well beyond them. Choose a scenario to evaluate policy responses against it."
+            description="Latest forecasts follows published price forecasts. The others are stress tests, not forecasts: summer 2026 prices holds energy and fuel near their July cap and August pump-price rises for all of 2027-28; the escalation paths assume prices rise well beyond them. Choose a scenario to evaluate policy responses against it."
           />
-          <div className="mt-4 flex flex-wrap gap-2">
-            {scenarioOptions.map((s) => (
-              <button
-                key={s.id}
-                className={`rounded-full px-5 py-2 text-sm font-medium transition-colors ${
-                  scenario === s.id
-                    ? "text-white"
-                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                }`}
-                style={
-                  scenario === s.id
-                    ? { backgroundColor: colors.primary[800] }
-                    : undefined
-                }
-                onClick={() => setScenario(s.id)}
-              >
-                {s.label}
-              </button>
-            ))}
+          <div className="mt-4">
+            <ScenarioButtons data={data} selected={scenario} onSelect={setScenario} />
           </div>
           {scenarioDescription ? (
             <p className="mt-5 text-sm leading-7 text-slate-600">
+              <ScenarioTypeBadge label={scenarioDescription.typeLabel} />
               <strong className="text-slate-800">{scenarioDescription.shortLabel}:</strong>{" "}
               {scenarioDescription.description} Policies are measured against this scenario.
             </p>

@@ -24,8 +24,14 @@ import {
   getUpratingInputs,
 } from "../lib/dataHelpers";
 import { formatCurrency, formatCount } from "../lib/formatters";
+import { exampleHouseholdCost } from "../lib/householdCost";
 import ChartLogo from "./ChartLogo";
-import { getScenarioNarrative, getScenarioOptions } from "../lib/scenarioContent";
+import {
+  getDefaultScenario,
+  getScenarioNarrative,
+} from "../lib/scenarioContent";
+import ScenarioSources from "./ScenarioSources";
+import { ScenarioButtons, ScenarioTypeBadge } from "./ScenarioPicker";
 
 const AXIS_STYLE = {
   fontSize: 12,
@@ -65,35 +71,16 @@ function CustomTooltip({ active, payload, label, formatter }) {
 }
 
 function ScenarioSelector({ data, selected, onSelect }) {
-  const scenarioOptions = getScenarioOptions(data);
   const active = getScenarioNarrative(selected, data);
   return (
     <div className="mb-8">
-      <div className="flex flex-wrap gap-2">
-        {scenarioOptions.map((s) => (
-          <button
-            key={s.id}
-            className={`rounded-full px-5 py-2 text-sm font-medium transition-colors ${
-              selected === s.id
-                ? "text-white"
-                : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-            }`}
-            style={
-              selected === s.id
-                ? { backgroundColor: colors.primary[800] }
-                : undefined
-            }
-            onClick={() => onSelect(s.id)}
-          >
-            {s.label}
-          </button>
-        ))}
-      </div>
+      <ScenarioButtons data={data} selected={selected} onSelect={onSelect} />
       {active?.description && (
         <div
           className="mt-4 rounded-2xl border-l-4 bg-slate-50 px-5 py-4 text-[0.9rem] leading-relaxed text-slate-600"
           style={{ borderLeftColor: colors.primary[700] }}
         >
+          <ScenarioTypeBadge label={active.typeLabel} />
           <span className="font-semibold text-slate-800">{active.selectorLabel}:</span>{" "}
           {active.description}
         </div>
@@ -193,9 +180,11 @@ function ExampleHousehold({ data, scenario }) {
   const params = scenarioData?.params;
   if (!params) return null;
 
-  const energy = energyBill * (params.cap_increase_pct / 100);
-  const fuel = fuelSpend * (params.fuel_pct / 100);
-  const food = foodSpend * (params.food_increase_pct / 100);
+  const { energy, fuel, food, total } = exampleHouseholdCost(params, {
+    energyBill,
+    fuelSpend,
+    foodSpend,
+  });
   // The uprating shortfall is what an immediate uprating would pay, not a
   // fourth cost — adding it would count the same price shock twice. It is
   // sized on the residual CPI addition that September 2026 CPI misses, read
@@ -204,7 +193,6 @@ function ExampleHousehold({ data, scenario }) {
   const upratingShortfall = upr
     ? benefitIncome * (upr.residual / 100) * upr.factor
     : null;
-  const total = energy + fuel + food;
   const pctIncome = income > 0 ? (total / income) * 100 : null;
 
   const rows = [
@@ -565,7 +553,7 @@ export default function ScenariosTab({ data }) {
     Number.isInteger(data?.year) &&
     data.year >= 1000 &&
     data.year <= 9999;
-  const [scenario, setScenario] = useState("low_shock");
+  const [scenario, setScenario] = useState(() => getDefaultScenario(data));
 
   const scenarioData = getScenario(data, scenario);
   // Poverty rate before and after the shock, on the anchored HBAI BHC basis.
@@ -592,6 +580,9 @@ export default function ScenariosTab({ data }) {
     const low = scen("low_shock");
     const central = scen("central_shock");
     const severe = scen("severe_shock");
+    // Optional, so an older results file without it still renders the table.
+    const forecast = scen("external_forecast");
+    const forecastPart = (text) => (forecast ? `${text} (latest forecasts); stress tests: ` : "");
     const nHH = data?.baseline?.n_households_m;
     const meanHHSize = data?.baseline?.mean_household_size;
     if (!low || !central || !severe || !nHH || !meanHHSize) return [];
@@ -603,7 +594,7 @@ export default function ScenariosTab({ data }) {
           { label: `JRF: +${formatCurrency(288)} predicted`, url: "https://www.jrf.org.uk/cost-of-living/addressing-the-2026-energy-price-crisis" },
           { label: `Resolution Foundation: ~+${formatCurrency(500)} if rises are sustained`, url: "https://www.resolutionfoundation.org/press-releases/poorest-households-are-set-to-see-inflation-nearly-a-third-higher-than-the-richest/" },
         ],
-        ours: `${formatCurrency(low.channel_decomposition.energy_shock)} (summer 2026 prices) to ${formatCurrency(central.channel_decomposition.energy_shock)} (sustained escalation)`,
+        ours: `${forecastPart(forecast && formatCurrency(forecast.channel_decomposition.energy_shock))}${formatCurrency(low.channel_decomposition.energy_shock)} (summer 2026 prices) to ${formatCurrency(central.channel_decomposition.energy_shock)} (sustained escalation)`,
         note: "Our summer-2026-prices scenario is anchored to the observed July cap rise; the Resolution Foundation sustained case sits between it and sustained escalation.",
       },
       {
@@ -611,7 +602,7 @@ export default function ScenariosTab({ data }) {
         external: [
           { label: "NIESR Economic Outlook, Spring 2026: ~200,000 additional households in absolute poverty", url: "https://niesr.ac.uk/reports/economic-outlook-spring-2026" },
         ],
-        ours: `${householdsPart(low)}${formatCount(low.summary.n_pushed_into_poverty)} people (summer 2026 prices) to ${householdsPart(central)}${formatCount(central.summary.n_pushed_into_poverty)} people (sustained escalation)`,
+        ours: `${forecastPart(forecast && `${householdsPart(forecast)}${formatCount(forecast.summary.n_pushed_into_poverty)} people`)}${householdsPart(low)}${formatCount(low.summary.n_pushed_into_poverty)} people (summer 2026 prices) to ${householdsPart(central)}${formatCount(central.summary.n_pushed_into_poverty)} people (sustained escalation)`,
         note: "Context, not validation: the two are not comparable. NIESR counts households below an absolute line at 60% of 2023-24 median income after housing costs, from a model of an oil-price shock. We count below a line at 60% of the 2027-28 pre-shock median income before housing costs, after netting modelled energy, fuel and food costs off income. The income concept, base year, housing-cost treatment and mechanism all differ.",
       },
       {
@@ -621,7 +612,7 @@ export default function ScenariosTab({ data }) {
           { label: "NIESR: CPI reaching ~3% (optimistic), ~4% (central) or ~5% (pessimistic) from July 2026, total rates", url: "https://niesr.ac.uk/blog/possible-effects-uk-inflation-2026-us-iran-conflict" },
           { label: "Bank of England (June 2026): total CPI a little under 3% in Q3 and a little over 3¼% in Q4 2026, on mid-June energy prices", url: "https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/june-2026" },
         ],
-        ours: `+${low.params.cpi_increase_pp}pp (summer 2026 prices), +${central.params.cpi_increase_pp}pp (sustained escalation), +${severe.params.cpi_increase_pp}pp (severe escalation)`,
+        ours: `${forecastPart(forecast && `+${forecast.params.cpi_increase_pp}pp`)}+${low.params.cpi_increase_pp}pp (summer 2026 prices), +${central.params.cpi_increase_pp}pp (sustained escalation), +${severe.params.cpi_increase_pp}pp (severe escalation)`,
         note: `Not CPI forecasts: each is the first-round effect of that scenario's energy, fuel and food rises on ONS 2026 basket weights (${central.first_round_floor_pp}pp for sustained escalation), used only to size the benefit uprating gap, never the household cost. ${getUpratingInputs(central) && Number.isFinite(observed?.observed_energy_rise_by_sept_2026_pct) && Number.isFinite(observed?.observed_fuel_rise_by_sept_2026_pct) ? `Observed so far: energy +${observed.observed_energy_rise_by_sept_2026_pct}% (July cap), fuel +${observed.observed_fuel_rise_by_sept_2026_pct}% (mid-September). The latest ONS indices put the conflict's share of annual CPI at about ${central.cpi_captured_by_sept_2026_pp}pp (August data; September's figures are due 21 October). ` : ""}The OBR's figure is also an addition, conditional on 10 March prices. NIESR and the Bank of England publish total CPI rates; NIESR's include 3-4% inflation from other sources, so they do not convert into a conflict addition by subtracting a 2% baseline. The severe escalation figure is a judgement, extrapolated from Oxford Economics' 5.8% peak in world CPI.`,
       },
     ];
@@ -644,9 +635,10 @@ export default function ScenariosTab({ data }) {
       {/* Scenario selector */}
       <SectionHeading
         title="Select a scenario"
-        description="These are stress tests, not forecasts: none is a prediction of what will happen. Summer 2026 prices holds energy and fuel near their July cap and August pump-price rises, with a judgement for food, for all of 2027-28; the two escalation paths assume prices rise well beyond them. Choose a path to see its estimated impact on UK households over the 2027-28 tax year. Each applies a different magnitude of energy, fuel, food and inflation shock, sustained for 12 months."
+        description="Latest forecasts takes its prices from forecasts other organisations have published, cited below; report it as what 2027-28 would cost if prices follow those forecasts. The other three are stress tests, not forecasts: summer 2026 prices holds energy and fuel near their July cap and August pump-price rises, with a judgement for food, for all of 2027-28, and the two escalation paths assume prices rise well beyond them. Choose a scenario to see its estimated impact on UK households over the 2027-28 tax year. Each is held for 12 months."
       />
       <ScenarioSelector data={data} selected={scenario} onSelect={setScenario} />
+      <ScenarioSources data={data} scenario={scenario} />
 
       {/* What each percentage is measured FROM, and applied TO. The two
           channels use different reference periods, so state both (#42).
@@ -713,7 +705,10 @@ export default function ScenariosTab({ data }) {
           </div>
           <div className="mt-1 text-sm text-slate-500">
             Additional cost per household in 2027-28 under the{" "}
-            {getScenarioNarrative(scenario)?.shortLabel || scenario} scenario
+            {getScenarioNarrative(scenario, data)?.shortLabel || scenario}{" "}
+            {getScenarioNarrative(scenario, data)?.type === "forecast"
+              ? "scenario"
+              : "stress test"}
           </div>
         </div>
         <div className="metric-card">

@@ -6,15 +6,33 @@ Microsimulation-based analysis of what energy, motor fuel and food price rises w
 
 ## Scenarios
 
-**These are stress tests, not forecasts.** Each scenario applies a set of price assumptions as full-year 2027-28 amounts, including where the cited source describes a 2026 disruption lasting a few months. No time path, quarterly profile or shock duration is modelled, and the pass-through coefficients implied by the percentages are judgements anchored to the cited sources rather than equations derived from them. The results file records the definition, source, reference period, derivation and uncertainty range of every parameter under `parameters.registry`.
-
-Calibrated to conditions as of August 2026 (Brent ~$85/bbl after a ~$109 peak). Anchors: observed path (low), Goldman Sachs extended Hormuz-closure Brent >$100 (central), Goldman extreme-adverse and the Oxford Economics escalation case (high).
+**One scenario follows published forecasts; three are stress tests.** Every scenario applies its prices as full-year 2027-28 amounts. No time path, quarterly profile or shock duration is modelled. The results file records the definition, source, publication date, basis (published forecast, observed prices, published scenario, judgement or derived), reference period, derivation and uncertainty range of every parameter under `parameters.registry`, and the dashboard shows them beside each scenario.
 
 | Scenario | Energy bills | Fuel price | Food price | CPI |
 |---|---|---|---|---|
+| Latest forecasts | +39.7% | +12.2% | +2.3% | +1.9pp |
 | Summer 2026 prices | +15% | +22% | +2.0% | +1.3pp |
 | Sustained escalation | +45% | +46% | +4.0% | +3.1pp |
 | Severe escalation | +90% | +62% | +6.5% | +5.3pp |
+
+### Latest forecasts (forecast-based)
+
+Prices from forecasts other organisations had published by 9 October 2026. Report it as what 2027-28 would cost *if prices follow these forecasts*, not as a prediction.
+
+| Channel | Source | Published | What it says | How the parameter is derived |
+|---|---|---|---|---|
+| Energy | [Cornwall Insight, price cap forecast](https://www.cornwall-insight.com/press-releases/16-price-cap-rise-forecast-in-january/) | 30 Sep 2026 | £1,999.28 a year for January–March 2027 (electricity £959.44, gas £1,039.84), new TDCVs | That quarter carries the temporary 0% VAT on electricity, which ends on 31 March 2027, so electricity is restored to 5%: £2,047.25, +39.7% on the pre-conflict £1,465. **Held for all of 2027-28: Cornwall publishes no forecast for any 2027-28 quarter.** Range: supplier forecasts for April–September 2027, £1,927 ([E.ON Next](https://www.eonnext.com/electricity-and-gas/price-cap/predictions), 5 Oct) to £2,131 (E.ON Next; [British Gas](https://www.britishgas.co.uk/energy/price-cap.html) £1,995, 1 Oct) |
+| Fuel | [US EIA, Short-Term Energy Outlook, October 2026](https://www.eia.gov/outlooks/steo/archives/oct26.pdf) | 6 Oct 2026 | Brent $87.00 (Q2 2027), $80.03 (Q3), $73.94 (Q4) a barrel | Mean $78.73 over 2027-28, holding Q4 2027 for January–March 2028, through this study's pump-price pass-through (the slopes the stress tests use): +12.2% on Autumn Budget 2025 pump prices. **No published forecast of UK pump prices for 2027-28 exists**; the OBR's latest (3 March 2026) used pre-conflict energy prices. Duty held at 52.95p, as in the stress tests |
+| Food | [IGD, food inflation forecast](https://www.igd.com/about-us/press-centre/articles/food-inflation-to-strengthen-in-2027-as-cost-pressures-build-igd-forecasts/74093) | 17 Sep 2026 | Food inflation 2.9–3.9% (2026), 5.6–6.6% (2027), against 3.3–4.3% and 2.8–3.8% in [IGD's January 2026 outlook](https://www.igd.com/social-impact/economics/articles/food-inflation-2025-vs-2026-outlook/72283) | The revision to IGD's forecast 2027 food price level since that pre-conflict forecast: +2.3%. **No forecast isolates the conflict's effect on food prices**, so this includes everything IGD revised for (it cites Middle East disruption, energy and input costs, El Niño and policy measures) |
+| CPI | ONS 2026 basket weights | 16 Sep 2026 | — | Not a forecast: the first-round effect of the three prices above, 1.84pp, rounded up. Sizes the uprating gap only |
+
+The OBR's next forecast (28 October 2026) and Ofgem's January–March 2027 cap (November 2026) will supersede parts of this; the scenario should be refreshed when they land. `tests/test_forecast_sources.py` recomputes every parameter from the recorded source figures, so a source update that is not carried through fails.
+
+### Stress tests
+
+**These are stress tests, not forecasts.** Each applies a set of price assumptions as full-year 2027-28 amounts, including where the cited source describes a 2026 disruption lasting a few months, and the pass-through coefficients implied by the percentages are judgements anchored to the cited sources rather than equations derived from them.
+
+Calibrated to conditions as of August 2026 (Brent ~$85/bbl after a ~$109 peak). Anchors: observed path (low), Goldman Sachs extended Hormuz-closure Brent >$100 (central), Goldman extreme-adverse and the Oxford Economics escalation case (high).
 
 The CPI column is not a forecast of inflation. It is the addition each scenario's own energy, fuel and food prices imply on ONS 2026 basket weights, measured against a no-conflict path, and it is used only to size the benefit uprating shortfall and the accelerated-uprating option. It never enters the household cost.
 
@@ -38,17 +56,21 @@ The results file breaks impacts down by income quintile, region, country, tenure
 
 ## Headline results
 
-All three scenarios, 2027-28, across 31.6 million weighted households. Regenerate with `iran-impact-build --sync-dashboard`; these figures are pinned as a regression test in `tests/test_committed_output.py`.
+All four scenarios, 2027-28, across 31.6 million weighted households. Every figure is from a microsimulation run of that scenario's own prices. Regenerate with `iran-impact-build --sync-dashboard`; these figures are pinned as a regression test in `tests/test_committed_output.py`.
 
-If energy and fuel stayed near their summer 2026 levels through 2027-28 (energy +15%, anchored to the July cap; fuel +22%, the August pump-price rise; food +2%, a judgement; mid-September pump prices and the October cap are higher), the direct cost would be **£538 a household** (£17.0bn). If gas stayed at about twice its pre-conflict price through 2027-28, as in sustained escalation, it would be £1,334 a household (£42.1bn). Quote the escalation figures as conditionals, not as the estimate of the war's effect.
+If prices follow the latest published forecasts (energy +39.7%, fuel +12.2%, food +2.3%), the direct cost would be **£839 a household** (£26.5bn) and **758,617 people** would fall below the anchored poverty line. Across the range of published forecasts behind each price, the cost runs from £18.9bn to £33.9bn and the count from 414,024 to 990,677 people; that range is a spread of forecasts, not a confidence interval.
 
-| | Summer 2026 prices | Sustained escalation | Severe escalation |
-|---|---:|---:|---:|
-| Mean cost per household | **£538** | £1,334 | £2,304 |
-| Total cost | **£17.0bn** | £42.1bn | £72.7bn |
-| People newly below the anchored poverty line | **379,109** | 1,508,923 | 2,337,905 |
-| Mean of per-household cost/income ratios | **1.8%** | 4.5% | 7.9% |
-| Total cost ÷ total net income | **0.9%** | 2.3% | 4.0% |
+As stress tests: if energy and fuel stayed near their summer 2026 levels through 2027-28 (energy +15%, anchored to the July cap; fuel +22%, the August pump-price rise; food +2%, a judgement; mid-September pump prices and the October cap are higher), the direct cost would be **£538 a household** (£17.0bn). If gas stayed at about twice its pre-conflict price through 2027-28, as in sustained escalation, it would be £1,334 a household (£42.1bn). Quote the escalation figures as conditionals, not as the estimate of the war's effect.
+
+| | Latest forecasts | Summer 2026 prices | Sustained escalation | Severe escalation |
+|---|---:|---:|---:|---:|
+| Type | Forecast-based | Stress test | Stress test | Stress test |
+| Mean cost per household | **£839** | £538 | £1,334 | £2,304 |
+| Total cost | **£26.5bn** | £17.0bn | £42.1bn | £72.7bn |
+| People newly below the anchored poverty line | **758,617** | 379,109 | 1,508,923 | 2,337,905 |
+| Households newly below the anchored poverty line | **394,241** | 185,699 | 750,843 | 1,159,588 |
+| Mean of per-household cost/income ratios | **3.0%** | 1.8% | 4.5% | 7.9% |
+| Total cost ÷ total net income | **1.5%** | 0.9% | 2.3% | 4.0% |
 
 The last two rows are different statistics, not two estimates of one thing. The mean of ratios weights every household equally and so is pulled up by households with very low incomes; it is the figure the dashboard reports as `mean_net_impact_pct`, and it excludes households with non-positive income, for whom the ratio is undefined. The aggregate ratio is total cost divided by total income.
 
@@ -56,7 +78,7 @@ Sustained-escalation cost by channel, per household: energy £713, fuel £474, f
 
 The shock is regressive on either basis. Under sustained escalation the poorest fifth of households bear a cost equal to 4.2% of their mean net income against 1.5% for the richest fifth (10.3% against 1.7% as a mean of ratios), even though the cash amounts run the other way — £981 against £1,613.
 
-Only the sustained-escalation column's cost, total and poverty count, plus the baseline aggregates and the combined package, are pinned as a regression test in `tests/test_committed_output.py`. The other figures here are read from the generated output and are not test-guarded.
+The latest-forecasts and sustained-escalation columns' cost, total and poverty count, plus the baseline aggregates and the combined package, are pinned as a regression test in `tests/test_committed_output.py`. The other figures here are read from the generated output and are not test-guarded.
 
 ## Policy responses evaluated
 
@@ -193,6 +215,7 @@ touching any calculation source. Regenerate with
 - [policyengine.py](https://github.com/PolicyEngine/policyengine.py) 5.3.0 managed UK microsimulation (`enhanced_frs_2024_25`; see Data access) — household incomes, benefits, energy and road-fuel consumption, vehicle ownership, council tax band, region, tenure and family type
 - [ONS Family Spending in the UK, FYE 2024, Table A6](https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/expenditure/bulletins/familyspendingintheuk/april2023tomarch2024) — transport fuel and food spending by gross-income decile, committed as a versioned extract under `src/iran_impact/inputs/`
 - [Ofgem price cap announcements](https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-july-and-30-september-2026) — reported as context; not used in the calculation
+- Latest-forecasts scenario: [Cornwall Insight](https://www.cornwall-insight.com/press-releases/16-price-cap-rise-forecast-in-january/) (30 Sep 2026), [US EIA Short-Term Energy Outlook](https://www.eia.gov/outlooks/steo/archives/oct26.pdf) (6 Oct 2026) and [IGD](https://www.igd.com/about-us/press-centre/articles/food-inflation-to-strengthen-in-2027-as-cost-pressures-build-igd-forecasts/74093) (17 Sep 2026), with supplier forecasts from E.ON Next and British Gas setting the energy range — see the table above
 - Scenario anchors: Goldman Sachs Hormuz-closure analysis, [Oxford Economics escalation scenario](https://www.oxfordeconomics.com/resource/iran-war-scenarios-the-oil-price-that-breaks-parts-of-the-economy/), [Commons Library CBP-10601](https://commonslibrary.parliament.uk/research-briefings/cbp-10601/) and [CBP-10403](https://commonslibrary.parliament.uk/research-briefings/cbp-10403/), Bank of England and NIESR inflation projections — see `parameters.registry` in the output for which figure each supports
 
 Built with [PolicyEngine](https://policyengine.org).

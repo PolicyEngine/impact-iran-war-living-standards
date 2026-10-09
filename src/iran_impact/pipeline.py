@@ -63,7 +63,10 @@ from .config import (
     PARAMETER_REGISTRY,
     UPRATING_LAG_REGISTRY,
     METHOD_LIMITATIONS,
-    SCENARIO_TYPE,
+    SCENARIO_TYPES,
+    FORECAST_AS_OF,
+    FORECAST_GAPS,
+    FORECAST_NEXT_UPDATES,
     OCTOBER_2026_ENERGY_CAP,
     FIXED_TARIFF_ACCOUNT_SHARE,
 )
@@ -1159,6 +1162,9 @@ def _sensitivity(data, scenario_key):
     registry = PARAMETER_REGISTRY[scenario_key]["parameters"]
     weights = data["weights"]
     base = dict(SCENARIOS[scenario_key])
+    person_weights = weights * data["people"]
+    poverty_line = _poverty_line(data)
+    baseline_in_poverty = _baseline_in_poverty(data, poverty_line)
 
     def outputs_for(params):
         """Every aggregate a scenario parameter can move.
@@ -1167,9 +1173,14 @@ def _sensitivity(data, scenario_key):
         irrelevant: it is excluded from the cost channels by design (#13), so
         varying it leaves the household shock untouched while moving the
         uprating shortfall and the accelerated-uprating policy that pays it
-        (#13 review A1).
+        (#13 review A1). The poverty count is reported too, so the range a
+        reader quotes for it comes from the model rather than from scaling
+        the central figure.
         """
         impacts = compute_scenario(data, scenario_key, params_override=params)
+        newly_below = (~baseline_in_poverty) & _below_anchored_line(
+            data, impacts["net_impact"], poverty_line
+        )
         return {
             "total_impact_bn": round(
                 weighted_sum(impacts["net_impact"], weights) / 1e9, 1
@@ -1178,6 +1189,9 @@ def _sensitivity(data, scenario_key):
                 weighted_sum(impacts["benefit_uprating_shortfall"], weights)
                 / 1e9,
                 2,
+            ),
+            "n_newly_below_anchored_line": round(
+                weighted_sum(newly_below.astype(float), person_weights)
             ),
         }
 
@@ -1200,12 +1214,18 @@ def _sensitivity(data, scenario_key):
             "total_impact_bn_high": at_high["total_impact_bn"],
             "uprating_shortfall_bn_low": at_low["uprating_shortfall_bn"],
             "uprating_shortfall_bn_high": at_high["uprating_shortfall_bn"],
+            "n_newly_below_anchored_line_low": at_low[
+                "n_newly_below_anchored_line"
+            ],
+            "n_newly_below_anchored_line_high": at_high[
+                "n_newly_below_anchored_line"
+            ],
             # Which reported aggregates this parameter actually moves, so a
             # zero range reads as "affects something else" rather than
             # "irrelevant".
             "moves": sorted(
                 key.replace("_bn", "")
-                for key in central
+                for key in ("total_impact_bn", "uprating_shortfall_bn")
                 if at_low[key] != at_high[key]
             ),
         }
@@ -1214,20 +1234,31 @@ def _sensitivity(data, scenario_key):
         "basis": (
             "Each parameter's uncertainty_range in parameters.registry, "
             "evaluated through the model. NOT a confidence interval: the "
-            "ranges are judgements about the price assumptions, not sampling "
-            "distributions, and the combined case moves every parameter "
-            "together. Two aggregates are reported per point, because "
-            "cpi_increase_pp moves the uprating shortfall rather than the "
-            "household cost — `moves` names which aggregates each parameter "
-            "affects"
+            "ranges are judgements about the price assumptions (for the "
+            "forecast scenario, the spread of the published forecasts each "
+            "derivation names), not sampling distributions, and the combined "
+            "case moves every parameter together. Two cost aggregates are "
+            "reported per point, because cpi_increase_pp moves the uprating "
+            "shortfall rather than the household cost — `moves` names which "
+            "of them each parameter affects. The count of people newly below "
+            "the anchored poverty line is reported at each point too"
         ),
         "central_total_impact_bn": central["total_impact_bn"],
         "central_uprating_shortfall_bn": central["uprating_shortfall_bn"],
+        "central_n_newly_below_anchored_line": central[
+            "n_newly_below_anchored_line"
+        ],
         "combined": {
             "total_impact_bn_low": ends["low"]["total_impact_bn"],
             "total_impact_bn_high": ends["high"]["total_impact_bn"],
             "uprating_shortfall_bn_low": ends["low"]["uprating_shortfall_bn"],
             "uprating_shortfall_bn_high": ends["high"]["uprating_shortfall_bn"],
+            "n_newly_below_anchored_line_low": ends["low"][
+                "n_newly_below_anchored_line"
+            ],
+            "n_newly_below_anchored_line_high": ends["high"][
+                "n_newly_below_anchored_line"
+            ],
         },
         "by_parameter": by_parameter,
     }
@@ -1284,6 +1315,7 @@ def _scenario_output(data, scenario_key):
 
     return {
         "params": SCENARIOS[scenario_key],
+        "scenario_type": SCENARIO_TYPES[scenario_key],
         # The first-round direct CPI effect of this scenario's own energy,
         # fuel and food assumptions on ONS basket weights. Emitted so the
         # dashboard can quote it rather than hard-coding it (#51).
@@ -1453,7 +1485,18 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
             },
         },
         "metadata": {
-            "scenario_type": SCENARIO_TYPE,
+            # Per scenario: three stress tests and one built from published
+            # forecasts. A single "annual stress test" string stopped being
+            # true when the forecast scenario was added.
+            "scenario_types": SCENARIO_TYPES,
+            # When the forecast scenario's sources were read, what no source
+            # covers, and when the next updates are due, so a reader can see
+            # how fresh it is.
+            "forecast_vintage": {
+                "as_of": FORECAST_AS_OF,
+                "gaps": FORECAST_GAPS,
+                "next_updates": FORECAST_NEXT_UPDATES,
+            },
             "method_limitations": METHOD_LIMITATIONS,
             "cap_basis": (
                 "Reported for context only and NOT used in the calculation: "

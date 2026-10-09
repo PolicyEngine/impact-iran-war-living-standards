@@ -6,6 +6,7 @@ import {
   getScenarioOptions,
   getScenarioPathLabels,
 } from "../lib/scenarioContent";
+import { formatCount, formatSourceDate } from "../lib/formatters";
 
 export default function MethodologyTab({ data }) {
   const householdCount = data?.baseline?.n_households_m;
@@ -23,6 +24,21 @@ export default function MethodologyTab({ data }) {
   const notCoveredBoundBn =
     data.metadata?.uprating_not_covered?.upper_bound_bn?.central_shock;
   const scenarioOptions = getScenarioOptions(data);
+  // Optional: an older results file has no forecast scenario, and every
+  // sentence that quotes it is dropped rather than rendered half-empty.
+  const forecast = data.scenarios?.external_forecast;
+  const forecastRegistry = data.parameters?.registry?.external_forecast?.parameters;
+  const forecastAsOf = data.metadata?.forecast_vintage?.as_of;
+  // Every scenario's food rise, named, read from the data rather than the
+  // three literals that sat here before the forecast scenario existed.
+  const foodRises = scenarioOptions
+    .map((option) => {
+      const food = data.scenarios?.[option.id]?.params?.food_increase_pct;
+      const name = getScenarioNarrative(option.id, data)?.shortLabel || option.id;
+      return Number.isFinite(food) ? `${name} ${food.toFixed(1)}%` : null;
+    })
+    .filter(Boolean)
+    .join(", ");
 
   return (
     <div className="space-y-8">
@@ -57,8 +73,21 @@ export default function MethodologyTab({ data }) {
           <div>
             <dt className="font-semibold text-slate-900">Result</dt>
             <dd className="mt-1 leading-6 text-slate-600">
-              If energy and fuel stayed near their summer 2026 levels (the July cap and
-              August pump prices) through{" "}
+              {forecast ? (
+                <>
+                  If prices follow the latest published forecasts (energy +
+                  {forecast.params.cap_increase_pct}%, fuel +{forecast.params.fuel_pct}%,
+                  food +{forecast.params.food_increase_pct}%),{" "}
+                  <strong>
+                    &pound;{forecast.summary.mean_net_impact.toLocaleString("en-GB")}
+                  </strong>{" "}
+                  per household (&pound;{forecast.summary.total_impact_bn}bn), and{" "}
+                  {formatCount(forecast.summary.n_newly_below_anchored_line)} people newly
+                  below the anchored poverty line.{" "}
+                </>
+              ) : null}
+              {forecast ? "As stress tests: if" : "If"} energy and fuel stayed near their
+              summer 2026 levels (the July cap and August pump prices) through{" "}
               {data.year}-{String(data.year + 1).slice(2)} (energy +
               {data.scenarios.low_shock.params.cap_increase_pct}%, fuel +
               {data.scenarios.low_shock.params.fuel_pct}%, food +
@@ -94,9 +123,19 @@ export default function MethodologyTab({ data }) {
           </div>
         </dl>
         <p className="mt-5 rounded-lg bg-amber-50 p-4 text-sm leading-7 text-slate-700">
-          <strong>These are stress tests, not forecasts.</strong> Each scenario holds a
+          <strong>Three scenarios are stress tests, not forecasts.</strong> Each holds a
           set of prices at a stated level for a full year. Nothing here predicts which
           path the conflict takes, or when.
+          {forecast ? (
+            <>
+              {" "}
+              <strong>Latest forecasts</strong> instead takes its prices from forecasts
+              other organisations have published
+              {forecastAsOf ? ` (as of ${formatSourceDate(forecastAsOf)})` : ""}. It is
+              still conditional: report it as what 2027-28 would cost if prices follow
+              those forecasts.
+            </>
+          ) : null}
         </p>
       </div>
 
@@ -115,7 +154,10 @@ export default function MethodologyTab({ data }) {
             February 2026) as the context.
           </li>
           <li>
-            <strong>Scenarios:</strong> three price paths ({getScenarioPathLabels().join(", ")}).
+            <strong>Scenarios:</strong>{" "}
+            {forecast
+              ? `one built from published forecasts (${getScenarioPathLabels("forecast").join(", ")}) and three stress tests (${getScenarioPathLabels("stress_test").join(", ")}).`
+              : `three stress tests (${getScenarioPathLabels("stress_test").join(", ")}).`}
           </li>
           <li>
             <strong>Model:</strong>{" "}
@@ -139,6 +181,28 @@ export default function MethodologyTab({ data }) {
           Scenario assumptions
         </h3>
         <ul className="mt-4 list-disc space-y-3 pl-5 text-sm leading-7 text-slate-600">
+          {forecastRegistry ? (
+            <li>
+              <strong>Where the forecast scenario&apos;s prices come from.</strong>{" "}
+              Energy:{" "}
+              <a href={forecastRegistry.cap_increase_pct.source_url} target="_blank" rel="noreferrer" className="underline">
+                {forecastRegistry.cap_increase_pct.source_name}
+              </a>{" "}
+              ({formatSourceDate(forecastRegistry.cap_increase_pct.source_date)}). Fuel:{" "}
+              <a href={forecastRegistry.fuel_pct.source_url} target="_blank" rel="noreferrer" className="underline">
+                {forecastRegistry.fuel_pct.source_name}
+              </a>{" "}
+              ({formatSourceDate(forecastRegistry.fuel_pct.source_date)}), through our
+              pump-price pass-through. Food:{" "}
+              <a href={forecastRegistry.food_increase_pct.source_url} target="_blank" rel="noreferrer" className="underline">
+                {forecastRegistry.food_increase_pct.source_name}
+              </a>{" "}
+              ({formatSourceDate(forecastRegistry.food_increase_pct.source_date)}), as the
+              revision since IGD&apos;s last pre-conflict forecast. No forecast reaches every
+              quarter of 2027-28, so each forecast&apos;s last period is held; the Household
+              impacts tab lists each derivation and what no source covers.
+            </li>
+          ) : null}
           <li>
             <strong>What the percentages are.</strong> Full-year 2027-28 price rises. No
             time path or shock duration is modelled, and pass-through rates are
@@ -205,13 +269,15 @@ export default function MethodologyTab({ data }) {
                 "+45%" plus their headers. */}
             <colgroup>
               <col style={{ width: "12%" }} />
-              <col style={{ width: "13%" }} />
-              <col style={{ width: "13%" }} />
-              <col style={{ width: "62%" }} />
+              <col style={{ width: "10%" }} />
+              <col style={{ width: "11%" }} />
+              <col style={{ width: "11%" }} />
+              <col style={{ width: "56%" }} />
             </colgroup>
             <thead>
               <tr>
                 <th>Scenario</th>
+                <th>Type</th>
                 <th style={{ textAlign: "right" }}>Fuel price</th>
                 <th style={{ textAlign: "right" }}>Energy spending</th>
                 <th>Description</th>
@@ -224,6 +290,7 @@ export default function MethodologyTab({ data }) {
                 return (
                   <tr key={scenario.id}>
                     <td className="font-medium">{narrative?.shortLabel || scenario.label}</td>
+                    <td>{scenario.typeLabel}</td>
                     <td style={{ textAlign: "right" }}>
                       {params?.fuel_pct != null ? `+${params.fuel_pct}%` : "--"}
                     </td>
@@ -282,8 +349,8 @@ export default function MethodologyTab({ data }) {
           <div>
             <strong className="text-slate-800">Food prices:</strong>{" "}
             Energy is a major input cost in food production, processing, and distribution.
-            We apply scenario-specific annual food price increases of 2.0%, 4.0%, and
-            6.5% to food spending from <a href="https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/expenditure/bulletins/familyspendingintheuk/april2023tomarch2024" target="_blank" rel="noreferrer" className="underline">ONS Family Spending</a> Table A6
+            We apply scenario-specific annual food price increases ({foodRises}) to food
+            spending from <a href="https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/expenditure/bulletins/familyspendingintheuk/april2023tomarch2024" target="_blank" rel="noreferrer" className="underline">ONS Family Spending</a> Table A6
             (FYE 2024): &pound;70.50/wk (&pound;3,666/yr) at the UK mean, ranging from
             &pound;38.10/wk in the lowest gross-income decile to &pound;100.90/wk in the
             highest &mdash; the published decile gradient rather than an assumed one. As
@@ -364,11 +431,14 @@ export default function MethodologyTab({ data }) {
             <tbody>
               <tr>
                 <td className="font-medium">Food price increase</td>
-                <td>2.0% / 4.0% / 6.5%</td>
+                <td>{foodRises}</td>
                 <td className="text-xs text-slate-500">
-                  Scenario-specific annual food inflation, scaled to shock severity.
-                  Consistent with Resolution Foundation&apos;s finding that bottom-decile
-                  inflation reaches 3.8% vs 2.9% for the top decile by end-2026.
+                  For the stress tests, a judgement scaled to shock severity, consistent
+                  with Resolution Foundation&apos;s finding that bottom-decile inflation
+                  reaches 3.8% vs 2.9% for the top decile by end-2026.
+                  {forecastRegistry
+                    ? ` For latest forecasts, the revision to IGD's forecast 2027 food prices since its last pre-conflict forecast.`
+                    : ""}
                 </td>
               </tr>
               <tr>
