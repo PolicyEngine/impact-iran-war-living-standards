@@ -102,11 +102,18 @@ def test_raising_a_price_never_lowers_any_cost_or_the_poverty_count(
 
     # Every household, not just the total.
     assert np.all(after["net_impact"] >= before["net_impact"] - 1e-9)
-    # Only the raised channel moves, by exactly spend x delta.
+    # Only the raised channel moves, by spend x delta.
+    spend = {"cap_increase_pct": "energy", "fuel_pct": "fuel_cost", "food_increase_pct": "food_cost"}
     for other, channel in CHANNEL.items():
         if other == name:
-            continue
-        np.testing.assert_array_equal(after[channel], before[channel])
+            np.testing.assert_allclose(
+                after[channel] - before[channel],
+                data[spend[name]] * delta / 100,
+                rtol=1e-9,
+                atol=1e-6,
+            )
+        else:
+            np.testing.assert_array_equal(after[channel], before[channel])
     # The aggregates the dashboard reports.
     weights = data["weights"]
     assert weighted_sum(after["net_impact"], weights) >= weighted_sum(

@@ -8,7 +8,7 @@ export const SCENARIO_CONTENT = {
     shortLabel: "Latest forecasts",
     pathLabel: "prices following the latest published forecasts",
     describe: (p) =>
-      `Prices follow the latest published forecasts for 2027-28. Energy +${p.cap_increase_pct}%: Cornwall Insight's January–March 2027 price cap forecast, with electricity VAT back at 5% from April, held for the year because no forecast reaches further. Fuel +${p.fuel_pct}%: the US EIA's Brent forecast, through our pass-through to UK pump prices. Food +${p.food_increase_pct}%: how far IGD has raised its forecast 2027 food prices since before the conflict. CPI +${p.cpi_increase_pp}pp, used only to size the benefit uprating gap, not a forecast. Still not a prediction: report it as what 2027-28 would cost if prices follow these forecasts.`,
+      `Prices follow the latest published forecasts for 2027-28. Energy +${p.cap_increase_pct}%: Cornwall Insight's January–March 2027 price cap forecast, with electricity VAT back at 5% from April, held for the year because Cornwall publishes no forecast for 2027-28. Fuel +${p.fuel_pct}%: our pass-through of the US EIA's Brent forecast to UK pump prices, with fuel duty held at 52.95p. Food +${p.food_increase_pct}%: how far IGD has raised its forecast 2027 food prices since before the conflict. CPI +${p.cpi_increase_pp}pp, used only to size the benefit uprating gap, not a forecast. Still not a prediction: report it as what 2027-28 would cost if prices follow these forecasts.`,
   },
   low_shock: {
     type: "stress_test",

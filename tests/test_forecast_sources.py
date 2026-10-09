@@ -81,9 +81,16 @@ def test_only_known_bases_are_used():
 def test_every_forecast_scenario_price_is_a_forecast():
     """The scenario is labelled forecast-based, so no price in it may be a
     judgement or a stress-test anchor."""
-    for name in ("cap_increase_pct", "fuel_pct", "food_increase_pct"):
-        entry = config.PARAMETER_REGISTRY["external_forecast"]["parameters"][name]
-        assert entry["basis"] == "forecast", name
+    params = config.PARAMETER_REGISTRY["external_forecast"]["parameters"]
+    assert params["cap_increase_pct"]["basis"] == "forecast"
+    assert params["food_increase_pct"]["basis"] == "forecast"
+    # The EIA forecasts Brent, not UK pump prices. The label has to say the
+    # pump-price figure is this study's, or "+12.2%" next to "US EIA" gets
+    # quoted as an EIA forecast (#67 review).
+    assert params["fuel_pct"]["basis"] == "forecast_pass_through"
+    assert "our pass-through" in params["fuel_pct"]["basis_label"]
+    assert "not UK pump prices" in params["fuel_pct"]["source_figure"]
+    assert "this study's figure, not the EIA's" in params["fuel_pct"]["derivation"]
 
 
 def test_the_forecast_literals_equal_the_derivation():
@@ -185,18 +192,74 @@ def test_no_forecast_is_dated_after_the_vintage_it_is_reported_as():
         assert update["due"] > config.FORECAST_AS_OF[: len(update["due"])]
 
 
-def test_the_forecast_ranges_come_from_the_sources():
+def test_the_forecast_ranges_are_the_reviewed_ones():
+    """Pinned as literals: the registry is built from the range functions, so
+    comparing the two would pass by construction (#67 review). Each end is a
+    single-period forecast held for the year, recomputed here by hand."""
     params = config.PARAMETER_REGISTRY["external_forecast"]["parameters"]
-    assert params["cap_increase_pct"]["uncertainty_range"] == (
-        config.forecast_energy_range_pct()
+    assert params["cap_increase_pct"]["uncertainty_range"] == [31.5, 45.5]
+    assert params["fuel_pct"]["uncertainty_range"] == [8.3, 18.9]
+    assert params["food_increase_pct"]["uncertainty_range"] == [0.4, 4.3]
+    assert params["cpi_increase_pp"]["uncertainty_range"] == [1.3, 2.5]
+    # Energy: £1,927 and £2,131 on the £1,465 baseline.
+    assert round((1_927 / 1_465 - 1) * 100, 1) == 31.5
+    assert round((2_131 / 1_465 - 1) * 100, 1) == 45.5
+    # Food: opposite ends of IGD's two published bands.
+    assert round((1.029 * 1.056 / (1.043 * 1.038) - 1) * 100, 1) == 0.4
+    assert round((1.039 * 1.066 / (1.033 * 1.028) - 1) * 100, 1) == 4.3
+
+
+def test_the_cpi_range_ends_are_rounded_up_like_every_adder():
+    """Rounding to nearest put the high end, 2.42pp, at 2.4: below its own
+    first-round floor, against the rule every adder follows (#67 review)."""
+    ends = list(
+        zip(
+            config.forecast_energy_range_pct(),
+            config.forecast_fuel_range_pct(),
+            config.forecast_food_range_pct(),
+        )
     )
-    assert params["fuel_pct"]["uncertainty_range"] == config.forecast_fuel_range_pct()
-    assert params["food_increase_pct"]["uncertainty_range"] == (
-        config.forecast_food_range_pct()
-    )
-    assert params["cpi_increase_pp"]["uncertainty_range"] == (
-        config.forecast_cpi_range_pp()
-    )
+    for end, adder in zip(ends, config.forecast_cpi_range_pp()):
+        floor = config.first_round_cpi_pp(*end)
+        assert adder >= floor
+        assert adder == config.ceil_to_tenth(floor)
+
+
+def test_the_margin_disclosure_matches_the_eia_table():
+    """The fuel derivation says US wholesale margins widened in 2026 and
+    narrow again in the forecast. That has to be what the recorded table
+    shows, and the figures quoted have to be the computed ones."""
+    derivation = config.PARAMETER_REGISTRY["external_forecast"]["parameters"][
+        "fuel_pct"
+    ]["derivation"]
+    for product in ("diesel", "gasoline"):
+        before = config.eia_wholesale_margin(product, "2025Q4")
+        peak = config.eia_wholesale_margin(product, "2026Q3")
+        forecast = config.eia_wholesale_margin(product)
+        assert before < forecast < peak, product
+        for figure in (before, peak, forecast):
+            assert f"${figure:.2f}" in derivation, (product, figure)
+    # By hand, from Table 2: diesel 4.39 - 95.95/42 and 2.33 - 63.63/42.
+    assert config.eia_wholesale_margin("diesel", "2026Q3") == round(4.39 - 95.95 / 42, 2)
+    assert config.eia_wholesale_margin("diesel", "2025Q4") == round(2.33 - 63.63 / 42, 2)
+    assert "probably leans high" in derivation
+
+
+def test_the_duty_assumption_is_stated():
+    """Duty is held at the reference rate while the model's own 2027-28 rate
+    is higher, so the derivation has to say the cut is assumed to continue."""
+    derivation = config.PARAMETER_REGISTRY["external_forecast"]["parameters"][
+        "fuel_pct"
+    ]["derivation"]
+    assert "assumes the 5p cut continues" in derivation
+    assert "outside this scenario's cost" in derivation
+
+
+def test_supplier_january_forecasts_sit_above_cornwall_as_the_derivation_says():
+    cornwall = config.CORNWALL_FORECAST["total_gbp"]
+    for forecast in config.SUPPLIER_CAP_FORECASTS_Q1_2027:
+        assert forecast["total_gbp"] > cornwall, forecast["supplier"]
+        assert forecast["period"] == config.CORNWALL_FORECAST["period"]
 
 
 def test_the_energy_range_spans_the_supplier_forecasts():

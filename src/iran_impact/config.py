@@ -1,8 +1,9 @@
 """Configuration constants for energy price shock impact on UK living standards analysis.
 
-All parameters calibrated to conditions as of August 2026, during the ongoing
-Middle East conflict (US/Israel-Iran war from late February 2026, with recurrent
-Strait of Hormuz disruption). Sources are cited inline.
+The stress tests are calibrated to conditions as of August 2026, during the
+ongoing Middle East conflict (US/Israel-Iran war from late February 2026, with
+recurrent Strait of Hormuz disruption). The forecast-based scenario takes the
+forecasts published by FORECAST_AS_OF. Sources are cited inline.
 """
 
 from .inputs import FOOD_SPEND, TRANSPORT_FUEL_SPEND
@@ -377,7 +378,9 @@ FORECAST_GAPS = [
     "year.",
     "No published forecast of UK pump prices for 2027-28 was found. Fuel "
     "uses the US EIA's Brent forecast through this study's pass-through to "
-    "pump prices.",
+    "pump prices, which carries the refining margins of 2026; the EIA "
+    "forecasts US wholesale margins narrowing in 2027, so the fuel figure "
+    "probably leans high.",
     "No published forecast isolates the conflict's effect on UK food prices. "
     "Food uses the revision to IGD's forecast since before the conflict, "
     "which includes everything IGD revised for.",
@@ -402,10 +405,12 @@ FORECAST_NEXT_UPDATES = [
 
 # Energy. Cornwall Insight's Default Tariff Cap forecast for January-March
 # 2027: typical dual-fuel direct-debit household on Ofgem's new TDCVs
-# (2,500 kWh electricity, 9,500 kWh gas), published 30 September 2026 and
-# calculated from close-of-play prices on 28 September 2026. It is the latest
-# Cornwall forecast and the only one beyond the announced October cap.
+# (2,500 kWh electricity, 9,500 kWh gas), published 30 September 2026. The
+# press release carries the figures; Cornwall's predictions page gives the
+# pricing date, close of play on 28 September 2026. It is the latest Cornwall
+# forecast and the only one beyond the announced October cap.
 CORNWALL_FORECAST_URL = "https://www.cornwall-insight.com/press-releases/16-price-cap-rise-forecast-in-january/"
+CORNWALL_PREDICTIONS_URL = "https://www.cornwall-insight.com/predictions-and-insights-into-the-default-tariff-cap/"
 CORNWALL_FORECAST = {
     "period": "January-March 2027",
     "electricity_gbp": 959.44,
@@ -415,15 +420,27 @@ CORNWALL_FORECAST = {
     "prices_as_of": "2026-09-28",
 }
 
+# Tax basis. Every scenario prices each channel at the tax rates of the
+# reference point its percentage is measured from, so that a percentage is a
+# change in price and not partly a change in tax: 5% VAT on electricity (the
+# April-June 2026 cap, announced before the conflict) and 52.95p fuel duty
+# (Autumn Budget 2025 pump prices).
+#
 # January-March 2027 falls inside the temporary zero rate of VAT on domestic
-# electricity (1 October 2026 - 31 March 2027), so Cornwall's electricity
-# figure carries no VAT. Ofgem's October announcement puts the effect at
-# about £45 on the typical bill. From April 2027 the rate returns to 5%
-# unless the Budget extends the cut, which this study evaluates as a policy
-# option; the April-June 2026 cap the scenarios are measured from, announced
-# before the conflict, also carried 5%. The forecast scenario therefore
-# restores it, so its bill is on the same tax basis as that baseline and the
-# VAT option has a VAT charge to remove.
+# electricity (1 October 2026 - 31 March 2027). Cornwall's release does not
+# state its VAT basis; it is inferred here from Ofgem, whose October cap of
+# £1,723 "reflect[s]" the VAT removal (about £45 on the typical bill) and is
+# the base Cornwall's +16% is measured on. The forecast scenario restores 5%
+# on electricity, the reference rate. That is also the rate current law sets
+# from April 2027, and extending the cut is a policy option this study
+# evaluates.
+#
+# Fuel duty is NOT treated the same way by current law: 52.95p is the
+# reference rate, but duty is scheduled to rise from January 2027 (see
+# FUEL_DUTY_CUT_PENCE), and the model's own 2027-28 rate is higher. Holding
+# 52.95p therefore assumes the cut continues. The scheduled rise is outside
+# every scenario's cost, the forecast scenario's included, and the fuel duty
+# option's relief is measured against it.
 ELECTRICITY_VAT_FROM_APRIL_2027 = 0.05
 
 # Supplier forecasting services that reach into 2027-28, on the same TDCVs.
@@ -438,6 +455,16 @@ SUPPLIER_CAP_FORECASTS_2027_28 = [
     {"supplier": "E.ON Next", "period": "July-September 2027", "total_gbp": 1_927,
      "published": "2026-10-05", "url": EON_NEXT_FORECAST_URL},
     {"supplier": "British Gas", "period": "April-June 2027", "total_gbp": 1_995,
+     "published": "2026-10-01", "url": BRITISH_GAS_FORECAST_URL},
+]
+
+
+# The same services' forecasts for the quarter Cornwall covers, as context:
+# both sit above Cornwall's £1,999.
+SUPPLIER_CAP_FORECASTS_Q1_2027 = [
+    {"supplier": "E.ON Next", "period": "January-March 2027", "total_gbp": 2_088,
+     "published": "2026-10-05", "url": EON_NEXT_FORECAST_URL},
+    {"supplier": "British Gas", "period": "January-March 2027", "total_gbp": 2_080,
      "published": "2026-10-01", "url": BRITISH_GAS_FORECAST_URL},
 ]
 
@@ -480,6 +507,34 @@ EIA_STEO_BRENT = {
 # 2027-28 runs April 2027 to March 2028. January-March 2028 lies beyond the
 # STEO, so it holds the last forecast quarter.
 FORECAST_BRENT_QUARTERS_2027_28 = ["2027Q2", "2027Q3", "2027Q4", "2027Q4"]
+
+# The same table's US wholesale gasoline and diesel prices, dollars a gallon,
+# with Brent for the two quarters that bracket the period the pump-price
+# slopes were fitted on (November 2025 to August 2026). They are NOT used in
+# the fuel parameter. They are recorded because they show what its
+# pass-through leaves out: the slopes carry the widening of refining margins
+# during 2026, and the EIA forecasts those margins narrowing in 2027. US
+# wholesale margins are only a proxy for the UK's, which is why the figure is
+# disclosed rather than applied.
+EIA_STEO_BRENT_HISTORY = {"2025Q4": 63.63, "2026Q3": 95.95}
+EIA_STEO_WHOLESALE = {
+    "gasoline": {"2025Q4": 2.00, "2026Q3": 3.49, "2027Q2": 2.77, "2027Q3": 2.57, "2027Q4": 2.24},
+    "diesel": {"2025Q4": 2.33, "2026Q3": 4.39, "2027Q2": 3.12, "2027Q3": 2.92, "2027Q4": 2.82},
+}
+GALLONS_PER_BARREL = 42
+
+
+def eia_wholesale_margin(product, quarter=None):
+    """US wholesale price less Brent, $/gallon, on the EIA table.
+
+    With no quarter, the mean over 2027-28 on the same four quarters as the
+    Brent path.
+    """
+    brent = {**EIA_STEO_BRENT_HISTORY, **EIA_STEO_BRENT}
+    prices = EIA_STEO_WHOLESALE[product]
+    quarters = [quarter] if quarter else FORECAST_BRENT_QUARTERS_2027_28
+    margins = [prices[q] - brent[q] / GALLONS_PER_BARREL for q in quarters]
+    return round(sum(margins) / len(margins), 2)
 
 
 def forecast_brent_2027_28():
@@ -577,7 +632,9 @@ def forecast_cpi_range_pp():
             forecast_food_range_pct(),
         )
     )
-    return [round(first_round_cpi_pp(*ends[0]), 1), round(first_round_cpi_pp(*ends[1]), 1)]
+    # Rounded up, like every adder: rounding to nearest would put the high
+    # end below its own first-round floor.
+    return [ceil_to_tenth(first_round_cpi_pp(*end)) for end in ends]
 
 
 def forecast_scenario_parameters():
@@ -731,6 +788,7 @@ SOURCE_NAMES = {
     ONS_CPI_WEIGHT_FUEL: "ONS, CPI weight: fuels and lubricants",
     ONS_CPI_WEIGHT_FOOD: "ONS, CPI weight: food and non-alcoholic beverages",
     CORNWALL_FORECAST_URL: "Cornwall Insight, price cap forecast",
+    CORNWALL_PREDICTIONS_URL: "Cornwall Insight, price cap predictions page",
     EON_NEXT_FORECAST_URL: "E.ON Next, price cap predictions",
     BRITISH_GAS_FORECAST_URL: "British Gas, price cap predictions",
     EIA_STEO_URL: "US EIA, Short-Term Energy Outlook, October 2026",
@@ -742,6 +800,9 @@ SOURCE_NAMES = {
 # figures are someone's forecast and which are this study's choice.
 BASIS_LABELS = {
     "forecast": "published forecast",
+    # The forecast is of an input (Brent); the pump-price figure is this
+    # study's, and must not be quoted as the forecaster's.
+    "forecast_pass_through": "published Brent forecast, our pass-through",
     "observed": "observed prices",
     "published_scenario": "published scenario",
     "judgement": "judgement",
@@ -1076,8 +1137,8 @@ _SCENARIO_SOURCES = {
                 f"£{CORNWALL_FORECAST['total_gbp']:,.2f} a year for "
                 f"{CORNWALL_FORECAST['period']} (electricity "
                 f"£{CORNWALL_FORECAST['electricity_gbp']:,.2f}, gas "
-                f"£{CORNWALL_FORECAST['gas_gbp']:,.2f}), from prices at close "
-                "of play on 28 September 2026"
+                f"£{CORNWALL_FORECAST['gas_gbp']:,.2f}). Cornwall's predictions "
+                "page dates the prices to close of play on 28 September 2026"
             ),
             "reference_period": (
                 f"{CORNWALL_FORECAST['period']} forecast, held for the four "
@@ -1088,23 +1149,33 @@ _SCENARIO_SOURCES = {
                 f"{CORNWALL_FORECAST['period']}, is "
                 f"£{CORNWALL_FORECAST['total_gbp']:,.2f}. That quarter falls "
                 "inside the zero rate of VAT on domestic electricity, which "
-                "ends on 31 March 2027, so electricity is restored to "
+                "ends on 31 March 2027. Cornwall does not state its VAT "
+                "basis; it is inferred from Ofgem, whose October cap "
+                "reflects the VAT removal and is the base Cornwall's rise is "
+                "measured on. Electricity is restored to "
                 f"{ELECTRICITY_VAT_FROM_APRIL_2027:.0%} VAT, the rate in the "
-                "pre-conflict cap this is measured from: "
+                "April-June 2026 cap this is measured from: "
                 f"£{forecast_cap_2027_28_gbp():,.2f}, "
-                f"+{cap_rise_pct(forecast_cap_2027_28_gbp())}% on the "
-                f"pre-conflict £{PRE_CONFLICT_CAP_NEW_BASIS:,}. Cornwall "
+                f"+{cap_rise_pct(forecast_cap_2027_28_gbp())}% on that cap's "
+                f"£{PRE_CONFLICT_CAP_NEW_BASIS:,}. Cornwall "
                 "publishes no forecast for any 2027-28 quarter, so this one "
                 "is held for all four. That holding is an assumption, not a "
                 "forecast, and it carries no change in network or policy "
-                "costs after that quarter. Supplier forecasting services "
-                "that do reach "
-                "April-September 2027, each at its lowest confidence, run "
-                f"from £{min(f['total_gbp'] for f in SUPPLIER_CAP_FORECASTS_2027_28):,} "
-                f"to £{max(f['total_gbp'] for f in SUPPLIER_CAP_FORECASTS_2027_28):,} "
-                "and set the range"
+                "costs after that quarter. A winter quarter is being held "
+                "through a summer: supplier forecasting services that do "
+                "reach April-September 2027, each at its lowest confidence, "
+                "run from "
+                f"£{min(f['total_gbp'] for f in SUPPLIER_CAP_FORECASTS_2027_28):,} "
+                f"to £{max(f['total_gbp'] for f in SUPPLIER_CAP_FORECASTS_2027_28):,}"
+                ". Each of those single quarters, held for the year, sets "
+                "one end of the range. For January-March 2027 itself the "
+                "same services forecast "
+                f"£{min(f['total_gbp'] for f in SUPPLIER_CAP_FORECASTS_Q1_2027):,} "
+                f"and £{max(f['total_gbp'] for f in SUPPLIER_CAP_FORECASTS_Q1_2027):,}"
+                ", above Cornwall"
             ),
             "supporting_source_urls": [
+                CORNWALL_PREDICTIONS_URL,
                 OFGEM_OCTOBER_2026,
                 EON_NEXT_FORECAST_URL,
                 BRITISH_GAS_FORECAST_URL,
@@ -1113,13 +1184,14 @@ _SCENARIO_SOURCES = {
         },
         "fuel_pct": {
             "source_url": EIA_STEO_URL,
-            "basis": "forecast",
+            "basis": "forecast_pass_through",
             "source_date": EIA_STEO_BRENT["published"],
             "source_figure": (
                 f"Brent ${EIA_STEO_BRENT['2027Q2']:.2f}/bbl in April-June "
                 f"2027, ${EIA_STEO_BRENT['2027Q3']:.2f} in July-September and "
                 f"${EIA_STEO_BRENT['2027Q4']:.2f} in October-December (Table "
-                "2), from inputs finalised on 1 October 2026"
+                "2), from inputs finalised on 1 October 2026. The EIA "
+                "forecasts crude, not UK pump prices"
             ),
             "reference_period": (
                 "April 2027 - March 2028; January-March 2028 holds the last "
@@ -1136,16 +1208,33 @@ _SCENARIO_SOURCES = {
                 "pump-price pass-through, the same DESNZ-against-EIA slopes "
                 "and ONS petrol and diesel shares the stress tests use, to "
                 f"+{fuel_rise_pct_at_brent(forecast_brent_2027_28())}% on "
-                "Autumn Budget 2025 pump prices. The pass-through is this "
-                "study's, not EIA's: no published forecast of UK pump prices "
-                "for 2027-28 was found, and the OBR's latest outlook "
-                "(3 March 2026) used energy prices from before the conflict. "
-                "Duty is held at the 52.95p in force at both ends of the "
-                "slopes, as in the stress tests; the scheduled rises are the "
-                "Budget decision the fuel duty option evaluates. The range "
-                "is the composite at the lowest and highest EIA quarter in "
-                "the year, the spread of the forecast path rather than a "
-                "forecast error"
+                "Autumn Budget 2025 pump prices. The +"
+                f"{fuel_rise_pct_at_brent(forecast_brent_2027_28())}% is this "
+                "study's figure, not the EIA's: no published forecast of UK "
+                "pump prices for 2027-28 was found, and the OBR's latest "
+                "outlook (3 March 2026) used energy prices from before the "
+                "conflict. Two things it leaves out, pulling opposite ways. "
+                "First, it probably leans high: the slopes were fitted on "
+                "November 2025 to August 2026, when refining margins widened, "
+                "and the same EIA table has US wholesale margins over Brent "
+                "narrowing again (diesel "
+                f"${eia_wholesale_margin('diesel', '2025Q4'):.2f} a gallon in "
+                "October-December 2025, "
+                f"${eia_wholesale_margin('diesel', '2026Q3'):.2f} in "
+                "July-September 2026, "
+                f"${eia_wholesale_margin('diesel'):.2f} over 2027-28; petrol "
+                f"${eia_wholesale_margin('gasoline', '2025Q4'):.2f}, "
+                f"${eia_wholesale_margin('gasoline', '2026Q3'):.2f} and "
+                f"${eia_wholesale_margin('gasoline'):.2f}). US margins are "
+                "only a proxy for the UK's, so they are disclosed rather "
+                "than applied. Second, duty is held at 52.95p, the rate at "
+                "both ends of the slopes, as in the stress tests. That "
+                "assumes the 5p cut continues: the scheduled duty rises are "
+                "outside this scenario's cost, and the fuel duty option's "
+                "relief is measured against them. The range is the "
+                "composite at the lowest and highest EIA quarter in the "
+                "year, each held for the year: the spread of the forecast "
+                "path, not a forecast error"
             ),
             "supporting_source_urls": [
                 DESNZ_ROAD_FUEL,

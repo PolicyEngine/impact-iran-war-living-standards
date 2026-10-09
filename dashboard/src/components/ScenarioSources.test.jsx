@@ -63,15 +63,24 @@ describe("the forecast scenario", () => {
     expect(text).toContain("17 Sep 2026");
   });
 
-  it("labels every price as a published forecast and the CPI figure as derived", () => {
+  it("labels each price by what was forecast, and the CPI figure as derived", () => {
     const container = renderSources(data, "external_forecast");
     const rows = [...container.querySelectorAll("tbody tr")];
-    for (const label of ["Energy spending", "Petrol and diesel", "Food"]) {
-      const row = rows.find((r) => r.textContent.startsWith(label));
-      expect(row.textContent, label).toContain("Published forecast");
-    }
-    const cpi = rows.find((r) => r.textContent.startsWith("CPI addition"));
-    expect(cpi.textContent).toContain("Derived from this scenario's prices");
+    const basisOf = (label) =>
+      rows.find((r) => r.textContent.startsWith(label)).querySelectorAll("td")[2].textContent;
+    expect(basisOf("Energy spending")).toBe("Published forecast");
+    expect(basisOf("Food")).toBe("Published forecast");
+    // The EIA forecasts Brent, not pump prices: the label must not let
+    // "+12.2%" be read as the EIA's own figure (#67 review).
+    expect(basisOf("Petrol and diesel")).toBe("Published Brent forecast, our pass-through");
+    expect(basisOf("CPI addition")).toBe("Derived from this scenario's prices");
+  });
+
+  it("says the fuel figure leans high and assumes the duty cut continues", () => {
+    const text = renderSources(data, "external_forecast").textContent.replace(/\s+/g, " ");
+    expect(text).toContain("probably leans high");
+    expect(text).toContain("assumes the 5p cut continues");
+    expect(text).toContain("The EIA forecasts crude, not UK pump prices");
   });
 
   it("states the vintage, what no forecast covers, and when it goes stale", () => {

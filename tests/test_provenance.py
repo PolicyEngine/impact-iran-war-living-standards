@@ -55,6 +55,31 @@ def test_strip_volatile_removes_only_run_to_run_fields():
     assert "generated_at" in results["provenance"]
 
 
+def test_strip_volatile_drops_the_network_dependent_bundle_field():
+    """`certified_by` is null when policyengine.py fetches the published data
+    release manifest and set when it falls back to the bundled certification,
+    for the same data build and artifact hash. Two such runs must compare
+    equal (#67 review)."""
+    fetched = {"provenance": provenance.build_provenance(
+        bundle={"bundle_id": "uk-5.3.0", "certified_data_build_id": "b", "certified_by": None}
+    )}
+    fallback = {"provenance": provenance.build_provenance(
+        bundle={
+            "bundle_id": "uk-5.3.0",
+            "certified_data_build_id": "b",
+            "certified_by": "policyengine.py bundle certification",
+        }
+    )}
+    assert provenance.strip_volatile(fetched) == provenance.strip_volatile(fallback)
+    # A different data build must still show.
+    other = {"provenance": provenance.build_provenance(
+        bundle={"bundle_id": "uk-5.3.0", "certified_data_build_id": "c"}
+    )}
+    assert provenance.strip_volatile(fetched) != provenance.strip_volatile(other)
+    # And the original is not mutated.
+    assert "certified_by" in fallback["provenance"]["release_bundle"]
+
+
 def test_strip_volatile_makes_two_runs_comparable():
     first = {"provenance": provenance.build_provenance()}
     second = {"provenance": provenance.build_provenance()}

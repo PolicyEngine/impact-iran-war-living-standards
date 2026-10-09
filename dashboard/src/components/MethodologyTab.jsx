@@ -192,15 +192,16 @@ export default function MethodologyTab({ data }) {
               <a href={forecastRegistry.fuel_pct.source_url} target="_blank" rel="noreferrer" className="underline">
                 {forecastRegistry.fuel_pct.source_name}
               </a>{" "}
-              ({formatSourceDate(forecastRegistry.fuel_pct.source_date)}), through our
-              pump-price pass-through. Food:{" "}
+              ({formatSourceDate(forecastRegistry.fuel_pct.source_date)}), a Brent forecast
+              taken through our pump-price pass-through with duty held at 52.95p. Food:{" "}
               <a href={forecastRegistry.food_increase_pct.source_url} target="_blank" rel="noreferrer" className="underline">
                 {forecastRegistry.food_increase_pct.source_name}
               </a>{" "}
               ({formatSourceDate(forecastRegistry.food_increase_pct.source_date)}), as the
-              revision since IGD&apos;s last pre-conflict forecast. No forecast reaches every
-              quarter of 2027-28, so each forecast&apos;s last period is held; the Household
-              impacts tab lists each derivation and what no source covers.
+              revision to its calendar-2027 forecast since IGD&apos;s last pre-conflict
+              forecast. Cornwall&apos;s forecast stops at March 2027 and the EIA&apos;s at
+              December 2027, so the last period of each is held; the Household impacts
+              tab lists each derivation and what no source covers.
             </li>
           ) : null}
           <li>

@@ -2,8 +2,8 @@
   "year": 2027,
   "current_energy_cap": 1663,
   "provenance": {
-    "generated_at": "2026-10-09T19:22:31+00:00",
-    "git_revision": "45592bb72bdb0e6f4bca0facd1cceb7996eea515",
+    "generated_at": "2026-10-09T23:51:13+00:00",
+    "git_revision": "a841cafcd1beaf8d8e8e24c2093415bcd7b181c7",
     "git_dirty": true,
     "packages": {
       "policyengine": "5.3.0",
@@ -13,9 +13,9 @@
       "microdf-python": "1.3.0"
     },
     "source_hashes": {
-      "config.py": "3ef94352cda5d9950a69fee8700cfedf2316bb1f34ba43e2223e4dead60565ba",
-      "pipeline.py": "c0e775bc3ab2e851f62f586e4070a865c49dafc4593618b4f04297ac153ce1f3",
-      "provenance.py": "956bcc99b7f9c3f796082ae19edf451310fe6e14ea93deda16bc665455d75541",
+      "config.py": "0226f6d3f554bd582446016941e2a48b6c6c02f784ebf0ff273c51d668a45590",
+      "pipeline.py": "040cdfa84cce3d2de32814b6b5dcb09f35a157429ba40d4a13fa1e667634f937",
+      "provenance.py": "4ebb5ba4919f3ecbe1a09300f21463c86ea2499e95fef763a876a973ffbd3f8a",
       "pyproject.toml": "7bf92820c3a036476e3af9ddf9524c504b6590958faf4b51e49f7c12d246435c",
       "requirements.lock": "2af6a5d81b7288fe9a3698bf018e0d8291b6e8a91a5cd44a5d4e8f08e2e62d30"
     },
@@ -459,7 +459,7 @@
         ]
       },
       "sensitivity": {
-        "basis": "Each parameter's uncertainty_range in parameters.registry, evaluated through the model. NOT a confidence interval: the ranges are judgements about the price assumptions (for the forecast scenario, the spread of the published forecasts each derivation names), not sampling distributions, and the combined case moves every parameter together. Two cost aggregates are reported per point, because cpi_increase_pp moves the uprating shortfall rather than the household cost \u2014 `moves` names which of them each parameter affects. The count of people newly below the anchored poverty line is reported at each point too",
+        "basis": "Each parameter's uncertainty_range in parameters.registry, evaluated through the model. NOT a confidence interval: the ranges are judgements about the price assumptions (for the forecast scenario, single-period values from the published forecasts each derivation names, each held for the year), not sampling distributions or forecast errors, and the combined case moves every parameter together. Two cost aggregates are reported per point, because cpi_increase_pp moves the uprating shortfall rather than the household cost \u2014 `moves` names which of them each parameter affects. The count of people newly below the anchored poverty line is reported at each point too",
         "central_total_impact_bn": 17.0,
         "central_uprating_shortfall_bn": 0.66,
         "central_n_newly_below_anchored_line": 379109,
@@ -911,7 +911,7 @@
         ]
       },
       "sensitivity": {
-        "basis": "Each parameter's uncertainty_range in parameters.registry, evaluated through the model. NOT a confidence interval: the ranges are judgements about the price assumptions (for the forecast scenario, the spread of the published forecasts each derivation names), not sampling distributions, and the combined case moves every parameter together. Two cost aggregates are reported per point, because cpi_increase_pp moves the uprating shortfall rather than the household cost \u2014 `moves` names which of them each parameter affects. The count of people newly below the anchored poverty line is reported at each point too",
+        "basis": "Each parameter's uncertainty_range in parameters.registry, evaluated through the model. NOT a confidence interval: the ranges are judgements about the price assumptions (for the forecast scenario, single-period values from the published forecasts each derivation names, each held for the year), not sampling distributions or forecast errors, and the combined case moves every parameter together. Two cost aggregates are reported per point, because cpi_increase_pp moves the uprating shortfall rather than the household cost \u2014 `moves` names which of them each parameter affects. The count of people newly below the anchored poverty line is reported at each point too",
         "central_total_impact_bn": 42.1,
         "central_uprating_shortfall_bn": 3.64,
         "central_n_newly_below_anchored_line": 1508923,
@@ -1363,7 +1363,7 @@
         ]
       },
       "sensitivity": {
-        "basis": "Each parameter's uncertainty_range in parameters.registry, evaluated through the model. NOT a confidence interval: the ranges are judgements about the price assumptions (for the forecast scenario, the spread of the published forecasts each derivation names), not sampling distributions, and the combined case moves every parameter together. Two cost aggregates are reported per point, because cpi_increase_pp moves the uprating shortfall rather than the household cost \u2014 `moves` names which of them each parameter affects. The count of people newly below the anchored poverty line is reported at each point too",
+        "basis": "Each parameter's uncertainty_range in parameters.registry, evaluated through the model. NOT a confidence interval: the ranges are judgements about the price assumptions (for the forecast scenario, single-period values from the published forecasts each derivation names, each held for the year), not sampling distributions or forecast errors, and the combined case moves every parameter together. Two cost aggregates are reported per point, because cpi_increase_pp moves the uprating shortfall rather than the household cost \u2014 `moves` names which of them each parameter affects. The count of people newly below the anchored poverty line is reported at each point too",
         "central_total_impact_bn": 72.7,
         "central_uprating_shortfall_bn": 7.27,
         "central_n_newly_below_anchored_line": 2337905,
@@ -1815,7 +1815,7 @@
         ]
       },
       "sensitivity": {
-        "basis": "Each parameter's uncertainty_range in parameters.registry, evaluated through the model. NOT a confidence interval: the ranges are judgements about the price assumptions (for the forecast scenario, the spread of the published forecasts each derivation names), not sampling distributions, and the combined case moves every parameter together. Two cost aggregates are reported per point, because cpi_increase_pp moves the uprating shortfall rather than the household cost \u2014 `moves` names which of them each parameter affects. The count of people newly below the anchored poverty line is reported at each point too",
+        "basis": "Each parameter's uncertainty_range in parameters.registry, evaluated through the model. NOT a confidence interval: the ranges are judgements about the price assumptions (for the forecast scenario, single-period values from the published forecasts each derivation names, each held for the year), not sampling distributions or forecast errors, and the combined case moves every parameter together. Two cost aggregates are reported per point, because cpi_increase_pp moves the uprating shortfall rather than the household cost \u2014 `moves` names which of them each parameter affects. The count of people newly below the anchored poverty line is reported at each point too",
         "central_total_impact_bn": 26.5,
         "central_uprating_shortfall_bn": 1.65,
         "central_n_newly_below_anchored_line": 758617,
@@ -1823,7 +1823,7 @@
           "total_impact_bn_low": 18.9,
           "total_impact_bn_high": 33.9,
           "uprating_shortfall_bn_low": 0.66,
-          "uprating_shortfall_bn_high": 2.48,
+          "uprating_shortfall_bn_high": 2.64,
           "n_newly_below_anchored_line_low": 414024,
           "n_newly_below_anchored_line_high": 990677
         },
@@ -1846,12 +1846,12 @@
           "cpi_increase_pp": {
             "range": [
               1.3,
-              2.4
+              2.5
             ],
             "total_impact_bn_low": 26.5,
             "total_impact_bn_high": 26.5,
             "uprating_shortfall_bn_low": 0.66,
-            "uprating_shortfall_bn_high": 2.48,
+            "uprating_shortfall_bn_high": 2.64,
             "n_newly_below_anchored_line_low": 758617,
             "n_newly_below_anchored_line_high": 758617,
             "moves": [
@@ -5243,10 +5243,11 @@
             "source_url": "https://www.cornwall-insight.com/press-releases/16-price-cap-rise-forecast-in-january/",
             "basis": "forecast",
             "source_date": "2026-09-30",
-            "source_figure": "\u00a31,999.28 a year for January-March 2027 (electricity \u00a3959.44, gas \u00a31,039.84), from prices at close of play on 28 September 2026",
+            "source_figure": "\u00a31,999.28 a year for January-March 2027 (electricity \u00a3959.44, gas \u00a31,039.84). Cornwall's predictions page dates the prices to close of play on 28 September 2026",
             "reference_period": "January-March 2027 forecast, held for the four 2027-28 cap quarters",
-            "derivation": "Cornwall Insight's latest forecast, for January-March 2027, is \u00a31,999.28. That quarter falls inside the zero rate of VAT on domestic electricity, which ends on 31 March 2027, so electricity is restored to 5% VAT, the rate in the pre-conflict cap this is measured from: \u00a32,047.25, +39.7% on the pre-conflict \u00a31,465. Cornwall publishes no forecast for any 2027-28 quarter, so this one is held for all four. That holding is an assumption, not a forecast, and it carries no change in network or policy costs after that quarter. Supplier forecasting services that do reach April-September 2027, each at its lowest confidence, run from \u00a31,927 to \u00a32,131 and set the range",
+            "derivation": "Cornwall Insight's latest forecast, for January-March 2027, is \u00a31,999.28. That quarter falls inside the zero rate of VAT on domestic electricity, which ends on 31 March 2027. Cornwall does not state its VAT basis; it is inferred from Ofgem, whose October cap reflects the VAT removal and is the base Cornwall's rise is measured on. Electricity is restored to 5% VAT, the rate in the April-June 2026 cap this is measured from: \u00a32,047.25, +39.7% on that cap's \u00a31,465. Cornwall publishes no forecast for any 2027-28 quarter, so this one is held for all four. That holding is an assumption, not a forecast, and it carries no change in network or policy costs after that quarter. A winter quarter is being held through a summer: supplier forecasting services that do reach April-September 2027, each at its lowest confidence, run from \u00a31,927 to \u00a32,131. Each of those single quarters, held for the year, sets one end of the range. For January-March 2027 itself the same services forecast \u00a32,080 and \u00a32,088, above Cornwall",
             "supporting_source_urls": [
+              "https://www.cornwall-insight.com/predictions-and-insights-into-the-default-tariff-cap/",
               "https://www.ofgem.gov.uk/press-release/energy-price-cap-will-rise-4-october-2026",
               "https://www.eonnext.com/electricity-and-gas/price-cap/predictions",
               "https://www.britishgas.co.uk/energy/price-cap.html"
@@ -5258,6 +5259,10 @@
             "source_name": "Cornwall Insight, price cap forecast",
             "basis_label": "published forecast",
             "supporting_sources": [
+              {
+                "name": "Cornwall Insight, price cap predictions page",
+                "url": "https://www.cornwall-insight.com/predictions-and-insights-into-the-default-tariff-cap/"
+              },
               {
                 "name": "Ofgem, price cap for October-December 2026",
                 "url": "https://www.ofgem.gov.uk/press-release/energy-price-cap-will-rise-4-october-2026"
@@ -5280,11 +5285,11 @@
             "applies_to": "modelled household transport-fuel expenditure (ONS Table A6)",
             "lag": "none \u2014 applied as a full-year 2027-28 amount",
             "source_url": "https://www.eia.gov/outlooks/steo/archives/oct26.pdf",
-            "basis": "forecast",
+            "basis": "forecast_pass_through",
             "source_date": "2026-10-06",
-            "source_figure": "Brent $87.00/bbl in April-June 2027, $80.03 in July-September and $73.94 in October-December (Table 2), from inputs finalised on 1 October 2026",
+            "source_figure": "Brent $87.00/bbl in April-June 2027, $80.03 in July-September and $73.94 in October-December (Table 2), from inputs finalised on 1 October 2026. The EIA forecasts crude, not UK pump prices",
             "reference_period": "April 2027 - March 2028; January-March 2028 holds the last EIA quarter",
-            "derivation": "The US EIA's October 2026 Short-Term Energy Outlook forecasts Brent at $87.00, $80.03 and $73.94/bbl over April-December 2027. It does not reach 2028, so January-March 2028 holds the last quarter. The 2027-28 mean, $78.73, goes through this study's pump-price pass-through, the same DESNZ-against-EIA slopes and ONS petrol and diesel shares the stress tests use, to +12.2% on Autumn Budget 2025 pump prices. The pass-through is this study's, not EIA's: no published forecast of UK pump prices for 2027-28 was found, and the OBR's latest outlook (3 March 2026) used energy prices from before the conflict. Duty is held at the 52.95p in force at both ends of the slopes, as in the stress tests; the scheduled rises are the Budget decision the fuel duty option evaluates. The range is the composite at the lowest and highest EIA quarter in the year, the spread of the forecast path rather than a forecast error",
+            "derivation": "The US EIA's October 2026 Short-Term Energy Outlook forecasts Brent at $87.00, $80.03 and $73.94/bbl over April-December 2027. It does not reach 2028, so January-March 2028 holds the last quarter. The 2027-28 mean, $78.73, goes through this study's pump-price pass-through, the same DESNZ-against-EIA slopes and ONS petrol and diesel shares the stress tests use, to +12.2% on Autumn Budget 2025 pump prices. The +12.2% is this study's figure, not the EIA's: no published forecast of UK pump prices for 2027-28 was found, and the OBR's latest outlook (3 March 2026) used energy prices from before the conflict. Two things it leaves out, pulling opposite ways. First, it probably leans high: the slopes were fitted on November 2025 to August 2026, when refining margins widened, and the same EIA table has US wholesale margins over Brent narrowing again (diesel $0.81 a gallon in October-December 2025, $2.11 in July-September 2026, $1.05 over 2027-28; petrol $0.48, $1.21 and $0.58). US margins are only a proxy for the UK's, so they are disclosed rather than applied. Second, duty is held at 52.95p, the rate at both ends of the slopes, as in the stress tests. That assumes the 5p cut continues: the scheduled duty rises are outside this scenario's cost, and the fuel duty option's relief is measured against them. The range is the composite at the lowest and highest EIA quarter in the year, each held for the year: the spread of the forecast path, not a forecast error",
             "supporting_source_urls": [
               "https://www.gov.uk/government/statistics/weekly-road-fuel-prices",
               "https://www.eia.gov/dnav/pet/hist/RBRTEm.htm",
@@ -5295,7 +5300,7 @@
               18.9
             ],
             "source_name": "US EIA, Short-Term Energy Outlook, October 2026",
-            "basis_label": "published forecast",
+            "basis_label": "published Brent forecast, our pass-through",
             "supporting_sources": [
               {
                 "name": "DESNZ, weekly road fuel prices",
@@ -5358,7 +5363,7 @@
             ],
             "uncertainty_range": [
               1.3,
-              2.4
+              2.5
             ],
             "source_name": "ONS, CPI weight: electricity, gas and other fuels",
             "basis_label": "derived from this scenario's prices",
@@ -5454,7 +5459,7 @@
       "as_of": "2026-10-09",
       "gaps": [
         "Cornwall Insight publishes no price cap forecast for any quarter of 2027-28; its latest covers January-March 2027, which is held for the year.",
-        "No published forecast of UK pump prices for 2027-28 was found. Fuel uses the US EIA's Brent forecast through this study's pass-through to pump prices.",
+        "No published forecast of UK pump prices for 2027-28 was found. Fuel uses the US EIA's Brent forecast through this study's pass-through to pump prices, which carries the refining margins of 2026; the EIA forecasts US wholesale margins narrowing in 2027, so the fuel figure probably leans high.",
         "No published forecast isolates the conflict's effect on UK food prices. Food uses the revision to IGD's forecast since before the conflict, which includes everything IGD revised for.",
         "The OBR's latest forecast (3 March 2026) used energy prices from before the conflict, so it is not used."
       ],
