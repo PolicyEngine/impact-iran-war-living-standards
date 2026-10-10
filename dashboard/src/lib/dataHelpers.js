@@ -173,3 +173,31 @@ export function getUpratingInputs(scenarioData) {
     Number.isFinite(factor) && factor >= 0 && factor <= 1;
   return ok ? { captured, residual, factor } : null;
 }
+
+/**
+ * What a reader needs beside the poverty count: its range across the
+ * scenario's price ranges, how many survey records it rests on, and how much
+ * of it the largest record carries. The count is a sum over records whose
+ * weights vary by orders of magnitude, so it moves in steps and should be
+ * quoted rounded, with the range. Null unless every figure is present and
+ * sane, so a partial results file shows nothing rather than "NaN to NaN".
+ */
+export function getPovertyCountContext(scenarioData) {
+  const combined = scenarioData?.sensitivity?.combined;
+  const summary = scenarioData?.summary;
+  const low = combined?.n_newly_below_anchored_line_low;
+  const high = combined?.n_newly_below_anchored_line_high;
+  const central = summary?.n_newly_below_anchored_line;
+  const records = summary?.n_records_newly_below_anchored_line;
+  const largestShare = summary?.largest_record_share_of_newly_below_pct;
+  const ok =
+    [low, high, central].every((v) => Number.isFinite(v) && v >= 0) &&
+    low <= central &&
+    central <= high &&
+    Number.isInteger(records) &&
+    records > 0 &&
+    Number.isFinite(largestShare) &&
+    largestShare > 0 &&
+    largestShare <= 100;
+  return ok ? { low, high, records, largestShare } : null;
+}

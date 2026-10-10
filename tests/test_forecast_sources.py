@@ -78,7 +78,7 @@ def test_only_known_bases_are_used():
         assert entry["basis_label"] == config.BASIS_LABELS[entry["basis"]]
 
 
-def test_every_forecast_scenario_price_is_a_forecast():
+def test_every_forecast_scenario_price_is_built_from_a_forecast():
     """The scenario is labelled forecast-based, so no price in it may be a
     judgement or a stress-test anchor."""
     params = config.PARAMETER_REGISTRY["external_forecast"]["parameters"]
@@ -225,6 +225,21 @@ def test_the_cpi_range_ends_are_rounded_up_like_every_adder():
         assert adder == config.ceil_to_tenth(floor)
 
 
+def test_the_recorded_eia_table_is_the_published_one():
+    """Pinned as literals, transcribed from Table 2 of the October 2026 STEO.
+    A changed figure here must be a deliberate edit, not something the
+    staleness hash alone notices (#67 second review)."""
+    assert config.EIA_STEO_BRENT_HISTORY == {"2025Q4": 63.63, "2026Q3": 95.95}
+    assert config.EIA_STEO_WHOLESALE == {
+        "gasoline": {"2025Q4": 2.00, "2026Q3": 3.49, "2027Q2": 2.77, "2027Q3": 2.57, "2027Q4": 2.24},
+        "diesel": {"2025Q4": 2.33, "2026Q3": 4.39, "2027Q2": 3.12, "2027Q3": 2.92, "2027Q4": 2.82},
+    }
+    assert config.EIA_STEO_RETAIL == {
+        "gasoline": {"2025Q4": 3.00, "2026Q3": 4.11, "2027Q2": 3.76, "2027Q3": 3.56, "2027Q4": 3.24},
+        "diesel": {"2025Q4": 3.70, "2026Q3": 5.57, "2027Q2": 4.57, "2027Q3": 4.30, "2027Q4": 4.18},
+    }
+
+
 def test_the_margin_disclosure_matches_the_eia_table():
     """The fuel derivation says US wholesale margins widened in 2026 and
     narrow again in the forecast. That has to be what the recorded table
@@ -232,17 +247,56 @@ def test_the_margin_disclosure_matches_the_eia_table():
     derivation = config.PARAMETER_REGISTRY["external_forecast"]["parameters"][
         "fuel_pct"
     ]["derivation"]
-    for product in ("diesel", "gasoline"):
-        before = config.eia_wholesale_margin(product, "2025Q4")
-        peak = config.eia_wholesale_margin(product, "2026Q3")
-        forecast = config.eia_wholesale_margin(product)
+    # $/gallon over Brent: October-December 2025, July-September 2026 and
+    # the 2027-28 mean. By hand: diesel 2.33 - 63.63/42 = 0.815 exactly,
+    # which rounds half up to 0.82; 4.39 - 95.95/42 = 2.105.
+    expected = {"diesel": (0.82, 2.11, 1.05), "gasoline": (0.49, 1.21, 0.58)}
+    for product, (before, peak, forecast) in expected.items():
+        assert config.eia_wholesale_margin(product, "2025Q4") == before
+        assert config.eia_wholesale_margin(product, "2026Q3") == peak
+        assert config.eia_wholesale_margin(product) == forecast
         assert before < forecast < peak, product
         for figure in (before, peak, forecast):
             assert f"${figure:.2f}" in derivation, (product, figure)
-    # By hand, from Table 2: diesel 4.39 - 95.95/42 and 2.33 - 63.63/42.
-    assert config.eia_wholesale_margin("diesel", "2026Q3") == round(4.39 - 95.95 / 42, 2)
-    assert config.eia_wholesale_margin("diesel", "2025Q4") == round(2.33 - 63.63 / 42, 2)
     assert "probably leans high" in derivation
+
+
+def test_the_leans_high_disclosure_is_sized_from_the_eia_forecast():
+    """How far it leans is computed, not asserted: this study's rise scaled
+    by the share of the 2026 slope's predicted rise that the EIA itself
+    forecasts for US prices. The range's low end sits between the two, so
+    the derivation may say it is about the EIA-consistent figure."""
+    retail = config.eia_consistent_fuel_rise_pct("retail")
+    wholesale = config.eia_consistent_fuel_rise_pct("wholesale")
+    assert (retail, wholesale) == (9.6, 7.7)
+    central = config.SCENARIOS["external_forecast"]["fuel_pct"]
+    low = config.forecast_fuel_range_pct()[0]
+    assert wholesale < low < retail < central
+    derivation = config.PARAMETER_REGISTRY["external_forecast"]["parameters"][
+        "fuel_pct"
+    ]["derivation"]
+    assert f"+{retail}% on US retail" in derivation
+    assert f"+{wholesale}% on US wholesale" in derivation
+    assert "disclosed rather than applied" in derivation
+
+    # By hand for retail diesel: the two-point slope predicts a rise of
+    # (5.57 - 3.70) / (95.95 - 63.63) * (78.73 - 63.63) = $0.874 a gallon;
+    # the EIA forecasts (4.57 + 4.30 + 4.18 + 4.18) / 4 - 3.70 = $0.6075.
+    predicted = (5.57 - 3.70) / (95.95 - 63.63) * (78.73 - 63.63)
+    forecast = (4.57 + 4.30 + 4.18 + 4.18) / 4 - 3.70
+    assert forecast / predicted == pytest.approx(0.6955, abs=0.001)
+
+
+def test_the_readme_quotes_the_computed_disclosure_figures():
+    from pathlib import Path
+
+    readme = (Path(__file__).parents[1] / "README.md").read_text()
+    assert f"${config.eia_wholesale_margin('diesel', '2026Q3'):.2f} a gallon" in readme
+    assert f"${config.eia_wholesale_margin('diesel'):.2f} over 2027-28" in readme
+    assert f"+{config.eia_consistent_fuel_rise_pct('retail')}% (retail)" in readme
+    assert f"+{config.eia_consistent_fuel_rise_pct('wholesale')}% (wholesale)" in readme
+    low, high = sorted(f["total_gbp"] for f in config.SUPPLIER_CAP_FORECASTS_Q1_2027)
+    assert f"£{low:,}–£{high:,}" in readme
 
 
 def test_the_duty_assumption_is_stated():
@@ -253,9 +307,37 @@ def test_the_duty_assumption_is_stated():
     ]["derivation"]
     assert "assumes the 5p cut continues" in derivation
     assert "outside this scenario's cost" in derivation
+    # And beside the scenario, not only inside a derivation a reader has to
+    # open: the fuel duty option is compared with this cost (#67 second
+    # review).
+    assumptions = " ".join(config.FORECAST_ASSUMPTIONS)
+    assert "Fuel duty stays at 52.95p" in assumptions
+    assert "not in this scenario's cost" in assumptions
+
+
+def test_the_stress_test_fuel_rows_are_labelled_as_pass_throughs_too():
+    """Goldman and Oxford Economics published Brent cases; the pump-price
+    figures beside their names are this study's (#67 second review)."""
+    for key in ("central_shock", "severe_shock"):
+        entry = config.PARAMETER_REGISTRY[key]["parameters"]["fuel_pct"]
+        assert entry["basis"] == "published_scenario_pass_through"
+        assert "our pass-through" in entry["basis_label"]
 
 
 def test_supplier_january_forecasts_sit_above_cornwall_as_the_derivation_says():
+    # Pinned: E.ON Next (5 Oct 2026) and British Gas (1 Oct 2026).
+    assert [
+        (f["supplier"], f["total_gbp"], f["published"])
+        for f in config.SUPPLIER_CAP_FORECASTS_Q1_2027
+    ] == [("E.ON Next", 2_088, "2026-10-05"), ("British Gas", 2_080, "2026-10-01")]
+    assert [
+        (f["supplier"], f["period"], f["total_gbp"])
+        for f in config.SUPPLIER_CAP_FORECASTS_2027_28
+    ] == [
+        ("E.ON Next", "April-June 2027", 2_131),
+        ("E.ON Next", "July-September 2027", 1_927),
+        ("British Gas", "April-June 2027", 1_995),
+    ]
     cornwall = config.CORNWALL_FORECAST["total_gbp"]
     for forecast in config.SUPPLIER_CAP_FORECASTS_Q1_2027:
         assert forecast["total_gbp"] > cornwall, forecast["supplier"]

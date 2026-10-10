@@ -72,6 +72,57 @@ describe("the Household impacts tab", () => {
     expect(text).toContain("Ofgem, price cap for July-September 2026");
   });
 
+  it("shows the poverty count's range and what it rests on, for every scenario", () => {
+    const { container } = render(<ScenariosTab data={data} />);
+    for (const [key, startsWith] of [
+      ["external_forecast", "Latest forecasts"],
+      ["low_shock", "Summer 2026 prices"],
+      ["central_shock", "Sustained escalation"],
+      ["severe_shock", "Severe escalation"],
+    ]) {
+      fireEvent.click(button(container, startsWith));
+      const scenario = data.scenarios[key];
+      const combined = scenario.sensitivity.combined;
+      const context = textOf(container.querySelector('[data-testid="poverty-count-context"]'));
+      expect(context, key).toContain(
+        `${formatCount(combined.n_newly_below_anchored_line_low)} to ${formatCount(combined.n_newly_below_anchored_line_high)}`,
+      );
+      expect(context, key).toContain(
+        `${scenario.summary.n_records_newly_below_anchored_line.toLocaleString("en-GB")} survey records`,
+      );
+      expect(context, key).toContain(
+        `${scenario.summary.largest_record_share_of_newly_below_pct}% of it`,
+      );
+    }
+  });
+
+  it("omits the poverty context rather than publish a partial one", () => {
+    const cases = [
+      ["sensitivity.combined.n_newly_below_anchored_line_low", undefined],
+      ["sensitivity.combined.n_newly_below_anchored_line_high", NaN],
+      // A range that does not contain the headline is a stale or mixed file.
+      ["sensitivity.combined.n_newly_below_anchored_line_high", 1],
+      ["summary.n_records_newly_below_anchored_line", 0],
+      ["summary.n_records_newly_below_anchored_line", "754"],
+      ["summary.largest_record_share_of_newly_below_pct", 140],
+      ["summary.largest_record_share_of_newly_below_pct", undefined],
+    ];
+    for (const [path, value] of cases) {
+      const broken = structuredClone(data);
+      const parts = path.split(".");
+      let node = broken.scenarios.external_forecast;
+      for (const part of parts.slice(0, -1)) node = node[part];
+      node[parts[parts.length - 1]] = value;
+      const { container, unmount } = render(<ScenariosTab data={broken} />);
+      expect(
+        container.querySelector('[data-testid="poverty-count-context"]'),
+        `${path}=${String(value)}`,
+      ).toBeNull();
+      expect(container.textContent).not.toContain("NaN");
+      unmount();
+    }
+  });
+
   it("puts the forecast figures beside the stress tests in the comparison table", () => {
     const text = textOf(render(<ScenariosTab data={data} />).container);
     expect(text).toContain(

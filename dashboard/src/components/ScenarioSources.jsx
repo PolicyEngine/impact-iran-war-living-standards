@@ -51,10 +51,10 @@ export default function ScenarioSources({ data, scenario }) {
       <p className="mt-2 text-sm leading-6 text-slate-600">
         {isForecast ? (
           <>
-            Each price comes from a published forecast
-            {vintage?.as_of ? `, as of ${formatSourceDate(vintage.as_of)}` : ""}. Where a
-            forecast stops short of 2027-28 its last period is held, as the derivation
-            says.
+            Each price is built from a published forecast
+            {vintage?.as_of ? `, as of ${formatSourceDate(vintage.as_of)}` : ""}. The
+            basis column says where this study&apos;s own pass-through sits between the
+            forecast and the figure.
           </>
         ) : (
           <>
@@ -128,9 +128,19 @@ export default function ScenarioSources({ data, scenario }) {
           </tbody>
         </table>
       </div>
+      {isForecast && Array.isArray(vintage?.assumptions) && vintage.assumptions.length > 0 ? (
+        <div className="mt-4 text-sm leading-6 text-slate-600">
+          <div className="font-semibold text-slate-800">What this scenario assumes</div>
+          <ul className="mt-1 list-disc space-y-1 pl-5">
+            {vintage.assumptions.map((assumption) => (
+              <li key={assumption}>{assumption}</li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
       {isForecast && Array.isArray(vintage?.gaps) && vintage.gaps.length > 0 ? (
         <div className="mt-4 text-sm leading-6 text-slate-600">
-          <div className="font-semibold text-slate-800">Where no forecast exists</div>
+          <div className="font-semibold text-slate-800">What the forecasts do not cover</div>
           <ul className="mt-1 list-disc space-y-1 pl-5">
             {vintage.gaps.map((gap) => (
               <li key={gap}>{gap}</li>

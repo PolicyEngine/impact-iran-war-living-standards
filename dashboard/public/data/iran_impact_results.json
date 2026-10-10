@@ -2,8 +2,8 @@
   "year": 2027,
   "current_energy_cap": 1663,
   "provenance": {
-    "generated_at": "2026-10-09T23:51:13+00:00",
-    "git_revision": "a841cafcd1beaf8d8e8e24c2093415bcd7b181c7",
+    "generated_at": "2026-10-10T00:37:36+00:00",
+    "git_revision": "5463e34153433af46ebb65967b84aa867563bbe6",
     "git_dirty": true,
     "packages": {
       "policyengine": "5.3.0",
@@ -13,8 +13,8 @@
       "microdf-python": "1.3.0"
     },
     "source_hashes": {
-      "config.py": "0226f6d3f554bd582446016941e2a48b6c6c02f784ebf0ff273c51d668a45590",
-      "pipeline.py": "040cdfa84cce3d2de32814b6b5dcb09f35a157429ba40d4a13fa1e667634f937",
+      "config.py": "e2816c938dc1ce2570fab107a2eb4daf66df80be6608d1a6bfceb57ff0ed6c3d",
+      "pipeline.py": "2c436be95e0d0ce38ff01d7398749d5a8b7d5261f9b2d9b4c7174be167471ab6",
       "provenance.py": "4ebb5ba4919f3ecbe1a09300f21463c86ea2499e95fef763a876a973ffbd3f8a",
       "pyproject.toml": "7bf92820c3a036476e3af9ddf9524c504b6590958faf4b51e49f7c12d246435c",
       "requirements.lock": "2af6a5d81b7288fe9a3698bf018e0d8291b6e8a91a5cd44a5d4e8f08e2e62d30"
@@ -104,7 +104,10 @@
         "below_anchored_line_shocked_pct": 19.51,
         "n_newly_below_anchored_line": 379109,
         "n_households_newly_below_anchored_line": 185699,
-        "n_pushed_into_poverty": 379109
+        "n_pushed_into_poverty": 379109,
+        "n_records_newly_below_anchored_line": 447,
+        "largest_record_share_of_newly_below_pct": 12.0,
+        "three_largest_records_share_of_newly_below_pct": 26.9
       },
       "by_quintile": [
         {
@@ -556,7 +559,10 @@
         "below_anchored_line_shocked_pct": 21.12,
         "n_newly_below_anchored_line": 1508923,
         "n_households_newly_below_anchored_line": 750843,
-        "n_pushed_into_poverty": 1508923
+        "n_pushed_into_poverty": 1508923,
+        "n_records_newly_below_anchored_line": 1173,
+        "largest_record_share_of_newly_below_pct": 13.1,
+        "three_largest_records_share_of_newly_below_pct": 23.5
       },
       "by_quintile": [
         {
@@ -1008,7 +1014,10 @@
         "below_anchored_line_shocked_pct": 22.3,
         "n_newly_below_anchored_line": 2337905,
         "n_households_newly_below_anchored_line": 1159588,
-        "n_pushed_into_poverty": 2337905
+        "n_pushed_into_poverty": 2337905,
+        "n_records_newly_below_anchored_line": 2101,
+        "largest_record_share_of_newly_below_pct": 8.5,
+        "three_largest_records_share_of_newly_below_pct": 18.3
       },
       "by_quintile": [
         {
@@ -1460,7 +1469,10 @@
         "below_anchored_line_shocked_pct": 20.05,
         "n_newly_below_anchored_line": 758617,
         "n_households_newly_below_anchored_line": 394241,
-        "n_pushed_into_poverty": 758617
+        "n_pushed_into_poverty": 758617,
+        "n_records_newly_below_anchored_line": 754,
+        "largest_record_share_of_newly_below_pct": 10.1,
+        "three_largest_records_share_of_newly_below_pct": 21.9
       },
       "by_quintile": [
         {
@@ -5043,7 +5055,7 @@
             "applies_to": "modelled household transport-fuel expenditure (ONS Table A6)",
             "lag": "none \u2014 applied as a full-year 2027-28 amount",
             "source_url": "https://commonslibrary.parliament.uk/research-briefings/cbp-10601/",
-            "basis": "published_scenario",
+            "basis": "published_scenario_pass_through",
             "source_date": "2026-07-01",
             "reference_period": "Goldman Q3 2026 Brent of $120/bbl",
             "derivation": "Expenditure-weighted pump response to the Goldman extended-closure case, on the same basis as the severe scenario so one registry gives one basis for this channel. Petrol and diesel are derived separately and combined by their shares of ONS Family Spending FYE2024 Table A1 lines 7.2.2.1 and 7.2.2.2 (\u00a312.10 petrol, \u00a37.70 diesel of the \u00a319.80 category this model already uses), because A6 gives one combined figure and the two products moved very differently. DESNZ monthly mean pump prices moved 135.04p to 161.42p for petrol and 143.82p to 181.98p for diesel between November 2025 and August 2026, while EIA monthly mean Brent moved $63.80 to $91.08 over the same months: slopes of ~0.97 and ~1.40p/litre per $1/bbl. At Goldman's $120 Q3 figure that gives +40% petrol, +55% diesel and a +46% composite. Both series are monthly means, so the periods match; earlier versions paired monthly pump means with a single-day Brent spot, and then applied a petrol-only slope to the combined category (#52 review C2, #55 review C1). Commons Library CBP-10601 informed the pass-through framing; the coefficients are this study's",
@@ -5058,7 +5070,7 @@
               60
             ],
             "source_name": "House of Commons Library, CBP-10601",
-            "basis_label": "published scenario",
+            "basis_label": "published Brent scenario, our pass-through",
             "supporting_sources": [
               {
                 "name": "DESNZ, weekly road fuel prices",
@@ -5152,7 +5164,7 @@
             "applies_to": "modelled household transport-fuel expenditure (ONS Table A6)",
             "lag": "none \u2014 applied as a full-year 2027-28 amount",
             "source_url": "https://www.oxfordeconomics.com/resource/iran-war-scenarios-the-oil-price-that-breaks-parts-of-the-economy/",
-            "basis": "published_scenario",
+            "basis": "published_scenario_pass_through",
             "source_date": "2026-03-13",
             "reference_period": "two-month $140/bbl case",
             "derivation": "Expenditure-weighted pump response at Brent of $140/bbl. The source publishes no pump-price figure, so the pass-through is this study's. Petrol and diesel are derived separately from DESNZ monthly means against EIA monthly mean Brent (slopes ~0.97 and ~1.40p/litre per $1/bbl) and combined by their ONS Family Spending FYE2024 Table A1 expenditure shares, 61% petrol and 39% diesel. At $140 that gives +55% petrol, +74% diesel and a +62% composite, which is where this is set. Diesel cracks widened far more than gasoline in this episode, which is why a petrol-only rate understated the combined category (#55 review C1). The slopes embed that widening as well as crude cost, which is why they exceed the ~0.56p/litre that $1/bbl contributes through crude and VAT alone; fuel duty is a fixed 52.95p/litre and damps the percentage rise",
@@ -5167,7 +5179,7 @@
               80
             ],
             "source_name": "Oxford Economics, Iran war scenarios",
-            "basis_label": "published scenario",
+            "basis_label": "published Brent scenario, our pass-through",
             "supporting_sources": [
               {
                 "name": "DESNZ, weekly road fuel prices",
@@ -5289,7 +5301,7 @@
             "source_date": "2026-10-06",
             "source_figure": "Brent $87.00/bbl in April-June 2027, $80.03 in July-September and $73.94 in October-December (Table 2), from inputs finalised on 1 October 2026. The EIA forecasts crude, not UK pump prices",
             "reference_period": "April 2027 - March 2028; January-March 2028 holds the last EIA quarter",
-            "derivation": "The US EIA's October 2026 Short-Term Energy Outlook forecasts Brent at $87.00, $80.03 and $73.94/bbl over April-December 2027. It does not reach 2028, so January-March 2028 holds the last quarter. The 2027-28 mean, $78.73, goes through this study's pump-price pass-through, the same DESNZ-against-EIA slopes and ONS petrol and diesel shares the stress tests use, to +12.2% on Autumn Budget 2025 pump prices. The +12.2% is this study's figure, not the EIA's: no published forecast of UK pump prices for 2027-28 was found, and the OBR's latest outlook (3 March 2026) used energy prices from before the conflict. Two things it leaves out, pulling opposite ways. First, it probably leans high: the slopes were fitted on November 2025 to August 2026, when refining margins widened, and the same EIA table has US wholesale margins over Brent narrowing again (diesel $0.81 a gallon in October-December 2025, $2.11 in July-September 2026, $1.05 over 2027-28; petrol $0.48, $1.21 and $0.58). US margins are only a proxy for the UK's, so they are disclosed rather than applied. Second, duty is held at 52.95p, the rate at both ends of the slopes, as in the stress tests. That assumes the 5p cut continues: the scheduled duty rises are outside this scenario's cost, and the fuel duty option's relief is measured against them. The range is the composite at the lowest and highest EIA quarter in the year, each held for the year: the spread of the forecast path, not a forecast error",
+            "derivation": "The US EIA's October 2026 Short-Term Energy Outlook forecasts Brent at $87.00, $80.03 and $73.94/bbl over April-December 2027. It does not reach 2028, so January-March 2028 holds the last quarter. The 2027-28 mean, $78.73, goes through this study's pump-price pass-through, the same DESNZ-against-EIA slopes and ONS petrol and diesel shares the stress tests use, to +12.2% on Autumn Budget 2025 pump prices. The +12.2% is this study's figure, not the EIA's: no published forecast of UK pump prices for 2027-28 was found, and the OBR's latest outlook (3 March 2026) used energy prices from before the conflict. Two things it leaves out, pulling opposite ways. First, it probably leans high: the slopes were fitted on November 2025 to August 2026, when refining margins widened, and the same EIA table has US wholesale margins over Brent narrowing again (diesel $0.82 a gallon in October-December 2025, $2.11 in July-September 2026, $1.05 over 2027-28; petrol $0.49, $1.21 and $0.58). Scaling this study's rise by how far the EIA's own US price forecasts fall short of the same slope gives about +9.6% on US retail prices and +7.7% on US wholesale, so the low end of the range is about where an EIA-consistent figure would sit, not a low case. US prices are only a proxy for the UK's, so this is disclosed rather than applied. Second, duty is held at 52.95p, the rate at both ends of the slopes, as in the stress tests. That assumes the 5p cut continues: the scheduled duty rises are outside this scenario's cost, and the fuel duty option's relief is measured against them. The range is the composite at the lowest and highest EIA quarter in the year, each held for the year: the spread of the forecast path, not a forecast error",
             "supporting_source_urls": [
               "https://www.gov.uk/government/statistics/weekly-road-fuel-prices",
               "https://www.eia.gov/dnav/pet/hist/RBRTEm.htm",
@@ -5457,10 +5469,15 @@
     },
     "forecast_vintage": {
       "as_of": "2026-10-09",
+      "assumptions": [
+        "Fuel duty stays at 52.95p a litre, the rate with the temporary 5p cut, as in the stress tests. Under current law it rises from January 2027. That rise is not in this scenario's cost, so the fuel duty option on the Policy options tab offsets a rise the cost here does not include.",
+        "VAT on electricity is back at 5% from April 2027, as current law sets. Extending the zero rate is one of the policy options.",
+        "Each forecast's last period is held where it stops short of March 2028: Cornwall Insight's at January-March 2027, the EIA's at October-December 2027."
+      ],
       "gaps": [
         "Cornwall Insight publishes no price cap forecast for any quarter of 2027-28; its latest covers January-March 2027, which is held for the year.",
-        "No published forecast of UK pump prices for 2027-28 was found. Fuel uses the US EIA's Brent forecast through this study's pass-through to pump prices, which carries the refining margins of 2026; the EIA forecasts US wholesale margins narrowing in 2027, so the fuel figure probably leans high.",
-        "No published forecast isolates the conflict's effect on UK food prices. Food uses the revision to IGD's forecast since before the conflict, which includes everything IGD revised for.",
+        "No published forecast of UK pump prices for 2027-28 was found. Fuel uses the US EIA's Brent forecast through this study's pass-through to pump prices, which carries the refining margins of 2026. The EIA forecasts US margins narrowing in 2027, so the fuel figure probably leans high: see its derivation for how far.",
+        "No published forecast that isolates the conflict's effect on UK food prices was found. Food uses the revision to IGD's forecast since before the conflict, which includes everything IGD revised for.",
         "The OBR's latest forecast (3 March 2026) used energy prices from before the conflict, so it is not used."
       ],
       "next_updates": [
@@ -5484,6 +5501,7 @@
       "Fuel product mix: ONS Table A6 gives one combined figure for petrol, diesel and other motor oils, and the model multiplies it by one percentage. That percentage is an expenditure-weighted composite of separately derived petrol and diesel responses, using the FYE2024 Table A1 shares (61% petrol, 39% diesel). It is a fixed-weight calculation: no substitution between fuels and no volume response is modelled, and a household's own mix is not represented, so a diesel-only household's shock is understated and a petrol-only household's overstated. The shares are two years older than the modelled year and the diesel car fleet share has been falling, which biases the composite very slightly high.",
       "Share-of-income statistics: the MEAN share is not robust in the bottom quintile, because a small number of households with a defined but very small income denominator pull it up sharply. Each quintile row therefore reports three bases - mean_impact_pct, trimmed_mean_impact_pct (excluding the bottom 1% of all incomes) and median_impact_pct - and they differ substantially at the bottom. The GRADIENT between the bottom and top quintiles holds on every basis; the LEVEL does not, so a single quoted figure should be the gradient, and the ratio of mean cost to mean income is the steadiest basis for it. Excluding households with zero modelled energy spend barely moves any of the three, so the sensitivity is to the income tail rather than the energy tail; those households are over-represented in the bottom two quintiles, which hold about three fifths of them (#46).",
       "Benefit uprating: the gain from an accelerated uprating is modelled by running a PolicyEngine UK reform at each scenario's residual CPI addition, raising every CPI-uprated benefit rate, with tapers, award floors and the benefit cap applied, the reported ESA, contribution-based JSA, IIDB, incapacity benefit and AFCS awards scaled, and the CPI-uprated additional State Pension raised, including UC work allowances, the childcare cap, the non-dependant deduction (which lowers awards) and Pension Age Winter Heating Payment. Not covered, each with a published upper bound on the omission under metadata.uprating_not_covered: the Pension Credit savings credit maximum, which is not a model parameter, and the partly CPI-linked maternity allowance and statutory maternity, paternity and sick pay; the captured September 2026 CPI is a proxy on August data with food omitted. The amount is reported as the compensation an immediate uprating would deliver and is not counted as a cost, so the household loss is the price rise alone.",
+      "Poverty count granularity: the count of people newly below the anchored line is a sum over survey records whose weights vary by orders of magnitude, so a single record can carry a large share of it and the count moves in steps as a price rises: a small change in an assumption can move it sharply or not at all. Each scenario's summary reports how many records the count rests on and the share the largest carry (n_records_newly_below_anchored_line and the two *_share_of_newly_below_pct fields), and its sensitivity block reports the count at each end of every price range. Quote the count rounded and with that range, not to the last person. The cost figures are sums over every household and are not affected in the same way.",
       "Means-tested payment timing: the 2022 scheme paid two separate awards of \u00a3326 and \u00a3324, each conditional on entitlement in its own qualifying window, so a household entitled in only one window received that instalment alone. The annual microdata cannot observe entitlement within a window, so each instalment is paid at an assumed per-window entitlement rate (MEANS_TEST_WINDOW_ENTITLEMENT_RATE), which gives the expected value across all four qualifying states without modelling their joint distribution. That rate is a stated assumption, not a sourced figure, and the modelled cost is proportional to it. Take-up among qualifying households is treated as complete, since the 2022 payments were automatic.",
       "Uncertainty: the ranges in PARAMETER_REGISTRY describe the spread of the price assumptions and are now evaluated through the model \u2014 see scenarios[*].sensitivity. They are judgements, not sampling distributions, so the resulting spread is not a confidence interval. Survey sampling uncertainty on the spending inputs is reported separately under parameters.spending_inputs.sampling_uncertainty and is not propagated, because ONS publishes no decile-level standard errors."
     ],

@@ -22,6 +22,7 @@ import {
   getChannelDecomposition,
   getHouseholdTypeBreakdown,
   getUpratingInputs,
+  getPovertyCountContext,
 } from "../lib/dataHelpers";
 import { formatCurrency, formatCount } from "../lib/formatters";
 import { exampleHouseholdCost } from "../lib/householdCost";
@@ -560,6 +561,7 @@ export default function ScenariosTab({ data }) {
   const povertySummary = data?.scenarios?.[scenario]?.summary;
   const povertyBaseline = povertySummary?.poverty_rate_baseline_pct;
   const povertyShocked = povertySummary?.below_anchored_line_shocked_pct;
+  const povertyContext = getPovertyCountContext(data?.scenarios?.[scenario]);
   const quintileData = getQuintileBreakdown(data, scenario);
   const countryData = getCountryBreakdown(data, scenario);
   const tenureData = getTenureBreakdown(data, scenario);
@@ -726,6 +728,18 @@ export default function ScenariosTab({ data }) {
             Income) before housing costs, held at its pre-shock level &mdash; an
             anchored threshold.
           </div>
+          {povertyContext ? (
+            <div className="mt-2 text-sm text-slate-500" data-testid="poverty-count-context">
+              Quote it rounded, with its range:{" "}
+              <strong>
+                {formatCount(povertyContext.low)} to {formatCount(povertyContext.high)}
+              </strong>{" "}
+              across this scenario&apos;s price ranges. The count rests on{" "}
+              {povertyContext.records.toLocaleString("en-GB")} survey records with very
+              uneven weights, and the largest alone carries{" "}
+              {povertyContext.largestShare}% of it, so it moves in steps.
+            </div>
+          ) : null}
         </div>
         <div className="metric-card">
           <div className="text-xs font-medium uppercase tracking-[0.08em] text-slate-500">

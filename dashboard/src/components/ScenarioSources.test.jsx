@@ -86,8 +86,15 @@ describe("the forecast scenario", () => {
   it("states the vintage, what no forecast covers, and when it goes stale", () => {
     const text = renderSources(data, "external_forecast").textContent.replace(/\s+/g, " ");
     expect(text).toContain(`as of ${formatSourceDate(data.metadata.forecast_vintage.as_of)}`);
-    expect(text).toContain("Where no forecast exists");
+    expect(text).toContain("What the forecasts do not cover");
     for (const gap of data.metadata.forecast_vintage.gaps) expect(text).toContain(gap);
+    // The duty assumption has to be in view without opening a derivation:
+    // the fuel duty option is compared with this cost (#67 second review).
+    expect(text).toContain("What this scenario assumes");
+    for (const assumption of data.metadata.forecast_vintage.assumptions) {
+      expect(text).toContain(assumption);
+    }
+    expect(text).toContain("Fuel duty stays at 52.95p a litre");
     expect(text).toContain("Next updates");
     expect(text).toContain("28 Oct 2026");
   });
@@ -99,7 +106,8 @@ describe("the stress tests", () => {
       const container = renderSources(data, scenario);
       const text = container.textContent.replace(/\s+/g, " ");
       expect(text, scenario).toContain("A stress test, not a forecast");
-      expect(text, scenario).not.toContain("Where no forecast exists");
+      expect(text, scenario).not.toContain("What the forecasts do not cover");
+      expect(text, scenario).not.toContain("What this scenario assumes");
       const energy = [...container.querySelectorAll("tbody tr")].find((r) =>
         r.textContent.startsWith("Energy spending"),
       );

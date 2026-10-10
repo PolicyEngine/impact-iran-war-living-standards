@@ -65,6 +65,7 @@ from .config import (
     METHOD_LIMITATIONS,
     SCENARIO_TYPES,
     FORECAST_AS_OF,
+    FORECAST_ASSUMPTIONS,
     FORECAST_GAPS,
     FORECAST_NEXT_UPDATES,
     OCTOBER_2026_ENERGY_CAP,
@@ -1121,6 +1122,28 @@ def _eval_policy(data, impacts, policy_name, effect):
     }
 
 
+def _count_concentration(selected, person_weights):
+    """How many survey records a weighted count of people rests on, and the
+    share of it that the largest record, and the three largest, carry."""
+    carried = np.sort(person_weights[selected])[::-1]
+    total = float(carried.sum())
+    if total <= 0:
+        return {
+            "n_records_newly_below_anchored_line": 0,
+            "largest_record_share_of_newly_below_pct": 0.0,
+            "three_largest_records_share_of_newly_below_pct": 0.0,
+        }
+    return {
+        "n_records_newly_below_anchored_line": int(len(carried)),
+        "largest_record_share_of_newly_below_pct": round(
+            float(carried[0]) / total * 100, 1
+        ),
+        "three_largest_records_share_of_newly_below_pct": round(
+            float(carried[:3].sum()) / total * 100, 1
+        ),
+    }
+
+
 def _policy_responses(data, scenario_key, impacts):
     effects = compute_policy_effects(data, scenario_key, impacts)
     names = {
@@ -1312,6 +1335,12 @@ def _scenario_output(data, scenario_key):
         "n_pushed_into_poverty": round(
             weighted_sum(newly_poor.astype(float), person_weights)
         ),
+        # How lumpy that count is. It is a sum over survey records whose
+        # weights vary by orders of magnitude, so one record can carry a
+        # large share of it and the count moves in steps as a price rises
+        # (#67 second review). Reported so the count is quoted with that in
+        # view rather than to the last person.
+        **_count_concentration(newly_poor, person_weights),
     }
 
     return {
@@ -1495,6 +1524,7 @@ def run_full_pipeline(year=YEAR, scenario_keys="all"):
             # how fresh it is.
             "forecast_vintage": {
                 "as_of": FORECAST_AS_OF,
+                "assumptions": FORECAST_ASSUMPTIONS,
                 "gaps": FORECAST_GAPS,
                 "next_updates": FORECAST_NEXT_UPDATES,
             },

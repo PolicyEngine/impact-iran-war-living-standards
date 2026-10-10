@@ -509,6 +509,7 @@ def test_every_published_parameter_carries_its_citation(results):
 def test_the_forecast_vintage_is_published(results):
     vintage = results["metadata"]["forecast_vintage"]
     assert vintage["as_of"] == config.FORECAST_AS_OF
+    assert vintage["assumptions"] == config.FORECAST_ASSUMPTIONS
     assert vintage["gaps"] == config.FORECAST_GAPS
     assert vintage["next_updates"] == config.FORECAST_NEXT_UPDATES
 
@@ -576,3 +577,39 @@ def test_each_price_parameter_raises_cost_and_poverty_through_its_range(results)
             <= central_poor
             <= combined["n_newly_below_anchored_line_high"]
         ), key
+
+
+def test_every_poverty_count_reports_what_it_rests_on(results):
+    """The count is a sum over a few hundred survey records with very uneven
+    weights, so it moves in steps. Every scenario must say how many records
+    it rests on and how much the largest carry, and the forecast scenario's
+    are pinned because its count is the one most likely to be quoted."""
+    for key, scenario in results["scenarios"].items():
+        summary = scenario["summary"]
+        records = summary["n_records_newly_below_anchored_line"]
+        largest = summary["largest_record_share_of_newly_below_pct"]
+        top3 = summary["three_largest_records_share_of_newly_below_pct"]
+        assert records > 0, key
+        assert 0 < largest <= top3 <= 100, key
+        # More people than records: each record stands for many.
+        assert summary["n_newly_below_anchored_line"] > records, key
+
+    forecast = results["scenarios"]["external_forecast"]["summary"]
+    assert forecast["n_records_newly_below_anchored_line"] == 754
+    assert forecast["largest_record_share_of_newly_below_pct"] == 10.1
+
+    limitations = " ".join(results["metadata"]["method_limitations"])
+    assert "Poverty count granularity" in limitations
+    assert "moves in steps" in limitations
+
+
+def test_the_readme_quotes_the_forecast_count_with_its_caveat(results):
+    from pathlib import Path
+
+    readme = (Path(__file__).parents[1] / "README.md").read_text()
+    summary = results["scenarios"]["external_forecast"]["summary"]
+    combined = results["scenarios"]["external_forecast"]["sensitivity"]["combined"]
+    assert f"{summary['n_records_newly_below_anchored_line']} survey records" in readme
+    assert f"{summary['largest_record_share_of_newly_below_pct']}% of it" in readme
+    assert f"{combined['n_newly_below_anchored_line_low']:,}" in readme
+    assert f"{combined['n_newly_below_anchored_line_high']:,}" in readme
