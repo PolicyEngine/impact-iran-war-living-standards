@@ -225,18 +225,23 @@ def test_the_cpi_range_ends_are_rounded_up_like_every_adder():
         assert adder == config.ceil_to_tenth(floor)
 
 
-def test_the_recorded_eia_table_is_the_published_one():
-    """Pinned as literals, transcribed from Table 2 of the October 2026 STEO.
-    A changed figure here must be a deliberate edit, not something the
-    staleness hash alone notices (#67 second review)."""
-    assert config.EIA_STEO_BRENT_HISTORY == {"2025Q4": 63.63, "2026Q3": 95.95}
+def test_the_recorded_eia_tables_are_pinned():
+    """Pinned as literals, as transcribed from Table 2 of the October 2026
+    STEO. This cannot check the transcription against the PDF; it makes a
+    changed figure a deliberate edit rather than something only the
+    staleness hash notices (#67 second review)."""
+    assert config.EIA_STEO_BRENT_HISTORY == {
+        "2025Q4": 63.63,
+        "2026Q2": 102.93,
+        "2026Q3": 95.95,
+    }
     assert config.EIA_STEO_WHOLESALE == {
-        "gasoline": {"2025Q4": 2.00, "2026Q3": 3.49, "2027Q2": 2.77, "2027Q3": 2.57, "2027Q4": 2.24},
-        "diesel": {"2025Q4": 2.33, "2026Q3": 4.39, "2027Q2": 3.12, "2027Q3": 2.92, "2027Q4": 2.82},
+        "gasoline": {"2025Q4": 2.00, "2026Q2": 3.38, "2026Q3": 3.49, "2027Q2": 2.77, "2027Q3": 2.57, "2027Q4": 2.24},
+        "diesel": {"2025Q4": 2.33, "2026Q2": 3.81, "2026Q3": 4.39, "2027Q2": 3.12, "2027Q3": 2.92, "2027Q4": 2.82},
     }
     assert config.EIA_STEO_RETAIL == {
-        "gasoline": {"2025Q4": 3.00, "2026Q3": 4.11, "2027Q2": 3.76, "2027Q3": 3.56, "2027Q4": 3.24},
-        "diesel": {"2025Q4": 3.70, "2026Q3": 5.57, "2027Q2": 4.57, "2027Q3": 4.30, "2027Q4": 4.18},
+        "gasoline": {"2025Q4": 3.00, "2026Q2": 4.21, "2026Q3": 4.11, "2027Q2": 3.76, "2027Q3": 3.56, "2027Q4": 3.24},
+        "diesel": {"2025Q4": 3.70, "2026Q2": 5.37, "2026Q3": 5.57, "2027Q2": 4.57, "2027Q3": 4.30, "2027Q4": 4.18},
     }
 
 
@@ -261,30 +266,97 @@ def test_the_margin_disclosure_matches_the_eia_table():
     assert "probably leans high" in derivation
 
 
+def _sizing_by_hand(table, end):
+    """The sizing recomputed from literals only, sharing no code with
+    config.eia_consistent_fuel_rise_pct: slopes, shares and Brent path are
+    all written out here."""
+    brent_fy = round((87.00 + 80.03 + 73.94 + 73.94) / 4, 2)
+    brent_0 = 63.63
+    brent_end = {"2026Q3": 95.95, "2026Q2": 102.93}[end]
+    # This study's UK rises at the 2027-28 Brent mean, from DESNZ pump means
+    # (135.04p -> 161.42p petrol, 143.82p -> 181.98p diesel) against EIA
+    # monthly Brent ($63.80 -> $91.08).
+    uk = {
+        "gasoline": (161.42 - 135.04) / (91.08 - 63.80) * (brent_fy - 63.80) / 135.04,
+        "diesel": (181.98 - 143.82) / (91.08 - 63.80) * (brent_fy - 63.80) / 143.82,
+    }
+    scaled = {}
+    for product, (start, at_end, q2, q3, q4) in table.items():
+        predicted = (at_end - start) / (brent_end - brent_0) * (brent_fy - brent_0)
+        forecast = (q2 + q3 + q4 + q4) / 4 - start
+        scaled[product] = uk[product] * forecast / predicted
+    # ONS A1 shares: petrol £12.10 (+£0.10 other oils), diesel £7.70.
+    return round((12.20 * scaled["gasoline"] + 7.70 * scaled["diesel"]) / 19.90 * 100, 1)
+
+
 def test_the_leans_high_disclosure_is_sized_from_the_eia_forecast():
     """How far it leans is computed, not asserted: this study's rise scaled
-    by the share of the 2026 slope's predicted rise that the EIA itself
-    forecasts for US prices. The range's low end sits between the two, so
-    the derivation may say it is about the EIA-consistent figure."""
-    retail = config.eia_consistent_fuel_rise_pct("retail")
-    wholesale = config.eia_consistent_fuel_rise_pct("wholesale")
-    assert (retail, wholesale) == (9.6, 7.7)
+    by the share of a 2026 slope's predicted rise that the EIA itself
+    forecasts for US prices. Pinned, and checked against a recomputation
+    from literals that shares no code with the function."""
+    # (2025Q4, slope end, 2027Q2, 2027Q3, 2027Q4), dollars a gallon.
+    retail_q3 = {"gasoline": (3.00, 4.11, 3.76, 3.56, 3.24), "diesel": (3.70, 5.57, 4.57, 4.30, 4.18)}
+    wholesale_q3 = {"gasoline": (2.00, 3.49, 2.77, 2.57, 2.24), "diesel": (2.33, 4.39, 3.12, 2.92, 2.82)}
+    retail_q2 = {"gasoline": (3.00, 4.21, 3.76, 3.56, 3.24), "diesel": (3.70, 5.37, 4.57, 4.30, 4.18)}
+    wholesale_q2 = {"gasoline": (2.00, 3.38, 2.77, 2.57, 2.24), "diesel": (2.33, 3.81, 3.12, 2.92, 2.82)}
+    cases = {
+        ("retail", "2026Q3"): (9.6, retail_q3),
+        ("wholesale", "2026Q3"): (7.7, wholesale_q3),
+        ("retail", "2026Q2"): (11.7, retail_q2),
+        ("wholesale", "2026Q2"): (11.5, wholesale_q2),
+    }
     central = config.SCENARIOS["external_forecast"]["fuel_pct"]
-    low = config.forecast_fuel_range_pct()[0]
-    assert wholesale < low < retail < central
     derivation = config.PARAMETER_REGISTRY["external_forecast"]["parameters"][
         "fuel_pct"
     ]["derivation"]
-    assert f"+{retail}% on US retail" in derivation
-    assert f"+{wholesale}% on US wholesale" in derivation
+    for (prices, end), (pinned, table) in cases.items():
+        value = config.eia_consistent_fuel_rise_pct(prices, end)
+        assert value == pinned, (prices, end)
+        assert value == _sizing_by_hand(table, end), (prices, end)
+        # The direction the derivation claims: every variant is below the
+        # parameter. The size is NOT claimed, because it moves with the end
+        # point (#67 third review).
+        assert value < central, (prices, end)
+        assert f"+{value}%" in derivation, (prices, end)
+    assert "the direction is clear" in derivation
     assert "disclosed rather than applied" in derivation
+    assert "not a low case" not in derivation
 
-    # By hand for retail diesel: the two-point slope predicts a rise of
-    # (5.57 - 3.70) / (95.95 - 63.63) * (78.73 - 63.63) = $0.874 a gallon;
-    # the EIA forecasts (4.57 + 4.30 + 4.18 + 4.18) / 4 - 3.70 = $0.6075.
-    predicted = (5.57 - 3.70) / (95.95 - 63.63) * (78.73 - 63.63)
-    forecast = (4.57 + 4.30 + 4.18 + 4.18) / 4 - 3.70
-    assert forecast / predicted == pytest.approx(0.6955, abs=0.001)
+
+def test_a_forecast_on_its_own_slope_is_sized_at_the_parameter(monkeypatch):
+    """The identity the sizing has to satisfy: if the EIA forecast US prices
+    exactly where the 2026 slope puts them, the scaled figure is the
+    parameter itself."""
+    brent = config.forecast_brent_2027_28()
+    b0, b1 = config.EIA_STEO_BRENT_HISTORY["2025Q4"], config.EIA_STEO_BRENT_HISTORY["2026Q3"]
+    on_slope = {}
+    for product, series in config.EIA_STEO_RETAIL.items():
+        slope = (series["2026Q3"] - series["2025Q4"]) / (b1 - b0)
+        level = series["2025Q4"] + slope * (brent - b0)
+        on_slope[product] = {**series, "2027Q2": level, "2027Q3": level, "2027Q4": level}
+    monkeypatch.setattr(config, "EIA_STEO_RETAIL", on_slope)
+    assert config.eia_consistent_fuel_rise_pct("retail") == (
+        config.fuel_rise_pct_at_brent(brent)
+    )
+
+
+def test_the_product_rises_agree_with_the_composite_the_parameter_uses():
+    """_product_rises_at_brent restates the two terms fuel_rise_pct_at_brent
+    combines, so the two must agree at every Brent level (differential)."""
+    total = (
+        config.PETROL_WEEKLY_SPEND
+        + config.DIESEL_WEEKLY_SPEND
+        + config.OTHER_MOTOR_OILS_WEEKLY_SPEND
+    )
+    for tenth in range(300, 2001, 7):
+        brent = tenth / 10
+        rises = config._product_rises_at_brent(brent)
+        composite = (
+            (config.PETROL_WEEKLY_SPEND + config.OTHER_MOTOR_OILS_WEEKLY_SPEND)
+            * rises["gasoline"]
+            + config.DIESEL_WEEKLY_SPEND * rises["diesel"]
+        ) / total
+        assert round(composite * 100, 1) == config.fuel_rise_pct_at_brent(brent), brent
 
 
 def test_the_readme_quotes_the_computed_disclosure_figures():
@@ -295,6 +367,10 @@ def test_the_readme_quotes_the_computed_disclosure_figures():
     assert f"${config.eia_wholesale_margin('diesel'):.2f} over 2027-28" in readme
     assert f"+{config.eia_consistent_fuel_rise_pct('retail')}% (retail)" in readme
     assert f"+{config.eia_consistent_fuel_rise_pct('wholesale')}% (wholesale)" in readme
+    assert (
+        f"+{config.eia_consistent_fuel_rise_pct('retail', '2026Q2')}% or "
+        f"+{config.eia_consistent_fuel_rise_pct('wholesale', '2026Q2')}% ending a quarter earlier"
+    ) in readme
     low, high = sorted(f["total_gbp"] for f in config.SUPPLIER_CAP_FORECASTS_Q1_2027)
     assert f"£{low:,}–£{high:,}" in readme
 

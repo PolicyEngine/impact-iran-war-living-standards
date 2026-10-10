@@ -93,6 +93,7 @@ describe("the Household impacts tab", () => {
       expect(context, key).toContain(
         `${scenario.summary.largest_record_share_of_newly_below_pct}% of it`,
       );
+      expect(context, key).toContain("not a confidence interval");
     }
   });
 
@@ -106,6 +107,8 @@ describe("the Household impacts tab", () => {
       ["summary.n_records_newly_below_anchored_line", "754"],
       ["summary.largest_record_share_of_newly_below_pct", 140],
       ["summary.largest_record_share_of_newly_below_pct", undefined],
+      // The headline reads this key; without it the card shows "--".
+      ["summary.n_pushed_into_poverty", undefined],
     ];
     for (const [path, value] of cases) {
       const broken = structuredClone(data);

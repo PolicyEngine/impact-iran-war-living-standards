@@ -368,7 +368,8 @@ FIXED_TARIFF_ACCOUNT_SHARE = 0.40
 #     OBR's latest outlook (3 March 2026) used energy prices averaged to
 #     22 January 2026, before the conflict, and its next is due 28 October
 #     2026.
-#   - No published forecast isolates the conflict's effect on UK food prices.
+#   - No published forecast that isolates the conflict's effect on UK food
+#     prices was found.
 FORECAST_AS_OF = "2026-10-09"
 
 # The gaps above, as data, so the dashboard states them next to the scenario.
@@ -401,7 +402,8 @@ FORECAST_ASSUMPTIONS = [
     "Extending the zero rate is one of the policy options.",
     "Each forecast's last period is held where it stops short of March "
     "2028: Cornwall Insight's at January-March 2027, the EIA's at "
-    "October-December 2027.",
+    "October-December 2027. IGD's revision for calendar 2027 stands for "
+    "2027-28.",
 ]
 
 # Scheduled publications that will supersede a figure here. The scenario
@@ -532,17 +534,17 @@ FORECAST_BRENT_QUARTERS_2027_28 = ["2027Q2", "2027Q3", "2027Q4", "2027Q4"]
 # during 2026, and the EIA forecasts those margins narrowing in 2027. US
 # wholesale margins are only a proxy for the UK's, which is why the figure is
 # disclosed rather than applied.
-EIA_STEO_BRENT_HISTORY = {"2025Q4": 63.63, "2026Q3": 95.95}
+EIA_STEO_BRENT_HISTORY = {"2025Q4": 63.63, "2026Q2": 102.93, "2026Q3": 95.95}
 EIA_STEO_WHOLESALE = {
-    "gasoline": {"2025Q4": 2.00, "2026Q3": 3.49, "2027Q2": 2.77, "2027Q3": 2.57, "2027Q4": 2.24},
-    "diesel": {"2025Q4": 2.33, "2026Q3": 4.39, "2027Q2": 3.12, "2027Q3": 2.92, "2027Q4": 2.82},
+    "gasoline": {"2025Q4": 2.00, "2026Q2": 3.38, "2026Q3": 3.49, "2027Q2": 2.77, "2027Q3": 2.57, "2027Q4": 2.24},
+    "diesel": {"2025Q4": 2.33, "2026Q2": 3.81, "2026Q3": 4.39, "2027Q2": 3.12, "2027Q3": 2.92, "2027Q4": 2.82},
 }
 # Retail prices including taxes, same table: regular gasoline and on-highway
 # diesel. The pump price is a retail price, so the retail series is the
 # nearer proxy; it narrows less than wholesale.
 EIA_STEO_RETAIL = {
-    "gasoline": {"2025Q4": 3.00, "2026Q3": 4.11, "2027Q2": 3.76, "2027Q3": 3.56, "2027Q4": 3.24},
-    "diesel": {"2025Q4": 3.70, "2026Q3": 5.57, "2027Q2": 4.57, "2027Q3": 4.30, "2027Q4": 4.18},
+    "gasoline": {"2025Q4": 3.00, "2026Q2": 4.21, "2026Q3": 4.11, "2027Q2": 3.76, "2027Q3": 3.56, "2027Q4": 3.24},
+    "diesel": {"2025Q4": 3.70, "2026Q2": 5.37, "2026Q3": 5.57, "2027Q2": 4.57, "2027Q3": 4.30, "2027Q4": 4.18},
 }
 GALLONS_PER_BARREL = 42
 
@@ -578,25 +580,31 @@ def _product_rises_at_brent(brent_usd):
     }
 
 
-def eia_consistent_fuel_rise_pct(prices="retail"):
+def eia_consistent_fuel_rise_pct(prices="retail", slope_end="2026Q3"):
     """What the fuel parameter would be if UK pump prices fell short of the
     2026 slope by as much as the EIA forecasts US prices to.
 
     Sizes the "leans high" disclosure; it is NOT the parameter. For each
-    product, fit the same two-point slope against Brent on the EIA's US
-    series (October-December 2025 to July-September 2026), see how much of
-    the rise that slope predicts at the 2027-28 Brent mean the EIA itself
-    forecasts, and scale this study's UK rise by that share. Only the ratio
-    crosses the Atlantic, so exchange rates and fixed US taxes drop out, but
-    US refining and retail margins still stand in for the UK's.
+    product, fit a two-point slope against Brent on the EIA's US series, the
+    way this study's UK slopes are fitted (October-December 2025 to
+    `slope_end`), see how much of the rise that slope predicts at the
+    2027-28 Brent mean the EIA itself forecasts, and scale this study's UK
+    rise by that share. Only the ratio crosses the Atlantic, so exchange
+    rates and fixed US taxes drop out, but US refining and retail margins
+    still stand in for the UK's.
+
+    A two-point proxy, and it moves with the end point: July-September 2026
+    is the quarter nearest the UK slopes' August end, and fitting to
+    April-June instead gives a much smaller shortfall. So it shows the
+    direction and a rough size, not a second estimate.
     """
     table = {"retail": EIA_STEO_RETAIL, "wholesale": EIA_STEO_WHOLESALE}[prices]
     brent = forecast_brent_2027_28()
-    b0, b1 = EIA_STEO_BRENT_HISTORY["2025Q4"], EIA_STEO_BRENT_HISTORY["2026Q3"]
+    b0, b1 = EIA_STEO_BRENT_HISTORY["2025Q4"], EIA_STEO_BRENT_HISTORY[slope_end]
     uk = _product_rises_at_brent(brent)
     scaled = {}
     for product, series in table.items():
-        slope = (series["2026Q3"] - series["2025Q4"]) / (b1 - b0)
+        slope = (series[slope_end] - series["2025Q4"]) / (b1 - b0)
         predicted = slope * (brent - b0)
         forecast = (
             sum(series[q] for q in FORECAST_BRENT_QUARTERS_2027_28)
@@ -1306,14 +1314,19 @@ _SCENARIO_SOURCES = {
                 f"${eia_wholesale_margin('gasoline', '2026Q3'):.2f} and "
                 f"${eia_wholesale_margin('gasoline'):.2f}). Scaling this "
                 "study's rise by how far the EIA's own US price forecasts "
-                "fall short of the same slope gives about +"
+                "fall short of a slope fitted the same way gives about +"
                 f"{eia_consistent_fuel_rise_pct('retail')}% on US retail "
                 "prices and +"
                 f"{eia_consistent_fuel_rise_pct('wholesale')}% on US "
-                "wholesale, so the low end of the range is about where an "
-                "EIA-consistent figure would sit, not a low case. US prices "
-                "are only a proxy for the UK's, so this is disclosed rather "
-                "than applied. Second, duty is held at 52.95p, the rate at "
+                "wholesale when the slope ends in July-September 2026, the "
+                "quarter nearest this study's August end point, and +"
+                f"{eia_consistent_fuel_rise_pct('retail', '2026Q2')}% and +"
+                f"{eia_consistent_fuel_rise_pct('wholesale', '2026Q2')}% when "
+                "it ends a quarter earlier. All four sit below this "
+                "figure, so the direction is clear; the size depends on the "
+                "end point and is not. US prices are only a proxy for the "
+                "UK's, so this is disclosed rather than applied. Second, "
+                "duty is held at 52.95p, the rate at "
                 "both ends of the slopes, as in the stress tests. That "
                 "assumes the 5p cut continues: the scheduled duty rises are "
                 "outside this scenario's cost, and the fuel duty option's "
@@ -1563,8 +1576,11 @@ METHOD_LIMITATIONS = [
     "(n_records_newly_below_anchored_line and the two *_share_of_newly_below_pct "
     "fields), and its sensitivity block reports the count at each end of "
     "every price range. Quote the count rounded and with that range, not to "
-    "the last person. The cost figures are sums over every household and are "
-    "not affected in the same way.",
+    "the last person. Each policy's count of people kept above the line is a "
+    "sum over a subset of the same records, and can be smaller than the "
+    "single largest of them, so it ranks policies only roughly. The cost "
+    "figures are sums over every household and are not affected in the same "
+    "way.",
     "Means-tested payment timing: the 2022 scheme paid two separate awards of "
     "£326 and £324, each conditional on entitlement in its own qualifying "
     "window, so a household entitled in only one window received that "

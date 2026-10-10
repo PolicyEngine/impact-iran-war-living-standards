@@ -192,6 +192,9 @@ export function getPovertyCountContext(scenarioData) {
   const largestShare = summary?.largest_record_share_of_newly_below_pct;
   const ok =
     [low, high, central].every((v) => Number.isFinite(v) && v >= 0) &&
+    // The card's headline reads the legacy key; without it the card shows
+    // "--", and advice about quoting a figure that is not there helps no one.
+    summary?.n_pushed_into_poverty === central &&
     low <= central &&
     central <= high &&
     Number.isInteger(records) &&

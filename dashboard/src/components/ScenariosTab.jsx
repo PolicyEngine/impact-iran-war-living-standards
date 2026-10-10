@@ -578,6 +578,12 @@ export default function ScenariosTab({ data }) {
       Number.isFinite(sc.summary?.n_households_newly_below_anchored_line)
         ? `${formatCount(sc.summary.n_households_newly_below_anchored_line)} households, `
         : "";
+    // The people count, or a plain statement that it is missing: formatting
+    // an absent figure printed "NaN people" in the published table.
+    const peoplePart = (sc) =>
+      Number.isFinite(sc.summary?.n_pushed_into_poverty)
+        ? `${formatCount(sc.summary.n_pushed_into_poverty)} people`
+        : "people count unavailable";
     const scen = (key) => data?.scenarios?.[key];
     const low = scen("low_shock");
     const central = scen("central_shock");
@@ -604,7 +610,7 @@ export default function ScenariosTab({ data }) {
         external: [
           { label: "NIESR Economic Outlook, Spring 2026: ~200,000 additional households in absolute poverty", url: "https://niesr.ac.uk/reports/economic-outlook-spring-2026" },
         ],
-        ours: `${forecastPart(forecast && `${householdsPart(forecast)}${formatCount(forecast.summary.n_pushed_into_poverty)} people`)}${householdsPart(low)}${formatCount(low.summary.n_pushed_into_poverty)} people (summer 2026 prices) to ${householdsPart(central)}${formatCount(central.summary.n_pushed_into_poverty)} people (sustained escalation)`,
+        ours: `${forecastPart(forecast && `${householdsPart(forecast)}${peoplePart(forecast)}`)}${householdsPart(low)}${peoplePart(low)} (summer 2026 prices) to ${householdsPart(central)}${peoplePart(central)} (sustained escalation)`,
         note: "Context, not validation: the two are not comparable. NIESR counts households below an absolute line at 60% of 2023-24 median income after housing costs, from a model of an oil-price shock. We count below a line at 60% of the 2027-28 pre-shock median income before housing costs, after netting modelled energy, fuel and food costs off income. The income concept, base year, housing-cost treatment and mechanism all differ.",
       },
       {
@@ -734,7 +740,8 @@ export default function ScenariosTab({ data }) {
               <strong>
                 {formatCount(povertyContext.low)} to {formatCount(povertyContext.high)}
               </strong>{" "}
-              across this scenario&apos;s price ranges. The count rests on{" "}
+              across this scenario&apos;s price ranges, which is a spread of assumptions
+              and not a confidence interval. The count rests on{" "}
               {povertyContext.records.toLocaleString("en-GB")} survey records with very
               uneven weights, and the largest alone carries{" "}
               {povertyContext.largestShare}% of it, so it moves in steps.

@@ -601,6 +601,8 @@ def test_every_poverty_count_reports_what_it_rests_on(results):
     limitations = " ".join(results["metadata"]["method_limitations"])
     assert "Poverty count granularity" in limitations
     assert "moves in steps" in limitations
+    # The policy counts are subsets of the same records (#67 third review).
+    assert "ranks policies only roughly" in limitations
 
 
 def test_the_readme_quotes_the_forecast_count_with_its_caveat(results):
@@ -613,3 +615,17 @@ def test_the_readme_quotes_the_forecast_count_with_its_caveat(results):
     assert f"{summary['largest_record_share_of_newly_below_pct']}% of it" in readme
     assert f"{combined['n_newly_below_anchored_line_low']:,}" in readme
     assert f"{combined['n_newly_below_anchored_line_high']:,}" in readme
+
+    # The step claim, in figures from the committed sensitivity runs rather
+    # than from a side script (#67 third review).
+    by_parameter = results["scenarios"]["external_forecast"]["sensitivity"]["by_parameter"]
+    count = summary["n_newly_below_anchored_line"]
+    food_down = count - by_parameter["food_increase_pct"]["n_newly_below_anchored_line_low"]
+    fuel_up = by_parameter["fuel_pct"]["n_newly_below_anchored_line_high"] - count
+    fuel_low = by_parameter["fuel_pct"]["n_newly_below_anchored_line_low"]
+    assert f"takes {food_down:,} people off it" in readme
+    assert f"adds {fuel_up:,}" in readme
+    assert f"({fuel_low:,})" in readme
+    assert f"£{by_parameter['fuel_pct']['total_impact_bn_low']}bn" in readme
+    # Uneven, which is the point being made.
+    assert food_down > 2 * fuel_up
