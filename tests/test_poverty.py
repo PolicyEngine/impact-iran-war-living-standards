@@ -130,3 +130,65 @@ def test_energy_share_excludes_undefined_denominators(synthetic_data):
     without_mask = weighted_mean(share, data["weights"])
     # Including a zero for the undefined household drags the mean down.
     assert with_mask > without_mask
+
+
+# ── How lumpy the poverty count is (#67 second review) ───────────────────
+
+
+def test_count_concentration_reports_records_and_the_largest_shares():
+    import numpy as np
+
+    from iran_impact.pipeline import _count_concentration
+
+    selected = np.array([True, True, False, True, True])
+    person_weights = np.array([600.0, 100.0, 9_999.0, 200.0, 100.0])
+    result = _count_concentration(selected, person_weights)
+    assert result == {
+        "n_records_newly_below_anchored_line": 4,
+        "largest_record_share_of_newly_below_pct": 60.0,
+        "three_largest_records_share_of_newly_below_pct": 90.0,
+    }
+
+
+def test_count_concentration_of_an_empty_count_is_zero_not_an_error():
+    import numpy as np
+
+    from iran_impact.pipeline import _count_concentration
+
+    result = _count_concentration(np.zeros(3, dtype=bool), np.ones(3))
+    assert result["n_records_newly_below_anchored_line"] == 0
+    assert result["largest_record_share_of_newly_below_pct"] == 0.0
+
+
+def test_count_concentration_shares_are_ordered_and_bounded():
+    """For any selection: the largest record's share is positive, at most the
+    three largest's, and neither exceeds 100%; one record carries all of it."""
+    import numpy as np
+    from hypothesis import given
+    from hypothesis import strategies as st
+    from hypothesis.extra.numpy import arrays
+
+    from iran_impact.pipeline import _count_concentration
+
+    @given(
+        weights=arrays(np.float64, 15, elements=st.floats(1, 500_000)),
+        selected=arrays(np.bool_, 15),
+    )
+    def check(weights, selected):
+        result = _count_concentration(selected, weights)
+        n = result["n_records_newly_below_anchored_line"]
+        largest = result["largest_record_share_of_newly_below_pct"]
+        top3 = result["three_largest_records_share_of_newly_below_pct"]
+        assert n == int(selected.sum())
+        if n == 0:
+            assert largest == top3 == 0.0
+            return
+        assert 0 < largest <= top3 <= 100.0
+        # An equal split is the least concentrated a count can be.
+        assert largest >= round(100 / n, 1) - 0.1
+        if n == 1:
+            assert largest == 100.0
+        if n <= 3:
+            assert top3 == 100.0
+
+    check()

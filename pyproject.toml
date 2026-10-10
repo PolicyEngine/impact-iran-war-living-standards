@@ -27,6 +27,9 @@ simulation = [
 ]
 dev = [
   "pytest>=8.0",
+  # Property-based tests of the invariants: monotonicity of cost and poverty
+  # in every price parameter, and of each forecast derivation in its source.
+  "hypothesis>=6.100",
   # Only needed to regenerate the ONS input table from the published workbook
   # (scripts/extract_ons_a6.py); the committed CSV is read with the stdlib.
   "openpyxl>=3.1",
