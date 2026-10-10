@@ -477,3 +477,49 @@ def test_derivations_quote_the_computed_figures():
     fuel = params["fuel_pct"]["derivation"]
     assert f"${config.forecast_brent_2027_28():.2f}" in fuel
     assert f"+{config.SCENARIOS['external_forecast']['fuel_pct']}%" in fuel
+
+
+# ── scripts/forecast_alternatives.py: the dataset-free part ──────────────
+
+
+def _alternatives_module():
+    import importlib.util
+    from pathlib import Path
+
+    path = Path(__file__).parents[1] / "scripts" / "forecast_alternatives.py"
+    spec = importlib.util.spec_from_file_location("forecast_alternatives", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_the_alternatives_script_builds_the_parameters_put_to_review():
+    """The script's figures need the managed data, but the parameters it
+    runs do not. These are the ones quoted in the PR that added the
+    scenario, so the script cannot drift from what was reviewed."""
+    module = _alternatives_module()
+    alternatives = module.alternative_parameters()
+    base = config.SCENARIOS["external_forecast"]
+    assert alternatives["as_committed"] == base
+    # Duty at the model's own 2027-28 rate, read from the committed results.
+    assert module.model_duty_2027_28_pence() == pytest.approx(59.25)
+    assert alternatives["fuel_duty_at_model_2027_28_rate"]["fuel_pct"] == 17.6
+    assert alternatives["energy_on_supplier_quarters"]["cap_increase_pct"] == 33.9
+    assert alternatives["energy_without_vat_restoration"]["cap_increase_pct"] == 36.5
+    assert alternatives["fuel_eia_scaled_retail"]["fuel_pct"] == 9.6
+    assert alternatives["fuel_eia_scaled_wholesale"]["fuel_pct"] == 7.7
+    # Each changes exactly one parameter.
+    for name, params in alternatives.items():
+        changed = [k for k in base if params[k] != base[k]]
+        assert len(changed) == (0 if name == "as_committed" else 1), name
+
+
+def test_the_duty_alternative_is_the_parameter_when_duty_is_unchanged():
+    """With duty at the reference rate the script's composite must be the
+    configured fuel parameter (differential against fuel_rise_pct_at_brent)."""
+    module = _alternatives_module()
+    assert module.fuel_rise_with_duty_pct(module.DUTY_REFERENCE_PENCE) == (
+        config.SCENARIOS["external_forecast"]["fuel_pct"]
+    )
+    # And more duty means a higher pump price.
+    assert module.fuel_rise_with_duty_pct(59.25) > module.fuel_rise_with_duty_pct(55.95)

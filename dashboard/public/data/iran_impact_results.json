@@ -2,8 +2,8 @@
   "year": 2027,
   "current_energy_cap": 1663,
   "provenance": {
-    "generated_at": "2026-10-10T00:56:12+00:00",
-    "git_revision": "98495bcbd96eeb392d0960704ca704d272d46ec8",
+    "generated_at": "2026-10-10T01:10:30+00:00",
+    "git_revision": "605d8e85c402ca1614715c2529b12d2356d3f5bd",
     "git_dirty": true,
     "packages": {
       "policyengine": "5.3.0",
@@ -13,7 +13,7 @@
       "microdf-python": "1.3.0"
     },
     "source_hashes": {
-      "config.py": "b86e775f9b385610cc3fbf0394929b2d32fad4502acb5b8340a07c7a2bc5d10f",
+      "config.py": "63cb474a0f6a8b89d8e431dc904086956c2ea80fce0a67aac1eeb3e4e50d4f2b",
       "pipeline.py": "2c436be95e0d0ce38ff01d7398749d5a8b7d5261f9b2d9b4c7174be167471ab6",
       "provenance.py": "4ebb5ba4919f3ecbe1a09300f21463c86ea2499e95fef763a876a973ffbd3f8a",
       "pyproject.toml": "7bf92820c3a036476e3af9ddf9524c504b6590958faf4b51e49f7c12d246435c",
@@ -5301,7 +5301,7 @@
             "source_date": "2026-10-06",
             "source_figure": "Brent $87.00/bbl in April-June 2027, $80.03 in July-September and $73.94 in October-December (Table 2), from inputs finalised on 1 October 2026. The EIA forecasts crude, not UK pump prices",
             "reference_period": "April 2027 - March 2028; January-March 2028 holds the last EIA quarter",
-            "derivation": "The US EIA's October 2026 Short-Term Energy Outlook forecasts Brent at $87.00, $80.03 and $73.94/bbl over April-December 2027. It does not reach 2028, so January-March 2028 holds the last quarter. The 2027-28 mean, $78.73, goes through this study's pump-price pass-through, the same DESNZ-against-EIA slopes and ONS petrol and diesel shares the stress tests use, to +12.2% on Autumn Budget 2025 pump prices. The +12.2% is this study's figure, not the EIA's: no published forecast of UK pump prices for 2027-28 was found, and the OBR's latest outlook (3 March 2026) used energy prices from before the conflict. Two things it leaves out, pulling opposite ways. First, it probably leans high: the slopes were fitted on November 2025 to August 2026, when refining margins widened, and the same EIA table has US wholesale margins over Brent narrowing again (diesel $0.82 a gallon in October-December 2025, $2.11 in July-September 2026, $1.05 over 2027-28; petrol $0.49, $1.21 and $0.58). Scaling this study's rise by how far the EIA's own US price forecasts fall short of a slope fitted the same way gives about +9.6% on US retail prices and +7.7% on US wholesale when the slope ends in July-September 2026, the quarter nearest this study's August end point, and +11.7% and +11.5% when it ends a quarter earlier. All four sit below this figure, so the direction is clear; the size depends on the end point and is not. US prices are only a proxy for the UK's, so this is disclosed rather than applied. Second, duty is held at 52.95p, the rate at both ends of the slopes, as in the stress tests. That assumes the 5p cut continues: the scheduled duty rises are outside this scenario's cost, and the fuel duty option's relief is measured against them. The range is the composite at the lowest and highest EIA quarter in the year, each held for the year: the spread of the forecast path, not a forecast error",
+            "derivation": "The US EIA's October 2026 Short-Term Energy Outlook forecasts Brent at $87.00, $80.03 and $73.94/bbl over April-December 2027. It does not reach 2028, so January-March 2028 holds the last quarter. The 2027-28 mean, $78.73, goes through this study's pump-price pass-through, the same DESNZ-against-EIA slopes and ONS petrol and diesel shares the stress tests use, to +12.2% on Autumn Budget 2025 pump prices. The +12.2% is this study's figure, not the EIA's: no published forecast of UK pump prices for 2027-28 was found, and the OBR's latest outlook (3 March 2026) used energy prices from before the conflict. Two things it leaves out, pulling opposite ways. First, it probably leans high: the slopes were fitted on November 2025 to August 2026, when refining margins widened, and the same EIA table has US wholesale margins over Brent narrowing again (diesel $0.82 a gallon in October-December 2025, $2.11 in July-September 2026, $1.05 over 2027-28; petrol $0.49, $1.21 and $0.58). Scaling this study's rise by the EIA's own US price forecasts, relative to a slope fitted the same way, gives about +9.6% on US retail prices and +7.7% on US wholesale when the slope ends in July-September 2026, the quarter nearest this study's August end point, and +11.7% and +11.5% when it ends a quarter earlier. All four sit below this figure, so the direction is clear; the size depends on the end point and is not. US prices are only a proxy for the UK's, so this is disclosed rather than applied. Second, duty is held at 52.95p, the rate at both ends of the slopes, as in the stress tests. That assumes the 5p cut continues: the scheduled duty rises are outside this scenario's cost, and the fuel duty option's relief is measured against them. The range is the composite at the lowest and highest EIA quarter in the year, each held for the year: the spread of the forecast path, not a forecast error",
             "supporting_source_urls": [
               "https://www.gov.uk/government/statistics/weekly-road-fuel-prices",
               "https://www.eia.gov/dnav/pet/hist/RBRTEm.htm",
@@ -5476,7 +5476,7 @@
       ],
       "gaps": [
         "Cornwall Insight publishes no price cap forecast for any quarter of 2027-28; its latest covers January-March 2027, which is held for the year.",
-        "No published forecast of UK pump prices for 2027-28 was found. Fuel uses the US EIA's Brent forecast through this study's pass-through to pump prices, which carries the refining margins of 2026. The EIA forecasts US margins narrowing in 2027, so the fuel figure probably leans high: see its derivation for how far.",
+        "No published forecast of UK pump prices for 2027-28 was found. Fuel uses the US EIA's Brent forecast through this study's pass-through to pump prices, which carries the refining margins of 2026. The EIA forecasts US margins narrowing in 2027, so the fuel figure probably leans high. Its derivation gives four scalings to the EIA's own US price forecasts; all are lower, by amounts that differ.",
         "No published forecast that isolates the conflict's effect on UK food prices was found. Food uses the revision to IGD's forecast since before the conflict, which includes everything IGD revised for.",
         "The OBR's latest forecast (3 March 2026) used energy prices from before the conflict, so it is not used."
       ],

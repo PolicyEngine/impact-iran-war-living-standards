@@ -260,8 +260,9 @@ export default function PolicyTab({ data }) {
               <div className="mt-2 text-sm leading-6 text-slate-500">
                 People who would fall below the baseline HBAI BHC poverty line under this
                 shock scenario, but do not once {policyLabel} is applied
-                (anchored threshold). A sum over a small number of survey records with
-                very uneven weights, so it ranks policies only roughly.
+                (anchored threshold). A sum over a subset of the survey records behind
+                the scenario&apos;s count, whose weights are very uneven, so it ranks
+                policies only roughly.
               </div>
             </div>
           </div>

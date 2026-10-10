@@ -381,7 +381,8 @@ FORECAST_GAPS = [
     "uses the US EIA's Brent forecast through this study's pass-through to "
     "pump prices, which carries the refining margins of 2026. The EIA "
     "forecasts US margins narrowing in 2027, so the fuel figure probably "
-    "leans high: see its derivation for how far.",
+    "leans high. Its derivation gives four scalings to the EIA's own US "
+    "price forecasts; all are lower, by amounts that differ.",
     "No published forecast that isolates the conflict's effect on UK food "
     "prices was found. Food uses the revision to IGD's forecast since "
     "before the conflict, which includes everything IGD revised for.",
@@ -527,8 +528,8 @@ EIA_STEO_BRENT = {
 FORECAST_BRENT_QUARTERS_2027_28 = ["2027Q2", "2027Q3", "2027Q4", "2027Q4"]
 
 # The same table's US wholesale gasoline and diesel prices, dollars a gallon,
-# with Brent for the two quarters that bracket the period the pump-price
-# slopes were fitted on (November 2025 to August 2026). They are NOT used in
+# with Brent for the quarters around the period the pump-price slopes were
+# fitted on (November 2025 to August 2026). They are NOT used in
 # the fuel parameter. They are recorded because they show what its
 # pass-through leaves out: the slopes carry the widening of refining margins
 # during 2026, and the EIA forecasts those margins narrowing in 2027. US
@@ -596,7 +597,9 @@ def eia_consistent_fuel_rise_pct(prices="retail", slope_end="2026Q3"):
     A two-point proxy, and it moves with the end point: July-September 2026
     is the quarter nearest the UK slopes' August end, and fitting to
     April-June instead gives a much smaller shortfall. So it shows the
-    direction and a rough size, not a second estimate.
+    direction, not a size, and is not a second estimate. The direction holds
+    for the composite; a single product can sit above its own slope
+    (wholesale diesel does when the slope ends in April-June).
     """
     table = {"retail": EIA_STEO_RETAIL, "wholesale": EIA_STEO_WHOLESALE}[prices]
     brent = forecast_brent_2027_28()
@@ -1313,8 +1316,8 @@ _SCENARIO_SOURCES = {
                 f"${eia_wholesale_margin('gasoline', '2025Q4'):.2f}, "
                 f"${eia_wholesale_margin('gasoline', '2026Q3'):.2f} and "
                 f"${eia_wholesale_margin('gasoline'):.2f}). Scaling this "
-                "study's rise by how far the EIA's own US price forecasts "
-                "fall short of a slope fitted the same way gives about +"
+                "study's rise by the EIA's own US price forecasts, relative "
+                "to a slope fitted the same way, gives about +"
                 f"{eia_consistent_fuel_rise_pct('retail')}% on US retail "
                 "prices and +"
                 f"{eia_consistent_fuel_rise_pct('wholesale')}% on US "

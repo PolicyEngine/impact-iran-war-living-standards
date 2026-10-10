@@ -620,12 +620,32 @@ def test_the_readme_quotes_the_forecast_count_with_its_caveat(results):
     # than from a side script (#67 third review).
     by_parameter = results["scenarios"]["external_forecast"]["sensitivity"]["by_parameter"]
     count = summary["n_newly_below_anchored_line"]
-    food_down = count - by_parameter["food_increase_pct"]["n_newly_below_anchored_line_low"]
-    fuel_up = by_parameter["fuel_pct"]["n_newly_below_anchored_line_high"] - count
-    fuel_low = by_parameter["fuel_pct"]["n_newly_below_anchored_line_low"]
-    assert f"takes {food_down:,} people off it" in readme
-    assert f"adds {fuel_up:,}" in readme
-    assert f"({fuel_low:,})" in readme
-    assert f"£{by_parameter['fuel_pct']['total_impact_bn_low']}bn" in readme
+    food = by_parameter["food_increase_pct"]
+    fuel = by_parameter["fuel_pct"]
+    params = results["scenarios"]["external_forecast"]["params"]
+    # The same channel both ways, so the contrast is about direction and not
+    # about food against fuel (#67 fourth review).
+    food_down = count - food["n_newly_below_anchored_line_low"]
+    food_up = food["n_newly_below_anchored_line_high"] - count
+    assert (
+        f"lowering food from +{params['food_increase_pct']}% to +{food['range'][0]}% "
+        f"takes {food_down:,} people off it"
+    ) in readme
+    assert f"to +{food['range'][1]}%, adds {food_up:,}" in readme
     # Uneven, which is the point being made.
-    assert food_down > 2 * fuel_up
+    assert food_down > 2 * food_up
+
+    # The fuel caveat: every figure in the sentence, including the rounded
+    # percentages, so none can go stale while the test passes.
+    fuel_low = fuel["n_newly_below_anchored_line_low"]
+    total = results["scenarios"]["external_forecast"]["summary"]["total_impact_bn"]
+    cost_fall = round((1 - fuel["total_impact_bn_low"] / total) * 100)
+    count_fall = round((1 - fuel_low / count) * 100)
+    assert (
+        f"at fuel +{fuel['range'][0]}%, the low end of its range" in readme
+    )
+    assert (
+        f"the cost falls by {cost_fall}% (£{fuel['total_impact_bn_low']}bn) "
+        f"but the count by {count_fall}% ({fuel_low:,})"
+    ) in readme
+    assert count_fall > 2 * cost_fall
