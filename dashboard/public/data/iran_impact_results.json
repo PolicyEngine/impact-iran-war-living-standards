@@ -2,8 +2,8 @@
   "year": 2027,
   "current_energy_cap": 1663,
   "provenance": {
-    "generated_at": "2026-09-28T17:09:48+00:00",
-    "git_revision": "976b7a837c5317b52207dcba17b995752853cb23",
+    "generated_at": "2026-10-10T01:10:30+00:00",
+    "git_revision": "605d8e85c402ca1614715c2529b12d2356d3f5bd",
     "git_dirty": true,
     "packages": {
       "policyengine": "5.3.0",
@@ -13,11 +13,11 @@
       "microdf-python": "1.3.0"
     },
     "source_hashes": {
-      "config.py": "ecc56c7e68578b366db0de5d78a74d021c1118e4452bd2718a2ff8936cb556cb",
-      "pipeline.py": "8bf26f28c5f10019dca7ff37226ec2825f75f4e95b345733ba9ee59d49a4e666",
-      "provenance.py": "956bcc99b7f9c3f796082ae19edf451310fe6e14ea93deda16bc665455d75541",
-      "pyproject.toml": "67312746740b8f3fa072d28c40905bfcdbbdc7d089876e5c6814ac0f102cb161",
-      "requirements.lock": "eb6a3b253777a9c501b13cad26e2e847c52b3f58168a3928dd9aaff075e0835a"
+      "config.py": "63cb474a0f6a8b89d8e431dc904086956c2ea80fce0a67aac1eeb3e4e50d4f2b",
+      "pipeline.py": "2c436be95e0d0ce38ff01d7398749d5a8b7d5261f9b2d9b4c7174be167471ab6",
+      "provenance.py": "4ebb5ba4919f3ecbe1a09300f21463c86ea2499e95fef763a876a973ffbd3f8a",
+      "pyproject.toml": "7bf92820c3a036476e3af9ddf9524c504b6590958faf4b51e49f7c12d246435c",
+      "requirements.lock": "2af6a5d81b7288fe9a3698bf018e0d8291b6e8a91a5cd44a5d4e8f08e2e62d30"
     },
     "input_hashes": {
       "src/iran_impact/inputs/ons_family_spending_a6_fye2024.csv": "cdf1e912c273813700a2b2108bbae57bcbdbc2a4a17d9ec176fb43b34d02bf7a"
@@ -34,7 +34,7 @@
       "certified_data_artifact_sha256": "e433e532b17bd8ce76030156285816e33d44e93edabd2204adbef71d19a68712",
       "data_build_model_version": "2.89.2",
       "compatibility_basis": "legacy_compatible_model_package",
-      "certified_by": "policyengine.py bundle certification"
+      "certified_by": null
     }
   },
   "baseline": {
@@ -90,6 +90,7 @@
         "fuel_pct": 22,
         "food_increase_pct": 2.0
       },
+      "scenario_type": "annual stress test",
       "first_round_floor_pp": 1.28,
       "cpi_captured_by_sept_2026_pp": 0.9,
       "cpi_residual_unindexed_pp": 0.4,
@@ -103,7 +104,10 @@
         "below_anchored_line_shocked_pct": 19.51,
         "n_newly_below_anchored_line": 379109,
         "n_households_newly_below_anchored_line": 185699,
-        "n_pushed_into_poverty": 379109
+        "n_pushed_into_poverty": 379109,
+        "n_records_newly_below_anchored_line": 447,
+        "largest_record_share_of_newly_below_pct": 12.0,
+        "three_largest_records_share_of_newly_below_pct": 26.9
       },
       "by_quintile": [
         {
@@ -458,14 +462,17 @@
         ]
       },
       "sensitivity": {
-        "basis": "Each parameter's uncertainty_range in parameters.registry, evaluated through the model. NOT a confidence interval: the ranges are judgements about the price assumptions, not sampling distributions, and the combined case moves every parameter together. Two aggregates are reported per point, because cpi_increase_pp moves the uprating shortfall rather than the household cost \u2014 `moves` names which aggregates each parameter affects",
+        "basis": "Each parameter's uncertainty_range in parameters.registry, evaluated through the model. NOT a confidence interval: the ranges are judgements about the price assumptions (for the forecast scenario, single-period values from the published forecasts each derivation names, each held for the year), not sampling distributions or forecast errors, and the combined case moves every parameter together. Two cost aggregates are reported per point, because cpi_increase_pp moves the uprating shortfall rather than the household cost \u2014 `moves` names which of them each parameter affects. The count of people newly below the anchored poverty line is reported at each point too",
         "central_total_impact_bn": 17.0,
         "central_uprating_shortfall_bn": 0.66,
+        "central_n_newly_below_anchored_line": 379109,
         "combined": {
           "total_impact_bn_low": 12.5,
           "total_impact_bn_high": 21.6,
           "uprating_shortfall_bn_low": 0.17,
-          "uprating_shortfall_bn_high": 1.49
+          "uprating_shortfall_bn_high": 1.49,
+          "n_newly_below_anchored_line_low": 258590,
+          "n_newly_below_anchored_line_high": 558251
         },
         "by_parameter": {
           "cap_increase_pct": {
@@ -477,6 +484,8 @@
             "total_impact_bn_high": 19.5,
             "uprating_shortfall_bn_low": 0.66,
             "uprating_shortfall_bn_high": 0.66,
+            "n_newly_below_anchored_line_low": 358124,
+            "n_newly_below_anchored_line_high": 455451,
             "moves": [
               "total_impact"
             ]
@@ -490,6 +499,8 @@
             "total_impact_bn_high": 17.0,
             "uprating_shortfall_bn_low": 0.17,
             "uprating_shortfall_bn_high": 1.49,
+            "n_newly_below_anchored_line_low": 379109,
+            "n_newly_below_anchored_line_high": 379109,
             "moves": [
               "uprating_shortfall"
             ]
@@ -503,6 +514,8 @@
             "total_impact_bn_high": 18.0,
             "uprating_shortfall_bn_low": 0.66,
             "uprating_shortfall_bn_high": 0.66,
+            "n_newly_below_anchored_line_low": 306062,
+            "n_newly_below_anchored_line_high": 501609,
             "moves": [
               "total_impact"
             ]
@@ -516,6 +529,8 @@
             "total_impact_bn_high": 18.1,
             "uprating_shortfall_bn_low": 0.66,
             "uprating_shortfall_bn_high": 0.66,
+            "n_newly_below_anchored_line_low": 352886,
+            "n_newly_below_anchored_line_high": 510343,
             "moves": [
               "total_impact"
             ]
@@ -530,6 +545,7 @@
         "fuel_pct": 46,
         "food_increase_pct": 4.0
       },
+      "scenario_type": "annual stress test",
       "first_round_floor_pp": 3.09,
       "cpi_captured_by_sept_2026_pp": 0.9,
       "cpi_residual_unindexed_pp": 2.2,
@@ -543,7 +559,10 @@
         "below_anchored_line_shocked_pct": 21.12,
         "n_newly_below_anchored_line": 1508923,
         "n_households_newly_below_anchored_line": 750843,
-        "n_pushed_into_poverty": 1508923
+        "n_pushed_into_poverty": 1508923,
+        "n_records_newly_below_anchored_line": 1173,
+        "largest_record_share_of_newly_below_pct": 13.1,
+        "three_largest_records_share_of_newly_below_pct": 23.5
       },
       "by_quintile": [
         {
@@ -898,14 +917,17 @@
         ]
       },
       "sensitivity": {
-        "basis": "Each parameter's uncertainty_range in parameters.registry, evaluated through the model. NOT a confidence interval: the ranges are judgements about the price assumptions, not sampling distributions, and the combined case moves every parameter together. Two aggregates are reported per point, because cpi_increase_pp moves the uprating shortfall rather than the household cost \u2014 `moves` names which aggregates each parameter affects",
+        "basis": "Each parameter's uncertainty_range in parameters.registry, evaluated through the model. NOT a confidence interval: the ranges are judgements about the price assumptions (for the forecast scenario, single-period values from the published forecasts each derivation names, each held for the year), not sampling distributions or forecast errors, and the combined case moves every parameter together. Two cost aggregates are reported per point, because cpi_increase_pp moves the uprating shortfall rather than the household cost \u2014 `moves` names which of them each parameter affects. The count of people newly below the anchored poverty line is reported at each point too",
         "central_total_impact_bn": 42.1,
         "central_uprating_shortfall_bn": 3.64,
+        "central_n_newly_below_anchored_line": 1508923,
         "combined": {
           "total_impact_bn_low": 27.7,
           "total_impact_bn_high": 55.9,
           "uprating_shortfall_bn_low": 2.64,
-          "uprating_shortfall_bn_high": 5.29
+          "uprating_shortfall_bn_high": 5.29,
+          "n_newly_below_anchored_line_low": 748294,
+          "n_newly_below_anchored_line_high": 1787609
         },
         "by_parameter": {
           "cap_increase_pct": {
@@ -917,6 +939,8 @@
             "total_impact_bn_high": 49.6,
             "uprating_shortfall_bn_low": 3.64,
             "uprating_shortfall_bn_high": 3.64,
+            "n_newly_below_anchored_line_low": 1037184,
+            "n_newly_below_anchored_line_high": 1677556,
             "moves": [
               "total_impact"
             ]
@@ -930,6 +954,8 @@
             "total_impact_bn_high": 42.1,
             "uprating_shortfall_bn_low": 2.64,
             "uprating_shortfall_bn_high": 5.29,
+            "n_newly_below_anchored_line_low": 1508923,
+            "n_newly_below_anchored_line_high": 1508923,
             "moves": [
               "uprating_shortfall"
             ]
@@ -943,6 +969,8 @@
             "total_impact_bn_high": 46.7,
             "uprating_shortfall_bn_low": 3.64,
             "uprating_shortfall_bn_high": 3.64,
+            "n_newly_below_anchored_line_low": 1198469,
+            "n_newly_below_anchored_line_high": 1586882,
             "moves": [
               "total_impact"
             ]
@@ -956,6 +984,8 @@
             "total_impact_bn_high": 43.9,
             "uprating_shortfall_bn_low": 3.64,
             "uprating_shortfall_bn_high": 3.64,
+            "n_newly_below_anchored_line_low": 1281265,
+            "n_newly_below_anchored_line_high": 1525026,
             "moves": [
               "total_impact"
             ]
@@ -970,6 +1000,7 @@
         "fuel_pct": 62,
         "food_increase_pct": 6.5
       },
+      "scenario_type": "annual stress test",
       "first_round_floor_pp": 5.23,
       "cpi_captured_by_sept_2026_pp": 0.9,
       "cpi_residual_unindexed_pp": 4.4,
@@ -983,7 +1014,10 @@
         "below_anchored_line_shocked_pct": 22.3,
         "n_newly_below_anchored_line": 2337905,
         "n_households_newly_below_anchored_line": 1159588,
-        "n_pushed_into_poverty": 2337905
+        "n_pushed_into_poverty": 2337905,
+        "n_records_newly_below_anchored_line": 2101,
+        "largest_record_share_of_newly_below_pct": 8.5,
+        "three_largest_records_share_of_newly_below_pct": 18.3
       },
       "by_quintile": [
         {
@@ -1338,14 +1372,17 @@
         ]
       },
       "sensitivity": {
-        "basis": "Each parameter's uncertainty_range in parameters.registry, evaluated through the model. NOT a confidence interval: the ranges are judgements about the price assumptions, not sampling distributions, and the combined case moves every parameter together. Two aggregates are reported per point, because cpi_increase_pp moves the uprating shortfall rather than the household cost \u2014 `moves` names which aggregates each parameter affects",
+        "basis": "Each parameter's uncertainty_range in parameters.registry, evaluated through the model. NOT a confidence interval: the ranges are judgements about the price assumptions (for the forecast scenario, single-period values from the published forecasts each derivation names, each held for the year), not sampling distributions or forecast errors, and the combined case moves every parameter together. Two cost aggregates are reported per point, because cpi_increase_pp moves the uprating shortfall rather than the household cost \u2014 `moves` names which of them each parameter affects. The count of people newly below the anchored poverty line is reported at each point too",
         "central_total_impact_bn": 72.7,
         "central_uprating_shortfall_bn": 7.27,
+        "central_n_newly_below_anchored_line": 2337905,
         "combined": {
           "total_impact_bn_low": 50.9,
           "total_impact_bn_high": 96.5,
           "uprating_shortfall_bn_low": 5.95,
-          "uprating_shortfall_bn_high": 10.08
+          "uprating_shortfall_bn_high": 10.08,
+          "n_newly_below_anchored_line_low": 1709936,
+          "n_newly_below_anchored_line_high": 3036787
         },
         "by_parameter": {
           "cap_increase_pct": {
@@ -1357,6 +1394,8 @@
             "total_impact_bn_high": 87.8,
             "uprating_shortfall_bn_low": 7.27,
             "uprating_shortfall_bn_high": 7.27,
+            "n_newly_below_anchored_line_low": 1816121,
+            "n_newly_below_anchored_line_high": 2761802,
             "moves": [
               "total_impact"
             ]
@@ -1370,6 +1409,8 @@
             "total_impact_bn_high": 72.7,
             "uprating_shortfall_bn_low": 5.95,
             "uprating_shortfall_bn_high": 10.08,
+            "n_newly_below_anchored_line_low": 2337905,
+            "n_newly_below_anchored_line_high": 2337905,
             "moves": [
               "uprating_shortfall"
             ]
@@ -1383,6 +1424,8 @@
             "total_impact_bn_high": 78.6,
             "uprating_shortfall_bn_low": 7.27,
             "uprating_shortfall_bn_high": 7.27,
+            "n_newly_below_anchored_line_low": 2191506,
+            "n_newly_below_anchored_line_high": 2472590,
             "moves": [
               "total_impact"
             ]
@@ -1396,6 +1439,463 @@
             "total_impact_bn_high": 75.6,
             "uprating_shortfall_bn_low": 7.27,
             "uprating_shortfall_bn_high": 7.27,
+            "n_newly_below_anchored_line_low": 2264195,
+            "n_newly_below_anchored_line_high": 2409717,
+            "moves": [
+              "total_impact"
+            ]
+          }
+        }
+      }
+    },
+    "external_forecast": {
+      "params": {
+        "cap_increase_pct": 39.7,
+        "cpi_increase_pp": 1.9,
+        "fuel_pct": 12.2,
+        "food_increase_pct": 2.3
+      },
+      "scenario_type": "annual forecast-based scenario",
+      "first_round_floor_pp": 1.84,
+      "cpi_captured_by_sept_2026_pp": 0.9,
+      "cpi_residual_unindexed_pp": 1.0,
+      "uprating_lag_factor": 1.0,
+      "summary": {
+        "mean_gross_impact": 839,
+        "mean_net_impact": 839,
+        "mean_net_impact_pct": 3.0,
+        "total_impact_bn": 26.5,
+        "poverty_rate_baseline_pct": 18.97,
+        "below_anchored_line_shocked_pct": 20.05,
+        "n_newly_below_anchored_line": 758617,
+        "n_households_newly_below_anchored_line": 394241,
+        "n_pushed_into_poverty": 758617,
+        "n_records_newly_below_anchored_line": 754,
+        "largest_record_share_of_newly_below_pct": 10.1,
+        "three_largest_records_share_of_newly_below_pct": 21.9
+      },
+      "by_quintile": [
+        {
+          "quintile": 1,
+          "mean_impact": 657,
+          "mean_net_income": 23402,
+          "mean_impact_pct": 7.2,
+          "median_impact_pct": 2.1,
+          "trimmed_mean_impact_pct": 3.6,
+          "energy": 523,
+          "fuel": 76,
+          "food": 59,
+          "benefit_uprating_shortfall": 50
+        },
+        {
+          "quintile": 2,
+          "mean_impact": 789,
+          "mean_net_income": 38848,
+          "mean_impact_pct": 2.7,
+          "median_impact_pct": 1.5,
+          "trimmed_mean_impact_pct": 2.5,
+          "energy": 609,
+          "fuel": 106,
+          "food": 75,
+          "benefit_uprating_shortfall": 76
+        },
+        {
+          "quintile": 3,
+          "mean_impact": 884,
+          "mean_net_income": 51820,
+          "mean_impact_pct": 1.9,
+          "median_impact_pct": 1.2,
+          "trimmed_mean_impact_pct": 1.8,
+          "energy": 677,
+          "fuel": 123,
+          "food": 84,
+          "benefit_uprating_shortfall": 64
+        },
+        {
+          "quintile": 4,
+          "mean_impact": 963,
+          "mean_net_income": 69636,
+          "mean_impact_pct": 1.6,
+          "median_impact_pct": 1.0,
+          "trimmed_mean_impact_pct": 1.5,
+          "energy": 709,
+          "fuel": 156,
+          "food": 98,
+          "benefit_uprating_shortfall": 40
+        },
+        {
+          "quintile": 5,
+          "mean_impact": 943,
+          "mean_net_income": 110923,
+          "mean_impact_pct": 1.0,
+          "median_impact_pct": 0.7,
+          "trimmed_mean_impact_pct": 1.0,
+          "energy": 649,
+          "fuel": 181,
+          "food": 112,
+          "benefit_uprating_shortfall": 29
+        }
+      ],
+      "by_region": [
+        {
+          "region": "EAST_MIDLANDS",
+          "mean_impact": 1013,
+          "mean_impact_pct": 2.7,
+          "mean_net_income": 55259,
+          "energy": 794,
+          "fuel": 135,
+          "food": 85,
+          "benefit_uprating_shortfall": 50
+        },
+        {
+          "region": "EAST_OF_ENGLAND",
+          "mean_impact": 770,
+          "mean_impact_pct": 2.6,
+          "mean_net_income": 64470,
+          "energy": 538,
+          "fuel": 144,
+          "food": 88,
+          "benefit_uprating_shortfall": 45
+        },
+        {
+          "region": "LONDON",
+          "mean_impact": 621,
+          "mean_impact_pct": 1.8,
+          "mean_net_income": 71503,
+          "energy": 422,
+          "fuel": 107,
+          "food": 91,
+          "benefit_uprating_shortfall": 49
+        },
+        {
+          "region": "NORTHERN_IRELAND",
+          "mean_impact": 755,
+          "mean_impact_pct": 1.9,
+          "mean_net_income": 56998,
+          "energy": 578,
+          "fuel": 94,
+          "food": 83,
+          "benefit_uprating_shortfall": 72
+        },
+        {
+          "region": "NORTH_EAST",
+          "mean_impact": 1067,
+          "mean_impact_pct": 5.7,
+          "mean_net_income": 50195,
+          "energy": 855,
+          "fuel": 132,
+          "food": 81,
+          "benefit_uprating_shortfall": 67
+        },
+        {
+          "region": "NORTH_WEST",
+          "mean_impact": 843,
+          "mean_impact_pct": 2.4,
+          "mean_net_income": 51342,
+          "energy": 638,
+          "fuel": 123,
+          "food": 82,
+          "benefit_uprating_shortfall": 58
+        },
+        {
+          "region": "SCOTLAND",
+          "mean_impact": 915,
+          "mean_impact_pct": 2.4,
+          "mean_net_income": 52014,
+          "energy": 711,
+          "fuel": 121,
+          "food": 82,
+          "benefit_uprating_shortfall": 44
+        },
+        {
+          "region": "SOUTH_EAST",
+          "mean_impact": 862,
+          "mean_impact_pct": 5.9,
+          "mean_net_income": 57531,
+          "energy": 642,
+          "fuel": 134,
+          "food": 86,
+          "benefit_uprating_shortfall": 47
+        },
+        {
+          "region": "SOUTH_WEST",
+          "mean_impact": 731,
+          "mean_impact_pct": 2.6,
+          "mean_net_income": 54472,
+          "energy": 518,
+          "fuel": 131,
+          "food": 83,
+          "benefit_uprating_shortfall": 44
+        },
+        {
+          "region": "WALES",
+          "mean_impact": 940,
+          "mean_impact_pct": 2.8,
+          "mean_net_income": 54584,
+          "energy": 740,
+          "fuel": 120,
+          "food": 80,
+          "benefit_uprating_shortfall": 59
+        },
+        {
+          "region": "WEST_MIDLANDS",
+          "mean_impact": 800,
+          "mean_impact_pct": 2.3,
+          "mean_net_income": 52810,
+          "energy": 587,
+          "fuel": 131,
+          "food": 82,
+          "benefit_uprating_shortfall": 51
+        },
+        {
+          "region": "YORKSHIRE",
+          "mean_impact": 979,
+          "mean_impact_pct": 2.6,
+          "mean_net_income": 53269,
+          "energy": 777,
+          "fuel": 119,
+          "food": 83,
+          "benefit_uprating_shortfall": 71
+        }
+      ],
+      "by_tenure": [
+        {
+          "tenure": "OWNED_OUTRIGHT",
+          "mean_impact": 997,
+          "mean_impact_pct": 3.6,
+          "mean_net_income": 55774,
+          "energy": 778,
+          "fuel": 135,
+          "food": 84,
+          "benefit_uprating_shortfall": 36
+        },
+        {
+          "tenure": "OWNED_WITH_MORTGAGE",
+          "mean_impact": 902,
+          "mean_impact_pct": 1.7,
+          "mean_net_income": 73887,
+          "energy": 648,
+          "fuel": 159,
+          "food": 95,
+          "benefit_uprating_shortfall": 29
+        },
+        {
+          "tenure": "RENT_FROM_COUNCIL",
+          "mean_impact": 528,
+          "mean_impact_pct": 2.0,
+          "mean_net_income": 38381,
+          "energy": 386,
+          "fuel": 73,
+          "food": 68,
+          "benefit_uprating_shortfall": 109
+        },
+        {
+          "tenure": "RENT_FROM_HA",
+          "mean_impact": 590,
+          "mean_impact_pct": 2.2,
+          "mean_net_income": 39255,
+          "energy": 448,
+          "fuel": 72,
+          "food": 70,
+          "benefit_uprating_shortfall": 107
+        },
+        {
+          "tenure": "RENT_PRIVATELY",
+          "mean_impact": 736,
+          "mean_impact_pct": 4.2,
+          "mean_net_income": 53554,
+          "energy": 540,
+          "fuel": 113,
+          "food": 83,
+          "benefit_uprating_shortfall": 62
+        }
+      ],
+      "by_country": [
+        {
+          "country": "ENGLAND",
+          "mean_impact": 828,
+          "mean_impact_pct": 3.1,
+          "mean_net_income": 57785,
+          "energy": 615,
+          "fuel": 128,
+          "food": 85,
+          "benefit_uprating_shortfall": 52
+        },
+        {
+          "country": "NORTHERN_IRELAND",
+          "mean_impact": 755,
+          "mean_impact_pct": 1.9,
+          "mean_net_income": 56998,
+          "energy": 578,
+          "fuel": 94,
+          "food": 83,
+          "benefit_uprating_shortfall": 72
+        },
+        {
+          "country": "SCOTLAND",
+          "mean_impact": 915,
+          "mean_impact_pct": 2.4,
+          "mean_net_income": 52014,
+          "energy": 711,
+          "fuel": 121,
+          "food": 82,
+          "benefit_uprating_shortfall": 44
+        },
+        {
+          "country": "WALES",
+          "mean_impact": 940,
+          "mean_impact_pct": 2.8,
+          "mean_net_income": 54584,
+          "energy": 740,
+          "fuel": 120,
+          "food": 80,
+          "benefit_uprating_shortfall": 59
+        }
+      ],
+      "by_hh_type": [
+        {
+          "hh_type": "COUPLE_NO_CHILDREN",
+          "mean_impact": 932,
+          "mean_impact_pct": 2.1,
+          "mean_net_income": 65248,
+          "energy": 681,
+          "fuel": 156,
+          "food": 95,
+          "benefit_uprating_shortfall": 13
+        },
+        {
+          "hh_type": "COUPLE_PENSIONER",
+          "mean_impact": 1159,
+          "mean_impact_pct": 2.5,
+          "mean_net_income": 58282,
+          "energy": 930,
+          "fuel": 140,
+          "food": 88,
+          "benefit_uprating_shortfall": 48
+        },
+        {
+          "hh_type": "COUPLE_WITH_CHILDREN",
+          "mean_impact": 950,
+          "mean_impact_pct": 1.4,
+          "mean_net_income": 85139,
+          "energy": 683,
+          "fuel": 167,
+          "food": 100,
+          "benefit_uprating_shortfall": 69
+        },
+        {
+          "hh_type": "LONE_PARENT",
+          "mean_impact": 451,
+          "mean_impact_pct": 1.2,
+          "mean_net_income": 43187,
+          "energy": 301,
+          "fuel": 75,
+          "food": 75,
+          "benefit_uprating_shortfall": 158
+        },
+        {
+          "hh_type": "SINGLE_PENSIONER",
+          "mean_impact": 642,
+          "mean_impact_pct": 2.9,
+          "mean_net_income": 31534,
+          "energy": 506,
+          "fuel": 71,
+          "food": 65,
+          "benefit_uprating_shortfall": 45
+        },
+        {
+          "hh_type": "SINGLE_WORKING_AGE",
+          "mean_impact": 617,
+          "mean_impact_pct": 7.3,
+          "mean_net_income": 27875,
+          "energy": 474,
+          "fuel": 78,
+          "food": 64,
+          "benefit_uprating_shortfall": 51
+        }
+      ],
+      "channel_decomposition": {
+        "energy_shock": 629,
+        "fuel_shock": 126,
+        "food_shock": 84,
+        "net_impact": 839,
+        "benefit_uprating_shortfall": 52,
+        "cost_channels": [
+          "energy_shock",
+          "fuel_shock",
+          "food_shock"
+        ]
+      },
+      "sensitivity": {
+        "basis": "Each parameter's uncertainty_range in parameters.registry, evaluated through the model. NOT a confidence interval: the ranges are judgements about the price assumptions (for the forecast scenario, single-period values from the published forecasts each derivation names, each held for the year), not sampling distributions or forecast errors, and the combined case moves every parameter together. Two cost aggregates are reported per point, because cpi_increase_pp moves the uprating shortfall rather than the household cost \u2014 `moves` names which of them each parameter affects. The count of people newly below the anchored poverty line is reported at each point too",
+        "central_total_impact_bn": 26.5,
+        "central_uprating_shortfall_bn": 1.65,
+        "central_n_newly_below_anchored_line": 758617,
+        "combined": {
+          "total_impact_bn_low": 18.9,
+          "total_impact_bn_high": 33.9,
+          "uprating_shortfall_bn_low": 0.66,
+          "uprating_shortfall_bn_high": 2.64,
+          "n_newly_below_anchored_line_low": 414024,
+          "n_newly_below_anchored_line_high": 990677
+        },
+        "by_parameter": {
+          "cap_increase_pct": {
+            "range": [
+              31.5,
+              45.5
+            ],
+            "total_impact_bn_low": 22.4,
+            "total_impact_bn_high": 29.4,
+            "uprating_shortfall_bn_low": 1.65,
+            "uprating_shortfall_bn_high": 1.65,
+            "n_newly_below_anchored_line_low": 529488,
+            "n_newly_below_anchored_line_high": 839595,
+            "moves": [
+              "total_impact"
+            ]
+          },
+          "cpi_increase_pp": {
+            "range": [
+              1.3,
+              2.5
+            ],
+            "total_impact_bn_low": 26.5,
+            "total_impact_bn_high": 26.5,
+            "uprating_shortfall_bn_low": 0.66,
+            "uprating_shortfall_bn_high": 2.64,
+            "n_newly_below_anchored_line_low": 758617,
+            "n_newly_below_anchored_line_high": 758617,
+            "moves": [
+              "uprating_shortfall"
+            ]
+          },
+          "fuel_pct": {
+            "range": [
+              8.3,
+              18.9
+            ],
+            "total_impact_bn_low": 25.2,
+            "total_impact_bn_high": 28.7,
+            "uprating_shortfall_bn_low": 1.65,
+            "uprating_shortfall_bn_high": 1.65,
+            "n_newly_below_anchored_line_low": 637595,
+            "n_newly_below_anchored_line_high": 822667,
+            "moves": [
+              "total_impact"
+            ]
+          },
+          "food_increase_pct": {
+            "range": [
+              0.4,
+              4.3
+            ],
+            "total_impact_bn_low": 24.3,
+            "total_impact_bn_high": 28.8,
+            "uprating_shortfall_bn_low": 1.65,
+            "uprating_shortfall_bn_high": 1.65,
+            "n_newly_below_anchored_line_low": 570208,
+            "n_newly_below_anchored_line_high": 828072,
             "moves": [
               "total_impact"
             ]
@@ -3660,19 +4160,773 @@
           }
         ]
       }
+    },
+    "external_forecast": {
+      "epg": {
+        "name": "Energy Price Guarantee",
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 14.86,
+        "fiscal_cost_bn": 14.86,
+        "household_protection_bn": 14.86,
+        "residual_impact_bn": 11.64,
+        "avg_benefit_per_hh": 471,
+        "targeting_bottom40": 38.5,
+        "n_lifted_from_poverty": 507017,
+        "by_quintile": [
+          {
+            "quintile": 1,
+            "mean_benefit": 391,
+            "mean_residual_impact": 266,
+            "mean_benefit_pct_income": 4.4,
+            "benefit_share_pct": 18.7
+          },
+          {
+            "quintile": 2,
+            "mean_benefit": 455,
+            "mean_residual_impact": 334,
+            "mean_benefit_pct_income": 1.6,
+            "benefit_share_pct": 19.9
+          },
+          {
+            "quintile": 3,
+            "mean_benefit": 506,
+            "mean_residual_impact": 377,
+            "mean_benefit_pct_income": 1.1,
+            "benefit_share_pct": 21.3
+          },
+          {
+            "quintile": 4,
+            "mean_benefit": 530,
+            "mean_residual_impact": 433,
+            "mean_benefit_pct_income": 0.9,
+            "benefit_share_pct": 20.9
+          },
+          {
+            "quintile": 5,
+            "mean_benefit": 486,
+            "mean_residual_impact": 457,
+            "mean_benefit_pct_income": 0.5,
+            "benefit_share_pct": 19.3
+          }
+        ],
+        "support_shares": [
+          {
+            "quintile": 1,
+            "pct_supported": 93.8,
+            "pct_unsupported": 6.2
+          },
+          {
+            "quintile": 2,
+            "pct_supported": 92.1,
+            "pct_unsupported": 7.9
+          },
+          {
+            "quintile": 3,
+            "pct_supported": 94.8,
+            "pct_unsupported": 5.2
+          },
+          {
+            "quintile": 4,
+            "pct_supported": 97.6,
+            "pct_unsupported": 2.4
+          },
+          {
+            "quintile": 5,
+            "pct_supported": 96.5,
+            "pct_unsupported": 3.5
+          }
+        ]
+      },
+      "flat_rebate": {
+        "name": "Flat energy rebate",
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 12.63,
+        "fiscal_cost_bn": 12.63,
+        "household_protection_bn": 11.06,
+        "residual_impact_bn": 15.43,
+        "avg_benefit_per_hh": 350,
+        "targeting_bottom40": 43.0,
+        "n_lifted_from_poverty": 437858,
+        "by_quintile": [
+          {
+            "quintile": 1,
+            "mean_benefit": 320,
+            "mean_residual_impact": 337,
+            "mean_benefit_pct_income": 3.4,
+            "benefit_share_pct": 22.5
+          },
+          {
+            "quintile": 2,
+            "mean_benefit": 343,
+            "mean_residual_impact": 446,
+            "mean_benefit_pct_income": 1.1,
+            "benefit_share_pct": 20.5
+          },
+          {
+            "quintile": 3,
+            "mean_benefit": 354,
+            "mean_residual_impact": 530,
+            "mean_benefit_pct_income": 0.8,
+            "benefit_share_pct": 19.8
+          },
+          {
+            "quintile": 4,
+            "mean_benefit": 375,
+            "mean_residual_impact": 589,
+            "mean_benefit_pct_income": 0.6,
+            "benefit_share_pct": 18.5
+          },
+          {
+            "quintile": 5,
+            "mean_benefit": 367,
+            "mean_residual_impact": 575,
+            "mean_benefit_pct_income": 0.4,
+            "benefit_share_pct": 18.7
+          }
+        ],
+        "support_shares": [
+          {
+            "quintile": 1,
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
+          },
+          {
+            "quintile": 2,
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
+          },
+          {
+            "quintile": 3,
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
+          },
+          {
+            "quintile": 4,
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
+          },
+          {
+            "quintile": 5,
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
+          }
+        ]
+      },
+      "ct_rebate": {
+        "name": "Council tax rebate",
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 7.58,
+        "fiscal_cost_bn": 7.58,
+        "household_protection_bn": 6.88,
+        "residual_impact_bn": 19.62,
+        "avg_benefit_per_hh": 218,
+        "targeting_bottom40": 46.5,
+        "n_lifted_from_poverty": 363939,
+        "by_quintile": [
+          {
+            "quintile": 1,
+            "mean_benefit": 228,
+            "mean_residual_impact": 429,
+            "mean_benefit_pct_income": 2.4,
+            "benefit_share_pct": 24.9
+          },
+          {
+            "quintile": 2,
+            "mean_benefit": 224,
+            "mean_residual_impact": 565,
+            "mean_benefit_pct_income": 0.7,
+            "benefit_share_pct": 21.6
+          },
+          {
+            "quintile": 3,
+            "mean_benefit": 241,
+            "mean_residual_impact": 643,
+            "mean_benefit_pct_income": 0.6,
+            "benefit_share_pct": 21.5
+          },
+          {
+            "quintile": 4,
+            "mean_benefit": 222,
+            "mean_residual_impact": 742,
+            "mean_benefit_pct_income": 0.4,
+            "benefit_share_pct": 17.9
+          },
+          {
+            "quintile": 5,
+            "mean_benefit": 171,
+            "mean_residual_impact": 772,
+            "mean_benefit_pct_income": 0.2,
+            "benefit_share_pct": 14.0
+          }
+        ],
+        "support_shares": [
+          {
+            "quintile": 1,
+            "pct_supported": 88.8,
+            "pct_unsupported": 11.2
+          },
+          {
+            "quintile": 2,
+            "pct_supported": 84.3,
+            "pct_unsupported": 15.7
+          },
+          {
+            "quintile": 3,
+            "pct_supported": 86.8,
+            "pct_unsupported": 13.2
+          },
+          {
+            "quintile": 4,
+            "pct_supported": 77.4,
+            "pct_unsupported": 22.6
+          },
+          {
+            "quintile": 5,
+            "pct_supported": 60.1,
+            "pct_unsupported": 39.9
+          }
+        ]
+      },
+      "uc_uplift": {
+        "name": "UC uplift",
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 6.28,
+        "fiscal_cost_bn": 6.28,
+        "household_protection_bn": 2.3,
+        "residual_impact_bn": 24.19,
+        "avg_benefit_per_hh": 73,
+        "targeting_bottom40": 73.0,
+        "n_lifted_from_poverty": 259779,
+        "by_quintile": [
+          {
+            "quintile": 1,
+            "mean_benefit": 125,
+            "mean_residual_impact": 532,
+            "mean_benefit_pct_income": 0.7,
+            "benefit_share_pct": 43.6
+          },
+          {
+            "quintile": 2,
+            "mean_benefit": 112,
+            "mean_residual_impact": 677,
+            "mean_benefit_pct_income": 0.3,
+            "benefit_share_pct": 29.3
+          },
+          {
+            "quintile": 3,
+            "mean_benefit": 72,
+            "mean_residual_impact": 812,
+            "mean_benefit_pct_income": 0.2,
+            "benefit_share_pct": 18.6
+          },
+          {
+            "quintile": 4,
+            "mean_benefit": 31,
+            "mean_residual_impact": 933,
+            "mean_benefit_pct_income": 0.1,
+            "benefit_share_pct": 6.5
+          },
+          {
+            "quintile": 5,
+            "mean_benefit": 10,
+            "mean_residual_impact": 932,
+            "mean_benefit_pct_income": 0.0,
+            "benefit_share_pct": 1.9
+          }
+        ],
+        "support_shares": [
+          {
+            "quintile": 1,
+            "pct_supported": 37.1,
+            "pct_unsupported": 62.9
+          },
+          {
+            "quintile": 2,
+            "pct_supported": 27.3,
+            "pct_unsupported": 72.7
+          },
+          {
+            "quintile": 3,
+            "pct_supported": 18.0,
+            "pct_unsupported": 82.0
+          },
+          {
+            "quintile": 4,
+            "pct_supported": 6.7,
+            "pct_unsupported": 93.3
+          },
+          {
+            "quintile": 5,
+            "pct_supported": 1.9,
+            "pct_unsupported": 98.1
+          }
+        ]
+      },
+      "fuel_duty_cut": {
+        "name": "Fuel duty cut extension",
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 2.18,
+        "fiscal_cost_bn": 2.18,
+        "household_protection_bn": 2.18,
+        "residual_impact_bn": 24.31,
+        "avg_benefit_per_hh": 69,
+        "targeting_bottom40": 42.6,
+        "n_lifted_from_poverty": 66137,
+        "by_quintile": [
+          {
+            "quintile": 1,
+            "mean_benefit": 56,
+            "mean_residual_impact": 601,
+            "mean_benefit_pct_income": 2.1,
+            "benefit_share_pct": 18.1
+          },
+          {
+            "quintile": 2,
+            "mean_benefit": 83,
+            "mean_residual_impact": 707,
+            "mean_benefit_pct_income": 0.4,
+            "benefit_share_pct": 24.5
+          },
+          {
+            "quintile": 3,
+            "mean_benefit": 60,
+            "mean_residual_impact": 823,
+            "mean_benefit_pct_income": 0.1,
+            "benefit_share_pct": 17.3
+          },
+          {
+            "quintile": 4,
+            "mean_benefit": 76,
+            "mean_residual_impact": 887,
+            "mean_benefit_pct_income": 0.2,
+            "benefit_share_pct": 20.4
+          },
+          {
+            "quintile": 5,
+            "mean_benefit": 73,
+            "mean_residual_impact": 870,
+            "mean_benefit_pct_income": 0.1,
+            "benefit_share_pct": 19.7
+          }
+        ],
+        "support_shares": [
+          {
+            "quintile": 1,
+            "pct_supported": 45.1,
+            "pct_unsupported": 54.9
+          },
+          {
+            "quintile": 2,
+            "pct_supported": 42.7,
+            "pct_unsupported": 57.3
+          },
+          {
+            "quintile": 3,
+            "pct_supported": 47.7,
+            "pct_unsupported": 52.3
+          },
+          {
+            "quintile": 4,
+            "pct_supported": 55.8,
+            "pct_unsupported": 44.2
+          },
+          {
+            "quintile": 5,
+            "pct_supported": 51.8,
+            "pct_unsupported": 48.2
+          }
+        ]
+      },
+      "means_tested": {
+        "name": "Means-tested cost-of-living payment",
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 4.32,
+        "fiscal_cost_bn": 4.32,
+        "household_protection_bn": 2.71,
+        "residual_impact_bn": 23.79,
+        "avg_benefit_per_hh": 86,
+        "targeting_bottom40": 66.6,
+        "n_lifted_from_poverty": 298821,
+        "by_quintile": [
+          {
+            "quintile": 1,
+            "mean_benefit": 132,
+            "mean_residual_impact": 525,
+            "mean_benefit_pct_income": 0.8,
+            "benefit_share_pct": 38.7
+          },
+          {
+            "quintile": 2,
+            "mean_benefit": 121,
+            "mean_residual_impact": 668,
+            "mean_benefit_pct_income": 0.4,
+            "benefit_share_pct": 27.9
+          },
+          {
+            "quintile": 3,
+            "mean_benefit": 102,
+            "mean_residual_impact": 782,
+            "mean_benefit_pct_income": 0.3,
+            "benefit_share_pct": 22.5
+          },
+          {
+            "quintile": 4,
+            "mean_benefit": 47,
+            "mean_residual_impact": 917,
+            "mean_benefit_pct_income": 0.1,
+            "benefit_share_pct": 8.5
+          },
+          {
+            "quintile": 5,
+            "mean_benefit": 13,
+            "mean_residual_impact": 930,
+            "mean_benefit_pct_income": 0.0,
+            "benefit_share_pct": 2.4
+          }
+        ],
+        "support_shares": [
+          {
+            "quintile": 1,
+            "pct_supported": 42.6,
+            "pct_unsupported": 57.4
+          },
+          {
+            "quintile": 2,
+            "pct_supported": 33.6,
+            "pct_unsupported": 66.4
+          },
+          {
+            "quintile": 3,
+            "pct_supported": 28.1,
+            "pct_unsupported": 71.9
+          },
+          {
+            "quintile": 4,
+            "pct_supported": 11.3,
+            "pct_unsupported": 88.7
+          },
+          {
+            "quintile": 5,
+            "pct_supported": 3.2,
+            "pct_unsupported": 96.8
+          }
+        ]
+      },
+      "elec_vat_cut": {
+        "name": "Electricity VAT cut (extended)",
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 1.88,
+        "fiscal_cost_bn": 1.88,
+        "household_protection_bn": 1.88,
+        "residual_impact_bn": 24.62,
+        "avg_benefit_per_hh": 60,
+        "targeting_bottom40": 39.0,
+        "n_lifted_from_poverty": 190624,
+        "by_quintile": [
+          {
+            "quintile": 1,
+            "mean_benefit": 50,
+            "mean_residual_impact": 607,
+            "mean_benefit_pct_income": 0.5,
+            "benefit_share_pct": 18.8
+          },
+          {
+            "quintile": 2,
+            "mean_benefit": 59,
+            "mean_residual_impact": 731,
+            "mean_benefit_pct_income": 0.2,
+            "benefit_share_pct": 20.2
+          },
+          {
+            "quintile": 3,
+            "mean_benefit": 64,
+            "mean_residual_impact": 820,
+            "mean_benefit_pct_income": 0.1,
+            "benefit_share_pct": 21.3
+          },
+          {
+            "quintile": 4,
+            "mean_benefit": 67,
+            "mean_residual_impact": 896,
+            "mean_benefit_pct_income": 0.1,
+            "benefit_share_pct": 20.8
+          },
+          {
+            "quintile": 5,
+            "mean_benefit": 60,
+            "mean_residual_impact": 882,
+            "mean_benefit_pct_income": 0.1,
+            "benefit_share_pct": 18.8
+          }
+        ],
+        "support_shares": [
+          {
+            "quintile": 1,
+            "pct_supported": 85.6,
+            "pct_unsupported": 14.4
+          },
+          {
+            "quintile": 2,
+            "pct_supported": 83.8,
+            "pct_unsupported": 16.2
+          },
+          {
+            "quintile": 3,
+            "pct_supported": 88.8,
+            "pct_unsupported": 11.2
+          },
+          {
+            "quintile": 4,
+            "pct_supported": 87.7,
+            "pct_unsupported": 12.3
+          },
+          {
+            "quintile": 5,
+            "pct_supported": 81.1,
+            "pct_unsupported": 18.9
+          }
+        ]
+      },
+      "accelerated_uprating": {
+        "name": "Accelerated benefit uprating",
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 1.65,
+        "fiscal_cost_bn": 1.65,
+        "household_protection_bn": 1.57,
+        "residual_impact_bn": 24.93,
+        "avg_benefit_per_hh": 50,
+        "targeting_bottom40": 51.3,
+        "n_lifted_from_poverty": 238713,
+        "by_quintile": [
+          {
+            "quintile": 1,
+            "mean_benefit": 48,
+            "mean_residual_impact": 609,
+            "mean_benefit_pct_income": 0.2,
+            "benefit_share_pct": 21.6
+          },
+          {
+            "quintile": 2,
+            "mean_benefit": 70,
+            "mean_residual_impact": 719,
+            "mean_benefit_pct_income": 0.2,
+            "benefit_share_pct": 29.6
+          },
+          {
+            "quintile": 3,
+            "mean_benefit": 61,
+            "mean_residual_impact": 823,
+            "mean_benefit_pct_income": 0.1,
+            "benefit_share_pct": 24.2
+          },
+          {
+            "quintile": 4,
+            "mean_benefit": 39,
+            "mean_residual_impact": 925,
+            "mean_benefit_pct_income": 0.1,
+            "benefit_share_pct": 14.3
+          },
+          {
+            "quintile": 5,
+            "mean_benefit": 28,
+            "mean_residual_impact": 915,
+            "mean_benefit_pct_income": 0.0,
+            "benefit_share_pct": 10.2
+          }
+        ],
+        "support_shares": [
+          {
+            "quintile": 1,
+            "pct_supported": 67.1,
+            "pct_unsupported": 32.9
+          },
+          {
+            "quintile": 2,
+            "pct_supported": 70.2,
+            "pct_unsupported": 29.8
+          },
+          {
+            "quintile": 3,
+            "pct_supported": 64.0,
+            "pct_unsupported": 36.0
+          },
+          {
+            "quintile": 4,
+            "pct_supported": 53.2,
+            "pct_unsupported": 46.8
+          },
+          {
+            "quintile": 5,
+            "pct_supported": 40.3,
+            "pct_unsupported": 59.7
+          }
+        ]
+      },
+      "social_tariff": {
+        "name": "Social tariff",
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 1.87,
+        "fiscal_cost_bn": 1.87,
+        "household_protection_bn": 1.87,
+        "residual_impact_bn": 24.62,
+        "avg_benefit_per_hh": 59,
+        "targeting_bottom40": 85.8,
+        "n_lifted_from_poverty": 213479,
+        "by_quintile": [
+          {
+            "quintile": 1,
+            "mean_benefit": 151,
+            "mean_residual_impact": 506,
+            "mean_benefit_pct_income": 2.6,
+            "benefit_share_pct": 57.1
+          },
+          {
+            "quintile": 2,
+            "mean_benefit": 83,
+            "mean_residual_impact": 706,
+            "mean_benefit_pct_income": 0.5,
+            "benefit_share_pct": 28.8
+          },
+          {
+            "quintile": 3,
+            "mean_benefit": 23,
+            "mean_residual_impact": 860,
+            "mean_benefit_pct_income": 0.1,
+            "benefit_share_pct": 7.8
+          },
+          {
+            "quintile": 4,
+            "mean_benefit": 13,
+            "mean_residual_impact": 950,
+            "mean_benefit_pct_income": 0.0,
+            "benefit_share_pct": 4.1
+          },
+          {
+            "quintile": 5,
+            "mean_benefit": 7,
+            "mean_residual_impact": 935,
+            "mean_benefit_pct_income": 0.0,
+            "benefit_share_pct": 2.2
+          }
+        ],
+        "support_shares": [
+          {
+            "quintile": 1,
+            "pct_supported": 60.5,
+            "pct_unsupported": 39.5
+          },
+          {
+            "quintile": 2,
+            "pct_supported": 30.0,
+            "pct_unsupported": 70.0
+          },
+          {
+            "quintile": 3,
+            "pct_supported": 16.9,
+            "pct_unsupported": 83.1
+          },
+          {
+            "quintile": 4,
+            "pct_supported": 6.9,
+            "pct_unsupported": 93.1
+          },
+          {
+            "quintile": 5,
+            "pct_supported": 2.1,
+            "pct_unsupported": 97.9
+          }
+        ]
+      },
+      "combined": {
+        "name": "Combined package",
+        "cost_basis": "gross modelled household transfer, before tax and benefit interactions, take-up, behavioural response, administration, non-household use and financing",
+        "gross_outlay_bn": 50.98,
+        "fiscal_cost_bn": 50.98,
+        "household_protection_bn": 26.29,
+        "residual_impact_bn": 0.21,
+        "avg_benefit_per_hh": 833,
+        "targeting_bottom40": 48.0,
+        "n_lifted_from_poverty": 757649,
+        "by_quintile": [
+          {
+            "quintile": 1,
+            "mean_benefit": 656,
+            "mean_residual_impact": 2,
+            "mean_benefit_pct_income": 7.2,
+            "benefit_share_pct": 25.4
+          },
+          {
+            "quintile": 2,
+            "mean_benefit": 785,
+            "mean_residual_impact": 4,
+            "mean_benefit_pct_income": 2.7,
+            "benefit_share_pct": 22.7
+          },
+          {
+            "quintile": 3,
+            "mean_benefit": 876,
+            "mean_residual_impact": 7,
+            "mean_benefit_pct_income": 1.9,
+            "benefit_share_pct": 20.7
+          },
+          {
+            "quintile": 4,
+            "mean_benefit": 952,
+            "mean_residual_impact": 11,
+            "mean_benefit_pct_income": 1.5,
+            "benefit_share_pct": 16.8
+          },
+          {
+            "quintile": 5,
+            "mean_benefit": 933,
+            "mean_residual_impact": 10,
+            "mean_benefit_pct_income": 1.0,
+            "benefit_share_pct": 14.5
+          }
+        ],
+        "support_shares": [
+          {
+            "quintile": 1,
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
+          },
+          {
+            "quintile": 2,
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
+          },
+          {
+            "quintile": 3,
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
+          },
+          {
+            "quintile": 4,
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
+          },
+          {
+            "quintile": 5,
+            "pct_supported": 100.0,
+            "pct_unsupported": 0.0
+          }
+        ]
+      }
     }
   },
   "parameters": {
     "food_price_increase_pct": {
       "low_shock": 2.0,
       "central_shock": 4.0,
-      "severe_shock": 6.5
+      "severe_shock": 6.5,
+      "external_forecast": 2.3
     },
     "base_fuel_spend": 1029.6,
     "base_food_spend": 3666.0,
     "registry": {
       "low_shock": {
         "narrative": "Prices settle near their current elevated levels rather than falling back, from the August 2026 position: Brent settles near $85/bbl, pump prices around 161p petrol and 182p diesel (DESNZ August 2026 means)",
+        "scenario_type": "annual stress test",
         "parameters": {
           "cap_increase_pct": {
             "value": 15,
@@ -3682,13 +4936,17 @@
             "applies_to": "each household's own baseline gas + electricity expenditure",
             "lag": "none \u2014 applied as a full-year 2027-28 amount",
             "source_url": "https://www.ofgem.gov.uk/news/changes-energy-price-cap-between-1-july-and-30-september-2026",
+            "basis": "judgement",
             "source_date": "2026-07-01",
             "reference_period": "1 July - 30 September 2026 cap period",
-            "derivation": "Anchored to the observed +13.5% July 2026 cap rise. Not a de-escalation: on the pre-conflict \u00a31,465 baseline this sits below the announced Oct-Dec 2026 cap of \u00a31,723 (+17.6%), so it represents the Q4-2026 premium partially unwinding through 2027-28 rather than prices returning to pre-conflict levels. Cornwall Insight's earlier ~\u00a31,700 Q4 forecast (+16.0% on this baseline) has been superseded by that announcement (#37)",
+            "derivation": "Judgement, anchored to the observed +13.5% July 2026 cap rise. Not a de-escalation: on the pre-conflict \u00a31,465 baseline this sits below the announced Oct-Dec 2026 cap of \u00a31,723 (+17.6%), so it represents the Q4-2026 premium partially unwinding through 2027-28 rather than prices returning to pre-conflict levels. Cornwall Insight's earlier ~\u00a31,700 Q4 forecast (+16.0% on this baseline) has been superseded by that announcement (#37)",
             "uncertainty_range": [
               13,
               20
-            ]
+            ],
+            "source_name": "Ofgem, price cap for July-September 2026",
+            "basis_label": "judgement",
+            "supporting_sources": []
           },
           "fuel_pct": {
             "value": 22,
@@ -3698,6 +4956,7 @@
             "applies_to": "modelled household transport-fuel expenditure (ONS Table A6)",
             "lag": "none \u2014 applied as a full-year 2027-28 amount",
             "source_url": "https://commonslibrary.parliament.uk/research-briefings/cbp-10601/",
+            "basis": "observed",
             "source_date": "2026-08-04",
             "reference_period": "November 2025 to August 2026 monthly means",
             "derivation": "Observed change in the combined ONS fuel category between Autumn Budget 2025 and August 2026, on DESNZ monthly means: petrol rose 19.5% and diesel 26.5%, which on the FYE2024 Table A1 expenditure shares of 61% petrol and 39% diesel is a 22% composite. Set to that. An earlier version used the petrol figure alone, which understates a category that is 39% diesel (#55 review C1)",
@@ -3708,6 +4967,18 @@
             "uncertainty_range": [
               15,
               25
+            ],
+            "source_name": "House of Commons Library, CBP-10601",
+            "basis_label": "observed prices",
+            "supporting_sources": [
+              {
+                "name": "DESNZ, weekly road fuel prices",
+                "url": "https://www.gov.uk/government/statistics/weekly-road-fuel-prices"
+              },
+              {
+                "name": "ONS Family Spending, workbook 1",
+                "url": "https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/expenditure/datasets/familyspendingworkbook1detailedexpenditureandtrends"
+              }
             ]
           },
           "food_increase_pct": {
@@ -3718,13 +4989,17 @@
             "applies_to": "modelled household food expenditure (ONS Table A6)",
             "lag": "none \u2014 applied as a full-year 2027-28 amount",
             "source_url": "https://commonslibrary.parliament.uk/research-briefings/cbp-10601/",
+            "basis": "judgement",
             "source_date": "2026-08-04",
             "reference_period": "2027-28",
             "derivation": "Judgement: food price response to energy prices settling near current levels; no published scenario for this figure",
             "uncertainty_range": [
               1.0,
               3.0
-            ]
+            ],
+            "source_name": "House of Commons Library, CBP-10601",
+            "basis_label": "judgement",
+            "supporting_sources": []
           },
           "cpi_increase_pp": {
             "value": 1.3,
@@ -3734,18 +5009,23 @@
             "applies_to": "CPI-linked benefit income, excluding the state pension",
             "lag": "none \u2014 applied as a full-year 2027-28 amount",
             "source_url": "https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/june-2026",
+            "basis": "derived",
             "source_date": "2026-06-01",
             "reference_period": "2027-28 level against a no-conflict path (source figure is 2026-27)",
             "derivation": "Bank of England June 2026 projection of CPI near 3% against about 2% pre-conflict, i.e. roughly +1pp. Raised to 1.3pp so the adder is not below the first-round direct effect of this scenario's own price assumptions, which ONS 2026 basket weights put at 1.28pp (#37)",
             "uncertainty_range": [
               1.0,
               1.8
-            ]
+            ],
+            "source_name": "Bank of England, Monetary Policy Summary, June 2026",
+            "basis_label": "derived from this scenario's prices",
+            "supporting_sources": []
           }
         }
       },
       "central_shock": {
         "narrative": "Sustained Strait of Hormuz constraint: Goldman Sachs scenario of Brent averaging above $100/bbl through 2026",
+        "scenario_type": "annual stress test",
         "parameters": {
           "cap_increase_pct": {
             "value": 45,
@@ -3755,13 +5035,17 @@
             "applies_to": "each household's own baseline gas + electricity expenditure",
             "lag": "none \u2014 applied as a full-year 2027-28 amount",
             "source_url": "https://www.kpler.com/blog/hormuz-strait-disruptions-trigger-a-price-spike-in-ttf-and-asian-lng-while-middle-east-exports-come-to-a-halt",
+            "basis": "judgement",
             "source_date": "2026-03-10",
             "reference_period": "NBP/TTF sustained at ~2x pre-conflict",
             "derivation": "Judgement: NBP/TTF gas sustained at roughly twice pre-conflict levels across the 2027-28 cap assessment windows, as the Hormuz closure halts Qatari LNG (~19% of global LNG exports). Wholesale is ~40-45% of the cap, so a doubling of wholesale implies ~+45% on the retail bill. Anchored to gas rather than to Brent because Ofgem's wholesale allowance is built from NBP gas and UK baseload power forwards and crude oil enters it nowhere; in this episode oil flows recovered to about two-thirds of pre-war levels while LNG stayed halted, so an oil anchor would if anything understate the gas shock. The pass-through coefficient and hedging lag remain judgements",
             "uncertainty_range": [
               30,
               60
-            ]
+            ],
+            "source_name": "Kpler, Hormuz LNG disruption",
+            "basis_label": "judgement",
+            "supporting_sources": []
           },
           "fuel_pct": {
             "value": 46,
@@ -3771,6 +5055,7 @@
             "applies_to": "modelled household transport-fuel expenditure (ONS Table A6)",
             "lag": "none \u2014 applied as a full-year 2027-28 amount",
             "source_url": "https://commonslibrary.parliament.uk/research-briefings/cbp-10601/",
+            "basis": "published_scenario_pass_through",
             "source_date": "2026-07-01",
             "reference_period": "Goldman Q3 2026 Brent of $120/bbl",
             "derivation": "Expenditure-weighted pump response to the Goldman extended-closure case, on the same basis as the severe scenario so one registry gives one basis for this channel. Petrol and diesel are derived separately and combined by their shares of ONS Family Spending FYE2024 Table A1 lines 7.2.2.1 and 7.2.2.2 (\u00a312.10 petrol, \u00a37.70 diesel of the \u00a319.80 category this model already uses), because A6 gives one combined figure and the two products moved very differently. DESNZ monthly mean pump prices moved 135.04p to 161.42p for petrol and 143.82p to 181.98p for diesel between November 2025 and August 2026, while EIA monthly mean Brent moved $63.80 to $91.08 over the same months: slopes of ~0.97 and ~1.40p/litre per $1/bbl. At Goldman's $120 Q3 figure that gives +40% petrol, +55% diesel and a +46% composite. Both series are monthly means, so the periods match; earlier versions paired monthly pump means with a single-day Brent spot, and then applied a petrol-only slope to the combined category (#52 review C2, #55 review C1). Commons Library CBP-10601 informed the pass-through framing; the coefficients are this study's",
@@ -3783,6 +5068,26 @@
             "uncertainty_range": [
               30,
               60
+            ],
+            "source_name": "House of Commons Library, CBP-10601",
+            "basis_label": "published Brent scenario, our pass-through",
+            "supporting_sources": [
+              {
+                "name": "DESNZ, weekly road fuel prices",
+                "url": "https://www.gov.uk/government/statistics/weekly-road-fuel-prices"
+              },
+              {
+                "name": "US EIA, Brent spot price (monthly)",
+                "url": "https://www.eia.gov/dnav/pet/hist/RBRTEm.htm"
+              },
+              {
+                "name": "ONS Family Spending, workbook 1",
+                "url": "https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/expenditure/datasets/familyspendingworkbook1detailedexpenditureandtrends"
+              },
+              {
+                "name": "Goldman Sachs Hormuz-closure note, as reported by OilPrice.com",
+                "url": "https://oilprice.com/Latest-Energy-News/World-News/Goldman-Another-Month-of-Hormuz-Closure-Means-Over-100-Brent-Throughout-2026.html"
+              }
             ]
           },
           "food_increase_pct": {
@@ -3793,13 +5098,17 @@
             "applies_to": "modelled household food expenditure (ONS Table A6)",
             "lag": "none \u2014 applied as a full-year 2027-28 amount",
             "source_url": "https://commonslibrary.parliament.uk/research-briefings/cbp-10601/",
+            "basis": "judgement",
             "source_date": "2026-07-01",
             "reference_period": "2027-28",
             "derivation": "Judgement: food price response to sustained higher energy input costs, no published scenario for this figure",
             "uncertainty_range": [
               2.5,
               5.5
-            ]
+            ],
+            "source_name": "House of Commons Library, CBP-10601",
+            "basis_label": "judgement",
+            "supporting_sources": []
           },
           "cpi_increase_pp": {
             "value": 3.1,
@@ -3809,18 +5118,23 @@
             "applies_to": "CPI-linked benefit income, excluding the state pension",
             "lag": "none \u2014 applied as a full-year 2027-28 amount",
             "source_url": "https://niesr.ac.uk/blog/possible-effects-uk-inflation-2026-us-iran-conflict",
+            "basis": "derived",
             "source_date": "2026-03-23",
             "reference_period": "2027-28 level against a no-conflict path (NIESR's figures are CPI rates reached from July 2026)",
             "derivation": "Set at the first-round price-level effect of this scenario's own energy, fuel and food rises on ONS 2026 basket weights, 3.09pp, rounded. For context, NIESR's scenarios have CPI reaching about 3% (optimistic), 4% (central) or 5% (pessimistic) from July 2026; those are total rates that include NIESR's own assumption of 3-4% inflation from other sources, so they do not convert into a conflict addition by subtracting a 2% baseline. Not a floor on annual inflation, which also depends on timing, second-round effects and demand (#37, #56)",
             "uncertainty_range": [
               2.5,
               4.1
-            ]
+            ],
+            "source_name": "NIESR, effects of the US-Iran conflict on UK inflation",
+            "basis_label": "derived from this scenario's prices",
+            "supporting_sources": []
           }
         }
       },
       "severe_shock": {
         "narrative": "Extended full closure or prolonged war: Goldman extreme-adverse case and the Oxford Economics escalation scenario",
+        "scenario_type": "annual stress test",
         "parameters": {
           "cap_increase_pct": {
             "value": 90,
@@ -3830,13 +5144,17 @@
             "applies_to": "each household's own baseline gas + electricity expenditure",
             "lag": "none \u2014 applied as a full-year 2027-28 amount",
             "source_url": "https://www.kpler.com/blog/hormuz-strait-disruptions-trigger-a-price-spike-in-ttf-and-asian-lng-while-middle-east-exports-come-to-a-halt",
+            "basis": "judgement",
             "source_date": "2026-03-10",
             "reference_period": "NBP/TTF sustained at ~3x pre-conflict",
             "derivation": "Judgement: NBP/TTF gas sustained at roughly triple pre-conflict levels across the 2027-28 assessment windows (~+200% wholesale on a ~40-45% share), under the Oxford Economics escalation case. Not derived from a published cap projection. For precedent, the announced October 2022 cap of \u00a33,549 was +178% year-on-year on October 2021's \u00a31,277 under a comparable gas-supply shock, so a tripling of wholesale is within recent experience. Anchored to gas rather than Brent, for the reason given on the central scenario",
             "uncertainty_range": [
               60,
               120
-            ]
+            ],
+            "source_name": "Kpler, Hormuz LNG disruption",
+            "basis_label": "judgement",
+            "supporting_sources": []
           },
           "fuel_pct": {
             "value": 62,
@@ -3846,6 +5164,7 @@
             "applies_to": "modelled household transport-fuel expenditure (ONS Table A6)",
             "lag": "none \u2014 applied as a full-year 2027-28 amount",
             "source_url": "https://www.oxfordeconomics.com/resource/iran-war-scenarios-the-oil-price-that-breaks-parts-of-the-economy/",
+            "basis": "published_scenario_pass_through",
             "source_date": "2026-03-13",
             "reference_period": "two-month $140/bbl case",
             "derivation": "Expenditure-weighted pump response at Brent of $140/bbl. The source publishes no pump-price figure, so the pass-through is this study's. Petrol and diesel are derived separately from DESNZ monthly means against EIA monthly mean Brent (slopes ~0.97 and ~1.40p/litre per $1/bbl) and combined by their ONS Family Spending FYE2024 Table A1 expenditure shares, 61% petrol and 39% diesel. At $140 that gives +55% petrol, +74% diesel and a +62% composite, which is where this is set. Diesel cracks widened far more than gasoline in this episode, which is why a petrol-only rate understated the combined category (#55 review C1). The slopes embed that widening as well as crude cost, which is why they exceed the ~0.56p/litre that $1/bbl contributes through crude and VAT alone; fuel duty is a fixed 52.95p/litre and damps the percentage rise",
@@ -3858,6 +5177,26 @@
             "uncertainty_range": [
               50,
               80
+            ],
+            "source_name": "Oxford Economics, Iran war scenarios",
+            "basis_label": "published Brent scenario, our pass-through",
+            "supporting_sources": [
+              {
+                "name": "DESNZ, weekly road fuel prices",
+                "url": "https://www.gov.uk/government/statistics/weekly-road-fuel-prices"
+              },
+              {
+                "name": "US EIA, Brent spot price (monthly)",
+                "url": "https://www.eia.gov/dnav/pet/hist/RBRTEm.htm"
+              },
+              {
+                "name": "ONS Family Spending, workbook 1",
+                "url": "https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/expenditure/datasets/familyspendingworkbook1detailedexpenditureandtrends"
+              },
+              {
+                "name": "Goldman Sachs Hormuz-closure note, as reported by OilPrice.com",
+                "url": "https://oilprice.com/Latest-Energy-News/World-News/Goldman-Another-Month-of-Hormuz-Closure-Means-Over-100-Brent-Throughout-2026.html"
+              }
             ]
           },
           "food_increase_pct": {
@@ -3868,13 +5207,17 @@
             "applies_to": "modelled household food expenditure (ONS Table A6)",
             "lag": "none \u2014 applied as a full-year 2027-28 amount",
             "source_url": "https://www.oxfordeconomics.com/resource/iran-war-scenarios-the-oil-price-that-breaks-parts-of-the-economy/",
+            "basis": "judgement",
             "source_date": "2026-03-13",
             "reference_period": "2027-28",
             "derivation": "Judgement: food price response under a global recession scenario, no published figure for UK food prices",
             "uncertainty_range": [
               4.0,
               9.0
-            ]
+            ],
+            "source_name": "Oxford Economics, Iran war scenarios",
+            "basis_label": "judgement",
+            "supporting_sources": []
           },
           "cpi_increase_pp": {
             "value": 5.3,
@@ -3884,12 +5227,167 @@
             "applies_to": "CPI-linked benefit income, excluding the state pension",
             "lag": "none \u2014 applied as a full-year 2027-28 amount",
             "source_url": "https://www.oxfordeconomics.com/resource/iran-war-scenarios-the-oil-price-that-breaks-parts-of-the-economy/",
+            "basis": "derived",
             "source_date": "2026-03-13",
             "reference_period": "two-month $140/bbl case",
             "derivation": "The source reports a 5.8% peak in WORLD CPI, roughly 3pp above its baseline. Set to 5.3pp for UK CPI, at the first-round direct effect of this scenario's own price assumptions, which ONS 2026 basket weights put at 5.23pp and which exceeds the ~3pp world figure, consistent with the UK's higher energy import share. The source does not publish a UK figure, and does not report the 7.7% this file previously attributed to it",
             "uncertainty_range": [
               4.5,
               7.0
+            ],
+            "source_name": "Oxford Economics, Iran war scenarios",
+            "basis_label": "derived from this scenario's prices",
+            "supporting_sources": []
+          }
+        }
+      },
+      "external_forecast": {
+        "narrative": "Prices follow the latest published forecasts as of 2026-10-09: Cornwall Insight for the energy price cap, the US EIA for Brent crude and IGD for food. Where a forecast stops short of 2027-28 its last period is held, as each parameter's derivation states",
+        "scenario_type": "annual forecast-based scenario",
+        "parameters": {
+          "cap_increase_pct": {
+            "value": 39.7,
+            "definition": "Percentage increase in household domestic gas and electricity expenditure, measured from its April-June 2026 level - the cap Ofgem announced on 25 February 2026, immediately before the conflict began. The period itself is not pre-conflict; the announcement is. The fuel channel uses a different baseline, the Autumn Budget 2025 pump prices; each parameter's reference_period states its own",
+            "unit": "per cent",
+            "geography": "United Kingdom",
+            "applies_to": "each household's own baseline gas + electricity expenditure",
+            "lag": "none \u2014 applied as a full-year 2027-28 amount",
+            "source_url": "https://www.cornwall-insight.com/press-releases/16-price-cap-rise-forecast-in-january/",
+            "basis": "forecast",
+            "source_date": "2026-09-30",
+            "source_figure": "\u00a31,999.28 a year for January-March 2027 (electricity \u00a3959.44, gas \u00a31,039.84). Cornwall's predictions page dates the prices to close of play on 28 September 2026",
+            "reference_period": "January-March 2027 forecast, held for the four 2027-28 cap quarters",
+            "derivation": "Cornwall Insight's latest forecast, for January-March 2027, is \u00a31,999.28. That quarter falls inside the zero rate of VAT on domestic electricity, which ends on 31 March 2027. Cornwall does not state its VAT basis; it is inferred from Ofgem, whose October cap reflects the VAT removal and is the base Cornwall's rise is measured on. Electricity is restored to 5% VAT, the rate in the April-June 2026 cap this is measured from: \u00a32,047.25, +39.7% on that cap's \u00a31,465. Cornwall publishes no forecast for any 2027-28 quarter, so this one is held for all four. That holding is an assumption, not a forecast, and it carries no change in network or policy costs after that quarter. A winter quarter is being held through a summer: supplier forecasting services that do reach April-September 2027, each at its lowest confidence, run from \u00a31,927 to \u00a32,131. Each of those single quarters, held for the year, sets one end of the range. For January-March 2027 itself the same services forecast \u00a32,080 and \u00a32,088, above Cornwall",
+            "supporting_source_urls": [
+              "https://www.cornwall-insight.com/predictions-and-insights-into-the-default-tariff-cap/",
+              "https://www.ofgem.gov.uk/press-release/energy-price-cap-will-rise-4-october-2026",
+              "https://www.eonnext.com/electricity-and-gas/price-cap/predictions",
+              "https://www.britishgas.co.uk/energy/price-cap.html"
+            ],
+            "uncertainty_range": [
+              31.5,
+              45.5
+            ],
+            "source_name": "Cornwall Insight, price cap forecast",
+            "basis_label": "published forecast",
+            "supporting_sources": [
+              {
+                "name": "Cornwall Insight, price cap predictions page",
+                "url": "https://www.cornwall-insight.com/predictions-and-insights-into-the-default-tariff-cap/"
+              },
+              {
+                "name": "Ofgem, price cap for October-December 2026",
+                "url": "https://www.ofgem.gov.uk/press-release/energy-price-cap-will-rise-4-october-2026"
+              },
+              {
+                "name": "E.ON Next, price cap predictions",
+                "url": "https://www.eonnext.com/electricity-and-gas/price-cap/predictions"
+              },
+              {
+                "name": "British Gas, price cap predictions",
+                "url": "https://www.britishgas.co.uk/energy/price-cap.html"
+              }
+            ]
+          },
+          "fuel_pct": {
+            "value": 12.2,
+            "definition": "Percentage increase in household spending on the combined ONS category (petrol, diesel and other motor oils), measured from the Autumn Budget 2025 pump prices this file records. The energy channel uses a different baseline, April-June 2026; each parameter's reference_period states its own",
+            "unit": "per cent",
+            "geography": "United Kingdom",
+            "applies_to": "modelled household transport-fuel expenditure (ONS Table A6)",
+            "lag": "none \u2014 applied as a full-year 2027-28 amount",
+            "source_url": "https://www.eia.gov/outlooks/steo/archives/oct26.pdf",
+            "basis": "forecast_pass_through",
+            "source_date": "2026-10-06",
+            "source_figure": "Brent $87.00/bbl in April-June 2027, $80.03 in July-September and $73.94 in October-December (Table 2), from inputs finalised on 1 October 2026. The EIA forecasts crude, not UK pump prices",
+            "reference_period": "April 2027 - March 2028; January-March 2028 holds the last EIA quarter",
+            "derivation": "The US EIA's October 2026 Short-Term Energy Outlook forecasts Brent at $87.00, $80.03 and $73.94/bbl over April-December 2027. It does not reach 2028, so January-March 2028 holds the last quarter. The 2027-28 mean, $78.73, goes through this study's pump-price pass-through, the same DESNZ-against-EIA slopes and ONS petrol and diesel shares the stress tests use, to +12.2% on Autumn Budget 2025 pump prices. The +12.2% is this study's figure, not the EIA's: no published forecast of UK pump prices for 2027-28 was found, and the OBR's latest outlook (3 March 2026) used energy prices from before the conflict. Two things it leaves out, pulling opposite ways. First, it probably leans high: the slopes were fitted on November 2025 to August 2026, when refining margins widened, and the same EIA table has US wholesale margins over Brent narrowing again (diesel $0.82 a gallon in October-December 2025, $2.11 in July-September 2026, $1.05 over 2027-28; petrol $0.49, $1.21 and $0.58). Scaling this study's rise by the EIA's own US price forecasts, relative to a slope fitted the same way, gives about +9.6% on US retail prices and +7.7% on US wholesale when the slope ends in July-September 2026, the quarter nearest this study's August end point, and +11.7% and +11.5% when it ends a quarter earlier. All four sit below this figure, so the direction is clear; the size depends on the end point and is not. US prices are only a proxy for the UK's, so this is disclosed rather than applied. Second, duty is held at 52.95p, the rate at both ends of the slopes, as in the stress tests. That assumes the 5p cut continues: the scheduled duty rises are outside this scenario's cost, and the fuel duty option's relief is measured against them. The range is the composite at the lowest and highest EIA quarter in the year, each held for the year: the spread of the forecast path, not a forecast error",
+            "supporting_source_urls": [
+              "https://www.gov.uk/government/statistics/weekly-road-fuel-prices",
+              "https://www.eia.gov/dnav/pet/hist/RBRTEm.htm",
+              "https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/expenditure/datasets/familyspendingworkbook1detailedexpenditureandtrends"
+            ],
+            "uncertainty_range": [
+              8.3,
+              18.9
+            ],
+            "source_name": "US EIA, Short-Term Energy Outlook, October 2026",
+            "basis_label": "published Brent forecast, our pass-through",
+            "supporting_sources": [
+              {
+                "name": "DESNZ, weekly road fuel prices",
+                "url": "https://www.gov.uk/government/statistics/weekly-road-fuel-prices"
+              },
+              {
+                "name": "US EIA, Brent spot price (monthly)",
+                "url": "https://www.eia.gov/dnav/pet/hist/RBRTEm.htm"
+              },
+              {
+                "name": "ONS Family Spending, workbook 1",
+                "url": "https://www.ons.gov.uk/peoplepopulationandcommunity/personalandhouseholdfinances/expenditure/datasets/familyspendingworkbook1detailedexpenditureandtrends"
+              }
+            ]
+          },
+          "food_increase_pct": {
+            "value": 2.3,
+            "definition": "Revision to the forecast 2027 level of food and non-alcoholic drink prices since the forecaster's last pre-conflict forecast, whatever its cause",
+            "unit": "per cent",
+            "geography": "United Kingdom",
+            "applies_to": "modelled household food expenditure (ONS Table A6)",
+            "lag": "none \u2014 applied as a full-year 2027-28 amount",
+            "source_url": "https://www.igd.com/about-us/press-centre/articles/food-inflation-to-strengthen-in-2027-as-cost-pressures-build-igd-forecasts/74093",
+            "basis": "forecast",
+            "source_date": "2026-09-17",
+            "source_figure": "Retail food and drink inflation of 2.9-3.9% in 2026, 5.6-6.6% in 2027 and 5.3-6.3% in 2028, against 3.3-4.3% and 2.8-3.8% for 2026 and 2027 in its January 2026 outlook",
+            "reference_period": "calendar 2027, the latest year both forecasts cover",
+            "derivation": "IGD's forecasts of UK retail food and drink inflation, at the midpoints of its published ranges, compounded over 2026 and 2027: the latest (17 September 2026) puts the 2027 food price level 2.3% above its last pre-conflict forecast (22 January 2026). That revision is the rise used, rather than food inflation itself, because the model needs a rise against a no-conflict path and normal inflation would otherwise count as a shock. It includes everything IGD revised for: IGD cites Middle East disruption, energy and input costs, El Ni\u00f1o weather and policy measures, so it is not the conflict alone. IGD's latest has inflation at 5.3-6.3% in 2028, so extending to the 2027-28 fiscal year would probably raise the figure, but the pre-conflict forecast stops at 2027 and the extension would need an assumption. The range takes opposite ends of the two published ranges",
+            "supporting_source_urls": [
+              "https://www.igd.com/social-impact/economics/articles/food-inflation-2025-vs-2026-outlook/72283"
+            ],
+            "uncertainty_range": [
+              0.4,
+              4.3
+            ],
+            "source_name": "IGD, food inflation forecast, September 2026",
+            "basis_label": "published forecast",
+            "supporting_sources": [
+              {
+                "name": "IGD, food inflation outlook, January 2026",
+                "url": "https://www.igd.com/social-impact/economics/articles/food-inflation-2025-vs-2026-outlook/72283"
+              }
+            ]
+          },
+          "cpi_increase_pp": {
+            "value": 1.9,
+            "definition": "Addition to UK CPI inflation against a no-conflict path, measured from pre-conflict prices. Not a forecast of the headline rate: it is set from the scenario's own price assumptions (see first_round_floor_pp). Used only to size the real-terms erosion of CPI-linked benefits, and so the accelerated-uprating policy. Part of it is already in September 2026 CPI, which sets April 2027 uprating; only the residual goes unindexed",
+            "unit": "percentage points",
+            "geography": "United Kingdom",
+            "applies_to": "CPI-linked benefit income, excluding the state pension",
+            "lag": "none \u2014 applied as a full-year 2027-28 amount",
+            "source_url": "https://www.ons.gov.uk/economy/inflationandpriceindices/timeseries/cjvf/mm23",
+            "basis": "derived",
+            "source_date": "2026-09-16",
+            "reference_period": "2027-28 level against a no-conflict path",
+            "derivation": "Not an inflation forecast: the first-round effect of this scenario's own energy, fuel and food rises on ONS 2026 basket weights, 1.84pp, rounded up, as for the stress tests. Published CPI forecasts are total rates, which do not convert into a conflict addition by subtracting a baseline (#56). The range is the same arithmetic at the ends of the three price ranges",
+            "supporting_source_urls": [
+              "https://www.ons.gov.uk/economy/inflationandpriceindices/timeseries/cjxr/mm23",
+              "https://www.ons.gov.uk/economy/inflationandpriceindices/timeseries/chzr/mm23"
+            ],
+            "uncertainty_range": [
+              1.3,
+              2.5
+            ],
+            "source_name": "ONS, CPI weight: electricity, gas and other fuels",
+            "basis_label": "derived from this scenario's prices",
+            "supporting_sources": [
+              {
+                "name": "ONS, CPI weight: fuels and lubricants",
+                "url": "https://www.ons.gov.uk/economy/inflationandpriceindices/timeseries/cjxr/mm23"
+              },
+              {
+                "name": "ONS, CPI weight: food and non-alcoholic beverages",
+                "url": "https://www.ons.gov.uk/economy/inflationandpriceindices/timeseries/chzr/mm23"
+              }
             ]
           }
         }
@@ -3963,15 +5461,47 @@
     }
   },
   "metadata": {
-    "scenario_type": "annual stress test",
+    "scenario_types": {
+      "low_shock": "annual stress test",
+      "central_shock": "annual stress test",
+      "severe_shock": "annual stress test",
+      "external_forecast": "annual forecast-based scenario"
+    },
+    "forecast_vintage": {
+      "as_of": "2026-10-09",
+      "assumptions": [
+        "Fuel duty stays at 52.95p a litre, the rate with the temporary 5p cut, as in the stress tests. Under current law it rises from January 2027. That rise is not in this scenario's cost, so the fuel duty option on the Policy options tab offsets a rise the cost here does not include.",
+        "VAT on electricity is back at 5% from April 2027, as current law sets. Extending the zero rate is one of the policy options.",
+        "Each forecast's last period is held where it stops short of March 2028: Cornwall Insight's at January-March 2027, the EIA's at October-December 2027. IGD's revision for calendar 2027 stands for 2027-28."
+      ],
+      "gaps": [
+        "Cornwall Insight publishes no price cap forecast for any quarter of 2027-28; its latest covers January-March 2027, which is held for the year.",
+        "No published forecast of UK pump prices for 2027-28 was found. Fuel uses the US EIA's Brent forecast through this study's pass-through to pump prices, which carries the refining margins of 2026. The EIA forecasts US margins narrowing in 2027, so the fuel figure probably leans high. Its derivation gives four scalings to the EIA's own US price forecasts; all are lower, by amounts that differ.",
+        "No published forecast that isolates the conflict's effect on UK food prices was found. Food uses the revision to IGD's forecast since before the conflict, which includes everything IGD revised for.",
+        "The OBR's latest forecast (3 March 2026) used energy prices from before the conflict, so it is not used."
+      ],
+      "next_updates": [
+        {
+          "source": "OBR Economic and fiscal outlook, with the Autumn Budget",
+          "due": "2026-10-28",
+          "url": "https://obr.uk/"
+        },
+        {
+          "source": "Ofgem price cap for January-March 2027",
+          "due": "2026-11",
+          "url": "https://www.ofgem.gov.uk/energy-regulation/domestic-and-non-domestic/energy-pricing-rules/energy-price-cap"
+        }
+      ]
+    },
     "method_limitations": [
-      "Scenario type: annual stress test, not a forecast. Every change is applied as a full-year 2027-28 amount, including where the cited source describes a 2026 disruption lasting a few months. No time path, quarterly or monthly profile, or shock duration is modelled.",
+      "Scenario type: three scenarios are annual stress tests, not forecasts. The fourth, external_forecast, takes its prices from published forecasts, but where a forecast stops short of 2027-28 its last period is held, and its fuel figure goes through this study's pump-price pass-through, as its registry derivations state. Every change is applied as a full-year 2027-28 amount, including where the cited source describes a 2026 disruption lasting a few months. No time path, quarterly or monthly profile, or shock duration is modelled.",
       "Energy channel: this is a household-energy-expenditure sensitivity rather than a price-cap calculation \u2014 the scenario percentage is applied to each household's own modelled energy spending, and no cap level, unit rate or tariff type enters it. Issue #13 offered modelling retail energy properly or relabelling the channel; this is the relabel.",
       "Energy prices: the model multiplies each household's baseline gas and electricity expenditure by the scenario percentage. It does not model unit rates or standing charges, the gas/electricity split, region, payment method, quarterly cap periods, or fixed-tariff coverage \u2014 about 40% of accounts were on fixed tariffs for the July 2026 cap, and the cap does not set their prices. CURRENT_ENERGY_CAP is reported as context and does not enter the calculation.",
       "Pass-through: the coefficients and lags implied by the scenario percentages are judgements anchored to the cited sources, not equations derived from them. The energy channel is gas-to-retail (Ofgem's wholesale allowance is built from NBP gas and UK baseload power forwards, and crude oil enters it nowhere); the fuel channel is oil-to-pump. In this episode oil and gas flows diverged \u2014 oil recovered to roughly two-thirds of pre-war levels while LNG stayed halted \u2014 so an oil-anchored energy calibration would if anything understate the gas shock. See PARAMETER_REGISTRY for the derivation of each figure.",
       "Fuel product mix: ONS Table A6 gives one combined figure for petrol, diesel and other motor oils, and the model multiplies it by one percentage. That percentage is an expenditure-weighted composite of separately derived petrol and diesel responses, using the FYE2024 Table A1 shares (61% petrol, 39% diesel). It is a fixed-weight calculation: no substitution between fuels and no volume response is modelled, and a household's own mix is not represented, so a diesel-only household's shock is understated and a petrol-only household's overstated. The shares are two years older than the modelled year and the diesel car fleet share has been falling, which biases the composite very slightly high.",
       "Share-of-income statistics: the MEAN share is not robust in the bottom quintile, because a small number of households with a defined but very small income denominator pull it up sharply. Each quintile row therefore reports three bases - mean_impact_pct, trimmed_mean_impact_pct (excluding the bottom 1% of all incomes) and median_impact_pct - and they differ substantially at the bottom. The GRADIENT between the bottom and top quintiles holds on every basis; the LEVEL does not, so a single quoted figure should be the gradient, and the ratio of mean cost to mean income is the steadiest basis for it. Excluding households with zero modelled energy spend barely moves any of the three, so the sensitivity is to the income tail rather than the energy tail; those households are over-represented in the bottom two quintiles, which hold about three fifths of them (#46).",
       "Benefit uprating: the gain from an accelerated uprating is modelled by running a PolicyEngine UK reform at each scenario's residual CPI addition, raising every CPI-uprated benefit rate, with tapers, award floors and the benefit cap applied, the reported ESA, contribution-based JSA, IIDB, incapacity benefit and AFCS awards scaled, and the CPI-uprated additional State Pension raised, including UC work allowances, the childcare cap, the non-dependant deduction (which lowers awards) and Pension Age Winter Heating Payment. Not covered, each with a published upper bound on the omission under metadata.uprating_not_covered: the Pension Credit savings credit maximum, which is not a model parameter, and the partly CPI-linked maternity allowance and statutory maternity, paternity and sick pay; the captured September 2026 CPI is a proxy on August data with food omitted. The amount is reported as the compensation an immediate uprating would deliver and is not counted as a cost, so the household loss is the price rise alone.",
+      "Poverty count granularity: the count of people newly below the anchored line is a sum over survey records whose weights vary by orders of magnitude, so a single record can carry a large share of it and the count moves in steps as a price rises: a small change in an assumption can move it sharply or not at all. Each scenario's summary reports how many records the count rests on and the share the largest carry (n_records_newly_below_anchored_line and the two *_share_of_newly_below_pct fields), and its sensitivity block reports the count at each end of every price range. Quote the count rounded and with that range, not to the last person. Each policy's count of people kept above the line is a sum over a subset of the same records, and can be smaller than the single largest of them, so it ranks policies only roughly. The cost figures are sums over every household and are not affected in the same way.",
       "Means-tested payment timing: the 2022 scheme paid two separate awards of \u00a3326 and \u00a3324, each conditional on entitlement in its own qualifying window, so a household entitled in only one window received that instalment alone. The annual microdata cannot observe entitlement within a window, so each instalment is paid at an assumed per-window entitlement rate (MEANS_TEST_WINDOW_ENTITLEMENT_RATE), which gives the expected value across all four qualifying states without modelling their joint distribution. That rate is a stated assumption, not a sourced figure, and the modelled cost is proportional to it. Take-up among qualifying households is treated as complete, since the 2022 payments were automatic.",
       "Uncertainty: the ranges in PARAMETER_REGISTRY describe the spread of the price assumptions and are now evaluated through the model \u2014 see scenarios[*].sensitivity. They are judgements, not sampling distributions, so the resulting spread is not a confidence interval. Survey sampling uncertainty on the spending inputs is reported separately under parameters.spending_inputs.sampling_uncertainty and is not propagated, because ONS publishes no decile-level standard errors."
     ],
@@ -4004,7 +5534,8 @@
       "upper_bound_bn": {
         "low_shock": 0.035,
         "central_shock": 0.195,
-        "severe_shock": 0.389
+        "severe_shock": 0.389,
+        "external_forecast": 0.088
       },
       "basis": "The reform does not raise the Pension Credit savings credit maximum, which is not a model parameter, or the partly CPI-linked maternity allowance and statutory maternity, paternity and sick pay. Raising the maximum by r% raises any savings credit award, including one it creates, by at most r% of the maximum; each partly linked payment rises by at most r% of itself. So r% of the eligible maximum plus those payments bounds the omission"
     },

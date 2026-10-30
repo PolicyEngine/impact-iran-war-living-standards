@@ -461,3 +461,76 @@ def test_uprating_every_cpi_tagged_benefit_parameter_is_classified():
             if not any(leaf.name == k or leaf.name.startswith(k + ".") for k in known):
                 unclassified.append(leaf.name)
     assert unclassified == [], unclassified
+
+
+# ── Monotonicity and the forecast scenario on the certified data ─────────
+
+from hypothesis import given, settings  # noqa: E402
+from hypothesis import strategies as st  # noqa: E402
+
+PRICES = ["cap_increase_pct", "fuel_pct", "food_increase_pct"]
+
+
+def _cost_and_poverty(data, params):
+    from iran_impact.pipeline import (
+        _baseline_in_poverty,
+        _below_anchored_line,
+        _poverty_line,
+        compute_scenario,
+        weighted_sum,
+    )
+
+    impacts = compute_scenario(data, "central_shock", params_override=params)
+    line = _poverty_line(data)
+    newly = (~_baseline_in_poverty(data, line)) & _below_anchored_line(
+        data, impacts["net_impact"], line
+    )
+    return (
+        weighted_sum(impacts["net_impact"], data["weights"]),
+        weighted_sum(newly.astype(float), data["weights"] * data["people"]),
+    )
+
+
+@settings(max_examples=60, deadline=None)
+@given(
+    energy=st.floats(0, 150),
+    fuel=st.floats(0, 100),
+    food=st.floats(0, 15),
+    name=st.sampled_from(PRICES),
+    delta=st.floats(0.01, 50),
+)
+def test_raising_any_price_never_lowers_cost_or_poverty_on_the_certified_data(
+    baseline, energy, fuel, food, name, delta
+):
+    """The property tests/test_monotonicity.py states on generated
+    populations, here on the real 31.6m-household microdata."""
+    params = {
+        "cap_increase_pct": energy,
+        "fuel_pct": fuel,
+        "food_increase_pct": food,
+        # Held at a residual the baseline has evaluated; CPI is not a cost.
+        "cpi_increase_pp": config.SCENARIOS["central_shock"]["cpi_increase_pp"],
+    }
+    cost, poor = _cost_and_poverty(baseline, params)
+    cost_up, poor_up = _cost_and_poverty(
+        baseline, {**params, name: params[name] + delta}
+    )
+    assert cost_up > cost
+    assert poor_up >= poor
+
+
+def test_the_committed_forecast_scenario_reproduces_from_the_certified_data(baseline):
+    """A differential check: the committed figures for the forecast scenario
+    must be what the pipeline computes from the certified data now."""
+    import json
+    from pathlib import Path
+
+    from iran_impact.pipeline import _scenario_output
+
+    committed = json.loads(
+        (Path(__file__).parents[1] / "dashboard/public/data/iran_impact_results.json").read_text()
+    )["scenarios"]["external_forecast"]
+    fresh, _ = _scenario_output(baseline, "external_forecast")
+    assert fresh["summary"] == committed["summary"]
+    assert fresh["channel_decomposition"] == committed["channel_decomposition"]
+    assert fresh["sensitivity"] == committed["sensitivity"]

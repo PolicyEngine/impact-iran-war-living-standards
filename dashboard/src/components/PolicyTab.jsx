@@ -18,7 +18,8 @@ import { getPolicyComparison, POLICY_KEYS, POLICY_LABELS } from "../lib/dataHelp
 import { formatCurrency, formatBn, formatCount } from "../lib/formatters";
 import ChartLogo from "./ChartLogo";
 import QuintileTargetingChart from "./QuintileTargetingChart";
-import { getScenarioNarrative, getScenarioOptions } from "../lib/scenarioContent";
+import { getDefaultScenario, getScenarioNarrative } from "../lib/scenarioContent";
+import { ScenarioButtons, ScenarioTypeBadge } from "./ScenarioPicker";
 
 const AXIS_STYLE = {
   fontSize: 12,
@@ -44,7 +45,7 @@ const POLICY_DESCRIPTIONS = {
   },
   fuel_duty_cut: {
     mechanism: "Extension of an enacted measure, and a decision for the Autumn Budget on 28 October 2026. Extends the existing 5p per litre fuel duty cut (currently legislated to expire 31 December 2026) through the shock period.",
-    model: "The model applies 5p to each household's own modelled petrol and diesel volume, so households with no vehicle receive nothing. Fuel duty is one of the few measures here that is a real PolicyEngine parameter. Its Exchequer cost is therefore also computed by running the cut as an actual reform: \u00A32.18bn, against baseline receipts of \u00A325.9bn. That almost exactly matches the household transfer, because the microdata attributes road-fuel volume to households at close to the national total. Household volumes therefore absorb business and freight use, and the household incidence is overstated to that extent.",
+    model: "The model applies 5p to each household's own modelled petrol and diesel volume, so households with no vehicle receive nothing. Every scenario's cost already prices fuel at 52.95p, the rate with the cut, so this relief offsets a scheduled duty rise that the scenario costs do not include. Fuel duty is one of the few measures here that is a real PolicyEngine parameter. Its Exchequer cost is therefore also computed by running the cut as an actual reform: \u00A32.18bn, against baseline receipts of \u00A325.9bn. That almost exactly matches the household transfer, because the microdata attributes road-fuel volume to households at close to the national total. Household volumes therefore absorb business and freight use, and the household incidence is overstated to that extent.",
   },
   means_tested: {
     mechanism: "Illustrative option, modelled on the 2022 scheme. Pays £650 to households receiving a benefit that qualified for the 2022 Cost of Living Payment: Universal Credit, income-based JSA, income-related ESA, Income Support, Working Tax Credit, Child Tax Credit or Pension Credit. Housing Benefit alone did not qualify.",
@@ -94,7 +95,7 @@ function CustomTooltip({ active, payload, label, formatter }) {
 }
 
 export default function PolicyTab({ data }) {
-  const [scenario, setScenario] = useState("low_shock");
+  const [scenario, setScenario] = useState(() => getDefaultScenario(data));
   const [selectedPolicy, setSelectedPolicy] = useState("epg");
 
   const policies = getPolicyComparison(data, scenario);
@@ -102,7 +103,6 @@ export default function PolicyTab({ data }) {
   const policyLabel = POLICY_LABELS[selectedPolicy] || selectedPolicy;
   const policyDescription = POLICY_DESCRIPTIONS[selectedPolicy];
   const scenarioDescription = getScenarioNarrative(scenario, data);
-  const scenarioOptions = getScenarioOptions(data);
 
   // Quintile data for the selected policy
   const quintileData = useMemo(() => {
@@ -157,30 +157,14 @@ export default function PolicyTab({ data }) {
         <div className="section-card flex h-full flex-col">
           <SectionHeading
             title="Select a scenario"
-            description="Stress tests, not forecasts: summer 2026 prices holds energy and fuel near their July cap and August pump-price rises for all of 2027-28; the escalation paths assume prices rise well beyond them. Choose a scenario to evaluate policy responses against it."
+            description="Latest forecasts follows published price forecasts. The others are stress tests, not forecasts: summer 2026 prices holds energy and fuel near their July cap and August pump-price rises for all of 2027-28; the escalation paths assume prices rise well beyond them. Choose a scenario to evaluate policy responses against it."
           />
-          <div className="mt-4 flex flex-wrap gap-2">
-            {scenarioOptions.map((s) => (
-              <button
-                key={s.id}
-                className={`rounded-full px-5 py-2 text-sm font-medium transition-colors ${
-                  scenario === s.id
-                    ? "text-white"
-                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                }`}
-                style={
-                  scenario === s.id
-                    ? { backgroundColor: colors.primary[800] }
-                    : undefined
-                }
-                onClick={() => setScenario(s.id)}
-              >
-                {s.label}
-              </button>
-            ))}
+          <div className="mt-4">
+            <ScenarioButtons data={data} selected={scenario} onSelect={setScenario} />
           </div>
           {scenarioDescription ? (
             <p className="mt-5 text-sm leading-7 text-slate-600">
+              <ScenarioTypeBadge label={scenarioDescription.typeLabel} />
               <strong className="text-slate-800">{scenarioDescription.shortLabel}:</strong>{" "}
               {scenarioDescription.description} Policies are measured against this scenario.
             </p>
@@ -276,7 +260,9 @@ export default function PolicyTab({ data }) {
               <div className="mt-2 text-sm leading-6 text-slate-500">
                 People who would fall below the baseline HBAI BHC poverty line under this
                 shock scenario, but do not once {policyLabel} is applied
-                (anchored threshold).
+                (anchored threshold). A sum over a subset of the survey records behind
+                the scenario&apos;s count, whose weights are very uneven, so it ranks
+                policies only roughly.
               </div>
             </div>
           </div>

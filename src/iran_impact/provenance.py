@@ -58,6 +58,14 @@ BUNDLE_FIELDS = [
 # identical. The regression test drops them before comparing.
 VOLATILE_FIELDS = ["generated_at", "git_revision", "git_dirty"]
 
+# Bundle fields that depend on the network rather than on code, model or
+# data. policyengine.py 5.3.0 fills `certified_by` only when it cannot fetch
+# the published data release manifest and falls back to its bundled
+# certification; when the fetch succeeds the field is null. The data build
+# and artifact hash are the same either way, so two such runs are the same
+# run and compare equal once this is dropped.
+VOLATILE_BUNDLE_FIELDS = ["certified_by"]
+
 
 def _git(*args):
     """Run a git command in the repository, returning None outside a checkout."""
@@ -140,4 +148,8 @@ def strip_volatile(results):
     if isinstance(provenance, dict):
         for field in VOLATILE_FIELDS:
             provenance.pop(field, None)
+        bundle = provenance.get("release_bundle")
+        if isinstance(bundle, dict):
+            for field in VOLATILE_BUNDLE_FIELDS:
+                bundle.pop(field, None)
     return stripped
